@@ -4,10 +4,6 @@ import com.example.TimeForStudy.repository.TimeForStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-public interface TimeForStudyService {
-    void deleteNote(Integer id);
-}
-
 @Service
 public class TimeForStudyServiceImpl implements TimeForStudyService{
 
