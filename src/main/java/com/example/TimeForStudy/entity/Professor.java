@@ -9,4 +9,8 @@ public class Professor extends User {
     private String phone;
     private String name;
     private String surname;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0.1
 }
