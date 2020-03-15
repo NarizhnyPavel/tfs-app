@@ -8,15 +8,14 @@ import javax.persistence.Id;
 public abstract class User {
     @Id
     private String phone;
+    private String name;
 
     public User() {
-        phone = "";
     }
 
     public User(String phone) {
         this.phone = phone;
     }
-
 
     public String getPhone() {
         return phone;
