@@ -11,13 +11,7 @@ public abstract class User {
     private String name;
 
     public User() {
-        phone = "";
     }
-
-    public User(String phone) {
-        this.phone = phone;
-    }
-
 
     public String getPhone() {
         return phone;
