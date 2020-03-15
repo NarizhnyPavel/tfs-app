@@ -8,6 +8,7 @@ import javax.persistence.Id;
 public abstract class User {
     @Id
     private String phone;
+    private String name;
 
     public User() {
     }
