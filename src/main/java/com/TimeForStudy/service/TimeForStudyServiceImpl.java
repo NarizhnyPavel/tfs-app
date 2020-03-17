@@ -1,6 +1,6 @@
-package com.example.TimeForStudy.service;
+package com.TimeForStudy.service;
 
-import com.example.TimeForStudy.repository.TimeForStudyRepository;
+import com.TimeForStudy.repository.TimeForStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

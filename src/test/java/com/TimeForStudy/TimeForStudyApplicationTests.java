@@ -1,4 +1,4 @@
-package com.example.TimeForStudy;
+package com.TimeForStudy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

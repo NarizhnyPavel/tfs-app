@@ -1,4 +1,4 @@
-package com.example.TimeForStudy.entity;
+package com.TimeForStudy.entity;
 
 import javax.persistence.*;
 
@@ -8,5 +8,6 @@ public class Lesson {
     @Id
     @GeneratedValue
     @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn()
     private int ID;
 }
