@@ -1,4 +1,4 @@
-package com.example.TimeForStudy.entity;
+package com.TimeForStudy.entity;
 
 import javax.persistence.*;
 
