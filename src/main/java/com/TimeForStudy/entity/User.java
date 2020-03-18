@@ -3,13 +3,17 @@ package com.TimeForStudy.entity;
 import com.TimeForStudy.otherDataClasses.UserRole;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 @Entity
-public abstract class User {
+public class User {
     @Id
+    @GeneratedValue
     @JoinColumn(name = "id")
+    private String id;
+    @JoinColumn(name = "phone")
     private String phone;
     @JoinColumn(name = "name")
     private String name;
@@ -29,6 +33,10 @@ public abstract class User {
     public User(String phone, UserRole role) {
         this.phone = phone;
         this.role = role.getId();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getPhone() {
