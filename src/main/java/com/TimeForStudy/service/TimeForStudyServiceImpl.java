@@ -1,6 +1,7 @@
-package com.example.TimeForStudy.service;
+package com.TimeForStudy.service;
 
-import com.example.TimeForStudy.repository.TimeForStudyRepository;
+import com.TimeForStudy.pashaNeZnaetKudaPihat.RegistrationService;
+import com.TimeForStudy.repository.TimeForStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,16 @@ public class TimeForStudyServiceImpl implements TimeForStudyService{
 
     @Override
     public void deleteNote(Integer id) {
+
+    }
+
+    @Override
+    public void registrationUser() {
+
+    }
+
+    @Override
+    public void registerFromFile(String URL) {
 
     }
 }
