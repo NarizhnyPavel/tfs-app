@@ -1,19 +1,22 @@
 package com.TimeForStudy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity @Data @Table(name = "semester")
 public class Semester {
 
     @Id
     @GeneratedValue
-    private int ID;
-    @OneToMany(mappedBy = "University", cascade = CascadeType.ALL, orphanRemoval = true)
-    private int IdUniversity;
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "start")
     private Date start;
+
+    @Column(name = "end")
     private Date end;
 
-    public Semester() {
-    }
 }

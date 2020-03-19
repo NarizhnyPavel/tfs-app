@@ -1,17 +1,20 @@
 package com.TimeForStudy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-@Entity
+@Entity @Data @Table(name = "notification")
 public class Notification {
+
     @Id
     @GeneratedValue
-    private int ID;
-    @OneToMany(mappedBy = "Lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private int IdLesson;
+    @Column(name = "id")
+    private int id;
 
-    private int IdSender;
-    private int IdReceiver;
+    @Column(name = "lesson_position")
     private int lessonPosition;
+
+    @Column(name = "text")
     private String text;
 }
