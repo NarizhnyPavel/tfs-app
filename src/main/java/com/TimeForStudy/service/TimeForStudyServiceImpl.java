@@ -1,6 +1,6 @@
 package com.TimeForStudy.service;
 
-import com.TimeForStudy.repository.UserRepository;
+import com.TimeForStudy.repository.TimeForStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TimeForStudyServiceImpl implements TimeForStudyService{
 
-    private UserRepository repository;
+    private TimeForStudyRepository repository;
 
     @Autowired
-    public void setProductRepository(UserRepository repository) {
+    public void setProductRepository(TimeForStudyRepository repository) {
         this.repository = repository;
     }
 
