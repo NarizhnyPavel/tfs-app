@@ -3,6 +3,7 @@ package com.TimeForStudy.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity @Data @Table(name = "subject")
 public class Subject {
@@ -14,5 +15,6 @@ public class Subject {
 
     @Column(name = "name")
     private String name;
+
 
 }

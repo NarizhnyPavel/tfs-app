@@ -3,6 +3,8 @@ package com.TimeForStudy.entity;
 import com.TimeForStudy.otherDataClasses.UserRole;
 import lombok.Data;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity @Data @Table(name = "user")
 public class User {
@@ -19,6 +21,11 @@ public class User {
 
     @Column(name = "role")
     private byte role;
+
+
+
+    @ManyToMany (mappedBy = "users")
+    Set<Group> groups = new HashSet<Group>();
 
     public User(String phone, String name, UserRole role) {
         this.phone = phone;

@@ -3,6 +3,8 @@ package com.TimeForStudy.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity @Data @Table(name = "classroom")
 public class Classroom {
@@ -14,5 +16,8 @@ public class Classroom {
 
     @Column(name = "number")
     private int number;
+
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = false)
+    private Set<Lesson> lessons;
 
 }

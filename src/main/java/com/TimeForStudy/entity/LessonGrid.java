@@ -17,4 +17,7 @@ public class LessonGrid {
     @Column(name = "time")
     private String time;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name = "university_id")
+    private University university;
 }
