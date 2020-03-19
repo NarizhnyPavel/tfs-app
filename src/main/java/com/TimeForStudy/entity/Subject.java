@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity @Data @Table(name = "subject")
 public class Subject {
+
     @Id
     @GeneratedValue
     @Column(name = "id")
