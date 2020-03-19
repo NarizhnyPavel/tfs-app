@@ -9,28 +9,4 @@ import java.net.URL;
 
 public class RegistrationService {
 
-    private static RegistrationService instance = null;
-
-    public static synchronized RegistrationService getInstance(){
-        if (instance == null)
-            instance = new RegistrationService();
-        return instance;
-    }
-
-    public File loadFile(String URL) {
-        try {
-            FileInputStream inputStream = new FileInputStream("https://getfile.dokpub.com/yandex/get/" + URL);
-<<<<<<< HEAD
-            if (inputStream.)
-            return inputStream;
-=======
-            if (inputStream.markSupported()) {
-                return inputStream.;
-            }
->>>>>>> my commit
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

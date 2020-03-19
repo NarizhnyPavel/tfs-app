@@ -1,18 +1,20 @@
 package com.TimeForStudy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-@Entity
+@Entity @Data @Table(name = "lesson_grid")
 public class LessonGrid {
 
     @Id
-    @GeneratedValue
-    private int ID;
-    @OneToMany(mappedBy = "University", cascade = CascadeType.ALL, orphanRemoval = true)
-    private int IdUniversity;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "lesson_number")
     private int lessonNumber;
+
+    @Column(name = "time")
     private String time;
 
-    public LessonGrid() {
-    }
 }

@@ -1,28 +1,24 @@
 package com.TimeForStudy.entity;
 
 import com.TimeForStudy.otherDataClasses.UserRole;
+import lombok.Data;
+import javax.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-
-@Entity
+@Entity @Data @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue
-    @JoinColumn(name = "id")
+    @Column(name = "id")
     private String id;
-    @JoinColumn(name = "phone")
-    private String phone;
-    @JoinColumn(name = "name")
-    private String name;
-    @JoinColumn(name = "role")
-    private byte role;
 
-    public User() {
-        phone = "";
-    }
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "role")
+    private byte role;
 
     public User(String phone, String name, UserRole role) {
         this.phone = phone;
@@ -33,33 +29,5 @@ public class User {
     public User(String phone, UserRole role) {
         this.phone = phone;
         this.role = role.getId();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public byte getRole() {
-        return role;
-    }
-
-    public void setRole(byte role) {
-        this.role = role;
     }
 }

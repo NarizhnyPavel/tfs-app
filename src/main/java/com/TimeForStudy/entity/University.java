@@ -1,42 +1,28 @@
 package com.TimeForStudy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-@Entity
+@Entity @Data @Table(name = "university")
 public class University {
 
     @Id
     @GeneratedValue()
-    @ManyToOne( fetch = FetchType.LAZY)
-    private int ID;
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "weeks")
+    private int weeks;
+
+    @Column(name = "work_days")
+    private String workDays;
+
+    @Column(name = "lesson_duration")
     private int lessonDuration;
 
-    public University() {
-    }
 
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getLessonDuration() {
-        return lessonDuration;
-    }
-
-    public void setLessonDuration(int lessonDuration) {
-        this.lessonDuration = lessonDuration;
-    }
 }
