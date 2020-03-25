@@ -6,21 +6,29 @@
     </div>
     <div class="days">
         <div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;">
-<!--            <table class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;">-->
-<!--                <tr>-->
-<!--                    <td>-->
-<!--                        <p style="width: 20px">{{day.dayName}}</p>-->
-<!--                    </td>-->
-<!--                    <td>-->
-                        <span class="dayName" style="margin-bottom: 5px">{{day.dayName}} {{day.date}}</span> <br><br>
+            <table>
+                <caption>
+                    <span class="dayName" style="margin-bottom: 5px">{{day.date}}</span>
+                </caption>
+                <tbody>
+                <tr>
+                    <td style="max-width: 30px">
+                        <p class="dayName" style="height: 20px">{{day.dayName}}</p>
+                    </td>
+                    <td style="max-width: 190px">
                         <ul ng-if="day.infoLessonDtos.length != 0" ng-repeat="lesson in day.infoLessonDtos track by $index">
                             <li ng-if="lesson.status"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
                             <li ng-if="!lesson.status"> <span style="text-decoration: line-through" ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
                         </ul>
-                        <span ng-if="day.infoLessonDtos.length === 0"><br><br>Занятий нет</span>
-<!--                    </td>-->
-<!--                </tr>-->
-<!--            </table>-->
+                        <ul>
+                            <h4>
+                                <span ng-if="day.infoLessonDtos.length === 0"><br><br>Занятий нет</span>
+                            </h4>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <info-box ng-show="infoShow"></info-box>

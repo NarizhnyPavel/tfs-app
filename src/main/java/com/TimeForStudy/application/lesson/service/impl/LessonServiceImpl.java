@@ -556,7 +556,8 @@ public class LessonServiceImpl implements LessonService {
         if (localDateRequest == LocalDate.now()) {
             daysDto.setStatus(true);
         }
-        String date = localDateRequest.getDayOfMonth() + " / " + localDateRequest.getMonth().getValue();
+
+        String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
         daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
@@ -644,7 +645,7 @@ public class LessonServiceImpl implements LessonService {
         if (localDateRequest == LocalDate.now()) {
             daysDto.setStatus(true);
         }
-        String date = localDateRequest.getDayOfMonth() + " / " + localDateRequest.getMonth().getValue();
+        String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
         daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
@@ -730,7 +731,7 @@ public class LessonServiceImpl implements LessonService {
         if (localDateRequest == LocalDate.now()) {
             daysDto.setStatus(true);
         }
-        String date = localDateRequest.getDayOfMonth() + " / " + localDateRequest.getMonth().getValue();
+        String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
         daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
@@ -820,7 +821,7 @@ public class LessonServiceImpl implements LessonService {
         if (localDateRequest == LocalDate.now()) {
             daysDto.setStatus(true);
         }
-        String date = localDateRequest.getDayOfMonth() + " / " + localDateRequest.getMonth().getValue();
+        String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
         daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
@@ -881,6 +882,25 @@ public class LessonServiceImpl implements LessonService {
         daysDto.setInfoLessonDtos(infoLessonDtos);
 
         return daysDto;
+    }
+
+
+    public String getNameMonth(int numberMonth) {
+
+        switch (numberMonth) {
+            case 1:  return "Января";
+            case 2:  return "Февраля";
+            case 3:  return "Марта";
+            case 4:  return "Апреля";
+            case 5:  return "Мая";
+            case 6:  return "Июня";
+            case 7:  return "Июля";
+            case 8:  return "Августа";
+            case 9:  return "Сентября";
+            case 10:  return "Октября";
+            case 11:  return "Ноября";
+            default: return "Декабря";
+        }
     }
 
     /**
