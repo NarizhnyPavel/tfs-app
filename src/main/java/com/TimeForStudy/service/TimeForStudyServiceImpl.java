@@ -1,4 +1,4 @@
-package com.TimeForStudy.service;
+package com.example.TimeForStudy.service;
 
 import com.TimeForStudy.repository.TimeForStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
