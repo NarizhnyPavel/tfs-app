@@ -1,8 +1,5 @@
 package com.TimeForStudy;
 
-import com.TimeForStudy.entity.User;
-import com.TimeForStudy.otherDataClasses.UserRole;
-import com.TimeForStudy.otherDataClasses.UserRoles;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

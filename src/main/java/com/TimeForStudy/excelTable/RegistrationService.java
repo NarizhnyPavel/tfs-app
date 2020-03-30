@@ -1,11 +1,7 @@
-package com.TimeForStudy.pashaNeZnaetKudaPihat;
+package com.TimeForStudy.excelTable;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
 
 public class RegistrationService {
 
@@ -20,8 +16,8 @@ public class RegistrationService {
     public File loadFile(String URL) {
         try {
             FileInputStream inputStream = new FileInputStream("https://getfile.dokpub.com/yandex/get/" + URL);
-            if (inputStream.)
-            return inputStream;
+            //if (inputStream.)
+            return null; //inputStream.;
         } catch (Exception e) {
             e.printStackTrace();
         }

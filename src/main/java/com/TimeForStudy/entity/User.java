@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity @Data @Table(name = "user")
+@Entity @Data @Table(name = "usr")
 public class User {
     @Id
     @GeneratedValue
@@ -24,8 +24,9 @@ public class User {
 
 
 
-    @ManyToMany (mappedBy = "users")
-    Set<Group> groups = new HashSet<Group>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "group_id")
+    private Group group;
 
     public User(String phone, String name, UserRole role) {
         this.phone = phone;

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,12 +20,7 @@ public class Group {
     @Column(name = "number")
     private String number;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = false)
-    private Set<Lesson> lessons;
+    @OneToMany(mappedBy = "group")
+    private List<User> users;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "group-user",
-            joinColumns = { @JoinColumn(name = "group_id") },
-            inverseJoinColumns = { @JoinColumn(name = "student_id") })
-    private Set<User> users = new HashSet<User>();
 }

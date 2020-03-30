@@ -1,4 +1,4 @@
-package com.TimeForStudy.pashaNeZnaetKudaPihat;
+package com.TimeForStudy.excelTable;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
