@@ -1,10 +1,11 @@
 package com.TimeForStudy.entity;
 
 import com.TimeForStudy.otherDataClasses.UserRole;
+import com.TimeForStudy.otherDataClasses.UserRoles;
 import lombok.Data;
+import lombok.Getter;
+
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity @Data @Table(name = "usr")
 public class User {
@@ -34,8 +35,19 @@ public class User {
         this.role = role.getId();
     }
 
+    public User(String phone, String name, String groupNumber) {
+        this.phone = phone;
+        this.name = name;
+        this.role = UserRoles.STUDENT.getId();
+//        this.group
+    }
+
     public User(String phone, UserRole role) {
         this.phone = phone;
         this.role = role.getId();
+    }
+
+    public String getName() {
+        return name;
     }
 }
