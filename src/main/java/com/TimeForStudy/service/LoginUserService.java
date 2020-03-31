@@ -1,13 +1,11 @@
 package com.TimeForStudy.service;
 
 
-import com.TimeForStudy.otherDataClasses.ListWaiting;
+import com.TimeForStudy.otherDataClasses.VerificationPair;
 
 public interface LoginUserService {
 
     public String CheckPhone(String phone);
 
-    public String CheckCode(ListWaiting listWaiting );
-
-
+    public String CheckCode(VerificationPair verificationPair);
 }

@@ -1,7 +1,7 @@
 package com.TimeForStudy.controllers;
 
 import com.TimeForStudy.entity.User;
-import com.TimeForStudy.otherDataClasses.ListWaiting;
+import com.TimeForStudy.otherDataClasses.VerificationPair;
 import com.TimeForStudy.service.LoginUserService;
 import com.TimeForStudy.service.RegistrationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class InputUserController {
     /**
      * проверка кода
      */
-    @PostMapping(value = "/code")
-    public String checkCode(@RequestBody Integer id, @RequestBody Integer code) {
-        return loginUserService.CheckCode(new ListWaiting(id, code));
+    @PostMapping(value = "/checkCode")
+    public String checkCode(@RequestBody VerificationPair verificationPair) {
+        return loginUserService.CheckCode(verificationPair);
     }
 
     /**
@@ -38,7 +38,6 @@ public class InputUserController {
      */
     @PostMapping(value = "/login")
     public String loginUser(@RequestBody String phone) {
-//        return "okey";
         return loginUserService.CheckPhone(phone);
     }
 
