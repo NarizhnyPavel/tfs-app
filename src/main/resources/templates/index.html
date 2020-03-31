@@ -1,0 +1,37 @@
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Time For Study</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/app.css" /> </head>
+<body>
+    <form class="form-horizontal" role="form" ng-controller="loginController">
+        <div class="loginBlock"> 
+           <span class="header">Time For Study</span>
+            <div class="form-group">
+                <label for="inputPhone3" class="col-sm-2 control-label">Phone</label>
+                <div class="col-sm-4">
+                    <input class="form-control" id="inputPhone3" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" [(ngModel)]="bill.amount" #amount="ngModel" max="11" required> </div> <span ng-show="phoneRequired">{{phoneRequired}}</span> </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" ng-click="login()" class="btn btn-success">Sign up/Register</button>
+                </div>
+<!--                <span>{{postResultMessage}}</span>-->
+            </div>
+
+        </div>
+    </form>
+    <script src="lib/common/jquery.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+</body>
+
+</html>

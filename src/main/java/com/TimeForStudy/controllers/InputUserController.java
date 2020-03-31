@@ -28,8 +28,7 @@ public class InputUserController {
     /**
      * проверка кода
      */
-
-    @PostMapping(value = "/code/")
+    @PostMapping(value = "/code")
     public String checkCode(@RequestBody Integer id, @RequestBody Integer code) {
         return loginUserService.CheckCode(new ListWaiting(id, code));
     }
@@ -37,15 +36,16 @@ public class InputUserController {
     /**
      * вход по телефону
      */
-    @PostMapping(value = "/login/")
+    @PostMapping(value = "/login")
     public String loginUser(@RequestBody String phone) {
+//        return "okey";
         return loginUserService.CheckPhone(phone);
     }
 
     /**
      * регистрация пользователя
      */
-    @PostMapping(value = "/register/")
+    @PostMapping(value = "/register")
     public String addUser(@RequestBody User user) {
         return  registrationUserService.saveUser(user);
     }

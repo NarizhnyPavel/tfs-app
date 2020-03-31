@@ -18,20 +18,36 @@ app.controller('loginController', function ($scope, $http, $location) {
                     }
                 }
 
-                var data = {
-                    phone: $scope.formInfo.Phone
-                };
-                $http.post(url, data, config).then(function (response) {
-                    $scope.postResultMessage = response.data;
+                $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
+                    if (response.data == "codeSended") {
+                        alert("Код подтверждения отправлен");
+                    }
+                    else{}
                 }, function error(response) {
                     $scope.postResultMessage = "Error with status: " + response.statusText;
                 });
+
+                // $scope.formInfo.Phone = "";
+            } else{
+                $scope.phoneRequired = 'Incorrect phone!';
             }
         }
     }
 });
 
 app.controller('getcontroller', function($scope, $http, $location) {
+    $scope.getfunction = function(){
+        var url = $location.absUrl() + "getallcustomer";
+
+        $http.get(url).then(function (response) {
+            $scope.response = response.data
+        }, function error(response) {
+            $scope.postResultMessage = "Error with status: " +  response.statusText;
+        });
+    }
+});
+
+app.controller('registerController', function($scope, $http, $location) {
     $scope.getfunction = function(){
         var url = $location.absUrl() + "getallcustomer";
 
