@@ -36,6 +36,7 @@ public class LoginUserServiceImpl implements LoginUserService {
             Integer code = (int) (Math.random() * 8999) + 1000;
             ListWaiting listWaiting = new ListWaiting(code);
             waitingList.add(listWaiting);
+            send+=code;
             String _from = "TimeFStudy";
             String apikey = "FRLC1KQK71446PS85MFH8434D63P0LEB8A8EL3AS068LC31XYQS083B1N5PL24HE";
             String url = "http://smspilot.ru/api.php" +
