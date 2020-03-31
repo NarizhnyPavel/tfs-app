@@ -19,17 +19,17 @@ public class InputUserController {
     }
 
     @Autowired
-    public void setInputUserService(LoginUserService loginUserService) {
+    public void setLoginUserService(LoginUserService loginUserService) {
         this.loginUserService = loginUserService;
     }
 
-    @GetMapping(value = "/login/{phone}")
+    @PostMapping(value = "/login/")
     public String loginUser(@PathVariable String phone) {
-        return null;
+        return loginUserService.CheckPhone(phone);
     }
 
     @PostMapping(value = "/login/")
-    public void aUser(@RequestBody User user) {
+    public void setCheckCode(@RequestBody User user) {
 
     }
 }

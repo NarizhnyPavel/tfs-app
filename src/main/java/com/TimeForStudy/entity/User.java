@@ -9,7 +9,8 @@ import java.util.Set;
 @Entity @Data @Table(name = "usr")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
+    @SequenceGenerator(name="seq_user", sequenceName="SEQ_USER", allocationSize=1)
     @Column(name = "id")
     private String id;
 
