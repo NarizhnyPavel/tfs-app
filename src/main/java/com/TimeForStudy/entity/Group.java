@@ -13,14 +13,15 @@ import java.util.Set;
 public class Group {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_group")
+    @SequenceGenerator(name="seq_group", sequenceName="SEQ_GROUP", allocationSize=1)
     @Column(name = "id")
     private int id;
 
     @Column(name = "number")
     private String number;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<User> users;
 
 }

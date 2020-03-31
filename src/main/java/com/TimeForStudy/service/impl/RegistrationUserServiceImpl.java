@@ -17,9 +17,14 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
     }
 
 
-
     @Override
-    public String RegistrationUser(User user, String group) {
-        return null;
+    public String saveUser(User user) {
+        if (userRepository.findByPhone(user.getPhone())!=null)
+        {
+            return "пользователь с таким телефоном уже зарегистрирован";
+        } else {
+            userRepository.save(user);
+            return "регистрация прошла успешно";
+        }
     }
 }

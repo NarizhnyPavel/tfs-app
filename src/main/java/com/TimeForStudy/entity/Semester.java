@@ -20,10 +20,10 @@ public class Semester {
     @Column(name = "end")
     private Date end;
 
-    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "semester", fetch = FetchType.LAZY)
     private Set<Lesson> lessons;
 
-    @OneToOne(fetch = FetchType.LAZY) //TODO переделать тип связи
-    @Column(name = "university_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id")
     private University university;
 }

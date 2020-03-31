@@ -3,6 +3,7 @@ package com.TimeForStudy.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity @Data @Table(name = "university")
 public class University {
@@ -24,5 +25,6 @@ public class University {
     @Column(name = "lesson_duration")
     private int lessonDuration;
 
-
+    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
+    private List<Semester> semesters;
 }

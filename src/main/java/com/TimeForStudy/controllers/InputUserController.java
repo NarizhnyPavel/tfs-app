@@ -1,7 +1,7 @@
 package com.TimeForStudy.controllers;
 
 import com.TimeForStudy.entity.User;
-import com.TimeForStudy.repository.UserRepository;
+import com.TimeForStudy.otherDataClasses.ListWaiting;
 import com.TimeForStudy.service.LoginUserService;
 import com.TimeForStudy.service.RegistrationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,10 @@ public class InputUserController {
 
     public RegistrationUserService registrationUserService;
 
-    public UserRepository userRepository;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public void setLoginUserService(LoginUserService loginUserService) {
+        this.loginUserService = loginUserService;
     }
 
     @Autowired
@@ -26,21 +25,28 @@ public class InputUserController {
         this.registrationUserService = registrationUserService;
     }
 
-    @Autowired
-    public void setInputUserService(LoginUserService loginUserService) {
-        this.loginUserService = loginUserService;
+    /**
+     * проверка кода
+     */
+
+    @PostMapping(value = "/code/")
+    public String checkCode(@RequestBody Integer id, @RequestBody Integer code) {
+        return loginUserService.CheckCode(new ListWaiting(id, code));
     }
 
-    @GetMapping(value = "/login/{phone}")
-    public String loginUser(@PathVariable String phone) { return null;
-    }
-
+    /**
+     * вход по телефону
+     */
     @PostMapping(value = "/login/")
-    public String aUser(@RequestBody String phone) {
-        User user = userRepository.findByPhone(phone);
-        if (user != null)
-            return "Hello, ".concat(user.getName());
-        else
-            return "null";
+    public String loginUser(@RequestBody String phone) {
+        return loginUserService.CheckPhone(phone);
+    }
+
+    /**
+     * регистрация пользователя
+     */
+    @PostMapping(value = "/register/")
+    public String addUser(@RequestBody User user) {
+        return  registrationUserService.saveUser(user);
     }
 }
