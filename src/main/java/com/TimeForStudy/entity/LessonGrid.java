@@ -18,6 +18,6 @@ public class LessonGrid {
     private String time;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @Column(name = "university_id")
+    @JoinColumn(name = "university_id")
     private University university;
 }

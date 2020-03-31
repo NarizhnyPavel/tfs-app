@@ -4,7 +4,6 @@ import com.TimeForStudy.entity.User;
 
 public interface RegistrationUserService {
 
-    public String RegistrationUser(User user, String group);
-
+    String saveUser(User user);
 
 }

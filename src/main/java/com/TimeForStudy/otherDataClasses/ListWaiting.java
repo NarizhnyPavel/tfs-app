@@ -8,10 +8,16 @@ import javax.persistence.GenerationType;
 @Data
 public class ListWaiting {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int code;
 
-    public ListWaiting() {
+    public ListWaiting(int code) {
+        this.code = code;
+    }
+
+    public ListWaiting(int id, int code) {
+        this.id = id;
+        this.code = code;
     }
 }

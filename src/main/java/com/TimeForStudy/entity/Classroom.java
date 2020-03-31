@@ -17,7 +17,7 @@ public class Classroom {
     @Column(name = "number")
     private int number;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "classroom", fetch = FetchType.LAZY)
     private Set<Lesson> lessons;
 
 }

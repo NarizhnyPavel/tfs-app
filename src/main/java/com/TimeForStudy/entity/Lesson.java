@@ -13,27 +13,27 @@ public class Lesson {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "classroom_id")
+    @JoinColumn(name = "classroom_id")
     private Classroom classroom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "subject_id")
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "group_id")
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "professor_id")
+    @JoinColumn(name = "professor_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "semester_id")
+    @JoinColumn(name = "semester_id")
     private Semester semester;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "lesson_type_id")
+    @JoinColumn(name = "lesson_type_id")
     private LessonType lessonType;
 
 

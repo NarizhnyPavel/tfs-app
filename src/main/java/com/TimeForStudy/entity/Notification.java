@@ -20,13 +20,14 @@ public class Notification {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Set<Lesson> lessons; //TODO переделать
+    @JoinColumn(name = "lesson_id")
+    private Lesson lessons;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "sender_id")
+    @JoinColumn(name = "sender_id")
     private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "receiver_id")
+    @JoinColumn(name = "receiver_id")
     private User receiver;
 }

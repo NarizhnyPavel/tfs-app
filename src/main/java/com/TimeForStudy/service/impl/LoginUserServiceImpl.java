@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.unbescape.uri.UriEscape;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class LoginUserServiceImpl implements LoginUserService {
 
-    public ListWaiting listWaiting;
+    List<ListWaiting> waitingList = new ArrayList<ListWaiting>();
 
     public UserRepository userRepository;
 
@@ -28,19 +30,21 @@ public class LoginUserServiceImpl implements LoginUserService {
         User user = userRepository.findByPhone(phone);
 
         if (user==null) {
-            return "no login";
+            return "null";
         } else {
-            String send = "Код активации:"; // текст SMS
-            String code = "1273";
-
+            String send = "Код активации:";
+            Integer code = (int) (Math.random() * 8999) + 1000;
+            ListWaiting listWaiting = new ListWaiting(code);
+            waitingList.add(listWaiting);
             String _from = "TimeFStudy";
             String apikey = "FRLC1KQK71446PS85MFH8434D63P0LEB8A8EL3AS068LC31XYQS083B1N5PL24HE";
             String url = "http://smspilot.ru/api.php" +
-                    "?send=" + UriEscape.escapeUriPath(send) +
+                    "?send=" + UriEscape.escapeUriPath(send+code) +
                     "&to=" + phone +
                     "&from=" + _from +
                     "&apikey=" + apikey +
                     "&charset=windows-1251";
+
 //
 //            HttpRequest request = HttpRequest.newBuilder().bu;
 //            WebRequest request = WebRequest.Crea
@@ -52,12 +56,16 @@ public class LoginUserServiceImpl implements LoginUserService {
 
             // выполняем запрос
 //            HttpWebResponse myHttpWebResponse = (HttpWebResponse) myHttpWebRequest.GetResponse();
-            return "login";
+            return user.getName();
         }
     }
 
     @Override
-    public String CheckCode(Integer code) {
-        return null;
+    public String CheckCode(ListWaiting listWaiting) {
+        if (waitingList.indexOf(listWaiting)==-1) {
+            return "неверный код";
+        } else {
+            return "входите";
+        }
     }
 }

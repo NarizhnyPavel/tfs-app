@@ -12,7 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
     @SequenceGenerator(name="seq_user", sequenceName="SEQ_USER", allocationSize=1)
     @Column(name = "id")
-    private String id;
+    private int id;
 
     @Column(name = "phone")
     private String phone;
@@ -24,10 +24,13 @@ public class User {
     private byte role;
 
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "group_id")
+    @JoinColumn(name = "group_id")
     private Group group;
+
+    public User() {
+
+    }
 
     public User(String phone, String name, UserRole role) {
         this.phone = phone;
