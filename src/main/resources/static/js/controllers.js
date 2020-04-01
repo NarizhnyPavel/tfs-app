@@ -22,11 +22,11 @@ app.controller('loginController', function ($scope, $http, $location) {
                         }
                     }
 
+                    $scope.buttonLabel = "Войти";
                     $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
                         if (response.data == "codeSended") {
                             $scope.enterCode = true;
                             $scope.postResultMessage = "";
-                            $scope.buttonLabel = "Войти";
                             $scope.openRegistrationButton = "false";
                             alert("Код подтверждения отправлен");
                         } else if (response.data == "registrationNeeded"){
@@ -39,7 +39,7 @@ app.controller('loginController', function ($scope, $http, $location) {
 
 
                 } else {
-                    $scope.phoneRequired = 'Incorrect phone!';
+                    $scope.phoneRequired = 'Неверный формат телефона';
                 }
             }
         } else{
@@ -64,6 +64,9 @@ app.controller('loginController', function ($scope, $http, $location) {
     }
     $scope.registrateOpen = function () {
         $scope.registartionFields = true;
+        $scope.enterLogin = false;
+        $scope.postResultMessage = "";
+        document.getElementById('inputPhone').readOnly = true;
     }
 });
 

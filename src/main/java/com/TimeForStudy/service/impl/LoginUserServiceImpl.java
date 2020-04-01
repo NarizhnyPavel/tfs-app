@@ -35,8 +35,8 @@ public class LoginUserServiceImpl implements LoginUserService {
     public String CheckPhone(String phone) {
         User user = userRepository.findByPhone(phone);
         if (user != null) {
-            Integer code = (int) (Math.random() * 8999) + 1000;
-
+//            Integer code = (int) (Math.random() * 8999) + 1000;
+            Integer code = 1111;
             waitingList.put(phone, code);
             if (user == null) {
                 return "null";
@@ -56,30 +56,30 @@ public class LoginUserServiceImpl implements LoginUserService {
                                 "&from=" + _from +
                                 "&apikey=" + apikey);
 
-                String result = "";
-                try (CloseableHttpResponse response = httpClient.execute(request)) {
+                String result = "SUCCESS";
+//                try (CloseableHttpResponse response = httpClient.execute(request)) {
                     // Get HttpResponse Status
-                    System.out.println(response.getStatusLine().toString());
+//                    System.out.println(response.getStatusLine().toString());
 
-                    HttpEntity entity = response.getEntity();
-                    Header headers = entity.getContentType();
-                    System.out.println(headers);
+//                    HttpEntity entity = response.getEntity();
+//                    Header headers = entity.getContentType();
+//                    System.out.println(headers);
 
-                    if (entity != null) {
-                        result = EntityUtils.toString(entity);
-                        System.out.println(result);
+//                    if (entity != null) {
+//                        result = EntityUtils.toString(entity);
+//                        System.out.println(result);
                         if (result.substring(0, 7).equals("SUCCESS"))
                             return "codeSended";
                         else
                             return "error";
-                    }
-                } catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                    }
+//                } catch (ClientProtocolException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
-            return "end_error";
+//            return "end_error";
         }else
             return "registrationNeeded";
     }
