@@ -5,8 +5,10 @@ app.controller('loginController', function ($scope, $http, $location) {
     $scope.formInfo = {};
     $scope.enterCode = false;
     $scope.enterLogin = true;
-    $scope.buttonLabel = "Sign up/Register";
-    $scope.phoneRequired = '';
+    $scope.openRegistrationButton = false;
+    $scope.registartionFields = false;
+    $scope.buttonLabel = "Войти/Зарегистрироваться";
+    $scope.postResultMessage = '';
     $scope.login = function () {
         if (!$scope.enterCode) {
             if (!$scope.formInfo.Phone) {
@@ -22,13 +24,14 @@ app.controller('loginController', function ($scope, $http, $location) {
 
                     $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
                         if (response.data == "codeSended") {
-                            alert("Код подтверждения отправлен");
                             $scope.enterCode = true;
-                            $scope.buttonLabel = "Sign up";
-                        } else {
-                            let tpl = document.querySelector('#some_template');
-                            let container = document.querySelector('#container');
-                            insertAfter(container, tpl.content);
+                            $scope.postResultMessage = "";
+                            $scope.buttonLabel = "Войти";
+                            $scope.openRegistrationButton = "false";
+                            alert("Код подтверждения отправлен");
+                        } else if (response.data == "registrationNeeded"){
+                            $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";
+                            $scope.openRegistrationButton = true;
                         }
                     }, function error(response) {
                         $scope.postResultMessage = "Error with status: " + response.statusText;
@@ -58,6 +61,9 @@ app.controller('loginController', function ($scope, $http, $location) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;
             });
         }
+    }
+    $scope.registrateOpen = function () {
+        $scope.registartionFields = true;
     }
 });
 

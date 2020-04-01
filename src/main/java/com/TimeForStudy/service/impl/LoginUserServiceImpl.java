@@ -34,60 +34,61 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public String CheckPhone(String phone) {
         User user = userRepository.findByPhone(phone);
-//        return "Hello, " + user.getName();
-        Integer code = (int) (Math.random() * 8999) + 1000;
+        if (user != null) {
+            Integer code = (int) (Math.random() * 8999) + 1000;
 
-        waitingList.put(phone, code);
-//        return "codeSended";
-        if (user==null) {
-            return "null";
-        } else {
-            String send = "Авторизация в системе TimeForStudy\n" +
-                    "Код ";
-            send += code;
-            String _from = "";
-            String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
+            waitingList.put(phone, code);
+            if (user == null) {
+                return "null";
+            } else {
+                String send = "Авторизация в системе TimeForStudy\n" +
+                        "Код ";
+                send += code;
+                String _from = "";
+                String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
 
-            final CloseableHttpClient httpClient = HttpClients.createDefault();
+                final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-            HttpGet request = new HttpGet(
-                "http://smspilot.ru/api.php" +
-                        "?send=" + UriEscape.escapeUriPath(send) +
-                        "&to=" + phone +
-                        "&from=" + _from +
-                        "&apikey=" + apikey);
+                HttpGet request = new HttpGet(
+                        "http://smspilot.ru/api.php" +
+                                "?send=" + UriEscape.escapeUriPath(send) +
+                                "&to=" + phone +
+                                "&from=" + _from +
+                                "&apikey=" + apikey);
 
-            String result = "";
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                // Get HttpResponse Status
-                System.out.println(response.getStatusLine().toString());
+                String result = "";
+                try (CloseableHttpResponse response = httpClient.execute(request)) {
+                    // Get HttpResponse Status
+                    System.out.println(response.getStatusLine().toString());
 
-                HttpEntity entity = response.getEntity();
-                Header headers = entity.getContentType();
-                System.out.println(headers);
+                    HttpEntity entity = response.getEntity();
+                    Header headers = entity.getContentType();
+                    System.out.println(headers);
 
-                if (entity != null) {
-                    result = EntityUtils.toString(entity);
-                    System.out.println(result);
-                    if (result.substring(0, 7).equals("SUCCESS"))
-                        return "codeSended";
-                    else
-                        return "error";
+                    if (entity != null) {
+                        result = EntityUtils.toString(entity);
+                        System.out.println(result);
+                        if (result.substring(0, 7).equals("SUCCESS"))
+                            return "codeSended";
+                        else
+                            return "error";
+                    }
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
-        return "end_error";
+            return "end_error";
+        }else
+            return "registrationNeeded";
     }
 
     @Override
     public String CheckCode(VerificationPair verificationPair) {
         System.out.println(verificationPair.getPhone() + " " + verificationPair.getCode());
         if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
-            return "logged";
+            return "hi, " + userRepository.findByPhone(verificationPair.getPhone()).getName();
         } else {
             return "code error";
         }
