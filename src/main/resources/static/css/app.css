@@ -29,23 +29,29 @@
   padding: 0;
 }
 
-.registrationFields{
-    visibility: hidden
+.outer {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffc;
 }
 
 .loginBlock{
     margin: 0 auto;
     width: 500px;
     background: #8ED9B6;
+    display: inline-block;
+    height: 100px;
+}
+.header{
+/*position: relative;*/
+margin: 0 auto;
+/*margin-left: 167px;*/
+/*justify-content: center;*/
+font-size: 32px
 }
 
-.header{
-    /*position: relative;*/
-    margin: 0 auto;
-    /*margin-left: 167px;*/
-    /*justify-content: center;*/
-    font-size: 32px
-}
 
 .errorMessage{
     color: red;
