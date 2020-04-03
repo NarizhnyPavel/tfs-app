@@ -20,7 +20,7 @@ app.controller('loginController', function ($scope, $http, $location) {
                         headers: {
                             'Accept': 'text/plain'
                         }
-                    }
+                    };
 
                     $scope.buttonLabel = "Войти";
                     $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
@@ -32,6 +32,9 @@ app.controller('loginController', function ($scope, $http, $location) {
                         } else if (response.data == "registrationNeeded"){
                             $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";
                             $scope.openRegistrationButton = true;
+                            // var newHeight = angular.element('.loginBlock').css('height') * 0.75;
+                            var newHeight = window.getComputedStyle(angular.element('.loginBlock')).getPropertyValue('height') * 1.25;
+                            angular.element('.loginBlock').css('height', newHeight);
                         }
                     }, function error(response) {
                         $scope.postResultMessage = "Error with status: " + response.statusText;
