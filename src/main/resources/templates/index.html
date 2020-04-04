@@ -16,9 +16,9 @@
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
             <input width="100" id="inputPhone" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" [(ngModel)]="bill.amount" #amount="ngModel" max="11" required>
-            <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p> </p>
+         </p>
         <p class="divLine" ng-show="enterCode">
-            <label id="codeLabel" for="inputPhone">Код из смс:</label>
+        <label id="codeLabel" for="inputPhone">Код из смс:</label>
             <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
         <p class="divLine" ng-show="registartionFields">
             <label id="nameLabel" for="inputPhone">ФИО:</label>
@@ -27,6 +27,7 @@
             <label id="groupLabel" for="inputPhone">Номер группы:</label>
             <input width="300" id="inputGroup" placeholder="" ng-model="formInfo.Code"> </p>
         <tr class="divLine">
+            <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p>
             <button ng-show="openRegistrationButton" class="button1" ng-click="registrateOpen()">Зарегистрироваться</button>
             <button ng-show="enterLogin" class="button1" ng-click="login()">{{buttonLabel}}</button>
         </tr>
