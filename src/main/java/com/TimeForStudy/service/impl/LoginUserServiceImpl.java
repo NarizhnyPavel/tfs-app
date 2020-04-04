@@ -32,7 +32,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
-    public String CheckPhone(String phone) {
+    public String sendCode(String phone) {
         User user = userRepository.findByPhone(phone);
         if (user != null) {
 //            Integer code = (int) (Math.random() * 8999) + 1000;
@@ -85,12 +85,21 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
-    public String CheckCode(VerificationPair verificationPair) {
+    public String checkCode(VerificationPair verificationPair) {
         System.out.println(verificationPair.getPhone() + " " + verificationPair.getCode());
         if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
             return "hi, " + userRepository.findByPhone(verificationPair.getPhone()).getName();
         } else {
             return "code error";
         }
+    }
+
+    @Override
+    public String checkPhone(String phone) {
+        if (userRepository.findByPhone(phone) != null)
+            return "registered";
+        else
+            return "unregistered";
+
     }
 }

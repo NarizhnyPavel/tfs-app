@@ -1,9 +1,10 @@
 /* Controllers */
 'use strict';
 var app = angular.module('myApp', []);
-app.controller('loginController', function ($scope, $http, $location) {
+app.controller('loginController', function ($scope, $http, $location, $window) {
     $scope.formInfo = {};
     $scope.enterCode = false;
+    $scope.errorShow = false;
     $scope.enterLogin = true;
     $scope.openRegistrationButton = false;
     $scope.registartionFields = false;
@@ -28,21 +29,24 @@ app.controller('loginController', function ($scope, $http, $location) {
                             $scope.enterCode = true;
                             $scope.postResultMessage = "";
                             $scope.openRegistrationButton = "false";
-                            alert("Код подтверждения отправлен");
+                            // alert("Код подтверждения отправлен");
+                            $scope.postResultMessage = "Код подтверждения отправлен";
+                            angular.element('.errorMessage').css('color', "black");
+                            document.getElementById('inputPhone').readOnly = true;
+                            angular.element('.loginBlock').css('height', "260px");
+                            $scope.errorShow = true;
                         } else if (response.data == "registrationNeeded"){
                             $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";
+                            $scope.errorShow = true;
                             $scope.openRegistrationButton = true;
-                            // var newHeight = angular.element('.loginBlock').css('height') * 0.75;
-                            var newHeight = window.getComputedStyle(angular.element('.loginBlock')).getPropertyValue('height') * 1.25;
-                            angular.element('.loginBlock').css('height', newHeight);
+                            angular.element('.loginBlock').css('height', "230px");
                         }
                     }, function error(response) {
                         $scope.postResultMessage = "Error with status: " + response.statusText;
                     });
-
-
                 } else {
-                    $scope.phoneRequired = 'Неверный формат телефона';
+                    $scope.postResultMessage = 'Неверный формат телефона';
+                    $scope.errorShow = true;
                 }
             }
         } else{
@@ -58,7 +62,13 @@ app.controller('loginController', function ($scope, $http, $location) {
 
             $http.post($location.absUrl() + "checkCode", data, config).then(function (response) {
                 alert(response.data);
-                if (response.data == "logged") {
+                $window.location.reload();
+                if (response.data != "code error") {
+                } else if (response.data == "code error") {
+                    angular.element('.errorMessage').css('color', "red");
+                    $scope.postResultMessage = 'Неверный код подтверждения';
+                    $scope.errorShow = true;
+                    // отправить код заново
                 }
             }, function error(response) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;
@@ -66,10 +76,27 @@ app.controller('loginController', function ($scope, $http, $location) {
         }
     }
     $scope.registrateOpen = function () {
-        $scope.registartionFields = true;
-        $scope.enterLogin = false;
-        $scope.postResultMessage = "";
-        document.getElementById('inputPhone').readOnly = true;
+        var url = $location.absUrl() + "checkPhone";
+        var config = {
+            headers: {
+                'Accept': 'text/plain'
+            }
+        };
+        $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
+            if (response.data == "registered") {
+                $scope.postResultMessage = "Пользователь с таким телефоном уже зарегистрирован";
+                $scope.errorShow = true;
+            } else {
+                $scope.registartionFields = true;
+                $scope.enterLogin = false;
+                $scope.postResultMessage = "";
+                $scope.errorShow = false;
+                document.getElementById('inputPhone').readOnly = true;
+                angular.element('.loginBlock').css('height', "300px");
+            }
+        }, function error(response) {
+            $scope.postResultMessage = "Error with status: " + response.statusText;
+        });
     }
 });
 

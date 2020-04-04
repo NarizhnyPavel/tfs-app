@@ -30,7 +30,12 @@ public class InputUserController {
      */
     @PostMapping(value = "/checkCode")
     public String checkCode(@RequestBody VerificationPair verificationPair) {
-        return loginUserService.CheckCode(verificationPair);
+        return loginUserService.checkCode(verificationPair);
+    }
+
+    @PostMapping(value = "/checkPhone")
+    public String checkPhone(@RequestBody String phone) {
+        return loginUserService.checkPhone(phone);
     }
 
     /**
@@ -38,7 +43,7 @@ public class InputUserController {
      */
     @PostMapping(value = "/login")
     public String loginUser(@RequestBody String phone) {
-        return loginUserService.CheckPhone(phone);
+        return loginUserService.sendCode(phone);
     }
 
     /**

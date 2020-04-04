@@ -15,22 +15,21 @@
         <div class="header">Time For Study</div>
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
-            <input width="100" id="inputPhone" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" [(ngModel)]="bill.amount" #amount="ngModel" max="11" required> <span class="errorMessage" ng-show="postResultMessage">{{postResultMessage}}</span> </p>
+            <input width="100" id="inputPhone" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" [(ngModel)]="bill.amount" #amount="ngModel" max="11" required>
+            <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p> </p>
         <p class="divLine" ng-show="enterCode">
-            <label id="codeLabel" for="inputPhone" class="">Код из смс:</label>
-            <input width="300" class="divUnit" id="inputCode" placeholder="" ng-model="formInfo.Code" [(ngModel)]="bill.amount" #amount="ngModel" max="4" required> <span ng-show="phoneRequired">{{phoneRequired}} </span></p>
+            <label id="codeLabel" for="inputPhone">Код из смс:</label>
+            <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
         <p class="divLine" ng-show="registartionFields">
-            <label id="nameLabel" for="inputPhone" class="">ФИО:</label>
-            <input class="form-control" id="inputName" placeholder=""> <span ng-show="phoneRequired">{{phoneRequired}}</span> </p>
+            <label id="nameLabel" for="inputPhone">ФИО:</label>
+            <input width="300" id="inputName" placeholder="">  </p>
         <p class="divLine" ng-show="registartionFields">
-            <label id="groupLabel" for="inputPhone" class="">Код из смс:</label>
-            <input class="form-control" id="inputGroup" placeholder="" ng-model="formInfo.Code" [(ngModel)]="bill.amount" #amount="ngModel" max="11" required> <span ng-show="phoneRequired">{{phoneRequired}}</span> </p>
-        <p class="divLine" ng-show="openRegistrationButton">
-            <button type="button1" ng-click="registrateOpen()">Зарегистрироваться</button>
-        </p>
-        <p class="divLine" ng-show="enterLogin">
-            <button class="button1" type="submit" ng-click="login()">{{buttonLabel}}</button>
-        </p>
+            <label id="groupLabel" for="inputPhone">Номер группы:</label>
+            <input width="300" id="inputGroup" placeholder="" ng-model="formInfo.Code"> </p>
+        <tr class="divLine">
+            <button ng-show="openRegistrationButton" class="button1" ng-click="registrateOpen()">Зарегистрироваться</button>
+            <button ng-show="enterLogin" class="button1" ng-click="login()">{{buttonLabel}}</button>
+        </tr>
     </div>
 </form>
 <script src="lib/common/jquery.min.js"></script>
@@ -41,6 +40,7 @@
 <script src="js/controllers.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/directives.js"></script>
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </body>
 
 </html>

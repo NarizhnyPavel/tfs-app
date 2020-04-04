@@ -5,7 +5,9 @@ import com.TimeForStudy.otherDataClasses.VerificationPair;
 
 public interface LoginUserService {
 
-    public String CheckPhone(String phone);
+    public String sendCode(String phone);
 
-    public String CheckCode(VerificationPair verificationPair);
+    public String checkPhone(String phone);
+
+    public String checkCode(VerificationPair verificationPair);
 }

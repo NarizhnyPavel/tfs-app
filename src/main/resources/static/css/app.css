@@ -23,6 +23,7 @@
     height: 200px;
     background: #8ED9B6;
     border-radius: 10px;
+    box-shadow: inset 0 4px 15px rgba(255, 255, 255, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .centerBlock {
@@ -40,29 +41,31 @@
 
 .errorMessage {
     color: red;
-    font-size: 10px;
+    font-size: 15px;
 }
 
 .button1 {
+    margin:0 auto;
     border-radius: 6px;
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
-    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+    border-spacing: 30px 10px;
+    -webkit-box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.08);
+    -moz-box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.08);
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.08);
     color: #fff;
-    display: block;
+    display: table-cell;
     width: 200px;
     height: 40px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
-    padding: 0px 0px;
-    margin: 2px auto;
-    text-decoration: none;
+    padding: 5px 5px;
+    /*margin: 5px auto;*/
+    /*text-decoration: none;*/
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     -webkit-transition: background-color 0.1s linear;
     -moz-transition: background-color 0.1s linear;
     -o-transition: background-color 0.1s linear;
-    transition: background-color 0.1s linear;
+    transition: background-color 0.2s linear;
     background-color: rgb( 43, 153, 91);
     border: 1px solid rgb( 33, 126, 74);
 }
@@ -71,14 +74,10 @@
     background-color: rgb( 75, 183, 141);
 }
 
-.labelLine {
-    margin: auto;
-}
-
 .divUnit {
     width: 45px;
     /* Ширина */
-    padding: 5px;
+    padding: 2px;
 }
 
 .divLine {
@@ -109,4 +108,8 @@ input {
 label {
     font-size: 15px;
     padding: 7px 0 4px 10px;
+}
+
+#error{
+    padding: 0 0 -15px 0;
 }
