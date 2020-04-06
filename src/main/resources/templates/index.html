@@ -14,18 +14,17 @@
         <div class="header">Time For Study</div>
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
-            <input id="inputPhone" placeholder="Phone 7xxxxxxxxxx"  ng-model="formInfo.Phone" name="phone">
-<!--            <input ui-mask="99/99/9999" placeholder="MM/DD/YYYY" type="text" name="uBirthdate" ng-model="user.birthdate" required/>-->
+            <input id="inputPhone" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
         </p>
         <p class="divLine" ng-show="enterCode">
-            <label id="codeLabel" for="inputPhone">Код из смс:</label>
+            <label id="codeLabel" for="inputCode">Код из смс:</label>
             <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
         <p class="divLine" ng-show="registartionFields">
-            <label id="nameLabel" for="inputPhone">ФИО:</label>
-            <input width="300" id="inputName" placeholder="">  </p>
-        <p class="divLine" ng-show="registartionFields" ng-model="formInfo.Name">
-            <label id="groupLabel" for="inputPhone">Номер группы:</label>
-            <input width="300" id="inputGroup" placeholder="Необязательно" ng-model="formInfo.Code"> </p>
+            <label id="nameLabel" for="inputName">ФИО:</label>
+            <input width="300" id="inputName" placeholder="" ng-model="formInfo.Name">  </p>
+        <p class="divLine" ng-show="registartionFields">
+            <label id="groupLabel" for="inputGroup">Номер группы:</label>
+            <input width="300" id="inputGroup" placeholder="Необязательно" ng-model="formInfo.Group"> </p>
         <tr class="divLine">
             <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p>
             <button ng-show="openRegistrationButton" class="button1" ng-click="registrateOpen()">Зарегистрироваться</button>

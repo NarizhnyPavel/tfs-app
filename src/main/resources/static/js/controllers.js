@@ -17,7 +17,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 $scope.phoneRequired = 'Phone Required';
             } else {
                 if ($scope.formInfo.Phone.length === 11) {
-                    var url = $location.absUrl() + "login";
+                    var url = $location.absUrl() + "login/login";
                     var config = {
                         headers: {
                             'Accept': 'text/plain'
@@ -61,7 +61,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 code: $scope.formInfo.Code
             };
 
-            $http.post($location.absUrl() + "checkCode", data, config).then(function (response) {
+            $http.post($location.absUrl() + "login/checkCode", data, config).then(function (response) {
                 alert(response.data);
                 $window.location.reload();
                 if (response.data !== "code error") {
@@ -84,7 +84,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             }
         };
         if ($scope.registartionFields === false) {
-            $http.post(url + "checkPhone", $scope.formInfo.Phone, config).then(function (response) {
+            $http.post(url + "login/checkPhone", $scope.formInfo.Phone, config).then(function (response) {
                 if (response.data === "registered") {
                     $scope.postResultMessage = "Пользователь с таким телефоном уже зарегистрирован";
                     $scope.errorShow = true;
@@ -100,14 +100,16 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;
             });
         }else{
-            var data = {
-                id: 0,
-                phone: $scope.formInfo.Phone,
-                name: $scope.formInfo.Name,
-                role: 0,
-                groupNumber: $scope.formInfo.Group
+            var group ={
+                number: $scope.formInfo.Group
             };
-            $http.post(url + "register", data, config).then(function (response) {
+            var data = {
+                phone: $scope.formInfo.Phone,
+                group: group,
+                name: $scope.formInfo.Name,
+                role: 4
+            };
+            $http.post(url + "login/register", data, config).then(function (response) {
                 if (response.data === "success") {
                     alert("successful registered");
                     $window.location.reload();

@@ -19,13 +19,13 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
 
     @Override
     public String saveUser(User user) {
+        //TODO checking for having sent group number
         if (userRepository.findByPhone(user.getPhone())!=null)
         {
             return "alsoRegistered";
         } else {
             userRepository.save(user);
             return "success";
-//            return userRepository.ge;
         }
     }
 }

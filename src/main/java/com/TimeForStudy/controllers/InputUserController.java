@@ -14,7 +14,6 @@ public class InputUserController {
 
     public RegistrationUserService registrationUserService;
 
-
     @Autowired
     public void setLoginUserService(LoginUserService loginUserService) {
         this.loginUserService = loginUserService;
@@ -28,14 +27,14 @@ public class InputUserController {
     /**
      * Check sent code
      */
-    @PostMapping(value = "/checkCode")
+    @PostMapping(value = "login/checkCode")
     public String checkCode(@RequestBody VerificationPair verificationPair) {
         return loginUserService.checkCode(verificationPair);
     }
     /**
     * Check phone for being registered
      */
-    @PostMapping(value = "/checkPhone")
+    @PostMapping(value = "login/checkPhone")
     public String checkPhone(@RequestBody String phone) {
         return loginUserService.checkPhone(phone);
     }
@@ -43,7 +42,7 @@ public class InputUserController {
     /**
      * Login by phone by sending sms code
      */
-    @PostMapping(value = "/login")
+    @PostMapping(value = "login/login")
     public String loginUser(@RequestBody String phone) {
         return loginUserService.sendCode(phone);
     }
@@ -51,7 +50,7 @@ public class InputUserController {
     /**
      * Register new user
      */
-    @PostMapping(value = "/register")
+    @PostMapping(value = "login/register")
     public String addUser(@RequestBody User user) {
         return  registrationUserService.saveUser(user);
     }
