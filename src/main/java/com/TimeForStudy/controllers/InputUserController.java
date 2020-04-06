@@ -26,20 +26,22 @@ public class InputUserController {
     }
 
     /**
-     * проверка кода
+     * Check sent code
      */
     @PostMapping(value = "/checkCode")
     public String checkCode(@RequestBody VerificationPair verificationPair) {
         return loginUserService.checkCode(verificationPair);
     }
-
+    /**
+    * Check phone for being registered
+     */
     @PostMapping(value = "/checkPhone")
     public String checkPhone(@RequestBody String phone) {
         return loginUserService.checkPhone(phone);
     }
 
     /**
-     * вход по телефону
+     * Login by phone by sending sms code
      */
     @PostMapping(value = "/login")
     public String loginUser(@RequestBody String phone) {
@@ -47,7 +49,7 @@ public class InputUserController {
     }
 
     /**
-     * регистрация пользователя
+     * Register new user
      */
     @PostMapping(value = "/register")
     public String addUser(@RequestBody User user) {

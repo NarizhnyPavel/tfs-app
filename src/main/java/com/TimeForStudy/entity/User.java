@@ -43,6 +43,7 @@ public class User {
         this.phone = phone;
         this.name = name;
         this.role = UserRoles.STUDENT.getId();
+//        this.group =
 //        this.group
     }
 

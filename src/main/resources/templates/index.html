@@ -8,24 +8,24 @@
     <title>Time For Study</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/app.css" /> </head>
-
 <body>
 <form role="form" ng-controller="loginController">
     <div class="loginBlock">
         <div class="header">Time For Study</div>
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
-            <input width="100" id="inputPhone" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" [(ngModel)]="bill.amount" #amount="ngModel" max="11" required>
-         </p>
+            <input id="inputPhone" placeholder="Phone 7xxxxxxxxxx"  ng-model="formInfo.Phone" name="phone">
+<!--            <input ui-mask="99/99/9999" placeholder="MM/DD/YYYY" type="text" name="uBirthdate" ng-model="user.birthdate" required/>-->
+        </p>
         <p class="divLine" ng-show="enterCode">
-        <label id="codeLabel" for="inputPhone">Код из смс:</label>
+            <label id="codeLabel" for="inputPhone">Код из смс:</label>
             <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
         <p class="divLine" ng-show="registartionFields">
             <label id="nameLabel" for="inputPhone">ФИО:</label>
             <input width="300" id="inputName" placeholder="">  </p>
-        <p class="divLine" ng-show="registartionFields">
+        <p class="divLine" ng-show="registartionFields" ng-model="formInfo.Name">
             <label id="groupLabel" for="inputPhone">Номер группы:</label>
-            <input width="300" id="inputGroup" placeholder="" ng-model="formInfo.Code"> </p>
+            <input width="300" id="inputGroup" placeholder="Необязательно" ng-model="formInfo.Code"> </p>
         <tr class="divLine">
             <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p>
             <button ng-show="openRegistrationButton" class="button1" ng-click="registrateOpen()">Зарегистрироваться</button>

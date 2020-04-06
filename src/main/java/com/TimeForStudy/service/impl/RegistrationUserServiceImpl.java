@@ -21,10 +21,11 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
     public String saveUser(User user) {
         if (userRepository.findByPhone(user.getPhone())!=null)
         {
-            return "пользователь с таким телефоном уже зарегистрирован";
+            return "alsoRegistered";
         } else {
             userRepository.save(user);
-            return "регистрация прошла успешно";
+            return "success";
+//            return userRepository.ge;
         }
     }
 }

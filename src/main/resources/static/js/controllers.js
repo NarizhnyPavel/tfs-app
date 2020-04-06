@@ -10,12 +10,13 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
     $scope.registartionFields = false;
     $scope.buttonLabel = "Войти/Зарегистрироваться";
     $scope.postResultMessage = '';
+
     $scope.login = function () {
         if (!$scope.enterCode) {
             if (!$scope.formInfo.Phone) {
                 $scope.phoneRequired = 'Phone Required';
             } else {
-                if ($scope.formInfo.Phone.length == 11) {
+                if ($scope.formInfo.Phone.length === 11) {
                     var url = $location.absUrl() + "login";
                     var config = {
                         headers: {
@@ -25,7 +26,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
 
                     $scope.buttonLabel = "Войти";
                     $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
-                        if (response.data == "codeSended") {
+                        if (response.data === "codeSended") {
                             $scope.enterCode = true;
                             $scope.postResultMessage = "";
                             $scope.openRegistrationButton = "false";
@@ -35,7 +36,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                             document.getElementById('inputPhone').readOnly = true;
                             angular.element('.loginBlock').css('height', "260px");
                             $scope.errorShow = true;
-                        } else if (response.data == "registrationNeeded"){
+                        } else if (response.data === "registrationNeeded"){
                             $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";
                             $scope.errorShow = true;
                             $scope.openRegistrationButton = true;
@@ -63,8 +64,8 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             $http.post($location.absUrl() + "checkCode", data, config).then(function (response) {
                 alert(response.data);
                 $window.location.reload();
-                if (response.data != "code error") {
-                } else if (response.data == "code error") {
+                if (response.data !== "code error") {
+                } else if (response.data === "code error") {
                     angular.element('.errorMessage').css('color', "red");
                     $scope.postResultMessage = 'Неверный код подтверждения';
                     $scope.errorShow = true;
@@ -76,27 +77,52 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
         }
     }
     $scope.registrateOpen = function () {
-        var url = $location.absUrl() + "checkPhone";
+        var url = $location.absUrl();
         var config = {
             headers: {
                 'Accept': 'text/plain'
             }
         };
-        $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
-            if (response.data == "registered") {
-                $scope.postResultMessage = "Пользователь с таким телефоном уже зарегистрирован";
-                $scope.errorShow = true;
-            } else {
-                $scope.registartionFields = true;
-                $scope.enterLogin = false;
-                $scope.postResultMessage = "";
-                $scope.errorShow = false;
-                document.getElementById('inputPhone').readOnly = true;
-                angular.element('.loginBlock').css('height', "300px");
-            }
-        }, function error(response) {
-            $scope.postResultMessage = "Error with status: " + response.statusText;
-        });
+        if ($scope.registartionFields === false) {
+            $http.post(url + "checkPhone", $scope.formInfo.Phone, config).then(function (response) {
+                if (response.data === "registered") {
+                    $scope.postResultMessage = "Пользователь с таким телефоном уже зарегистрирован";
+                    $scope.errorShow = true;
+                } else {
+                    $scope.registartionFields = true;
+                    $scope.enterLogin = false;
+                    $scope.postResultMessage = "";
+                    $scope.errorShow = false;
+                    document.getElementById('inputPhone').readOnly = true;
+                    angular.element('.loginBlock').css('height', "300px");
+                }
+            }, function error(response) {
+                $scope.postResultMessage = "Error with status: " + response.statusText;
+            });
+        }else{
+            var data = {
+                id: 0,
+                phone: $scope.formInfo.Phone,
+                name: $scope.formInfo.Name,
+                role: 0,
+                groupNumber: $scope.formInfo.Group
+            };
+            $http.post(url + "register", data, config).then(function (response) {
+                if (response.data === "success") {
+                    alert("successful registered");
+                    $window.location.reload();
+                } else {
+                    $scope.postResultMessage = response.data;
+                    $scope.errorShow = false;
+                    document.getElementById('inputPhone').readOnly = true;
+                    angular.element('.loginBlock').css('height', "300px");
+                }
+            }, function error(response) {
+                $scope.postResultMessage = "Error with status: " + response.statusText;
+            });
+        }
     }
 });
+
+
 
