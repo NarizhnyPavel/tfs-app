@@ -26,7 +26,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
 
                     $scope.buttonLabel = "Войти";
                     $http.post(url, $scope.formInfo.Phone, config).then(function (response) {
-                        if (response.data === "codeSended") {
+                        if (response.data === "codeSent") {
                             $scope.enterCode = true;
                             $scope.postResultMessage = "";
                             $scope.openRegistrationButton = "false";

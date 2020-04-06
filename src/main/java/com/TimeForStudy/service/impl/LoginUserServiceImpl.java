@@ -38,6 +38,7 @@ public class LoginUserServiceImpl implements LoginUserService {
 //            Integer code = (int) (Math.random() * 8999) + 1000;
             Integer code = 1111;
             waitingList.put(phone, code);
+            new CodeTimer(phone);
             if (user == null) {
                 return "null";
             } else {
@@ -69,7 +70,7 @@ public class LoginUserServiceImpl implements LoginUserService {
 //                        result = EntityUtils.toString(entity);
 //                        System.out.println(result);
                         if (result.substring(0, 7).equals("SUCCESS"))
-                            return "codeSended";
+                            return "codeSent";
                         else
                             return "error";
 //                    }
@@ -101,5 +102,33 @@ public class LoginUserServiceImpl implements LoginUserService {
         else
             return "unregistered";
 
+    }
+
+    private class CodeTimer  {
+        private Timer timer;
+        private TimerTask timerTask;
+        private int id;
+        private String phone;
+
+        CodeTimer(String phone) {
+            this.phone = phone;
+            setTimerTask();
+            timer = new Timer();
+            // будем запускать каждых 60 секунд (60 * 1000 миллисекунд)
+            timer.schedule(timerTask, 60 * 1000);
+        }
+
+        void setTimerTask() {
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    waitingList.remove(phone);
+                }
+            };
+        }
+
+        void stopTimer(){
+            timer.cancel();
+        }
     }
 }
