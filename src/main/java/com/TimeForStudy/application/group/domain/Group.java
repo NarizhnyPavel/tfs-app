@@ -2,12 +2,18 @@ package com.TimeForStudy.application.group.domain;
 
 import com.TimeForStudy.application.user.domain.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@ToString(of = "id")
+@EqualsAndHashCode(of = "id")
 @Table(name = "group")
 public class Group {
 
@@ -22,5 +28,6 @@ public class Group {
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<User> users;
+
 
 }

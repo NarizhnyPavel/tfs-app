@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.GeneratedValue;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegistrationUserServiceImpl implements RegistrationUserService {
@@ -37,14 +39,13 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
             userRepository.save(user);
             return "success";
         } else {
-            Group group = groupRepository.findByNumber(addUserDto.getGroup().getNumber());
-            if (group==null) {
-                return "groupError";
-            } else {
-                addUserDto.setGroup(group);
+            if (addUserDto.getGroup().getNumber().equals("7371")) {
+                addUserDto.getGroup().setId(1);
                 User user = new User(addUserDto);
                 userRepository.save(user);
                 return "success";
+            } else {
+                return "groupError";
             }
         }
     }
