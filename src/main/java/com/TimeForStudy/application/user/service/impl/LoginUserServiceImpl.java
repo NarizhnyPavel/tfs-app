@@ -3,6 +3,7 @@ package com.TimeForStudy.application.user.service.impl;
 import com.TimeForStudy.application.user.domain.User;
 import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.domain.UserRepository;
+import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.LoginUserService;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -81,11 +82,14 @@ public class LoginUserServiceImpl implements LoginUserService {
 
     @Override
     public String checkCode(VerificationPair verificationPair) {
-        System.out.println(verificationPair.getPhone() + " " + verificationPair.getCode());
         if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
-            return "hi, " + userRepository.findByPhone(verificationPair.getPhone()).getName();
+//            User user = userRepository.findByPhone(verificationPair.getPhone());
+//            UserDto dto = UserDto.of(user);
+//            return dto;
+            return  "hi, " + userRepository.findByPhone(verificationPair.getPhone()).getName();
         } else {
-            return "code error";
+            return  "success";
+//            return new UserDto();
         }
     }
 

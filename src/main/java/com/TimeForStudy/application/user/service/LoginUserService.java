@@ -2,12 +2,13 @@ package com.TimeForStudy.application.user.service;
 
 
 import com.TimeForStudy.application.otherDataClasses.VerificationPair;
+import com.TimeForStudy.application.user.model.UserDto;
 
 public interface LoginUserService {
 
-    public String sendCode(String phone);
+    String sendCode(String phone);
 
-    public String checkPhone(String phone);
+    String checkPhone(String phone);
 
-    public String checkCode(VerificationPair verificationPair);
+    String checkCode(VerificationPair verificationPair);
 }
