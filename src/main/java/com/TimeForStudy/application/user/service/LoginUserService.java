@@ -10,5 +10,5 @@ public interface LoginUserService {
 
     String checkPhone(String phone);
 
-    String checkCode(VerificationPair verificationPair);
+    UserDto checkCode(VerificationPair verificationPair);
 }

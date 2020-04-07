@@ -31,7 +31,7 @@ public class InputUserController {
      * Check sent code
      */
     @PostMapping(value = "login/checkCode")
-    public String checkCode(@RequestBody VerificationPair verificationPair) {
+    public UserDto checkCode(@RequestBody VerificationPair verificationPair) {
         return loginUserService.checkCode(verificationPair);
     }
     /**

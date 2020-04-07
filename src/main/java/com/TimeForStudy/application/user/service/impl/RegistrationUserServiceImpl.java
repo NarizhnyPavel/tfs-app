@@ -39,9 +39,9 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
             userRepository.save(user);
             return "success";
         } else {
-            Group group = new Group();
-            if (addUserDto.getGroup().getNumber().equals("7371")) {
-                addUserDto.getGroup().setId(1);
+
+            if (groupRepository.findByNumber(addUserDto.getGroup().getNumber())!=null) {
+                addUserDto.setGroup(groupRepository.findByNumber(addUserDto.getGroup().getNumber()));
                 User user = new User(addUserDto);
                 userRepository.save(user);
                 return "success";

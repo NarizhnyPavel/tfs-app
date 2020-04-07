@@ -81,16 +81,16 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
-    public String checkCode(VerificationPair verificationPair) {
-        if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
-//            User user = userRepository.findByPhone(verificationPair.getPhone());
-//            UserDto dto = UserDto.of(user);
-//            return dto;
-            return  "hi, " + userRepository.findByPhone(verificationPair.getPhone()).getName();
-        } else {
-            return  "success";
+    public UserDto checkCode(VerificationPair verificationPair) {
+        User user = userRepository.findByPhone(verificationPair.getPhone());
+        UserDto dto = UserDto.of(user);
+        System.out.println(waitingList.toString());
+        //TODO убрать комментарии снизу
+//        if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
+            return dto;
+//            } else {
 //            return new UserDto();
-        }
+//        }
     }
 
     @Override

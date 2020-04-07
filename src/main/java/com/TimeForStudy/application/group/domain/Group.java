@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
-@Table(name = "group")
+@Table(name = "group_tb")
 public class Group {
 
     @Id
@@ -27,7 +28,7 @@ public class Group {
     private String number;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
 
 }
