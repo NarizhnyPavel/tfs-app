@@ -1,13 +1,16 @@
 package com.TimeForStudy.application.classroom.service.impl;
 
+import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.classroom.domain.ClassroomRepository;
 import com.TimeForStudy.application.classroom.model.AddClassroomDto;
 import com.TimeForStudy.application.classroom.model.ClassroomDto;
 import com.TimeForStudy.application.classroom.service.ClassroomService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности кабинет
@@ -31,7 +34,9 @@ public class ClassroomServiceImpl implements ClassroomService {
      */
     @Override
     public ClassroomDto getClassroomById(long id) {
-        return null;
+        ClassroomEntity classroomEntity = classroomRepository.findById(id)
+                .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
+        return ClassroomDto.of(classroomEntity);
     }
 
     /**
@@ -41,7 +46,8 @@ public class ClassroomServiceImpl implements ClassroomService {
      */
     @Override
     public void saveClassroom(AddClassroomDto addClassroomDto) {
-
+        ClassroomEntity classroomEntity = new ClassroomEntity(addClassroomDto);
+        classroomRepository.save(classroomEntity);
     }
 
     /**
@@ -52,7 +58,12 @@ public class ClassroomServiceImpl implements ClassroomService {
      */
     @Override
     public void updateClassroom(long id, AddClassroomDto addClassroomDto) {
-
+        ClassroomEntity updated = classroomRepository.findById(id)
+                .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
+        if (addClassroomDto.getNumber()!=0) {
+            updated.setNumber(addClassroomDto.getNumber());
+        }
+        classroomRepository.save(updated);
     }
 
     /**
@@ -62,7 +73,7 @@ public class ClassroomServiceImpl implements ClassroomService {
      */
     @Override
     public void deleteClassroom(long id) {
-
+        classroomRepository.deleteById(id);
     }
 
     /**
@@ -72,6 +83,7 @@ public class ClassroomServiceImpl implements ClassroomService {
      */
     @Override
     public List<ClassroomDto> findAll() {
-        return null;
+        List<ClassroomEntity> classroomEntities = classroomRepository.findAll();
+        return classroomEntities.stream().map(ClassroomDto::of).collect(Collectors.toList());
     }
 }

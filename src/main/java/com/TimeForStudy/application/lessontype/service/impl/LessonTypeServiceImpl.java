@@ -1,14 +1,17 @@
 package com.TimeForStudy.application.lessontype.service.impl;
 
 import com.TimeForStudy.application.lessongrid.service.LessonGridService;
+import com.TimeForStudy.application.lessontype.domain.LessonTypeEntity;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.lessontype.service.LessonTypeService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности тип занятия
@@ -32,7 +35,9 @@ public class LessonTypeServiceImpl implements LessonTypeService {
      */
     @Override
     public LessonTypeDto getLessonTypeById(long id) {
-        return null;
+        LessonTypeEntity lessonTypeEntity = lessonTypeRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
+        return LessonTypeDto.of(lessonTypeEntity);
     }
 
     /**
@@ -42,7 +47,8 @@ public class LessonTypeServiceImpl implements LessonTypeService {
      */
     @Override
     public void saveLessonType(AddLessonTypeDto addLessonTypeDto) {
-
+        LessonTypeEntity lessonTypeEntity = new LessonTypeEntity(addLessonTypeDto);
+        lessonTypeRepository.save(lessonTypeEntity);
     }
 
     /**
@@ -53,7 +59,12 @@ public class LessonTypeServiceImpl implements LessonTypeService {
      */
     @Override
     public void updateLessonType(long id, AddLessonTypeDto addLessonTypeDto) {
-
+        LessonTypeEntity updated = lessonTypeRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
+        if (addLessonTypeDto.getName()!=null) {
+            updated.setName(addLessonTypeDto.getName());
+        }
+        lessonTypeRepository.save(updated);
     }
 
     /**
@@ -63,7 +74,7 @@ public class LessonTypeServiceImpl implements LessonTypeService {
      */
     @Override
     public void deleteLessonType(long id) {
-
+        lessonTypeRepository.deleteById(id);
     }
 
     /**
@@ -73,6 +84,7 @@ public class LessonTypeServiceImpl implements LessonTypeService {
      */
     @Override
     public List<LessonTypeDto> findAll() {
-        return null;
+        List<LessonTypeEntity> lessonTypeEntities = lessonTypeRepository.findAll();
+        return lessonTypeEntities.stream().map(LessonTypeDto::of).collect(Collectors.toList());
     }
 }

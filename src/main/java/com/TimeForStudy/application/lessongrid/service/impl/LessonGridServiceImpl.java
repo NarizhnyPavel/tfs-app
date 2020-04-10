@@ -1,13 +1,20 @@
 package com.TimeForStudy.application.lessongrid.service.impl;
 
+import com.TimeForStudy.application.lesson.domain.LessonEntity;
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
 import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.lessongrid.service.LessonGridService;
+import com.TimeForStudy.application.university.domain.UniversityEntity;
+import com.TimeForStudy.application.university.domain.UniversityRepository;
+import com.TimeForStudy.application.university.model.UniversityDto;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности место занятие в сетке
@@ -24,6 +31,11 @@ public class LessonGridServiceImpl implements LessonGridService {
     private final LessonGridRepository lessonGridRepository;
 
     /**
+     * {@link UniversityRepository}
+     */
+    private final UniversityRepository universityRepository;
+
+    /**
      * Возвращение места занятия в сетке по идентификатору.
      *
      * @param id идентификатор.
@@ -31,7 +43,9 @@ public class LessonGridServiceImpl implements LessonGridService {
      */
     @Override
     public LessonGridDto getLessonGridById(long id) {
-        return null;
+        LessonGridEntity lessonGridEntity = lessonGridRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_GRID_NOT_FOUNT::exception);
+        return LessonGridDto.of(lessonGridEntity);
     }
 
     /**
@@ -41,7 +55,10 @@ public class LessonGridServiceImpl implements LessonGridService {
      */
     @Override
     public void saveLessonGrid(AddLessonGridDto addLessonGridDto) {
-
+        universityRepository.findById(addLessonGridDto.getUniversity().getId())
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        LessonGridEntity lessonGridEntity = new LessonGridEntity(addLessonGridDto);
+        lessonGridRepository.save(lessonGridEntity);
     }
 
     /**
@@ -53,6 +70,20 @@ public class LessonGridServiceImpl implements LessonGridService {
     @Override
     public void updateLessonGrid(long id, AddLessonGridDto addLessonGridDto) {
 
+        LessonGridEntity updated = lessonGridRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_GRID_NOT_FOUNT::exception);
+        if (addLessonGridDto.getLessonNumber()!=0) {
+            updated.setLessonNumber(addLessonGridDto.getLessonNumber());
+        }
+        if (addLessonGridDto.getTime()!=null) {
+            updated.setTime(addLessonGridDto.getTime());
+        }
+        if (addLessonGridDto.getUniversity()!=null) {
+            universityRepository.findById(addLessonGridDto.getUniversity().getId())
+                    .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+            updated.setUniversity(UniversityDto.on(addLessonGridDto.getUniversity()));
+        }
+        lessonGridRepository.save(updated);
     }
 
     /**
@@ -62,7 +93,7 @@ public class LessonGridServiceImpl implements LessonGridService {
      */
     @Override
     public void deleteLessonGrid(long id) {
-
+        lessonGridRepository.deleteById(id);
     }
 
     /**
@@ -72,6 +103,7 @@ public class LessonGridServiceImpl implements LessonGridService {
      */
     @Override
     public List<LessonGridDto> findAll() {
-        return null;
+        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAll();
+        return lessonGridEntities.stream().map(LessonGridDto::of).collect(Collectors.toList());
     }
 }

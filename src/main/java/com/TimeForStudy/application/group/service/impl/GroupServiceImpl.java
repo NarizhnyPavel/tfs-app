@@ -1,13 +1,17 @@
 package com.TimeForStudy.application.group.service.impl;
 
+import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
+import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.group.service.GroupService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности группа
@@ -31,7 +35,9 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public GroupDto getGroupById(long id) {
-        return null;
+        GroupEntity groupEntity = groupRepository.findById(id)
+                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        return GroupDto.of(groupEntity);
     }
 
     /**
@@ -41,7 +47,8 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public void saveGroup(AddGroupDto addGroupDto) {
-
+        GroupEntity groupEntity = new GroupEntity(addGroupDto);
+        groupRepository.save(groupEntity);
     }
 
     /**
@@ -52,7 +59,12 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public void updateGroup(long id, AddGroupDto addGroupDto) {
-
+        GroupEntity updated = groupRepository.findById(id)
+                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        if (addGroupDto.getNumber()!=null) {
+            updated.setNumber(addGroupDto.getNumber());
+        }
+        groupRepository.save(updated);
     }
 
     /**
@@ -62,7 +74,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public void deleteGroup(long id) {
-
+        groupRepository.deleteById(id);
     }
 
     /**
@@ -72,6 +84,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public List<GroupDto> findAll() {
-        return null;
+        List<GroupEntity> groupEntities = groupRepository.findAll();
+        return groupEntities.stream().map(GroupDto::of).collect(Collectors.toList());
     }
 }

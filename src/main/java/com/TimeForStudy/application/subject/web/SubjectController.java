@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Обработчик запросов преподаваемой дисциплины.
+ *
+ * @author Velikanov Artyom.
+ */
 @RestController
 @RequiredArgsConstructor
 public class SubjectController {

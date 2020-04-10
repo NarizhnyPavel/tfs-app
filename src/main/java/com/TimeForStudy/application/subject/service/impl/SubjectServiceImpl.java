@@ -1,13 +1,16 @@
 package com.TimeForStudy.application.subject.service.impl;
 
+import com.TimeForStudy.application.subject.domain.SubjectEntity;
 import com.TimeForStudy.application.subject.domain.SubjectRepository;
 import com.TimeForStudy.application.subject.model.AddSubjectDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
 import com.TimeForStudy.application.subject.service.SubjectService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности преподаваемая дисциплина
@@ -31,7 +34,9 @@ public class SubjectServiceImpl implements SubjectService {
      */
     @Override
     public SubjectDto getSubjectById(long id) {
-        return null;
+        SubjectEntity subjectEntity = subjectRepository.findById(id)
+                .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
+        return SubjectDto.of(subjectEntity);
     }
 
     /**
@@ -41,7 +46,8 @@ public class SubjectServiceImpl implements SubjectService {
      */
     @Override
     public void saveSubject(AddSubjectDto addSubjectDto) {
-
+        SubjectEntity subjectEntity = new SubjectEntity(addSubjectDto);
+        subjectRepository.save(subjectEntity);
     }
 
     /**
@@ -52,7 +58,12 @@ public class SubjectServiceImpl implements SubjectService {
      */
     @Override
     public void updateSubject(long id, AddSubjectDto addSubjectDto) {
-
+        SubjectEntity updated = subjectRepository.findById(id)
+                .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
+        if (addSubjectDto.getName()!=null) {
+            updated.setName(addSubjectDto.getName());
+        }
+        subjectRepository.save(updated);
     }
 
     /**
@@ -62,7 +73,7 @@ public class SubjectServiceImpl implements SubjectService {
      */
     @Override
     public void deleteSubject(long id) {
-
+        subjectRepository.deleteById(id);
     }
 
     /**
@@ -72,6 +83,7 @@ public class SubjectServiceImpl implements SubjectService {
      */
     @Override
     public List<SubjectDto> findAll() {
-        return null;
+        List<SubjectEntity> subjectEntities = subjectRepository.findAll();
+        return subjectEntities.stream().map(SubjectDto::of).collect(Collectors.toList());
     }
 }

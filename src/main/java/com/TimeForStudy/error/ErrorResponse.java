@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Velikanov Artyom.
+ */
+
 @Data
 public class ErrorResponse {
 

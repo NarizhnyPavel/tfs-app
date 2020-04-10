@@ -3,6 +3,11 @@ package com.TimeForStudy.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Ошибки приложения.
+ *
+ * @author Velikanov Artyom.
+ */
 @Getter
 @AllArgsConstructor
 public enum  ErrorDescription {
@@ -18,6 +23,9 @@ public enum  ErrorDescription {
     USER_NOT_FOUNT(10, "Пользователь не найден"),
     INCORRECT_DATA_ENTRY(12, "Некорректный ввод данных"),
     DATA_IS_EMPTY(13, "Введённые данные пустые"),
+    ACCESS_IS_DENIED(14, "Отказано в доступе. " +
+            "У данного пользователя роль с недостаточными для данного действия полномочиями"),
+    ROLE_DOES_NOT_MATCH( 14, "Нельзя выставить данную роль для пользователя находящегося в группе"),
     HANDLER_NOT_FOUND(404, "HANDLER_NOT_FOUND"),
     TIMEOUT_ERROR(408, "Истекло время ожидания ответа"),
     VERSION_UNSUPPORTED(469, "Версия не поддерживается"),

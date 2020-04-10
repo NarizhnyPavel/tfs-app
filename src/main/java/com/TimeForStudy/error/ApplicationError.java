@@ -4,6 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Ошибка приложения.
+ *
+ * @author Velikanov Artyom.
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")

@@ -9,6 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Обработчик запросов авторизации/регистрации.
+ *
+ * @author Velikanov Artyom.
+ * @author Narizhny Pavel.
+ */
 @RestController
 @RequiredArgsConstructor
 public class InputUserController {
@@ -24,14 +30,21 @@ public class InputUserController {
     public final RegistrationUserService registrationUserService;
 
     /**
-     * Check sent code
+     * Проверка кода.
+     *
+     * @param verificationPair пара телефон - код.
+     * @return пользователь.
      */
     @PostMapping(value = "login/checkCode")
     public UserDto checkCode(@RequestBody VerificationPair verificationPair) {
         return loginUserService.checkCode(verificationPair);
     }
+
     /**
-    * Check phone for being registered
+     * Проверка телефона.
+     *
+     * @param phone телефон.
+     * @return статус.
      */
     @PostMapping(value = "login/checkPhone")
     public String checkPhone(@RequestBody String phone) {
@@ -39,7 +52,10 @@ public class InputUserController {
     }
 
     /**
-     * Login by phone by sending sms code
+     * Авторизация пользователя.
+     *
+     * @param phone телефон.
+     * @return статус.
      */
     @PostMapping(value = "login/login")
     public String loginUser(@RequestBody String phone) {
@@ -47,7 +63,10 @@ public class InputUserController {
     }
 
     /**
-     * Register new user
+     * Регистрация нового пользователя.
+     *
+     * @param addUserDto пользователь.
+     * @return статус
      */
     @PostMapping(value = "login/register")
     public String addUser(@RequestBody AddUserDto addUserDto) {

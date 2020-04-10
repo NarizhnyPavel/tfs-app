@@ -1,13 +1,16 @@
 package com.TimeForStudy.application.university.service.impl;
 
+import com.TimeForStudy.application.university.domain.UniversityEntity;
 import com.TimeForStudy.application.university.domain.UniversityRepository;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.application.university.service.UniversityService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности учебное заведение
@@ -31,7 +34,9 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public UniversityDto getUniversityById(long id) {
-        return null;
+        UniversityEntity universityEntity = universityRepository.findById(id)
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        return UniversityDto.of(universityEntity);
     }
 
     /**
@@ -41,7 +46,8 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void saveUniversity(AddUniversityDto addUniversityDto) {
-
+        UniversityEntity universityEntity = new UniversityEntity(addUniversityDto);
+        universityRepository.save(universityEntity);
     }
 
     /**
@@ -52,7 +58,21 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void updateUniversity(long id, AddUniversityDto addUniversityDto) {
-
+        UniversityEntity updated = universityRepository.findById(id)
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        if (addUniversityDto.getName()!=null) {
+            updated.setName(addUniversityDto.getName());
+        }
+        if (addUniversityDto.getLessonDuration()!=0) {
+            updated.setLessonDuration(addUniversityDto.getLessonDuration());
+        }
+        if (addUniversityDto.getWeeks()!=0) {
+            updated.setWeeks(addUniversityDto.getWeeks());
+        }
+        if (addUniversityDto.getWorkDays()!=null) {
+            updated.setWorkDays(addUniversityDto.getWorkDays());
+        }
+        universityRepository.save(updated);
     }
 
     /**
@@ -62,7 +82,7 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void deleteUniversity(long id) {
-
+        universityRepository.deleteById(id);
     }
 
     /**
@@ -72,6 +92,7 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public List<UniversityDto> findAll() {
-        return null;
+        List<UniversityEntity> universityEntities = universityRepository.findAll();
+        return universityEntities.stream().map(UniversityDto::of).collect(Collectors.toList());
     }
 }

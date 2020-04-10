@@ -1,13 +1,20 @@
 package com.TimeForStudy.application.notification.service.impl;
 
+import com.TimeForStudy.application.lesson.domain.LessonRepository;
+import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import com.TimeForStudy.application.notification.domain.NotificationRepository;
 import com.TimeForStudy.application.notification.model.AddNotificationDto;
 import com.TimeForStudy.application.notification.model.NotificationDto;
 import com.TimeForStudy.application.notification.service.NotificationService;
+import com.TimeForStudy.application.user.domain.UserRepository;
+import com.TimeForStudy.application.user.model.UserDto;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса CRUD запросов к сущности уведомление
@@ -24,6 +31,16 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
 
     /**
+     * {@link LessonRepository}
+     */
+    private final LessonRepository lessonRepository;
+
+    /**
+     * {@link UserRepository}
+     */
+    private final UserRepository userRepository;
+
+    /**
      * Возвращение уведомления по идентификатору.
      *
      * @param id идентификатор.
@@ -31,7 +48,9 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public NotificationDto getNotificationById(long id) {
-        return null;
+        NotificationEntity notificationEntity = notificationRepository.findById(id)
+                .orElseThrow(ErrorDescription.NOTIFICATION_NOT_FOUNT::exception);
+        return NotificationDto.of(notificationEntity);
     }
 
     /**
@@ -41,7 +60,14 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void saveNotification(AddNotificationDto addNotificationDto) {
-
+        lessonRepository.findById(addNotificationDto.getLessons().getId())
+                .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
+        userRepository.findById(addNotificationDto.getSender().getId())
+                .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+        userRepository.findById(addNotificationDto.getReceiver().getId())
+                .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+        NotificationEntity notificationEntity = new NotificationEntity(addNotificationDto);
+        notificationRepository.save(notificationEntity);
     }
 
     /**
@@ -52,7 +78,30 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void updateNotification(long id, AddNotificationDto addNotificationDto) {
-
+        NotificationEntity updated = notificationRepository.findById(id)
+                .orElseThrow(ErrorDescription.NOTIFICATION_NOT_FOUNT::exception);
+        if (addNotificationDto.getLessons()!=null) {
+            lessonRepository.findById(addNotificationDto.getLessons().getId())
+                    .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
+            updated.setLessons(LessonDto.on(addNotificationDto.getLessons()));
+        }
+        if (addNotificationDto.getSender()!=null) {
+            userRepository.findById(addNotificationDto.getSender().getId())
+                    .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+            updated.setSender(UserDto.on(addNotificationDto.getSender()));
+        }
+        if (addNotificationDto.getReceiver()!=null) {
+            userRepository.findById(addNotificationDto.getReceiver().getId())
+                    .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+            updated.setReceiver(UserDto.on(addNotificationDto.getReceiver()));
+        }
+        if (addNotificationDto.getText()!=null) {
+            updated.setText(addNotificationDto.getText());
+        }
+        if (addNotificationDto.getLessonPosition()!=0) {
+            updated.setLessonPosition(addNotificationDto.getLessonPosition());
+        }
+        notificationRepository.save(updated);
     }
 
     /**
@@ -62,7 +111,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void deleteNotification(long id) {
-
+        notificationRepository.deleteById(id);
     }
 
     /**
@@ -72,6 +121,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public List<NotificationDto> findAll() {
-        return null;
+        List<NotificationEntity> notificationEntities = notificationRepository.findAll();
+        return notificationEntities.stream().map(NotificationDto::of).collect(Collectors.toList());
     }
 }

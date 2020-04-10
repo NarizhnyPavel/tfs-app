@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Обработчик запросов уведомлений.
+ *
+ * @author Velikanov Artyom.
+ */
 @RestController
 @RequiredArgsConstructor
 public class NotificationController {

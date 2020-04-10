@@ -15,14 +15,32 @@ import org.unbescape.uri.UriEscape;
 
 import java.util.*;
 
+/**
+ * Сервис авторизации пользователя.
+ *
+ * @author Velikanov Artyom
+ * @author Narizhny Pavel
+ */
 @Service
 @RequiredArgsConstructor
 public class LoginUserServiceImpl implements LoginUserService {
 
+    /**
+     * Пара телефон - код
+     */
     HashMap<String, Integer> waitingList = new HashMap<>();
 
+    /**
+     * {@link UserRepository}
+     */
     public final UserRepository userRepository;
 
+    /**
+     * Проверка телефона
+     *
+     * @param phone телефон
+     * @return статус
+     */
     @Override
     public String sendCode(String phone) {
         UserEntity user = userRepository.findByPhone(phone);
@@ -77,6 +95,12 @@ public class LoginUserServiceImpl implements LoginUserService {
             return "registrationNeeded";
     }
 
+    /**
+     * Проверка кода
+     *
+     * @param verificationPair пара код - телефон
+     * @return пользователь
+     */
     @Override
     public UserDto checkCode(VerificationPair verificationPair) {
         UserEntity user = userRepository.findByPhone(verificationPair.getPhone());
@@ -89,6 +113,12 @@ public class LoginUserServiceImpl implements LoginUserService {
         }
     }
 
+    /**
+     * Проверка телефона
+     *
+     * @param phone телефон
+     * @return статус
+     */
     @Override
     public String checkPhone(String phone) {
         if (userRepository.findByPhone(phone) != null)
@@ -98,6 +128,9 @@ public class LoginUserServiceImpl implements LoginUserService {
 
     }
 
+    /**
+     * Генераци времени ожидания получения кода
+     */
     private class CodeTimer  {
         private Timer timer;
         private TimerTask timerTask;

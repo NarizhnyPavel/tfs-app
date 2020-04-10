@@ -10,14 +10,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Реализация сервиса регистрации пользователя.
+ *
+ * @author Velikanov Artyom
+ */
 @Service
 @RequiredArgsConstructor
 public class RegistrationUserServiceImpl implements RegistrationUserService {
 
+    /**
+     * {@link UserRepository}
+     */
     public final UserRepository userRepository;
 
+    /**
+     * {@link GroupRepository}
+     */
     public final GroupRepository groupRepository;
 
+    /**
+     *  Проверка и сохранение пользователя
+     *
+     * @param addUserDto
+     * @return статус
+     */
     @Override
     public String saveUser(AddUserDto addUserDto) {
         if (addUserDto.getGroup().getNumber()==null) {

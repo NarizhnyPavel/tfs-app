@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Бизнес-исключения приложения.
  *
+ * @author Velikanov Artyom.
  */
 public class ApplicationException extends RuntimeException {
 
