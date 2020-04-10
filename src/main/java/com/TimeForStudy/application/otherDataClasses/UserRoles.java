@@ -1,10 +1,10 @@
 package com.TimeForStudy.application.otherDataClasses;
 
-import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.domain.UserEntity;
 
 /**
  * Интерфейс, опиывающий список ролей пользователей
- * @see {@link User}
+ * @see {@link UserEntity}
  * @author Narizhny Pavel
  * @version 1.0
  */

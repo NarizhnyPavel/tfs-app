@@ -1,31 +1,27 @@
 package com.TimeForStudy.application.user.web;
 
-import com.TimeForStudy.application.user.domain.User;
 import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.LoginUserService;
 import com.TimeForStudy.application.user.service.RegistrationUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class InputUserController {
 
-    public LoginUserService loginUserService;
+    /**
+     * {@link LoginUserService}
+     */
+    public final LoginUserService loginUserService;
 
-    public RegistrationUserService registrationUserService;
-
-
-    @Autowired
-    public void setLoginUserService(LoginUserService loginUserService) {
-        this.loginUserService = loginUserService;
-    }
-
-    @Autowired
-    public void setRegistrationUserService(RegistrationUserService registrationUserService) {
-        this.registrationUserService = registrationUserService;
-    }
+    /**
+     * {@link RegistrationUserService}
+     */
+    public final RegistrationUserService registrationUserService;
 
     /**
      * Check sent code

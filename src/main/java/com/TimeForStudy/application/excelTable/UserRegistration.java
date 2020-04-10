@@ -1,6 +1,6 @@
 package com.TimeForStudy.application.excelTable;
 
-import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.domain.UserEntity;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ public class UserRegistration extends Exception {
     private static UserRegistration instance = null;
 
     private UserRegistration() {
-    };
+    }
 
     public static synchronized UserRegistration getInstance() {
         if (instance == null) {
@@ -51,8 +51,8 @@ public class UserRegistration extends Exception {
         }
 
         XSSFWorkbook workbook = ExcelReader.getInstance().readWorkbook(fileName);
-        ArrayList<User> professors = ExcelReader.getInstance().getProfessors(workbook);
-        ArrayList<User> superStudents = ExcelReader.getInstance().getSuperStudents(workbook);
+        ArrayList<UserEntity> professors = ExcelReader.getInstance().getProfessors(workbook);
+        ArrayList<UserEntity> superStudents = ExcelReader.getInstance().getSuperStudents(workbook);
         //TODO compare given lists with data from server
         JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "<html>new " + professors.size() + " Professors" +
                 "<br> new " + superStudents.size() + " superStudents <html>");

@@ -1,28 +1,50 @@
 package com.TimeForStudy.application.user.model;
 
-import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.domain.UserEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Модель представления сущности пользователь
+ *
+ * @author Velikanov Artyom
+ */
 @Data
 @NoArgsConstructor
 public class UserDto {
 
-    private int id;
+    private long id;
 
+    /**
+     * Номер телефона
+     */
     private String phone;
 
+    /**
+     * Фамилия Имя Отчество
+     */
     private String name;
 
+    /**
+     * Роль (1 - Диспетчер, 2 - Преподаватель, 3 - Староста, 4 - Студент)
+     */
     private byte role;
 
-
-    public static UserDto of(User user) {
+    public static UserDto of(UserEntity user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setPhone(user.getPhone());
         dto.setName(user.getName());
         dto.setRole(user.getRole());
         return dto;
+    }
+
+    public static  UserEntity on(UserDto userDto) {
+        UserEntity entity = new UserEntity();
+        entity.setId(userDto.getId());
+        entity.setPhone(userDto.getPhone());
+        entity.setName(userDto.getName());
+        entity.setRole(userDto.getRole());
+        return  entity;
     }
 }

@@ -1,12 +1,12 @@
 package com.TimeForStudy.application.user.domain;
 
-import com.TimeForStudy.application.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+/**
+ * Репозиторий доступа к сущности {@link UserEntity}
+ */
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    User findByPhone(String phone);
+    UserEntity findByPhone(String phone);
 
 }

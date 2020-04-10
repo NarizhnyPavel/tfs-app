@@ -1,10 +1,11 @@
 package com.TimeForStudy.application.user.service.impl;
 
-import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.LoginUserService;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -15,20 +16,16 @@ import org.unbescape.uri.UriEscape;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class LoginUserServiceImpl implements LoginUserService {
 
     HashMap<String, Integer> waitingList = new HashMap<>();
 
-    public UserRepository userRepository;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    public final UserRepository userRepository;
 
     @Override
     public String sendCode(String phone) {
-        User user = userRepository.findByPhone(phone);
+        UserEntity user = userRepository.findByPhone(phone);
         if (user != null) {
 //            Integer code = (int) (Math.random() * 8999) + 1000;
             Integer code = 1111;
@@ -37,20 +34,20 @@ public class LoginUserServiceImpl implements LoginUserService {
             if (user == null) {
                 return "null";
             } else {
-                String send = "Авторизация в системе TimeForStudy\n" +
-                        "Код ";
-                send += code;
-                String _from = "";
-                String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
-
-                final CloseableHttpClient httpClient = HttpClients.createDefault();
-
-                HttpGet request = new HttpGet(
-                        "http://smspilot.ru/api.php" +
-                                "?send=" + UriEscape.escapeUriPath(send) +
-                                "&to=" + phone +
-                                "&from=" + _from +
-                                "&apikey=" + apikey);
+//                String send = "Авторизация в системе TimeForStudy\n" +
+//                        "Код ";
+//                send += code;
+//                String _from = "";
+//                String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
+//
+//                final CloseableHttpClient httpClient = HttpClients.createDefault();
+//
+//                HttpGet request = new HttpGet(
+//                        "http://smspilot.ru/api.php" +
+//                                "?send=" + UriEscape.escapeUriPath(send) +
+//                                "&to=" + phone +
+//                                "&from=" + _from +
+//                                "&apikey=" + apikey);
 
                 String result = "SUCCESS";
 //                try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -82,15 +79,14 @@ public class LoginUserServiceImpl implements LoginUserService {
 
     @Override
     public UserDto checkCode(VerificationPair verificationPair) {
-        User user = userRepository.findByPhone(verificationPair.getPhone());
+        UserEntity user = userRepository.findByPhone(verificationPair.getPhone());
         UserDto dto = UserDto.of(user);
         System.out.println(waitingList.toString());
-        //TODO убрать комментарии снизу
-//        if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
+        if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
             return dto;
-//            } else {
-//            return new UserDto();
-//        }
+            } else {
+            return new UserDto();
+        }
     }
 
     @Override

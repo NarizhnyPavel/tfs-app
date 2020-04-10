@@ -1,9 +1,9 @@
 package com.TimeForStudy.application.otherDataClasses;
 
-import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.domain.UserEntity;
 
 /**
- * Класс, описывающий роль в системе для {@link User}
+ * Класс, описывающий роль в системе для {@link UserEntity}
  * @author Narizhny Pavel
  * @version 1.0
  */
