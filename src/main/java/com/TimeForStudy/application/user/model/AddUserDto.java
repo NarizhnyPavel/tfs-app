@@ -4,6 +4,8 @@ import com.TimeForStudy.application.group.model.GroupDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Модель для добавления сущности пользователь
  *
@@ -29,7 +31,8 @@ public class AddUserDto {
     private byte role;
 
     /**
-     * Группа (Если это студент или староста)
+     * Группы
      */
-    private GroupDto group;
+    private List<GroupDto> groups;
+
 }

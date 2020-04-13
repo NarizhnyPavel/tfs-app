@@ -31,4 +31,5 @@ public class AddUniversityDto {
      * Длительность одного занятия
      */
     private int lessonDuration;
+
 }

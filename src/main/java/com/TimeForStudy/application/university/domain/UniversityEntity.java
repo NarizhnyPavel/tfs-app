@@ -48,6 +48,7 @@ public class UniversityEntity {
     @Column(name = "work_days")
     private String workDays;
 
+
     /**
      * Длительность одного занятия
      */

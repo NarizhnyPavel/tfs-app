@@ -53,8 +53,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void saveUser(AddUserDto addUserDto) {
-        groupRepository.findById(addUserDto.getGroup().getId())
-                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        for (GroupDto group : addUserDto.getGroups()) {
+            groupRepository.findById(group.getId())
+                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        }
         UserEntity userEntity = new UserEntity(addUserDto);
         userRepository.save(userEntity);
     }
@@ -69,10 +71,12 @@ public class UserServiceImpl implements UserService {
     public void updateUser(long id, AddUserDto addUserDto) {
         UserEntity updated = userRepository.findById(id)
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-        if (addUserDto.getGroup()!=null) {
-            groupRepository.findById(addUserDto.getGroup().getId())
-                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-            updated.setGroup(GroupDto.on(addUserDto.getGroup()));
+        if (addUserDto.getGroups()!=null) {
+            for (GroupDto group : addUserDto.getGroups()) {
+                groupRepository.findById(group.getId())
+                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+            }
+            updated.setGroups(addUserDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
         }
         if (addUserDto.getPhone()!=null) {
             updated.setPhone(addUserDto.getPhone());
