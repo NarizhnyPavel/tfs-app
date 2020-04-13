@@ -48,6 +48,17 @@ public class UniversityEntity {
     @Column(name = "work_days")
     private String workDays;
 
+    /**
+     * Цвет
+     */
+    @Column(name = "color")
+    private String color;
+
+    /**
+     * Логотип
+     */
+    @Column(name = "logotype_url")
+    private String logotype;
 
     /**
      * Длительность одного занятия
@@ -66,5 +77,7 @@ public class UniversityEntity {
         this.weeks = addUniversityDto.getWeeks();
         this.workDays = addUniversityDto.getWorkDays();
         this.lessonDuration = addUniversityDto.getLessonDuration();
+        this.color = addUniversityDto.getColor();
+        this.logotype = addUniversityDto.getLogotype();
     }
 }

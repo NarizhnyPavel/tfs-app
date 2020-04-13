@@ -72,6 +72,12 @@ public class UniversityServiceImpl implements UniversityService {
         if (addUniversityDto.getWorkDays()!=null) {
             updated.setWorkDays(addUniversityDto.getWorkDays());
         }
+        if (addUniversityDto.getColor()!=null) {
+            updated.setColor(addUniversityDto.getColor());
+        }
+        if (addUniversityDto.getLogotype()!=null) {
+            updated.setLogotype(addUniversityDto.getLogotype());
+        }
         universityRepository.save(updated);
     }
 

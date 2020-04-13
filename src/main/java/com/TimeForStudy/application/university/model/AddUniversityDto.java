@@ -3,6 +3,8 @@ package com.TimeForStudy.application.university.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 /**
  * Модель для добавления сущности учебное заведение
  *
@@ -26,6 +28,16 @@ public class AddUniversityDto {
      * Количество учебных дней
      */
     private String workDays;
+
+    /**
+     * Цвет
+     */
+    private String color;
+
+    /**
+     * Логотип
+     */
+    private String logotype;
 
     /**
      * Длительность одного занятия

@@ -31,6 +31,16 @@ public class UniversityDto {
     private String workDays;
 
     /**
+     * Цвет
+     */
+    private String color;
+
+    /**
+     * Логотип
+     */
+    private String logotype;
+
+    /**
      * Длительность одного занятия
      */
     private int lessonDuration;
@@ -41,6 +51,8 @@ public class UniversityDto {
         dto.setName(universityEntity.getName());
         dto.setWeeks(universityEntity.getWeeks());
         dto.setWorkDays(universityEntity.getWorkDays());
+        dto.setColor(universityEntity.getColor());
+        dto.setLogotype(universityEntity.getLogotype());
         dto.setLessonDuration(universityEntity.getLessonDuration());
         return dto;
     }
@@ -51,6 +63,8 @@ public class UniversityDto {
         entity.setName(universityDto.getName());
         entity.setWeeks(universityDto.getWeeks());
         entity.setWorkDays(universityDto.getWorkDays());
+        entity.setColor(universityDto.getColor());
+        entity.setLogotype(universityDto.getLogotype());
         entity.setLessonDuration(universityDto.getLessonDuration());
         return entity;
     }

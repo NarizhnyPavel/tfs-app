@@ -13,6 +13,7 @@ import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сущность пользователя
@@ -74,10 +75,12 @@ public class UserEntity {
         this.role = UserRoles.STUDENT.getId();
     }
 
-    public UserEntity(AddUserDto userDto) {
-        this.name = userDto.getName();
-        this.phone = userDto.getPhone();
-        this.role = userDto.getRole();
+    public UserEntity(AddUserDto addUserDto) {
+        this.name = addUserDto.getName();
+        this.phone = addUserDto.getPhone();
+        this.role = addUserDto.getRole();
+        this.setGroups(addUserDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
+
     }
 
     public UserEntity(String phone, UserRole role) {

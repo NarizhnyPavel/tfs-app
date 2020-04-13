@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 /**
  * Реализация сервиса регистрации пользователя.
  *
@@ -32,20 +34,19 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
     /**
      *  Проверка и сохранение пользователя
      *
-     * @param addUserDto
+     * @param addUserDto пользователь
      * @return статус
      */
     @Override
     public String saveUser(AddUserDto addUserDto) {
-        if (addUserDto.getGroup().getNumber()==null) {
-            addUserDto.setGroup(null);
+        if (addUserDto.getGroups()==null) {
+            addUserDto.setGroups(null);
             UserEntity user = new UserEntity(addUserDto);
             userRepository.save(user);
             return "success";
         } else {
 
-            if (groupRepository.findByNumber(addUserDto.getGroup().getNumber())!=null) {
-                addUserDto.setGroup(GroupDto.of(groupRepository.findByNumber(addUserDto.getGroup().getNumber())));
+            if (groupRepository.findByNumber(addUserDto.getGroups().get(0).getNumber())!=null) {
                 UserEntity user = new UserEntity(addUserDto);
                 userRepository.save(user);
                 return "success";

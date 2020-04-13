@@ -31,7 +31,6 @@ public class AddNotificationDto {
     /**
      * Тип уведомления (false - уведомление; true - запрос)
      */
-    @Column(name = "type")
     private boolean type;
 
     /**

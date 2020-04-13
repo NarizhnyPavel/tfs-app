@@ -29,7 +29,6 @@ public class NotificationDto {
     /**
      * Тип уведомления (false - уведомление; true - запрос)
      */
-    @Column(name = "type")
     private boolean type;
 
     public static NotificationDto of(NotificationEntity notificationEntity) {
