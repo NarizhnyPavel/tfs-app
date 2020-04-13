@@ -1,9 +1,12 @@
 package com.TimeForStudy.application.notification.model;
 
+import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.model.LessonDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
 
 
 /**
@@ -26,6 +29,12 @@ public class AddNotificationDto {
     private String text;
 
     /**
+     * Тип уведомления (false - уведомление; true - запрос)
+     */
+    @Column(name = "type")
+    private boolean type;
+
+    /**
      * Лекция, к которой относится данное уведомление
      */
     private LessonDto lessons;
@@ -36,7 +45,7 @@ public class AddNotificationDto {
     private UserDto sender;
 
     /**
-     * Получатель уведомления
+     * Получатели уведомления
      */
-    private UserDto receiver;
+    private GroupDto group;
 }

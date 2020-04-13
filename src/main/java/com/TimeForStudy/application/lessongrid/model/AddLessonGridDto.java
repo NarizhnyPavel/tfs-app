@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для добавления сущности места занятия в сетке
+ * Модель для добавления сущности сетки расписания
  *
  * @author Velikanov Artyom
  */
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class AddLessonGridDto {
 
     /**
-     * Сборный номер лекции (123: 1 - номер недели, 2 - номер дня недели, 3 - номер пары)
+     * Номер пары
      */
     private int lessonNumber;
 

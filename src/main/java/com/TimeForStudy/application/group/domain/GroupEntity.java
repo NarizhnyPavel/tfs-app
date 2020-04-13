@@ -1,6 +1,7 @@
 package com.TimeForStudy.application.group.domain;
 
 import com.TimeForStudy.application.group.model.AddGroupDto;
+import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,10 +37,16 @@ public class GroupEntity {
     private String number;
 
     /**
-     * Список студентов группы
+     *  Лекции, проводимые у данной группы
      */
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserEntity> users = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
+    private List<LessonEntity> lessons;
+
+    /**
+     *  Студенты, принадлежащие группе
+     */
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
+    private List<UserEntity> users;
 
     public  GroupEntity(AddGroupDto addGroupDto) {
         this.number = addGroupDto.getNumber();

@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 /**
- * Сущность места сетки занятия
+ * Сущность сетки расписания
  *
  * @author Velikanov Artyom
  */
@@ -29,7 +29,7 @@ public class LessonGridEntity {
     private long id;
 
     /**
-     * Сборный номер лекции (123: 1 - номер недели, 2 - номер дня недели, 3 - номер пары)
+     * Номер пары
      */
     @Column(name = "lesson_number")
     private int lessonNumber;

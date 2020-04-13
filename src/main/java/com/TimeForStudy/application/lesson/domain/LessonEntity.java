@@ -5,6 +5,8 @@ import com.TimeForStudy.application.classroom.model.ClassroomDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.model.AddLessonDto;
+import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.semester.model.SemesterDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
@@ -19,6 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сущность занятия
@@ -39,7 +43,13 @@ public class LessonEntity {
     private long id;
 
     /**
-     *  Кабинет, в котором проходит занятие
+     * Статус
+     */
+    @Column(name = "status")
+    private boolean status;
+
+    /**
+     * Кабинет, в котором проходит занятие
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
@@ -51,14 +61,6 @@ public class LessonEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
-
-    /**
-     * Группы, у которых проводится занятие
-     */
-    //TODO изменить связь на ManyToMany
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private GroupEntity group;
 
     /**
      * Преподаватель, который проводит занятие
@@ -81,12 +83,31 @@ public class LessonEntity {
     @JoinColumn(name = "lesson_type_id")
     private LessonTypeEntity lessonType;
 
+    /**
+     * Список позиций в сетке
+     */
+    @OneToMany(mappedBy = "lesson", fetch = FetchType.LAZY)
+    private List<LessonPositionEntity> lessonPositions;
+
+    /**
+     * Группы
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "lesson-group",
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id", referencedColumnName = "id")
+    )
+    private List<GroupEntity> groups;
+
+
     public LessonEntity(AddLessonDto addLessonDto) {
         this.classroom = ClassroomDto.on(addLessonDto.getClassroom());
         this.subject = SubjectDto.on(addLessonDto.getSubject());
-        this.group = GroupDto.on(addLessonDto.getGroup());
+        this.status = addLessonDto.isStatus();
         this.user = UserDto.on(addLessonDto.getUser());
         this.semester = SemesterDto.on(addLessonDto.getSemester());
         this.lessonType = LessonTypeDto.on(addLessonDto.getLessonType());
+        this.setGroups(addLessonDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
     }
 }

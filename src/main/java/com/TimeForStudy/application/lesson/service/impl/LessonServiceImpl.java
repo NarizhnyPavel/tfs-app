@@ -70,6 +70,7 @@ public class LessonServiceImpl implements LessonService {
      */
     private final LessonTypeRepository lessonTypeRepository;
 
+
     /**
      * Возвращение занятия по идентификатору.
      *
@@ -94,8 +95,6 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
         subjectRepository.findById(addLessonDto.getSubject().getId())
                 .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
-        groupRepository.findById(addLessonDto.getGroup().getId())
-                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
         UserEntity userEntity = userRepository.findById(addLessonDto.getUser().getId())
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
         ErrorDescription.ACCESS_IS_DENIED
@@ -104,6 +103,10 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
         lessonTypeRepository.findById(addLessonDto.getLessonType().getId())
                 .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
+        for (GroupDto group : addLessonDto.getGroups()) {
+            groupRepository.findById(group.getId())
+                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        }
         LessonEntity lessonEntity = new LessonEntity(addLessonDto);
         lessonRepository.save(lessonEntity);
     }
@@ -129,11 +132,8 @@ public class LessonServiceImpl implements LessonService {
                     .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
             updated.setSubject(SubjectDto.on(addLessonDto.getSubject()));
         }
-        if (addLessonDto.getGroup() != null) {
-            groupRepository.findById(addLessonDto.getGroup().getId())
-                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-            updated.setGroup(GroupDto.on(addLessonDto.getGroup()));
-        }
+            updated.setStatus(addLessonDto.isStatus());
+
         if (addLessonDto.getUser() != null) {
             UserEntity userEntity = userRepository.findById(addLessonDto.getUser().getId())
                     .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
@@ -150,6 +150,13 @@ public class LessonServiceImpl implements LessonService {
             lessonTypeRepository.findById(addLessonDto.getLessonType().getId())
                     .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
             updated.setLessonType(LessonTypeDto.on(addLessonDto.getLessonType()));
+        }
+        if (addLessonDto.getGroups()!=null) {
+            for (GroupDto group : addLessonDto.getGroups()) {
+                groupRepository.findById(group.getId())
+                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+            }
+            updated.setGroups(addLessonDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
         }
         lessonRepository.save(updated);
     }

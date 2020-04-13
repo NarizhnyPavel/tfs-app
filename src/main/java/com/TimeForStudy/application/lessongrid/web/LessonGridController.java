@@ -27,7 +27,7 @@ public class LessonGridController {
      *
      * @return список мест занятия в сетке.
      */
-    @GetMapping(value = "/lessonGrid")
+    @GetMapping(value = "/lessonGrids")
     public List<LessonGridDto> getLessonGrids() {
         return lessonGridService.findAll();
     }

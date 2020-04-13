@@ -9,8 +9,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Сущность пользователя
@@ -51,9 +53,14 @@ public class UserEntity {
     /**
      * Группа (Если это студент или староста)
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private GroupEntity group;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "group-user",
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    private List<GroupEntity> groups;
+
 
     public UserEntity(String phone, String name, UserRole role) {
         this.phone = phone;
@@ -71,7 +78,6 @@ public class UserEntity {
         this.name = userDto.getName();
         this.phone = userDto.getPhone();
         this.role = userDto.getRole();
-        this.group = GroupDto.on(userDto.getGroup());
     }
 
     public UserEntity(String phone, UserRole role) {

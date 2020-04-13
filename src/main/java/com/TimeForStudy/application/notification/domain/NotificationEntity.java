@@ -1,5 +1,7 @@
 package com.TimeForStudy.application.notification.domain;
 
+import com.TimeForStudy.application.group.domain.GroupEntity;
+import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lesson.model.LessonDto;
 import com.TimeForStudy.application.notification.model.AddNotificationDto;
@@ -9,7 +11,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 
 import javax.persistence.*;
 
@@ -44,6 +45,12 @@ public class NotificationEntity {
     private String text;
 
     /**
+     * Тип уведомления (false - уведомление; true - запрос)
+     */
+    @Column(name = "type")
+    private boolean type;
+
+    /**
      * Лекция, к которой относится данное уведомление
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,19 +64,11 @@ public class NotificationEntity {
     @JoinColumn(name = "sender_id")
     private UserEntity sender;
 
-    /**
-     * Получатель уведомления
-     */
-    //TODO подумать над связью
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id")
-    private UserEntity receiver;
-
     public NotificationEntity (AddNotificationDto addNotificationDto) {
         this.lessonPosition = addNotificationDto.getLessonPosition();
         this.text = addNotificationDto.getText();
         this.lessons = LessonDto.on(addNotificationDto.getLessons());
         this.sender = UserDto.on(addNotificationDto.getSender());
-        this.receiver = UserDto.on(addNotificationDto.getReceiver());
+        this.type = addNotificationDto.isType();
     }
 }

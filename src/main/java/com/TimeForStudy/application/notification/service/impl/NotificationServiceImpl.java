@@ -1,5 +1,7 @@
 package com.TimeForStudy.application.notification.service.impl;
 
+import com.TimeForStudy.application.group.domain.GroupRepository;
+import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.domain.LessonRepository;
 import com.TimeForStudy.application.lesson.model.LessonDto;
 import com.TimeForStudy.application.notification.domain.NotificationEntity;
@@ -40,6 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     private final UserRepository userRepository;
 
+
     /**
      * Возвращение уведомления по идентификатору.
      *
@@ -63,8 +66,6 @@ public class NotificationServiceImpl implements NotificationService {
         lessonRepository.findById(addNotificationDto.getLessons().getId())
                 .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
         userRepository.findById(addNotificationDto.getSender().getId())
-                .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-        userRepository.findById(addNotificationDto.getReceiver().getId())
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
         NotificationEntity notificationEntity = new NotificationEntity(addNotificationDto);
         notificationRepository.save(notificationEntity);
@@ -90,11 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
                     .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
             updated.setSender(UserDto.on(addNotificationDto.getSender()));
         }
-        if (addNotificationDto.getReceiver()!=null) {
-            userRepository.findById(addNotificationDto.getReceiver().getId())
-                    .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-            updated.setReceiver(UserDto.on(addNotificationDto.getReceiver()));
-        }
+            updated.setType(addNotificationDto.isType());
         if (addNotificationDto.getText()!=null) {
             updated.setText(addNotificationDto.getText());
         }

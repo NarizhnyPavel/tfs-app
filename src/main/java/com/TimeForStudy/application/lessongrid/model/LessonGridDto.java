@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * Модель представления сущности место занятия в сетке
+ * Модель представления сущности сетки расписания
  *
  * @author Velikanov Artyom
  */
@@ -17,7 +17,7 @@ public class LessonGridDto {
     private long id;
 
     /**
-     * Сборный номер лекции (123: 1 - номер недели, 2 - номер дня недели, 3 - номер пары)
+     * Номер пары
      */
     private int lessonNumber;
 
