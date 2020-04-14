@@ -107,13 +107,6 @@
                                 <input class="workday" ng-model="uniData.WD_sun" type="checkbox"> </td>
                         </tr>
                     </table>
-                    <script>
-                        jQuery(function ($) {
-                            //создания специального символа h для маски
-                            $.mask.definitions['q'] = '[A-Fa-f0-9]';
-                            $(".workday").mask("99");
-                        });
-                    </script>
                 </td>
             </table>
             <table ng-show="viewPage2" class="lesson">
@@ -124,48 +117,48 @@
                 <tr class="lesson-tr">
                     <td>1</td>
                     <td>
-                        <input ng-model="lessonGrid_1" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid1" type="text">
                     </td>
                 </tr>
                 <tr class="lesson-tr">
                     <td>2</td>
                     <td>
-                        <input ng-model="lessonGrid_2" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid2" type="text">
                     </td>
                 </tr>
                 <tr class="lesson-tr">
                     <td>3</td>
                     <td>
-                        <input ng-model="lessonGrid_3" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid3" type="text">
                     </td>
                 </tr>
                 <tr class="lesson-tr">
                     <td>4</td>
                     <td>
-                        <input ng-model="lessonGrid_4" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid4" type="text">
                     </td>
                 </tr>
                 <tr class="lesson-tr">
                     <td>5</td>
                     <td>
-                        <input ng-model="lessonGrid_5" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid5" type="text">
                     </td>
                 </tr>
                 <tr class="lesson-tr">
                     <td>6</td>
                     <td>
-                        <input ng-model="lessonGrid_6" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid6" type="text">
                     </td>
                 </tr>
                 <tr class="lesson-tr">
                     <td>7</td>
                     <td>
-                        <input ng-model="lessonGrid_7" type="text">
+                        <input class="lesson-input" ng-model="lessonGrid7" type="text">
                     </td>
                 </tr>
                 <script>
                     $(function () {
-                        $("lesson-tr").mask("99");
+                        $(".lesson-input").mask("99:99");
                     });
                 </script>
             </table>
