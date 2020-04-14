@@ -1,0 +1,138 @@
+.register-block {
+    position:relative;
+    top: 0;
+    text-align: center;
+    height: 460px;
+    width: 600px;
+    background-color: #99CC66;
+    border-radius: 25px;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    margin: 0 auto; // центрует блок
+box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.register-fields {
+    /*    text-align: center;*/
+}
+
+.register-fields div {
+    /*    text-align: center;*/
+    /*    vertical-align: middle;*/
+    position: relative;
+    height: 20px;
+    margin: 35px 0px;
+}
+
+.register-header {
+    padding-top: 25px;
+    margin-top: 20px;
+    height: 50px;
+}
+
+.register-header span {
+    padding: 10px 25px;
+    vertical-align: middle;
+    font-weight: 600;
+    border-radius: 15px;
+    background-color: aquamarine;
+    width: 600px;
+    height: 45px;
+    font-size: 35px;
+    margin: 30px auto;
+    font-family: "Arial", Georgia, Serif;
+}
+
+.register-input {
+    width: 200px;
+    height: 13px;
+    font-size: 13px;
+    padding: 7px 0 4px 10px;
+    border: 2px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 10px;
+}
+
+.register-label {
+    font-family: "Arial", Georgia, Serif;
+    width: 30px;
+    font-size: 20px;
+    padding: 7px 0 4px 10px;
+}
+
+.register-fields-h2 {
+    margin: 10px;
+    font-size: 16px;
+}
+
+.workdays {
+    width: 130px;
+    height: 200px;
+    /*border: 1px solid grey;*/
+}
+
+
+.workdays tr {
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    height: 15px;
+    width: 20px;
+    margin: 15px 0px;
+}
+
+.workdays-span {
+    font-family: "Arial", Georgia, Serif;
+    margin: 10px 0px;
+    text-align: right;
+    font-size: 15pt;
+}
+
+.workdays input {
+    zoom: 1.5;
+}
+
+.lesson{
+    margin: 0 auto;
+    width: 180px;
+    padding-bottom: 25px;
+    border-radius: 10px;
+}
+
+.lesson tr,td{
+    padding: 1px;
+}
+
+.lesson-tr{
+    margin: 10px;
+    vertical-align: top;
+    height: 20px;
+    font-size: 15pt;
+    background-color: #CCCC99;
+    border-radius: 15px;
+}
+
+.lesson-tr td{
+    border-radius: 10px;
+}
+
+.lesson input{
+    -webkit-appearance: none;
+    width: 20px;
+    height: 13px;
+    font-size: 13px;
+    padding: 7px 0 4px 10px;
+    border: 2px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 10px;
+
+}
+
+.errorMessage span{
+    margin: 0;
+    height: 10px;
+    padding: 0;
+    font-size: 12pt;
+}

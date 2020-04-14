@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Time For Study</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/loginStyle.css" />
     <script src="lib/jquery/jquery.js"></script>
     <script src="lib/jquery/jquery.maskedinput.min.js"></script>
 </head>
@@ -18,10 +18,7 @@
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
             <input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
-<!--            <input  id="phone" type="text">-->
             <script>
-                //Код jQuery, установливающий маску для ввода телефона элементу input
-                //1. После загрузки страницы,  когда все элементы будут доступны выполнить...
                 $(function () {
                     //2. Получить элемент, к которому необходимо добавить маску
                     $("#phone").mask("8(999) 999-9999");
@@ -39,19 +36,12 @@
             <input width="300" id="inputGroup" placeholder="Необязательно" ng-model="formInfo.Group"> </p>
         <tr class="divLine">
             <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p>
-            <button ng-show="openRegistrationButton" class="button1" ng-click="registrateOpen()">Зарегистрироваться</button>
-            <button ng-show="enterLogin" class="button1" ng-click="login()">{{buttonLabel}}</button>
+            <button ng-show="openRegistrationButton" class="button" ng-click="registrateOpen()">Зарегистрироваться</button>
+            <button ng-show="enterLogin" class="button" ng-click="login()">{{buttonLabel}}</button>
         </tr>
     </div>
 
 </form>
-<!--<script type="text/javascript">-->
-<!--    //Код jQuery, установливающий маску для ввода телефона элементу input-->
-<!--    //1. После загрузки страницы,  когда все элементы будут доступны выполнить...-->
-<!--    -->
-<!--// </script>-->
-<!--<script src="lib/common/jquery.min.js"></script>-->
-<!--<script src="js/jq.js"></script>-->
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular/angular-route.js"></script>
 <script src="js/app.js"></script>
