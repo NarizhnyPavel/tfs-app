@@ -66,7 +66,6 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 var data2 = response.data;
                 if (data2.id !== 0) {
                     $window.localStorage.name = data2.name;
-                    // $window.localStorage.setItem("userInfo", data2);
                     var link;
                     switch (data2.role) {
                         case 1:

@@ -1,0 +1,79 @@
+body{
+    background-color: #CCFFFF;
+}
+
+.loginBlock {
+    vertical-align: middle;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 530px;
+    height: 200px;
+    background: #8ED9B6;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+/*.loginBlock {*/
+/*    text-align: center;*/
+/*    !*    background: #8ED9B6;*!*/
+/*}*/
+
+.header {
+    font-family: "Arial", Georgia, Serif;
+    font-weight: 600;
+    font-size: 40px;
+    margin: 10px auto;
+    text-align: center;
+    text-shadow: 1px 2px 3px rgba(5,46,68,0.25);
+}
+
+.errorMessage {
+    color: red;
+    font-size: 15px;
+}
+
+
+.divUnit {
+    width: 45px;
+    /* Ширина */
+    padding: 2px;
+}
+
+.divLine {
+    width: 550px;
+    /* Ширина */
+    text-align: left;
+    padding: 5px;
+    /* Поля */
+    margin: 2px auto;
+    transition: 0.6s;
+    -moz-box-sizing: border-box;
+    /* Для Firefox */
+    -webkit-box-sizing: border-box;
+    /* Для Safari и Chrome */
+    box-sizing: border-box;
+    /* Для IE и Opera */
+}
+
+input {
+    width: 200px;
+    font-size: 13px;
+    padding: 7px 0 4px 10px;
+    border: 2px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 8px;
+}
+
+label {
+    font-size: 15px;
+    padding: 7px 0 4px 10px;
+}
+
+#error{
+    padding: 0 0 -15px 0;
+}
