@@ -108,6 +108,6 @@ public class LessonEntity {
         this.user = UserDto.on(addLessonDto.getUser());
         this.semester = SemesterDto.on(addLessonDto.getSemester());
         this.lessonType = LessonTypeDto.on(addLessonDto.getLessonType());
-        this.setGroups(addLessonDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
+        this.groups = addLessonDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList());
     }
 }

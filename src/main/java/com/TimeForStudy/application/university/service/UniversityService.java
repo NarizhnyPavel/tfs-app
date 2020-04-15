@@ -1,5 +1,6 @@
 package com.TimeForStudy.application.university.service;
 
+import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
 
@@ -23,9 +24,9 @@ public interface UniversityService {
     /**
      * Сохранение учебного заведения.
      *
-     * @param addUniversityDto учебное заведение.
+     * @param addUniversityAndLessonGridDto учебное заведение.
      */
-    void saveUniversity(AddUniversityDto addUniversityDto);
+    void saveUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto);
 
     /**
      * Изменение значений учебного заведения.

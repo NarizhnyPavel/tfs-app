@@ -2,6 +2,8 @@ package com.TimeForStudy.application.lessongrid.domain;
 
 import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
+import com.TimeForStudy.application.university.model.AddUniversityDto;
+import com.TimeForStudy.application.university.model.LessonGridPosition;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,7 +45,7 @@ public class LessonGridEntity {
     /**
      * Университет
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id")
     private UniversityEntity university;
 
@@ -51,5 +53,11 @@ public class LessonGridEntity {
         this.lessonNumber = addLessonGridDto.getLessonNumber();
         this.time = addLessonGridDto.getTime();
         this.university = UniversityDto.on(addLessonGridDto.getUniversity());
+    }
+
+    public LessonGridEntity (String time, int lessonNumber, UniversityEntity universityEntity) {
+        this.lessonNumber = lessonNumber;
+        this.time = time;
+        this.university = universityEntity;
     }
 }

@@ -1,7 +1,11 @@
 package com.TimeForStudy.application.university.service.impl;
 
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
+import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
+import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
 import com.TimeForStudy.application.university.domain.UniversityRepository;
+import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.application.university.service.UniversityService;
@@ -25,6 +29,10 @@ public class UniversityServiceImpl implements UniversityService {
      * {@link UniversityRepository}
      */
     private final UniversityRepository universityRepository;
+    /**
+     * {@link LessonGridRepository}
+     */
+    private final LessonGridRepository lessonGridRepository;
 
     /**
      * Возвращение учебного заведения по идентификатору.
@@ -42,12 +50,27 @@ public class UniversityServiceImpl implements UniversityService {
     /**
      * Сохранение учебного заведения.
      *
-     * @param addUniversityDto учебное заведение.
+     * @param addUniversityAndLessonGridDto учебное заведение.
      */
     @Override
-    public void saveUniversity(AddUniversityDto addUniversityDto) {
+    public void saveUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
+        AddUniversityDto addUniversityDto = new AddUniversityDto(addUniversityAndLessonGridDto);
         UniversityEntity universityEntity = new UniversityEntity(addUniversityDto);
         universityRepository.save(universityEntity);
+        LessonGridEntity lessonGridEntity1 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1(), 1, universityEntity);
+        LessonGridEntity lessonGridEntity2 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2(), 2, universityEntity);
+        LessonGridEntity lessonGridEntity3 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3(), 3, universityEntity);
+        LessonGridEntity lessonGridEntity4 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4(), 4, universityEntity);
+        LessonGridEntity lessonGridEntity5 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5(), 5, universityEntity);
+        LessonGridEntity lessonGridEntity6 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6(), 6, universityEntity);
+        LessonGridEntity lessonGridEntity7 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7(), 7, universityEntity);
+        lessonGridRepository.save(lessonGridEntity1);
+        lessonGridRepository.save(lessonGridEntity2);
+        lessonGridRepository.save(lessonGridEntity3);
+        lessonGridRepository.save(lessonGridEntity4);
+        lessonGridRepository.save(lessonGridEntity5);
+        lessonGridRepository.save(lessonGridEntity6);
+        lessonGridRepository.save(lessonGridEntity7);
     }
 
     /**
@@ -78,6 +101,7 @@ public class UniversityServiceImpl implements UniversityService {
         if (addUniversityDto.getLogotype()!=null) {
             updated.setLogotype(addUniversityDto.getLogotype());
         }
+        //TODO доделать с lessonGrid
         universityRepository.save(updated);
     }
 

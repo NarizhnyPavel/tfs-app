@@ -1,5 +1,8 @@
 package com.TimeForStudy.application.university.domain;
 
+import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
+import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.semester.domain.SemesterEntity;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
@@ -11,6 +14,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сущность учебного заведения
@@ -71,6 +75,12 @@ public class UniversityEntity {
      */
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<SemesterEntity> semesters;
+
+    /**
+     * Список  сетки занятий
+     */
+    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
+    private List<LessonGridEntity> lessonGrids;
 
     public UniversityEntity(AddUniversityDto addUniversityDto) {
         this.name = addUniversityDto.getName();

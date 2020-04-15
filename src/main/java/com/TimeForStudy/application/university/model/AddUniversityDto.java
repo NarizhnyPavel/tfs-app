@@ -1,9 +1,14 @@
 package com.TimeForStudy.application.university.model;
 
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
+import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Модель для добавления сущности учебное заведение
@@ -44,4 +49,12 @@ public class AddUniversityDto {
      */
     private int lessonDuration;
 
+    public AddUniversityDto(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
+        this.name = addUniversityAndLessonGridDto.getName();
+        this.weeks = addUniversityAndLessonGridDto.getWeeks();
+        this.workDays = addUniversityAndLessonGridDto.getWorkDays();
+        this.color = addUniversityAndLessonGridDto.getColor();
+        this.logotype = addUniversityAndLessonGridDto.getLogotype();
+        this.lessonDuration = addUniversityAndLessonGridDto.getLessonDuration();
+    }
 }

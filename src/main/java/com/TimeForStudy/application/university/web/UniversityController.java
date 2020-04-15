@@ -1,5 +1,6 @@
 package com.TimeForStudy.application.university.web;
 
+import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.application.university.service.UniversityService;
@@ -46,11 +47,11 @@ public class UniversityController {
     /**
      * Добавляет новое занятие.
      *
-     * @param addUniversityDto занятие.
+     * @param addUniversityAndLessonGridDto занятие.
      */
     @PostMapping(value = "/university/add")
-    public void addUniversity(@RequestBody AddUniversityDto addUniversityDto) {
-        universityService.saveUniversity(addUniversityDto);
+    public void addUniversity(@RequestBody AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
+        universityService.saveUniversity(addUniversityAndLessonGridDto);
     }
 
     /**
