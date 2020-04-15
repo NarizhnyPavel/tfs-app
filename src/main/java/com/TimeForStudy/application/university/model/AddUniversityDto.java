@@ -42,7 +42,7 @@ public class AddUniversityDto {
     /**
      * Логотип
      */
-    private String logotype;
+    private String logo;
 
     /**
      * Длительность одного занятия
@@ -54,7 +54,7 @@ public class AddUniversityDto {
         this.weeks = addUniversityAndLessonGridDto.getWeeks();
         this.workDays = addUniversityAndLessonGridDto.getWorkDays();
         this.color = addUniversityAndLessonGridDto.getColor();
-        this.logotype = addUniversityAndLessonGridDto.getLogotype();
+        this.logo = addUniversityAndLessonGridDto.getLogotype();
         this.lessonDuration = addUniversityAndLessonGridDto.getLessonDuration();
     }
 }

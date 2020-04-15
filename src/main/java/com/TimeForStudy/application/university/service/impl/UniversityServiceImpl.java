@@ -98,8 +98,8 @@ public class UniversityServiceImpl implements UniversityService {
         if (addUniversityDto.getColor()!=null) {
             updated.setColor(addUniversityDto.getColor());
         }
-        if (addUniversityDto.getLogotype()!=null) {
-            updated.setLogotype(addUniversityDto.getLogotype());
+        if (addUniversityDto.getLogo()!=null) {
+            updated.setLogotype(addUniversityDto.getLogo());
         }
         //TODO доделать с lessonGrid
         universityRepository.save(updated);
