@@ -54,7 +54,7 @@ public class AddUniversityDto {
         this.weeks = addUniversityAndLessonGridDto.getWeeks();
         this.workDays = addUniversityAndLessonGridDto.getWorkDays();
         this.color = addUniversityAndLessonGridDto.getColor();
-        this.logo = addUniversityAndLessonGridDto.getLogotype();
+        this.logo = addUniversityAndLessonGridDto.getLogo();
         this.lessonDuration = addUniversityAndLessonGridDto.getLessonDuration();
     }
 }

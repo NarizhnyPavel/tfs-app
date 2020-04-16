@@ -14,14 +14,13 @@
 </head>
 <body>
 <form role="form" ng-controller="loginController">
-    <div class="mainBlock">
+    <div class="mainBlock" style="height: 280px; width: 600px;">
         <div class="header">Time For Study</div>
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
             <input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
             <script>
                 $(function () {
-                    //2. Получить элемент, к которому необходимо добавить маску
                     $("#phone").mask("8(999) 999-9999");
                 });
             </script>
