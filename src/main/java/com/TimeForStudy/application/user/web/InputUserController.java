@@ -2,6 +2,7 @@ package com.TimeForStudy.application.user.web;
 
 import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.model.AddUserDto;
+import com.TimeForStudy.application.user.model.RegisterDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.LoginUserService;
 import com.TimeForStudy.application.user.service.RegistrationUserService;
@@ -65,11 +66,11 @@ public class InputUserController {
     /**
      * Регистрация нового пользователя.
      *
-     * @param addUserDto пользователь.
+     * @param registerDto регистрация.
      * @return статус
      */
     @PostMapping(value = "login/register")
-    public String addUser(@RequestBody AddUserDto addUserDto) {
-        return  registrationUserService.saveUser(addUserDto);
+    public String addUser(@RequestBody RegisterDto registerDto) {
+        return  registrationUserService.saveUser(registerDto);
     }
 }

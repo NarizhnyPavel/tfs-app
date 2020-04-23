@@ -1,6 +1,7 @@
 package com.TimeForStudy.application.user.service;
 
 import com.TimeForStudy.application.user.model.AddUserDto;
+import com.TimeForStudy.application.user.model.RegisterDto;
 
 /**
  * Сервис регистрации пользователя.
@@ -12,9 +13,9 @@ public interface RegistrationUserService {
     /**
      *  Проверка и сохранение пользователя
      *
-     * @param addUserDto
+     * @param registerDto регистрация.
      * @return статус
      */
-    String saveUser(AddUserDto addUserDto);
+    String saveUser(RegisterDto registerDto);
 
 }

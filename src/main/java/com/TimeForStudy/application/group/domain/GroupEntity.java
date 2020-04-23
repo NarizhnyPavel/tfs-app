@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
-@Table(name = "group_tb")
+@Table(name = "group")
 public class GroupEntity {
 
     @Id

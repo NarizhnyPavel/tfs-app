@@ -64,13 +64,20 @@ public class UniversityServiceImpl implements UniversityService {
         LessonGridEntity lessonGridEntity5 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5(), 5, universityEntity);
         LessonGridEntity lessonGridEntity6 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6(), 6, universityEntity);
         LessonGridEntity lessonGridEntity7 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7(), 7, universityEntity);
-        lessonGridRepository.save(lessonGridEntity1);
-        lessonGridRepository.save(lessonGridEntity2);
-        lessonGridRepository.save(lessonGridEntity3);
-        lessonGridRepository.save(lessonGridEntity4);
-        lessonGridRepository.save(lessonGridEntity5);
-        lessonGridRepository.save(lessonGridEntity6);
-        lessonGridRepository.save(lessonGridEntity7);
+        if (lessonGridEntity1!=null)
+            lessonGridRepository.save(lessonGridEntity1);
+        if (lessonGridEntity2!=null)
+            lessonGridRepository.save(lessonGridEntity2);
+        if (lessonGridEntity3!=null)
+            lessonGridRepository.save(lessonGridEntity3);
+        if (lessonGridEntity4!=null)
+            lessonGridRepository.save(lessonGridEntity4);
+        if (lessonGridEntity5!=null)
+            lessonGridRepository.save(lessonGridEntity5);
+        if (lessonGridEntity6!=null)
+            lessonGridRepository.save(lessonGridEntity6);
+        if (lessonGridEntity7!=null)
+            lessonGridRepository.save(lessonGridEntity7);
     }
 
     /**

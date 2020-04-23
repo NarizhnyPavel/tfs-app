@@ -5,6 +5,7 @@ import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.otherDataClasses.UserRole;
 import com.TimeForStudy.application.otherDataClasses.UserRoles;
 import com.TimeForStudy.application.user.model.AddUserDto;
+import com.TimeForStudy.application.user.model.RegisterDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -79,8 +80,13 @@ public class UserEntity {
         this.name = addUserDto.getName();
         this.phone = addUserDto.getPhone();
         this.role = addUserDto.getRole();
-        this.setGroups(addUserDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
+        this.groups = addUserDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList());
+    }
 
+    public UserEntity(RegisterDto registerDto) {
+        this.name = registerDto.getName();
+        this.phone = registerDto.getPhone();
+        this.role = registerDto.getRole();
     }
 
     public UserEntity(String phone, UserRole role) {

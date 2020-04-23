@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Модель для добавления сущности пользователь
+ * Модель регистрации.
  *
- * @author Velikanov Artyom
+ * @author Velikanov Artyom.
  */
 @Data
 @NoArgsConstructor
-public class AddUserDto {
+public class RegisterDto {
 
     /**
      * Номер телефона
@@ -31,7 +31,7 @@ public class AddUserDto {
     private byte role;
 
     /**
-     * Группы
+     * Группа
      */
-    private List<GroupDto> groups;
+    private GroupDto group;
 }
