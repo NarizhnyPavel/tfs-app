@@ -35,7 +35,7 @@ public class AddUniversityAndLessonGridDto {
     /**
      * Логотип
      */
-    private String logotype;
+    private String logo;
 
     /**
      * Длительность одного занятия

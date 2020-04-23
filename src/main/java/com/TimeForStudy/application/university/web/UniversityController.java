@@ -49,9 +49,10 @@ public class UniversityController {
      *
      * @param addUniversityAndLessonGridDto занятие.
      */
-    @PostMapping(value = "/university/add")
-    public void addUniversity(@RequestBody AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
+    @PostMapping(value = "university/add")
+    public String addUniversity(@RequestBody AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
         universityService.saveUniversity(addUniversityAndLessonGridDto);
+        return "success";
     }
 
     /**

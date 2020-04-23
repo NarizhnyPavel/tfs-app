@@ -100,7 +100,9 @@ function send($scope, $http){
         workdays_data = workdays_data * 10 + 6;
     if ($scope.uniData.WD_sun)
         workdays_data = workdays_data * 10 + 7;
-    var lessongrid_data = {
+    // $scope.lessonGrid6 = "00:00";
+    // $scope.lessonGrid7 = "00:00";
+    var lessons = {
         position1: $scope.lessonGrid1,
         position2: $scope.lessonGrid2,
         position3: $scope.lessonGrid3,
@@ -112,23 +114,20 @@ function send($scope, $http){
     var data = {
         name: $scope.uniData.Name,
         weeks: $scope.uniData.Weeks,
-        duration: $scope.uniData.Duration,
+        workDays: workdays_data,
+        lessonDuration: $scope.uniData.Duration,
         color: $scope.uniData.Color,
         logo: $scope.uniData.Logo,
-        workdays: workdays_data,
-        lessongrid: lessongrid_data
+        lessonGridPosition: lessons
     };
-    var url = $location.absUrl();
     var config = {
         headers: {
-            'Accept': 'text/plain'
+            'Content-Type': 'application/json'
         }
     };
-    $http.post(url + "university/add", data, config).then(function (response) {
-        if (response.data === "success") {
-
-        }
-
+    var url = "/university/add";
+    $http.post(url, data, config).then(function (response) {
+        alert("вроде success");
     }, function error(response) {
         alert("Error with status: " + response.statusText);
     });

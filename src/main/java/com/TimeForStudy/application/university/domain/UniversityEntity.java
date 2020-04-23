@@ -88,6 +88,6 @@ public class UniversityEntity {
         this.workDays = addUniversityDto.getWorkDays();
         this.lessonDuration = addUniversityDto.getLessonDuration();
         this.color = addUniversityDto.getColor();
-        this.logotype = addUniversityDto.getLogotype();
+        this.logotype = addUniversityDto.getLogo();
     }
 }
