@@ -17,6 +17,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             'Accept': 'text/plain'
         }
     }
+
     $scope.login = function () {
         if (!$scope.enterCode || $scope.buttonLabel === "Отправить код заново") {
             if (!$scope.formInfo.Phone) {
@@ -35,7 +36,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                             angular.element('.errorMessage').css('color', "black");
                             document.getElementById('inputPhone').readOnly = true;
                             document.getElementById('inputCode').readOnly = false;
-                            angular.element('.loginBlock').css('height', "270px");
+                            angular.element('.loginBlock').css('height', "300px");
                             $scope.errorShow = true;
                         } else if (response.data === "registrationNeeded"){
                             $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";

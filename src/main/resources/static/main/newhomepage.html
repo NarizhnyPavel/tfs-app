@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="homepg">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../icon/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Time For Study</title>
+    <link href="../css/mainStyle.css" rel="stylesheet" />
+    <link href="../css/menu.css" rel="stylesheet" />
+    <link href="../css/timetable.css" rel="stylesheet" />
+    <script src="../lib/jquery/jquery.js"></script>
+    <script src="../lib/jquery/jquery.maskedinput.min.js"></script>
+    <script src="../lib/angular/angular.js"></script>
+    <script src="../lib/angular/angular.min.js"></script>
+    <script src="../lib/angular/angular-route.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/services.js"></script>
+    <script src="../js/filters.js"></script>
+    <script src="../js/homepage.js"></script>
+    <script src="../js/timetable.js"></script>
+</head>
+
+<body>
+    <div class="mainBlock" style="height: 700px;">
+        <div class="header"><span>Time For Study</span> </div>
+        <nav class="top-menu">
+            <ul class="menu-main">
+                <li>
+                    <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetabel">
+                    <label for="tab_1" id="timetabel_label">Расписание</label>
+                </li>
+                <li>
+                    <input type="radio" name="inset" value="" id="tab_2" onclick="showHide('search')" data-block-id="search">
+                    <label for="tab_2" id="search_label">Поиск</label>
+                </li>
+                <li>
+                    <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('settings')" data-block-id="settings">
+                    <label for="tab_3" id="settings_label">Настройки</label>
+                </li>
+            </ul>
+        </nav>
+        <div class="pages" >
+            <div id="timetable" class="page" style="display: block;" ng-controller="timetableCtrl">
+                <h2>Расписание</h2>
+                <table>
+                    <tr>
+                        <td>
+                            <grid class="day" day="mon"></grid>
+                        </td>
+                        <td>
+                            <grid class="day" day="tue"></grid>
+                        </td>
+                        <td>
+                            <grid class="day" day="wed"></grid>
+                        </td>
+                        <td>
+                            <grid class="day" day="thu"></grid>
+                        </td>
+                        <td>
+                            <grid class="day" day="fri"></grid>
+                        </td>
+                        <td>
+                            <grid class="day" day="sat"></grid>
+                        </td>
+                        <!--                        <td><grid class="day" day="sun"></grid></td>-->
+                    </tr>
+                </table>
+            </div>
+            <div id="search" class="page">
+                <h2>Поиск</h2> </div>
+            <div id="settings" class="page">
+                <h2>Настройки</h2> </div>
+        </div>
+    </div>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+</body>
+
+</html>

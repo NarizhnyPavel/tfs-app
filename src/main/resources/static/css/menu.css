@@ -12,7 +12,7 @@
     content: "";
     position: absolute;
     z-index: 2;
-    left: 0;
+    left: 10;
     width: 800px;
     height: 3px;
 }
@@ -27,8 +27,11 @@
     border-top: 1px dashed rgba(255, 255, 255, .2);
 }
 
+.top-menu input{
+    display: none;
+}
+
 .menu-main {
-    /*min-width: 800px;*/
     width: 800px;
     list-style: none;
     padding: 0;
@@ -65,7 +68,7 @@
     margin-right: -4px;
 }
 
-.menu-main a {
+.menu-main label {
     text-decoration: none;
     display: inline-block;
     padding: 8px 18px;
@@ -74,8 +77,8 @@
     transition: .3s linear;
 }
 
-.menu-main a.current,
-.menu-main a:hover {
+.menu-main label.current,
+.menu-main label:hover {
     background: rgba(0, 0, 0, .2);
 }
 
@@ -95,3 +98,7 @@
         display: block;
     }
 }
+
+#tab_1:checked ~ #timetabel_label, 
+#tab_2:checked ~ #search_label,
+#tab_3:checked ~ #settings_label { background: rgba(0, 0, 0, .2); }
