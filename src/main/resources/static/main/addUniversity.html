@@ -19,9 +19,20 @@
     <div class="header"><span>Time For Study</span>
         <nav class="top-menu">
             <ul class="menu-main">
-                <li><a href="">Расписание</a></li>
-                <li><a href="">Поиск</a></li>
-                <li><a href="">Настройки</a></li>
+                <ul class="menu-main">
+                    <li>
+                        <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetabel">
+                        <label for="tab_1" id="timetabel_label">Расписание</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="inset" value="" id="tab_2" onclick="showHide('search')" data-block-id="search">
+                        <label for="tab_2" id="search_label">Поиск</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('settings')" data-block-id="settings">
+                        <label for="tab_3" id="settings_label">Настройки</label>
+                    </li>
+                </ul>
             </ul>
         </nav>
     </div>

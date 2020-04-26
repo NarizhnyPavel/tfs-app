@@ -12,7 +12,7 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    width: 800px;
+    width: 950px;
     background: #8ED9B6;
     border-radius: 10px;
     box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
@@ -61,13 +61,14 @@ body {
 
 .page{
     font-size: 15pt;
-    background-color:darkseagreen;
     margin-bottom: 30px;
     width: 95%;
     margin: 0 auto;
     padding: 10px;
     display: none;
     height: 480px;
+    background-color:darkslategrey;
+    border-radius: 15px;
 }
 
 .page h2{
@@ -83,6 +84,6 @@ body {
     text-align: center;
     width: 300px;
     border-radius: 10px;
-    background-color: azure;
+    background-color:azure;
     text-shadow: 1px 2px 3px rgba(5, 46, 68, 0.25);
 }

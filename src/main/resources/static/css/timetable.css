@@ -1,5 +1,6 @@
 #timetable{
-    /*background-color: #5e5e5e;*/
+    background-color:darkseagreen;
+    border-radius: 15px;
 }
 
 #timetable table {
@@ -10,8 +11,31 @@
 }
 
 #timetable td{
-    padding: 5px; /* Поля вокруг текста */
+    padding: 0px; /* Поля вокруг текста */
     border: 1px solid #fff; 
     background-color: darkkhaki;
     border-radius: 10px;
+    margin: 0px;
+/*    text-align: left;*/
+}
+
+#timetable ul{
+    text-align: left;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+.dayName{
+    background-color:floralwhite;
+    font-weight: 550;
+    width: 40px;
+    height: 10px;
+    padding: 5px;
+    font-size: 18pt;
+    border-radius: 10px;
+}
+
+#timetable li{
+    font-size: 13pt;
+    list-style-type: none;
 }

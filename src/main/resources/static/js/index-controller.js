@@ -122,12 +122,9 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;
             });
         }else{
-            var group ={
-                number: $scope.formInfo.Group
-            };
             var data = {
                 phone: $scope.formInfo.Phone,
-                group: group,
+                group: $scope.formInfo.Group,
                 name: $scope.formInfo.Name,
                 role: 4
             };
