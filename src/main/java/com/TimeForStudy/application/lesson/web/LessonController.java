@@ -1,8 +1,8 @@
 package com.TimeForStudy.application.lesson.web;
 
-import com.TimeForStudy.application.lesson.model.AddLessonDto;
-import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lesson.model.*;
 import com.TimeForStudy.application.lesson.service.LessonService;
+import com.TimeForStudy.application.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +30,17 @@ public class LessonController {
     @GetMapping(value = "/lesson")
     public List<LessonDto> getLessons() {
         return lessonService.findAll();
+    }
+
+    /**
+     * Возвращение занятия по идентификатору.
+     *
+     * @param addInfoLessonDto информация о лекции.
+     * @return занятие.
+     */
+    @PostMapping(value = "lesson/info")
+    public DaysDto getLessonInfo(@RequestBody AddInfoLessonDto addInfoLessonDto) {
+        return lessonService.getLessonInfo(addInfoLessonDto);
     }
 
     /**

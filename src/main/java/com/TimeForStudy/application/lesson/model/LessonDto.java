@@ -4,6 +4,7 @@ import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Модель представления сущности занятие
@@ -11,6 +12,7 @@ import lombok.Data;
  * @author Velikanov Artyom
  */
 @Data
+@RequiredArgsConstructor
 public class LessonDto {
 
     private long id;

@@ -7,9 +7,10 @@ import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lesson.domain.LessonRepository;
-import com.TimeForStudy.application.lesson.model.AddLessonDto;
-import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lesson.model.*;
 import com.TimeForStudy.application.lesson.service.LessonService;
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionRepository;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.semester.domain.SemesterRepository;
@@ -23,6 +24,7 @@ import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,6 +72,10 @@ public class LessonServiceImpl implements LessonService {
      */
     private final LessonTypeRepository lessonTypeRepository;
 
+    /**
+     * {@link LessonPositionRepository}
+     */
+    private final LessonPositionRepository lessonPositionRepository;
 
     /**
      * Возвращение занятия по идентификатору.
@@ -82,6 +88,45 @@ public class LessonServiceImpl implements LessonService {
         LessonEntity lessonEntity = lessonRepository.findById(id)
                 .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
         return LessonDto.of(lessonEntity);
+    }
+
+    /**
+     * Возвращение расписания занятий на день
+     *
+     * @param addInfoLessonDto информация о расписании.
+     * @return
+     */
+    @Override
+    public DaysDto getLessonInfo(AddInfoLessonDto addInfoLessonDto) {
+        //User
+        UserEntity userEntity = userRepository.findById(addInfoLessonDto.getUserId())
+                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        //Группы
+        List<GroupEntity> groupEntities = userEntity.getGroups();
+        // Занятия в этот день
+        List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
+                .findAllByPosition(addInfoLessonDto.getWeekNum());
+        // Расписание для вывода
+        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
+
+        for (LessonPositionEntity less : lessonPositionEntities) {
+            LessonEntity lessonEntity = less.getLesson();
+//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
+                InfoLessonDto infoLessonDto = new InfoLessonDto();
+                infoLessonDto.setTime("Пока не определено");
+                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                infoLessonDtos.add(infoLessonDto);
+//            }
+        }
+
+        DaysDto daysDto = new DaysDto();
+        daysDto.setDayName("Такой-то день");
+        daysDto.setInfoLessonDtos(infoLessonDtos);
+        return daysDto;
     }
 
     /**

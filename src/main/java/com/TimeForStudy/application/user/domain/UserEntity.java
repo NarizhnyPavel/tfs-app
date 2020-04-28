@@ -10,9 +10,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,11 +57,11 @@ public class UserEntity {
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "group-user",
+            name = "group_user",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    private List<GroupEntity> groups;
+    private List<GroupEntity> groups = new ArrayList<>();
 
 
     public UserEntity(String phone, String name, UserRole role) {
@@ -89,6 +89,12 @@ public class UserEntity {
         this.role = registerDto.getRole();
     }
 
+    public UserEntity(String name, String phone, byte role, List<GroupEntity> groupEntities) {
+        this.name = name;
+        this.phone = phone;
+        this.role = role;
+        this.groups = groupEntities;
+    }
     public UserEntity(String phone, UserRole role) {
         this.phone = phone;
         this.role = role.getId();

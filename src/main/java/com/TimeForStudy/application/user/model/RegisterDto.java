@@ -33,5 +33,5 @@ public class RegisterDto {
     /**
      * Группа
      */
-    private GroupDto group;
+    private String group;
 }

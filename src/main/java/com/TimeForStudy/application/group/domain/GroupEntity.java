@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
-@Table(name = "group")
+@Table(name = "group_tb")
 public class GroupEntity {
 
     @Id
@@ -39,13 +40,13 @@ public class GroupEntity {
      *  Лекции, проводимые у данной группы
      */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
-    private List<LessonEntity> lessons;
+    private List<LessonEntity> lessons = new ArrayList<>();
 
     /**
      *  Студенты, принадлежащие группе
      */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
-    private List<UserEntity> users;
+    private List<UserEntity> users = new ArrayList<>();
 
     public  GroupEntity(AddGroupDto addGroupDto) {
         this.number = addGroupDto.getNumber();

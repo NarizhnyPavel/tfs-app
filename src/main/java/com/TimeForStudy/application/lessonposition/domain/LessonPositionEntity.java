@@ -31,17 +31,23 @@ public class LessonPositionEntity {
     private long id;
 
     /**
-     * Лекция
+     * Лекция.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")
     private LessonEntity lesson;
 
     /**
-     * Позиция
+     * Позиция.
      */
     @Column(name = "position")
     private int position;
+
+    /**
+     * Номер.
+     */
+    @Column(name = "number")
+    private int number;
 
     public LessonPositionEntity(AddLessonPositionDto addLessonPositionDto) {
         this.position = addLessonPositionDto.getPosition();

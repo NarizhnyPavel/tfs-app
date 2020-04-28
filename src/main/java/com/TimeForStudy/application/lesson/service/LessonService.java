@@ -1,7 +1,6 @@
 package com.TimeForStudy.application.lesson.service;
 
-import com.TimeForStudy.application.lesson.model.AddLessonDto;
-import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lesson.model.*;
 
 import java.util.List;
 
@@ -19,6 +18,14 @@ public interface LessonService {
      * @return занятие.
      */
     LessonDto getLessonById(long id);
+
+    /**
+     * Возвращение расписания занятий на день
+     *
+     * @param addInfoLessonDto информация о расписании.
+     * @return
+     */
+    DaysDto getLessonInfo(AddInfoLessonDto addInfoLessonDto);
 
     /**
      * Сохранение занятия.

@@ -8,12 +8,12 @@ import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.RegisterDto;
 import com.TimeForStudy.application.user.service.RegistrationUserService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -49,18 +49,25 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
             return "success";
         } else {
 
-            if (groupRepository.findByNumber(registerDto.getGroup().getNumber())!=null) {
+            if (groupRepository.findByNumber(registerDto.getGroup())!=null) {
 
-                UserEntity user = new UserEntity(registerDto);
-                GroupEntity updated = groupRepository.findByNumber(registerDto.getGroup().getNumber());
-                List<UserEntity> users = updated.getUsers();
-                users.add(user);
-                updated.setUsers(users);
-                groupRepository.save(updated);
-                List<GroupEntity> groups = new ArrayList<>();
-                groups.add(updated);
-                user.setGroups(groups);
-                userRepository.save(user);
+//                GroupEntity updated = groupRepository.findByNumber(registerDto.getGroup());
+//                UserEntity userEntity = new UserEntity();
+//                userEntity.setName(registerDto.getName());
+//                userEntity.setPhone(registerDto.getPhone());
+//                userEntity.setRole(registerDto.getRole());
+//                userEntity.getGroups().add(updated);
+//                updated.getUsers().add(userEntity);
+//                userRepository.save(userEntity);
+//                groupRepository.save(updated);
+                GroupEntity groupEntity = groupRepository.findById((long) 1)
+                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+                UserEntity userEntity = userRepository.findById((long) 42)
+                        .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+                userEntity.getGroups().add(groupEntity);
+                groupEntity.getUsers().add(userEntity);
+                userRepository.save(userEntity);
+//                groupRepository.save(groupEntity);
                 return "success";
             } else {
                 return "groupError";
