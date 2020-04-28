@@ -12,7 +12,7 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    width: 800px;
+    width: 950px;
     background: #8ED9B6;
     border-radius: 10px;
     box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,7 @@ body {
     color: dimgrey;
     font-family: "Arial", Georgia, Serif;
     font-weight: 600;
-    font-size: 47px;
+    font-size: 40px;
     margin: 20px auto;
     text-align: center;
     text-shadow: 1px 2px 3px rgba(5, 46, 68, 0.25);
@@ -59,3 +59,31 @@ body {
     background-color: rgb( 75, 183, 141);
 }
 
+.page{
+    font-size: 15pt;
+    margin-bottom: 30px;
+    width: 95%;
+    margin: 0 auto;
+    padding: 10px;
+    display: none;
+    height: 480px;
+    background-color:darkslategrey;
+    border-radius: 15px;
+}
+
+.page h2{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    height: 40px;
+    padding-top: 10px;
+    color: dimgrey;
+    font-family: "Arial", Georgia, Serif;
+    font-weight: 700;
+    font-size: 30px;
+    margin: 0px auto;
+    text-align: center;
+    width: 300px;
+    border-radius: 10px;
+    background-color:azure;
+    text-shadow: 1px 2px 3px rgba(5, 46, 68, 0.25);
+}

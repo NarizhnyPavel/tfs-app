@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Time For Study</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/loginStyle.css" />
-<!--    <link rel="stylesheet" href="../static/" />-->
-    <link rel="stylesheet" href="../css/mainStyle.css" />
+    <link rel="stylesheet" href="css/loginStyle.css" />
+    <link rel="stylesheet" href="css/mainStyle.css" />
     <script src="lib/jquery/jquery.js"></script>
     <script src="lib/jquery/jquery.maskedinput.min.js"></script>
 </head>
 <body>
 <form role="form" ng-controller="loginController">
-    <div class="mainBlock" style="height: 280px; width: 600px;">
+    <div class="loginBlock">
         <div class="header">Time For Study</div>
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
             <input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
             <script>
                 $(function () {
-                    $("#phone").mask("8(999) 999-9999");
+                    //2. Получить элемент, к которому необходимо добавить маску
+                    $("#inputPhone").mask("79999999999");
                 });
             </script>
         </p>
