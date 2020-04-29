@@ -74,6 +74,15 @@ public class LessonPositionServiceImpl implements LessonPositionService {
                     .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
             updated.setLesson(LessonDto.on(addLessonPositionDto.getLesson()));
         }
+        if (addLessonPositionDto.getPosition()!=0) {
+            updated.setPosition(addLessonPositionDto.getPosition());
+        }
+        if (addLessonPositionDto.getNumber()!=0) {
+            updated.setNumber(addLessonPositionDto.getNumber());
+        }
+        if (addLessonPositionDto.getDays()!=0) {
+            updated.setDays(addLessonPositionDto.getDays());
+        }
     }
 
     /**

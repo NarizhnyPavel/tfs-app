@@ -23,4 +23,8 @@ public class AddLessonPositionDto {
      * Позиция
      */
     private int position;
+
+    private int number;
+
+    private int days;
 }
