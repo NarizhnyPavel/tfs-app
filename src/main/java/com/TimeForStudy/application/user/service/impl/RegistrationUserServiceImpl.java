@@ -52,21 +52,21 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
             if (groupRepository.findByNumber(registerDto.getGroup())!=null) {
 
 //                GroupEntity updated = groupRepository.findByNumber(registerDto.getGroup());
-//                UserEntity userEntity = new UserEntity();
-//                userEntity.setName(registerDto.getName());
-//                userEntity.setPhone(registerDto.getPhone());
-//                userEntity.setRole(registerDto.getRole());
+                UserEntity userEntity = new UserEntity();
+                userEntity.setName(registerDto.getName());
+                userEntity.setPhone(registerDto.getPhone());
+                userEntity.setRole(registerDto.getRole());
 //                userEntity.getGroups().add(updated);
 //                updated.getUsers().add(userEntity);
-//                userRepository.save(userEntity);
-//                groupRepository.save(updated);
-                GroupEntity groupEntity = groupRepository.findById((long) 1)
-                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-                UserEntity userEntity = userRepository.findById((long) 42)
-                        .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-                userEntity.getGroups().add(groupEntity);
-                groupEntity.getUsers().add(userEntity);
                 userRepository.save(userEntity);
+//                groupRepository.save(updated);
+//                GroupEntity groupEntity = groupRepository.findById((long) 1)
+//                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+//                UserEntity userEntity = userRepository.findById((long) 42)
+//                        .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+//                userEntity.getGroups().add(groupEntity);
+//                groupEntity.getUsers().add(userEntity);
+//                userRepository.save(userEntity);
 //                groupRepository.save(groupEntity);
                 return "success";
             } else {
