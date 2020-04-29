@@ -9,6 +9,10 @@
     <link href="../css/mainStyle.css" rel="stylesheet" />
     <link href="../css/menu.css" rel="stylesheet" />
     <link href="../css/timetable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="../lib/jquery/jquery.js"></script>
     <script src="../lib/jquery/jquery.maskedinput.min.js"></script>
     <script src="../lib/angular/angular.js"></script>
@@ -21,7 +25,7 @@
     <script src="../js/timetable.js"></script>
 </head>
 
-<body>
+<body style="position: relative;">
     <div class="mainBlock" style="height: 700px;">
         <div class="header"><span>Time For Study</span> </div>
         <nav class="top-menu">
@@ -40,31 +44,10 @@
                 </li>
             </ul>
         </nav>
-        <div class="pages" >
+        <div class="pages">
             <div id="timetable" class="page" style="display: block;" ng-controller="timetableCtrl">
-                <h2>Расписание</h2>
-                <table>
-                    <tr>
-                        <td>
-                            <grid  day="Понедельник" num="1"></grid>
-                        </td>
-                        <td>
-                            <grid  day="Вторник" num="2"></grid>
-                        </td>
-                        <td>
-                            <grid  day="Среда" num="3"></grid>
-                        </td>
-                        <td>
-                            <grid  day="Четверг" num="4"></grid>
-                        </td>
-                        <td>
-                            <grid  day="Пятница" num="5"></grid>
-                        </td>
-                        <td>
-                            <grid  day="Суббота" num="6"></grid>
-                        </td>
-                    </tr>
-                </table>
+                <grid weeknumber={ {weekNumber}}></grid>
+                <message></message>
             </div>
             <div id="search" class="page">
                 <h2>Поиск</h2> </div>
@@ -72,7 +55,9 @@
                 <h2>Настройки</h2> </div>
         </div>
     </div>
-    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+    <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
 </body>
 
 </html>

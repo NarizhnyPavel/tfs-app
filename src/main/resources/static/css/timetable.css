@@ -1,36 +1,53 @@
 #timetable{
-    background-color:darkseagreen;
+    background-color: darkseagreen;
     border-radius: 15px;
 }
-
-#timetable table {
-    padding-top: 40px;
-    width: 100%;
-    height: 350px;
-/*    background-color: aqua;*/
+#timetable tr{
+    background-color: crimson;
+    border-radius: 15px;
+    height: 300px;
 }
 
-#timetable td{
-    padding: 0px; /* Поля вокруг текста */
+#timetable h2{
+    margin-bottom: 3px;
+    width: 350px;
+    height: 45px;
+    height: 50px;
+}
+
+#timetable h3{
+    margin-top: 5px;
+    margin-bottom: 25px;
+    font-size: 14pt;
+    width: 100px;
+    height: 40px;
+}
+
+#timetable div{
+    padding: 0px; 
+    margin-right: 10px;
+/*    margin-top: 35px;*/
     border: 1px solid #fff; 
     background-color: darkkhaki;
     border-radius: 10px;
-    margin: 0px;
-/*    text-align: left;*/
+    height: auto;
+    vertical-align: top;
 }
 
 #timetable ul{
     text-align: left;
     margin-top: 20px;
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 .dayName{
     background-color:floralwhite;
     font-weight: 550;
     width: 40px;
-    height: 10px;
+    height: 20px;
     padding: 5px;
+    margin-top: 10px;
     font-size: 18pt;
     border-radius: 10px;
 }
@@ -38,4 +55,19 @@
 #timetable li{
     font-size: 13pt;
     list-style-type: none;
+}
+
+.modal{
+/*
+    height: 500px;
+    width: 300pxl
+    padding: 30px;
+    position:absolute; 
+    z-index: 10; 
+    display: block; 
+    height: 200px; 
+    width: 200px; 
+    top:20%; 
+    left: 30%;
+*/
 }

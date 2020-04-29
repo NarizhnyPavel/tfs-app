@@ -100,8 +100,6 @@ function send($scope, $http){
         workdays_data = workdays_data * 10 + 6;
     if ($scope.uniData.WD_sun)
         workdays_data = workdays_data * 10 + 7;
-    // $scope.lessonGrid6 = "00:00";
-    // $scope.lessonGrid7 = "00:00";
     var lessons = {
         position1: $scope.lessonGrid1,
         position2: $scope.lessonGrid2,
