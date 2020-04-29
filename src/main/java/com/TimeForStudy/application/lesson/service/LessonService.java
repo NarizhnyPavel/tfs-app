@@ -25,7 +25,7 @@ public interface LessonService {
      * @param addInfoLessonDto информация о расписании.
      * @return
      */
-    DaysDto getLessonInfo(AddInfoLessonDto addInfoLessonDto);
+    List<DaysDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto);
 
     /**
      * Сохранение занятия.

@@ -49,7 +49,15 @@ public class LessonPositionEntity {
     @Column(name = "number")
     private int number;
 
+    /**
+     * День.
+     */
+    @Column(name = "days")
+    private int days;
+
     public LessonPositionEntity(AddLessonPositionDto addLessonPositionDto) {
         this.position = addLessonPositionDto.getPosition();
+        this.number = addLessonPositionDto.getNumber();
+        this.days = addLessonPositionDto.getDays();
     }
 }

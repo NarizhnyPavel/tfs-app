@@ -19,6 +19,10 @@ public class LessonPositionDto {
      */
     private int position;
 
+    private int number;
+
+    private int days;
+
     public static LessonPositionDto of(LessonPositionEntity lessonPositionEntity) {
 
         LessonPositionDto dto = new LessonPositionDto();

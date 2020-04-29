@@ -39,7 +39,7 @@ public class LessonController {
      * @return занятие.
      */
     @PostMapping(value = "lesson/info")
-    public DaysDto getLessonInfo(@RequestBody AddInfoLessonDto addInfoLessonDto) {
+    public List<DaysDto> getLessonInfo(@RequestBody AddInfoLessonDto addInfoLessonDto) {
         return lessonService.getLessonInfo(addInfoLessonDto);
     }
 
