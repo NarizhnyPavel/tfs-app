@@ -1,9 +1,12 @@
 package com.TimeForStudy.application.university.web;
 
+import com.TimeForStudy.application.university.domain.UniversityEntity;
+import com.TimeForStudy.application.university.domain.UniversityRepository;
 import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.application.university.service.UniversityService;
+import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,11 @@ public class UniversityController {
     private final UniversityService universityService;
 
     /**
+     * {@link UniversityRepository}
+     */
+    private final UniversityRepository universityRepository;
+
+    /**
      * Возвращает список занятий.
      *
      * @return список занятий.
@@ -31,6 +39,17 @@ public class UniversityController {
     @GetMapping(value = "/university")
     public List<UniversityDto> getUniversities() {
         return universityService.findAll();
+    }
+
+    /**
+     * Возвращает количество недель.
+     *
+     * @return количество недель.
+     */
+    @GetMapping(value = "/university/weeks")
+    public int getWeeks() {
+        UniversityEntity universityEntity = universityRepository.findById((long) 1).orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        return universityEntity.getWeeks();
     }
 
     /**
