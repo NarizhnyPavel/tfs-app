@@ -30,9 +30,9 @@ public interface LessonService {
     /**
      * Сохранение занятия.
      *
-     * @param addLessonDto занятие.
+     * @param newLessonDto занятие.
      */
-    void saveLesson(AddLessonDto addLessonDto);
+    BoolLessonDto saveLesson(NewLessonDto newLessonDto);
 
     /**
      * Изменение значений занятия.

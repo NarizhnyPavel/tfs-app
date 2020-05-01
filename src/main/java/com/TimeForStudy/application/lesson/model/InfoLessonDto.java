@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InfoLessonDto {
 
+    private long id;
+
     /**
      *  Время.
      */

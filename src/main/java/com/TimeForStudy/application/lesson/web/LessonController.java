@@ -57,11 +57,11 @@ public class LessonController {
     /**
      * Добавляет новое занятие.
      *
-     * @param addLessonDto занятие.
+     * @param newLessonDto занятие.
      */
     @PostMapping(value = "/lesson/add")
-    public void addLesson(@RequestBody AddLessonDto addLessonDto) {
-        lessonService.saveLesson(addLessonDto);
+    public BoolLessonDto addLesson(@RequestBody NewLessonDto newLessonDto) {
+        return lessonService.saveLesson(newLessonDto);
     }
 
     /**

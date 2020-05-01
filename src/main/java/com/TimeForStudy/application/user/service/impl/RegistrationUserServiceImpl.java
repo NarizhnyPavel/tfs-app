@@ -51,7 +51,7 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
 
             if (groupRepository.findByNumber(registerDto.getGroup())!=null) {
 
-//                GroupEntity updated = groupRepository.findByNumber(registerDto.getGroup());
+                GroupEntity updated = groupRepository.findByNumber(registerDto.getGroup());
                 UserEntity userEntity = new UserEntity();
                 userEntity.setName(registerDto.getName());
                 userEntity.setPhone(registerDto.getPhone());
