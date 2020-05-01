@@ -1,7 +1,12 @@
 <h2>Расписание </h2>
-<h3>неделя <b>{{weekNumber}}</b></h3>
-<div ng-repeat="day in days" style="display: inline-block;"> <span class="dayName">{{day.dayName}}</span>
+<div class="week-number-cell" style="padding-top: 10px">
+    <button ng-click="dec_week()"><</button>
+    <span class="dayName">неделя <b>{{week}}</b></span>
+    <button ng-click="inc_week()">></button>
+</div>
+<div class="day" ng-repeat="day in days" style="display: inline-block;"> <span class="dayName">{{day.dayName}}</span>
     <ul>
-        <li ng-repeat="lesson in day.lessons" class='day'> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>
+<!--        <li ng-repeat="lesson in day.infoLessonDtos"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessoType}}">{{lesson.subject}} </b></span> </li>-->
+        <li ng-repeat="lesson in day.lessons"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>
     </ul>
 </div>

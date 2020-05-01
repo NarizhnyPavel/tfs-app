@@ -1,36 +1,53 @@
-let weekNum;
+//let week;
+let minWeekNum;
+let maxWeekNum;
 let lessonToView;
 var infoShow;
 'use strict';
 var app = angular.module('homepg', []);
 app.controller('timetableCtrl', function ($scope, $http) {
-    weekNum = 1;
+    minWeekNum = 1;
+    maxWeekNum = 2;
     $scope.infoShow = true;
+    var config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    $http.get('/university/weeks', config).then(function (response) {
+        maxWeekNum = response.data;
+    });
 });
 app.directive('grid', function () {
     return {
         scope: {}
         , controller: function ($scope, $attrs, $http) {
+            $scope.week = 1;
             var data = {
                 userId: 41
                 , role: 4
-                , weekNum: 1
+                , weekNum: $scope.week
             };
             var config = {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             };
-            $http.post('lesson/info', data, config).then(function (response) {
-                $scope.days = response;
-            }, function error(response) {
-                alert("Error with status: " + response.statusText);
-            });
-            $scope.weekNumber = weekNum;
+            refresh_timetable();
+            $scope.inc_week = function () {
+                if ($scope.week < maxWeekNum) {
+                    $scope.week++;
+                    refresh_timetable();
+                }
+            }
+            $scope.dec_week = function () {
+                if ($scope.week > minWeekNum) {
+                    $scope.week--;
+                    refresh_timetable();
+                }
+            }
             $scope.show = function (lesson) {
                 alert("name: " + lesson.name + "\ntype: " + lesson.type, 'title');
-                lessonToView = lesson;
-                infoShow = true;
             }
             $scope.days = [
                 {
@@ -40,19 +57,19 @@ app.directive('grid', function () {
                             time: "9:50"
                             , name: "TPR1"
                             , type: "лекция"
-                }
-                , {
+                        }
+                        , {
                             time: "11:40"
                             , name: "MiSPIS"
                             , type: "практика"
-                }
-                , {
+                        }
+                        , {
                             time: "13:35"
                             , name: "Sociology"
                             , type: "семинар"
-                }
-            , ]
-                , }
+                        }
+                        , ]
+                    , }
                 , {
                     dayName: "Вторник"
                     , lessons: [
@@ -60,24 +77,24 @@ app.directive('grid', function () {
                             time: "9:50"
                             , name: "TPR2"
                             , type: "лекция"
-                }
-                , {
+                        }
+                        , {
                             time: "11:40"
                             , name: "MiSPIS"
                             , type: "практика"
-                }
-                , {
-                            time: "13:35"
-                            , name: "Sociology"
-                            , type: "семинар"
-                }
+                        }
                         , {
                             time: "13:35"
                             , name: "Sociology"
                             , type: "семинар"
-                }
-            , ]
-                , }
+                        }
+                        , {
+                            time: "13:35"
+                            , name: "Sociology"
+                            , type: "семинар"
+                        }
+                        , ]
+                    , }
                 , {
                     dayName: "Среда"
                     , lessons: [
@@ -85,24 +102,24 @@ app.directive('grid', function () {
                             time: "9:50"
                             , name: "TPR3"
                             , type: "лекция"
-                }
-                , {
+                        }
+                        , {
                             time: "11:40"
                             , name: "MiSPIS"
                             , type: "практика"
-                }
-                , {
-                            time: "13:35"
-                            , name: "Sociology"
-                            , type: "семинар"
-                }
+                        }
                         , {
                             time: "13:35"
                             , name: "Sociology"
                             , type: "семинар"
-                }
-            , ]
-                , }
+                        }
+                        , {
+                            time: "13:35"
+                            , name: "Sociology"
+                            , type: "семинар"
+                        }
+                        , ]
+                    , }
                 , {
                     dayName: "Четверг"
                     , lessons: [
@@ -110,26 +127,30 @@ app.directive('grid', function () {
                             time: "9:50"
                             , name: "TPR4"
                             , type: "лекция"
-                }
-                , {
+                        }
+                        , {
                             time: "11:40"
                             , name: "MiSPIS"
                             , type: "практика"
-                }
-                , {
+                        }
+                        , {
                             time: "13:35"
                             , name: "Sociology"
                             , type: "семинар"
-                }
+                        }
 
                         , {
                             time: "15:15"
                             , name: "WEbCOURSE"
                             , type: "семинар"
-                }, ]
-                , }
-            , ];
-            lessonToView = $scope.days[1].lessons[2];
+                        }, ]
+                    , }
+                , ];
+            function refresh_timetable() {
+                $http.post('/lesson/info', data, config).then(function (response) {
+                    $scope.days2 = response.data;
+                });
+            }
         }
         , restrict: "E"
         , templateUrl: "../templates/timetable.html"

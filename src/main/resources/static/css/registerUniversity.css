@@ -17,15 +17,13 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
 }
 
 .register-fields div {
-    /*    text-align: center;*/
-    /*    vertical-align: middle;*/
     position: relative;
     height: 20px;
     margin: 35px 0px;
 }
 
 .register-header {
-    padding-top: 25px;
+    padding-bottom: 25px;
     margin-top: 20px;
     height: 50px;
 }
@@ -45,7 +43,7 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
 
 .register-input {
     width: 200px;
-    height: 13px;
+    height: 35px;
     font-size: 13px;
     padding: 7px 0 4px 10px;
     border: 2px solid #cecece;
@@ -70,7 +68,6 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
     height: 200px;
     /*border: 1px solid grey;*/
 }
-
 
 .workdays tr {
     position: relative;
@@ -117,10 +114,10 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
     border-radius: 10px;
 }
 
-.lesson input{
+.lesson-input{
     -webkit-appearance: none;
-    width: 40px;
-    height: 13px;
+    width: 55px;
+    height: 30px;
     font-size: 13px;
     padding: 7px 0 4px 10px;
     border: 2px solid #cecece;
