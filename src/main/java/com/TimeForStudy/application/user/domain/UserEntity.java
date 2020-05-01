@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
-@Table(name = "usr")
+@Table(name = "user_tb")
 public class UserEntity {
 
     @Id
@@ -55,7 +55,7 @@ public class UserEntity {
     /**
      * Группа (Если это студент или староста)
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = GroupEntity.class)
     @JoinTable(
             name = "group_user",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),

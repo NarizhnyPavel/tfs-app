@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
-@Table(name = "group_tb")
+@Table(name = "group")
 public class GroupEntity {
 
     @Id

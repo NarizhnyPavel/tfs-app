@@ -1,6 +1,7 @@
 package com.TimeForStudy.application.user.service;
 
 import com.TimeForStudy.application.user.model.AddUserDto;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UserDto;
 
 import java.util.List;
@@ -48,5 +49,12 @@ public interface UserService {
      * @return список пользователей.
      */
     List<UserDto> findAll();
+
+    /**
+     * Возвращение преподавателей.
+     *
+     * @return список преподавателей.
+     */
+    List<ProfessorDto> findAllProfessors(String name);
 }
 
