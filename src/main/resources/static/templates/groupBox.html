@@ -1,0 +1,5 @@
+<ul>
+    <li ng-repeat="group in groups2 track by $index" style=" display: inline; border: 1px solid #000; margin-right: 5px">
+        <span ng-click="delete(group.id)">{{group.label}}</span>
+    </li>
+</ul>

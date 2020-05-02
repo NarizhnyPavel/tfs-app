@@ -25,9 +25,9 @@
     <script src="../js/timetable.js"></script>
 </head>
 
-<body style="position: relative;">
-    <div class="mainBlock" style="height: 700px;">
-        <div class="header"><span>Time For Study</span> </div>
+<body>
+<div class="mainBlock" style="height: 700px;">
+    <div class="header"><span>Time For Study</span>
         <nav class="top-menu">
             <ul class="menu-main">
                 <li>
@@ -44,20 +44,22 @@
                 </li>
             </ul>
         </nav>
-        <div class="pages">
-            <div id="timetable" class="page" style="display: block;" ng-controller="timetableCtrl">
-                <grid weeknumber={ {weekNumber}}></grid>
-                <message></message>
-            </div>
-            <div id="search" class="page">
-                <h2>Поиск</h2> </div>
-            <div id="settings" class="page">
-                <h2>Настройки</h2> </div>
-        </div>
     </div>
-    <script>
-        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
-    </script>
+    <div class="pages">
+        <div id="timetable" class="page" style="display: block;" ng-controller="timetableCtrl">
+            <grid ></grid>
+            <!--                <message></message>-->
+            <div class="modal"><span>hello</span></div>
+        </div>
+        <div id="search" class="page">
+            <h2>Поиск</h2> </div>
+        <div id="settings" class="page">
+            <h2>Настройки</h2> </div>
+    </div>
+</div>
+<script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+</script>
 </body>
 
 </html>
