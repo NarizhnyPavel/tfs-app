@@ -3,6 +3,7 @@ package com.TimeForStudy.application.lessongrid.web;
 import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.lessongrid.service.LessonGridService;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,16 @@ public class LessonGridController {
     @GetMapping(value = "/lessonGrids")
     public List<LessonGridDto> getLessonGrids() {
         return lessonGridService.findAll();
+    }
+
+    /**
+     * Возвращает список времени пар.
+     *
+     * @return список времени пар.
+     */
+    @PostMapping(value = "/times")
+    public List<UniversitiesDto> postTimes() {
+        return lessonGridService.findTimes();
     }
 
     /**

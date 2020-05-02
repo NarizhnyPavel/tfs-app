@@ -2,7 +2,9 @@ package com.TimeForStudy.application.university.service;
 
 import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 
 import java.util.List;
 
@@ -50,4 +52,12 @@ public interface UniversityService {
      * @return список учебных заведений.
      */
     List<UniversityDto> findAll();
+
+    /**
+     * Возвращение дни недели.
+     *
+     * @return дни недели.
+     */
+    List<UniversitiesDto> findWorkDays();
+
 }

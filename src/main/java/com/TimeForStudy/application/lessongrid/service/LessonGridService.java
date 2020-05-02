@@ -2,6 +2,7 @@ package com.TimeForStudy.application.lessongrid.service;
 
 import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public interface LessonGridService {
      * @return список мест занятий в сетке.
      */
     List<LessonGridDto> findAll();
+
+    /**
+     * Возвращение время пар.
+     *
+     * @return время пар.
+     */
+    List<UniversitiesDto> findTimes();
 }

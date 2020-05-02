@@ -7,12 +7,16 @@ import com.TimeForStudy.application.university.domain.UniversityEntity;
 import com.TimeForStudy.application.university.domain.UniversityRepository;
 import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.application.university.service.UniversityService;
+import com.TimeForStudy.application.user.domain.UserEntity;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,5 +142,39 @@ public class UniversityServiceImpl implements UniversityService {
     public List<UniversityDto> findAll() {
         List<UniversityEntity> universityEntities = universityRepository.findAll();
         return universityEntities.stream().map(UniversityDto::of).collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращение дни недели.
+     *
+     * @return дни недели.
+     */
+    @Override
+    public List<UniversitiesDto> findWorkDays() {
+        List<UniversitiesDto> universitiesDtos = new ArrayList<>();
+        UniversityEntity universityEntity = universityRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        if (universityEntity.getWorkDays().indexOf('1') != -1) {
+            universitiesDtos.add(new UniversitiesDto(1, "Понедельник"));
+        }
+        if (universityEntity.getWorkDays().indexOf('2') != -1) {
+            universitiesDtos.add(new UniversitiesDto(2, "Вторник"));
+        }
+        if (universityEntity.getWorkDays().indexOf('3') != -1) {
+            universitiesDtos.add(new UniversitiesDto(3, "Среда"));
+        }
+        if (universityEntity.getWorkDays().indexOf('4') != -1) {
+            universitiesDtos.add(new UniversitiesDto(4, "Четверг"));
+        }
+        if (universityEntity.getWorkDays().indexOf('5') != -1) {
+            universitiesDtos.add(new UniversitiesDto(5, "Пятница"));
+        }
+        if (universityEntity.getWorkDays().indexOf('6') != -1) {
+            universitiesDtos.add(new UniversitiesDto(6, "Суббота"));
+        }
+        if (universityEntity.getWorkDays().indexOf('7') != -1) {
+            universitiesDtos.add(new UniversitiesDto(7, "Воскресенье"));
+        }
+        return universitiesDtos;
     }
 }
