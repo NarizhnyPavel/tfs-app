@@ -1,0 +1,9 @@
+.groupAddBlock{
+    display: block;
+    background-color: #5cb85c;
+}
+
+.groupAddBlock-field p{
+    text-align: center;
+    /*display: block;*/
+}
