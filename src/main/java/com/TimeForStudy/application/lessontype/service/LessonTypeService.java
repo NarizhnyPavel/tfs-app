@@ -2,6 +2,7 @@ package com.TimeForStudy.application.lessontype.service;
 
 import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public interface LessonTypeService {
      * @return список типов занятия.
      */
     List<LessonTypeDto> findAll();
+
+    /**
+     * Возвращение типы пар.
+     *
+     * @return типы пар.
+     */
+    List<UniversitiesDto> findLessonTypes();
 }

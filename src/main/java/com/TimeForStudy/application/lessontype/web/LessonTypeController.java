@@ -3,6 +3,7 @@ package com.TimeForStudy.application.lessontype.web;
 import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.lessontype.service.LessonTypeService;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,16 @@ public class LessonTypeController {
     @GetMapping(value = "/lessonType")
     public List<LessonTypeDto> getLessonTypes() {
         return lessonTypeService.findAll();
+    }
+
+    /**
+     * Возвращает список типы пар.
+     *
+     * @return список типов пар.
+     */
+    @GetMapping(value = "/lessontypes")
+    public List<UniversitiesDto> postWorkDays() {
+        return lessonTypeService.findLessonTypes();
     }
 
     /**

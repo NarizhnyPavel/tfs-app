@@ -1,15 +1,20 @@
 package com.TimeForStudy.application.lessontype.service.impl;
 
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.lessongrid.service.LessonGridService;
+import com.TimeForStudy.application.lessongrid.service.impl.LessonGridServiceImpl;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeEntity;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.lessontype.service.LessonTypeService;
+import com.TimeForStudy.application.university.model.UniversitiesDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,5 +91,21 @@ public class LessonTypeServiceImpl implements LessonTypeService {
     public List<LessonTypeDto> findAll() {
         List<LessonTypeEntity> lessonTypeEntities = lessonTypeRepository.findAll();
         return lessonTypeEntities.stream().map(LessonTypeDto::of).collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращение типы пар.
+     *
+     * @return типы пар.
+     */
+    @Override
+    public List<UniversitiesDto> findLessonTypes() {
+        List<UniversitiesDto> universitiesDtos = new ArrayList<>();
+        List<LessonTypeEntity> lessonTypeEntities= lessonTypeRepository.findAll();
+
+        for (LessonTypeEntity lessonType : lessonTypeEntities) {
+            universitiesDtos.add(new UniversitiesDto(lessonType.getId(),lessonType.getName()));
+        }
+        return universitiesDtos;
     }
 }

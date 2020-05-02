@@ -126,6 +126,7 @@ public class LessonGridServiceImpl implements LessonGridService {
             return a.getLessonNumber() - b.getLessonNumber();
         }
     }
+
     /**
      * Возвращение время пар.
      *
