@@ -6,7 +6,7 @@
 </div>
 <div class="day" ng-repeat="day in days" style="display: inline-block;"> <span class="dayName">{{day.dayName}}</span>
     <ul>
-<!--        <li ng-repeat="lesson in day.infoLessonDtos"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessoType}}">{{lesson.subject}} </b></span> </li>-->
-        <li ng-repeat="lesson in day.lessons"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>
+        <li ng-repeat="lesson in day.infoLessonDtos"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}">{{lesson.subject}} </b></span> </li>
+<!--        <li ng-repeat="lesson in day.lessons"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>-->
     </ul>
 </div>

@@ -43,6 +43,11 @@ public class SubjectController {
         return subjectService.getSubjectById(id);
     }
 
+    @GetMapping(value = "/subject/all")
+    public List<SubjectDto> getSubject() {
+        return subjectService.findAll();
+    }
+
     /**
      * Добавляет новую преподаваемую дисциплину.
      *
