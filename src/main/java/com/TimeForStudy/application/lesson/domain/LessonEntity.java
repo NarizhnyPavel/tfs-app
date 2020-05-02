@@ -93,7 +93,7 @@ public class LessonEntity {
     /**
      * Группы
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = GroupEntity.class)
     @JoinTable(
             name = "lesson-group",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),

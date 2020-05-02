@@ -1,6 +1,7 @@
 package com.TimeForStudy.application.user.web;
 
 import com.TimeForStudy.application.user.model.AddUserDto;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class UserController {
      */
     private final UserService userService;
 
+
     /**
      * Возвращает список пользователей.
      *
@@ -30,6 +32,16 @@ public class UserController {
     @GetMapping(value = "/user")
     public List<UserDto> getUsers() {
         return userService.findAll();
+    }
+
+    /**
+     * Возвращает список преподавателей.
+     *
+     * @return список преподавателей.
+     */
+    @PostMapping(value = "/professors")
+    public List<ProfessorDto> getProfessors(@RequestBody String name) {
+        return userService.findAllProfessors(name);
     }
 
     /**
