@@ -4,11 +4,15 @@ import com.TimeForStudy.application.subject.domain.SubjectEntity;
 import com.TimeForStudy.application.subject.domain.SubjectRepository;
 import com.TimeForStudy.application.subject.model.AddSubjectDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
+import com.TimeForStudy.application.subject.model.SubjectsDto;
 import com.TimeForStudy.application.subject.service.SubjectService;
+import com.TimeForStudy.application.user.domain.UserEntity;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,5 +89,23 @@ public class SubjectServiceImpl implements SubjectService {
     public List<SubjectDto> findAll() {
         List<SubjectEntity> subjectEntities = subjectRepository.findAll();
         return subjectEntities.stream().map(SubjectDto::of).collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращение всех существующих преподаваемых дисциплин.
+     *
+     * @return список преподаваемый дисциплин.
+     */
+    @Override
+    public List<SubjectsDto> findAllSubjects(String name) {
+
+        List<SubjectEntity> subjectEntities = subjectRepository.findAll();
+        List<SubjectsDto> subjectsDtos = new ArrayList<>();
+        for (SubjectEntity subject : subjectEntities) {
+            if (subject.getName().contains(name)) {
+                subjectsDtos.add(new SubjectsDto(subject.getId(), subject.getName()));
+            }
+        }
+        return subjectsDtos;
     }
 }

@@ -2,6 +2,7 @@ package com.TimeForStudy.application.subject.service;
 
 import com.TimeForStudy.application.subject.model.AddSubjectDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
+import com.TimeForStudy.application.subject.model.SubjectsDto;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public interface SubjectService {
      * @return список преподаваемый дисциплин.
      */
     List<SubjectDto> findAll();
+
+    /**
+     * Возвращение всех существующих преподаваемых дисциплин.
+     *
+     * @return список преподаваемый дисциплин.
+     */
+    List<SubjectsDto> findAllSubjects(String name);
 }

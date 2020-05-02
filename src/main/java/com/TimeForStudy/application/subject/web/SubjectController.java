@@ -2,7 +2,9 @@ package com.TimeForStudy.application.subject.web;
 
 import com.TimeForStudy.application.subject.model.AddSubjectDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
+import com.TimeForStudy.application.subject.model.SubjectsDto;
 import com.TimeForStudy.application.subject.service.SubjectService;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,17 @@ public class SubjectController {
     public List<SubjectDto> getSubjects() {
         return subjectService.findAll();
     }
+
+    /**
+     * Возвращает список преподаваемых дисциплин.
+     *
+     * @return список преподаваемых дисциплин.
+     */
+    @PostMapping(value = "/subjects")
+    public List<SubjectsDto> postSubjects(@RequestBody String name) {
+        return subjectService.findAllSubjects(name);
+    }
+
 
     /**
      * Возвращает преподаваемую дисциплину по идентификатору.
