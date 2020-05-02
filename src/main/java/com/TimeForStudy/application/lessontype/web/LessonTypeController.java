@@ -39,7 +39,7 @@ public class LessonTypeController {
      * @return список типов пар.
      */
     @GetMapping(value = "/lessontypes")
-    public List<UniversitiesDto> postWorkDays() {
+    public List<UniversitiesDto> getLessonTypesLesson() {
         return lessonTypeService.findLessonTypes();
     }
 
