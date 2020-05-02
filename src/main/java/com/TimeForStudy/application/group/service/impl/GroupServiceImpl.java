@@ -5,11 +5,15 @@ import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.service.GroupService;
+import com.TimeForStudy.application.user.domain.UserEntity;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,4 +91,23 @@ public class GroupServiceImpl implements GroupService {
         List<GroupEntity> groupEntities = groupRepository.findAll();
         return groupEntities.stream().map(GroupDto::of).collect(Collectors.toList());
     }
+
+    /**
+     * Возвращение группы.
+     *
+     * @return список группы.
+     */
+    @Override
+    public List<GroupsDto> findAllGroups(String name) {
+
+        List<GroupEntity> groupEntities = groupRepository.findAll();
+        List<GroupsDto> groupsDtos= new ArrayList<>();
+        for (GroupEntity group : groupEntities) {
+            if (group.getNumber().contains(name)) {
+                groupsDtos.add(new GroupsDto(group.getId(), group.getNumber()));
+            }
+        }
+        return groupsDtos;
+    }
+
 }

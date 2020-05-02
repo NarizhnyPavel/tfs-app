@@ -2,6 +2,8 @@ package com.TimeForStudy.application.group.service;
 
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.group.model.GroupsDto;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 
 import java.util.List;
 
@@ -48,4 +50,11 @@ public interface GroupService {
      * @return список групп.
      */
     List<GroupDto> findAll();
+
+    /**
+     * Возвращение группы.
+     *
+     * @return список группы.
+     */
+    List<GroupsDto> findAllGroups(String name);
 }

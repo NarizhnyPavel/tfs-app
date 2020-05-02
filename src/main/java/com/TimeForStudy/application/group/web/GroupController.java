@@ -2,7 +2,9 @@ package com.TimeForStudy.application.group.web;
 
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.service.GroupService;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,17 @@ public class GroupController {
     public List<GroupDto> getGroups() {
         return groupService.findAll();
     }
+
+    /**
+     * Возвращает список групп.
+     *
+     * @return список групп.
+     */
+    @PostMapping(value = "/groups")
+    public List<GroupsDto> postGroups(@RequestBody String name) {
+        return groupService.findAllGroups(name);
+    }
+
 
     /**
      * Возвращает группу по идентификатору.
