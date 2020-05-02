@@ -2,6 +2,7 @@ package com.TimeForStudy.application.classroom.service;
 
 import com.TimeForStudy.application.classroom.model.AddClassroomDto;
 import com.TimeForStudy.application.classroom.model.ClassroomDto;
+import com.TimeForStudy.application.classroom.model.ClassroomsDto;
 
 import java.util.List;
 
@@ -48,4 +49,11 @@ public interface ClassroomService {
      * @return список кабинетов.
      */
     List<ClassroomDto> findAll();
+
+    /**
+     * Возвращение всех существующих кабинетов.
+     *
+     * @return список кабинетов.
+     */
+    List<ClassroomsDto> findAllClassrooms(String name);
 }

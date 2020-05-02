@@ -2,7 +2,9 @@ package com.TimeForStudy.application.classroom.web;
 
 import com.TimeForStudy.application.classroom.model.AddClassroomDto;
 import com.TimeForStudy.application.classroom.model.ClassroomDto;
+import com.TimeForStudy.application.classroom.model.ClassroomsDto;
 import com.TimeForStudy.application.classroom.service.ClassroomService;
+import com.TimeForStudy.application.user.model.ProfessorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,17 @@ public class ClassroomController {
     public List<ClassroomDto> getClassrooms() {
         return classroomService.findAll();
     }
+
+    /**
+     * Возвращает список кабинетов.
+     *
+     * @return список кабинетов.
+     */
+    @PostMapping(value = "/classrooms")
+    public List<ClassroomsDto> postClassrooms(@RequestBody String name) {
+        return classroomService.findAllClassrooms(name);
+    }
+
 
     /**
      * Возвращает кабинет по идентификатору.
