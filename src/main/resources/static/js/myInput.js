@@ -1,6 +1,6 @@
 let selectedTeacher;
 let selectedClassroom;
-let selectedGroup;
+let selectedGroups;
 var professors;
 
 $(function () {
@@ -9,19 +9,19 @@ $(function () {
         {
             label: "Титов"
             , id: "3"
-    }, {
+        }, {
             label: "Глущенко"
-            , id: "2" 
-    }
+            , id: "2"
+        }
     ];
     var classrooms2 = [
         {
             label: "1238"
             , id: "4"
-    }, {
+        }, {
             label: "Глущенко"
             , id: "2"
-    }
+        }
     ];
 //     $('#teacher').autocomplete({
 //         source: professors2
@@ -95,9 +95,12 @@ var app = angular.module('pgApp', []);
 app.controller('control', function ($scope, $http) {
     $scope.show = function () {
         alert('teacherId: ' + selectedTeacher + '\n'+
-        'classroomId: ' + selectedClassroom + '\n' +
-        'groupId: ' + selectedGroup)
+            'classroomId: ' + selectedClassroom + '\n' +
+            'groupsId: ' + $scope.groups2.length)
     } ;
+    $scope.groups = [{label:'7371', id: 1}, {label:'7372', id: "2"}, {label:'8473', id: "3"}];
+    $scope.groups2 = [];
+    $scope.groupsLabel = "";
     var config = {
         headers: {
             'Content-Type': 'application/json'
@@ -111,21 +114,49 @@ app.controller('control', function ($scope, $http) {
         },
         minLength: 2,
         select: function displayItem(event, ui) {
-            alert(ui.item.id);
+            selectedTeacher = ui.item.id;
         }
     });
-    function autoComplete(request, response, url) {
-        $.ajax({
-            url: '/Comp/'+url,
-            dataType: "json",
-            type: "POST",
-            success: function (data) {
-                response($.map(data, function(item) {
-                    return { label: item, value: item, id: item };
-                }));
+
+    $('#groups').autocomplete({
+        source: function (request, response) {
+            $http.post('/groups', request.term, config).then(function (response2) {
+                response(response2.data);
+            });
+        },
+        minLength: 1,
+        select: function displayItem(event, ui) {
+            let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
+            if(index === -1)
+                $scope.groups2.push(ui.item);
+            $scope.$apply();
+        }
+    });
+
+    $('#subject').autocomplete({
+        source: function (request, response) {
+            $http.post('/subjects', request.term, config).then(function (response2) {
+                response(response2.data);
+            });
+        },
+        minLength: 2,
+        select: function displayItem(event, ui) {
+            let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
+            if(index === -1)
+                $scope.groups2.push(ui.item);
+            $scope.$apply();
+        }
+    });
+});
+
+app.directive('groupBox', function () {
+    return{
+        controller: function ($scope) {
+            $scope.delete = function (id) {
+                let index = $scope.groups2.findIndex(group => group.id === id);
+                $scope.groups2.splice(index, 1);
             }
-        });
+        }, restrict: "E"
+        , templateUrl: "../templates/groupBox.html"
     }
-
-
 });
