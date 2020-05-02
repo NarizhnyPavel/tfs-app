@@ -7,7 +7,6 @@ var infoShow;
 var app = angular.module('homepg', []);
 app.controller('timetableCtrl', function ($scope, $http) {
     minWeekNum = 1;
-    maxWeekNum = 2;
     $scope.infoShow = true;
     var config = {
         headers: {
@@ -148,6 +147,7 @@ app.directive('grid', function () {
                 , ];
             function refresh_timetable() {
                 $http.post('/lesson/info', data, config).then(function (response) {
+                    alert('successs');
                     $scope.days2 = response.data;
                 });
             }
