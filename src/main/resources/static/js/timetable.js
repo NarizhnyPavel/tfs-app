@@ -16,7 +16,6 @@ app.controller('timetableControl', function ($scope, $http) {
     $http.get('/university/weeks', config).then(function (response) {
         maxWeekNum = response.data;
     });
-    // alert(university.name);
 });
 
 
@@ -26,9 +25,9 @@ app.directive('grid', function () {
         , controller: function ($scope, $attrs, $http) {
             $scope.week = 1;
             var data = {
-                userId: 41
-                , role: 4
-                , weekNum: $scope.week
+                userId: 11
+                , role: 3
+                , weekNum: 1
             };
             var config = {
                 headers: {
@@ -39,17 +38,23 @@ app.directive('grid', function () {
             $scope.inc_week = function () {
                 if ($scope.week < maxWeekNum) {
                     $scope.week++;
+                    data.weekNum++;
                     refresh_timetable();
                 }
             }
             $scope.dec_week = function () {
                 if ($scope.week > minWeekNum) {
                     $scope.week--;
+                    data.weekNum--;
                     refresh_timetable();
                 }
             }
             $scope.show = function (lesson) {
-                alert("name: " + lesson.name + "\ntype: " + lesson.type, 'title');
+                alert("name: " + lesson.subject +
+                    "\ntype: " + lesson.lessonType+
+                    "\nProfessor: " + lesson.professor+
+                    "\nClassroom: " + lesson.classroom+
+                    "\nstatus: " + lesson.status);
             }
             $scope.days = [
                 {

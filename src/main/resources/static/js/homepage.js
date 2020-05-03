@@ -10,6 +10,7 @@ function showHide(element_id) {
         obj.style.display = "block"; //Показываем элемент
     }
 }
+
 let university;
 app.controller('control', function ($scope, $http) {
     $scope.logoShow = true;

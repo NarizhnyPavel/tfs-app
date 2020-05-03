@@ -25,7 +25,7 @@
 
 <body ng-controller="control">
 <div id="mainBlockId" class="mainBlock" style="height: 700px;">
-    <div class="header"><span>Time For Study</span> <img id="logo" ng-show="{{logoShow}}">
+    <div class="header"><div><span>Time For Study</span></div>
         <nav class="top-menu">
             <ul class="menu-main">
                 <li>
@@ -46,8 +46,6 @@
     <div class="pages">
         <div id="timetable" class="page" style="display: block;" ng-controller="timetableControl">
             <grid ></grid>
-            <!--                <message></message>-->
-<!--            <div class="modal"><span>hello</span></div>-->
         </div>
         <div id="search" class="page">
             <h2>Поиск</h2> </div>

@@ -1,9 +1,19 @@
 .groupAddBlock{
     display: block;
     background-color: #5cb85c;
+    width: 650px;
 }
 
 .groupAddBlock-field p{
     text-align: center;
-    /*display: block;*/
+}
+
+.groupAddBlock td,tr{
+    height: 30px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.groupAddBlock ul{
+
 }
