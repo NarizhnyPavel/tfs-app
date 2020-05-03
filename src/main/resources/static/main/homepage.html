@@ -19,15 +19,13 @@
     <script src="../lib/angular/angular.min.js"></script>
     <script src="../lib/angular/angular-route.js"></script>
     <script src="../js/app.js"></script>
-    <script src="../js/services.js"></script>
-    <script src="../js/filters.js"></script>
     <script src="../js/homepage.js"></script>
     <script src="../js/timetable.js"></script>
 </head>
 
-<body>
-<div class="mainBlock" style="height: 700px;">
-    <div class="header"><span>Time For Study</span>
+<body ng-controller="control">
+<div id="mainBlockId" class="mainBlock" style="height: 700px;">
+    <div class="header"><div><span>Time For Study</span></div>
         <nav class="top-menu">
             <ul class="menu-main">
                 <li>
@@ -46,10 +44,8 @@
         </nav>
     </div>
     <div class="pages">
-        <div id="timetable" class="page" style="display: block;" ng-controller="timetableCtrl">
+        <div id="timetable" class="page" style="display: block;" ng-controller="timetableControl">
             <grid ></grid>
-            <!--                <message></message>-->
-            <div class="modal"><span>hello</span></div>
         </div>
         <div id="search" class="page">
             <h2>Поиск</h2> </div>

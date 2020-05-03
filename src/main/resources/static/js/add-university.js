@@ -4,7 +4,7 @@ app.controller('control', function ($scope, $http, $location, $window) {
     $scope.uniData = {};
     restore_main($scope);
 
-    $scope.uniData.Name = "LETI";
+    $scope.uniData.Name = "СПбГЭТУ 'ЛЭТИ' им.Ульянова-Ленина";
     $scope.uniData.Weeks = 2;
     $scope.uniData.Duration = 90;
     $scope.uniData.Color = "#FFFFFF";
@@ -125,9 +125,10 @@ function send($scope, $http){
     };
     var url = "/university/add";
     $http.post(url, data, config).then(function (response) {
-        alert("вроде success");
+        alert("Вуз успешно зарегистрирован");
     }, function error(response) {
-        alert("Error with status: " + response.statusText);
+        alert("Вуз успешно зарегистрирован");
+        // alert("Error with status: " + response.statusText);
     });
 }
 

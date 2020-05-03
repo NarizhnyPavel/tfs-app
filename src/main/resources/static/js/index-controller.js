@@ -68,20 +68,21 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 if (data2.id !== 0) {
                     $window.localStorage.name = data2.name;
                     var link;
-                    switch (data2.role) {
-                        case 1:
-                            link = angular.element('<a href="main/administrator.html"></a>');
-                            break;
-                        case 2:
-                            link = angular.element('<a href="main/teacher.html"></a>');
-                            break;
-                        case 3:
-                            link = angular.element('<a href="main/superStudent.html"></a>');
-                            break;
-                        case 4:
-                            link = angular.element('<a href="main/student.html"></a>');
-                            break;
-                    }
+                    // switch (data2.role) {
+                    //     case 1:
+                    //         link = angular.element('<a href="main/administrator.html"></a>');
+                    //         break;
+                    //     case 2:
+                    //         link = angular.element('<a href="main/teacher.html"></a>');
+                    //         break;
+                    //     case 3:
+                    //         link = angular.element('<a href="main/superStudent.html"></a>');
+                    //         break;
+                    //     case 4:
+                    //         link = angular.element('<a href="main/student.html"></a>');
+                    //         break;
+                    // }
+                    link = angular.element('<a href="main/homepage.html"></a>');
                     angular.element(document.body).append(link);
                     link[0].click();
                     link.remove();

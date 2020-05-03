@@ -20,7 +20,6 @@
             <input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
             <script>
                 $(function () {
-                    //2. Получить элемент, к которому необходимо добавить маску
                     $("#inputPhone").mask("79999999999");
                 });
             </script>
@@ -28,6 +27,11 @@
         <p class="divLine" ng-show="enterCode">
             <label id="codeLabel" for="inputCode">Код из смс:</label>
             <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
+        <script>
+            $(function () {
+                $("#inputCode").mask("9999");
+            });
+        </script>
         <p class="divLine" ng-show="registartionFields">
             <label id="nameLabel" for="inputName">ФИО:</label>
             <input width="300" id="inputName" placeholder="" ng-model="formInfo.Name">  </p>

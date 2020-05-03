@@ -69,7 +69,7 @@ public class UniversityController {
      * Возвращает занятие по идентификатору.
      *
      * @param id идентификатор.
-     * @return занятие
+     * @return lessontypesзанятие
      */
     @GetMapping(value = "/university/{id}")
     public UniversityDto getUniversity(@PathVariable long id) {
