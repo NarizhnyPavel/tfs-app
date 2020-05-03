@@ -5,7 +5,6 @@ import com.TimeForStudy.application.classroom.model.ClassroomDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.model.AddLessonDto;
-import com.TimeForStudy.application.lesson.model.LessonDto;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.semester.model.SemesterDto;
@@ -95,9 +94,9 @@ public class LessonEntity {
      */
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = GroupEntity.class)
     @JoinTable(
-            name = "lesson-group",
-            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "lesson_id", referencedColumnName = "id")
+            name = "lesson_group",
+            joinColumns = @JoinColumn(name = "lesson_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
     )
     private List<GroupEntity> groups = new ArrayList<>();
 

@@ -58,8 +58,8 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = GroupEntity.class)
     @JoinTable(
             name = "group_user",
-            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
     )
     private List<GroupEntity> groups = new ArrayList<>();
 

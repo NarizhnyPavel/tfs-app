@@ -94,6 +94,7 @@ public class LessonServiceImpl implements LessonService {
     private final UniversityRepository universityRepository;
 
     private boolean flag;
+
     /**
      * Возвращение занятия по идентификатору.
      *
@@ -141,7 +142,7 @@ public class LessonServiceImpl implements LessonService {
     public List<DaysDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto) {
         //User
         UserEntity userEntity = userRepository.findById(addInfoLessonDto.getUserId())
-                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+                .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
         //Группы
         List<GroupEntity> groupEntities = userEntity.getGroups();
         // Занятия в этот день
@@ -157,6 +158,9 @@ public class LessonServiceImpl implements LessonService {
 
         Collections.sort(lessonPositionEntities, new SortByPositionLesson());
 
+        System.out.println(userEntity.getName());
+        System.out.println(groupEntities);
+
         if (universityEntity.getWorkDays().indexOf('1') != -1) {
             DaysDto daysDto = new DaysDto();
             daysDto.setDayName("Понедельник");
@@ -166,26 +170,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 1) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -201,26 +205,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 2) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -236,26 +240,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 3) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -271,26 +275,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 4) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -306,26 +310,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 5) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -341,26 +345,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 6) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -376,26 +380,26 @@ public class LessonServiceImpl implements LessonService {
             for (LessonPositionEntity less : lessonPositionEntities) {
                 LessonEntity lessonEntity = less.getLesson();
                 if (less.getDays() == 7) {
-//            if (lessonEntity.getGroups().retainAll(groupEntities)) {
-                    InfoLessonDto infoLessonDto = new InfoLessonDto();
-                    List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-                            findAllByUniversity((lessonEntity.
-                                    getSemester().
-                                    getUniversity()));
-                    for (LessonGridEntity lessGrid : lessonGridEntities) {
-                        if (lessGrid.getLessonNumber() == less.getNumber()) {
-                            infoLessonDto.setTime(lessGrid.getTime());
+                    if (lessonEntity.getGroups().removeAll(groupEntities)) {
+                        InfoLessonDto infoLessonDto = new InfoLessonDto();
+                        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                                findAllByUniversity((lessonEntity.
+                                        getSemester().
+                                        getUniversity()));
+                        for (LessonGridEntity lessGrid : lessonGridEntities) {
+                            if (lessGrid.getLessonNumber() == less.getNumber()) {
+                                infoLessonDto.setTime(lessGrid.getTime());
+                            }
                         }
+                        infoLessonDto.setId(less.getId());
+                        infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                        infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                        infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                        infoLessonDto.setStatus(lessonEntity.isStatus());
+                        infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                        infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                        infoLessonDtos.add(infoLessonDto);
                     }
-                    infoLessonDto.setId(less.getId());
-                    infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
-                    infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                    infoLessonDto.setStatus(lessonEntity.isStatus());
-                    infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-                    infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-                    infoLessonDtos.add(infoLessonDto);
-//            }
                 }
             }
 
@@ -421,9 +425,9 @@ public class LessonServiceImpl implements LessonService {
         BoolLessonDto boolLessonDto = new BoolLessonDto();
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndNumberAndAndDays(
-                        newLessonDto.getPosition()/100,
-                        newLessonDto.getPosition()/10,
-                        newLessonDto.getPosition()%10
+                        newLessonDto.getPosition() / 100,
+                        newLessonDto.getPosition() / 10,
+                        newLessonDto.getPosition() % 10
                 );
         for (LessonPositionEntity less : lessonPositionEntities) {
 
@@ -435,15 +439,15 @@ public class LessonServiceImpl implements LessonService {
                 boolLessonDto.setProfessor(false);
             }
             // Проверка кабинета.
-            if (less.getLesson().getClassroom().getNumber()==newLessonDto.getClassroom()) {
+            if (less.getLesson().getClassroom().getNumber() == newLessonDto.getClassroom()) {
                 boolLessonDto.setClassroom(false);
             }
             // Проверка предмета.
-            if (subjectRepository.findAllByName(newLessonDto.getSubject())==null) {
+            if (subjectRepository.findAllByName(newLessonDto.getSubject()) == null) {
                 boolLessonDto.setSubject(false);
             }
         }
-        if ((boolLessonDto.isClassroom())&&(boolLessonDto.isProfessor())&&(boolLessonDto.isSubject())) {
+        if ((boolLessonDto.isClassroom()) && (boolLessonDto.isProfessor()) && (boolLessonDto.isSubject())) {
             flag = true;
             for (boolean group : boolLessonDto.getGroups()) {
                 if (!group) {
