@@ -180,6 +180,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -214,6 +215,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -248,6 +250,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -282,6 +285,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -316,6 +320,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -350,6 +355,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -384,6 +390,7 @@ public class LessonServiceImpl implements LessonService {
                     infoLessonDto.setId(less.getId());
                     infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                     infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                    infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                     infoLessonDto.setStatus(lessonEntity.isStatus());
                     infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                     infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());

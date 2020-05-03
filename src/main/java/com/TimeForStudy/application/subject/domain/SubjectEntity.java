@@ -34,7 +34,14 @@ public class SubjectEntity {
     @Column(name = "name")
     private String name;
 
+    /**
+     * Сокращение
+     */
+    @Column(name = "arc")
+    private String arc;
+
     public SubjectEntity(AddSubjectDto addSubjectDto) {
         this.name = addSubjectDto.getName();
+        this.arc = addSubjectDto.getArc();
     }
 }

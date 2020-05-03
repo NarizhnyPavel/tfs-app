@@ -26,6 +26,11 @@ public class InfoLessonDto {
     private String subject;
 
     /**
+     * Сокращение
+     */
+    private String arc;
+
+    /**
      * Статус
      */
     private boolean status;

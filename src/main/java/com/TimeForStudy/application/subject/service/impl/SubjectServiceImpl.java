@@ -67,6 +67,9 @@ public class SubjectServiceImpl implements SubjectService {
         if (addSubjectDto.getName()!=null) {
             updated.setName(addSubjectDto.getName());
         }
+        if (addSubjectDto.getArc()!=null) {
+            updated.setArc(addSubjectDto.getArc());
+        }
         subjectRepository.save(updated);
     }
 
