@@ -50,7 +50,7 @@ app.directive('addLessonForm', function () {
             $http.post('/times', config).then(function (response2) {
                 $scope.times = response2.data;
             });
-            $http.post('/types', config).then(function (response2) {
+            $http.get('/lessontypes', config).then(function (response2) {
                 $scope.types = response2.data;
             });
             $scope.groups2 = [];

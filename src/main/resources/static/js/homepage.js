@@ -10,3 +10,21 @@ function showHide(element_id) {
         obj.style.display = "block"; //Показываем элемент
     }
 }
+let university;
+app.controller('control', function ($scope, $http) {
+    $scope.logoShow = true;
+    var config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    $http.get('/university/1', config).then(function (response) {
+        university = response.data;
+        var color = university.color;
+        document.getElementById('mainBlockId').style.backgroundColor = color;
+        // alert(university.logotype);
+        document.getElementById('logo').src = university.logotype;
+        // alert(university.color);
+    });
+
+});

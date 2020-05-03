@@ -1,11 +1,11 @@
-//let week;
 let minWeekNum;
 let maxWeekNum;
 let lessonToView;
 var infoShow;
 'use strict';
-var app = angular.module('homepg', []);
-app.controller('timetableCtrl', function ($scope, $http) {
+
+app.controller('timetableControl', function ($scope, $http) {
+
     minWeekNum = 1;
     $scope.infoShow = true;
     var config = {
@@ -16,7 +16,10 @@ app.controller('timetableCtrl', function ($scope, $http) {
     $http.get('/university/weeks', config).then(function (response) {
         maxWeekNum = response.data;
     });
+    // alert(university.name);
 });
+
+
 app.directive('grid', function () {
     return {
         scope: {}
@@ -147,8 +150,8 @@ app.directive('grid', function () {
                 , ];
             function refresh_timetable() {
                 $http.post('/lesson/info', data, config).then(function (response) {
-                    alert('successs');
                     $scope.days2 = response.data;
+                    $scope.$apply();
                 });
             }
         }
@@ -156,6 +159,7 @@ app.directive('grid', function () {
         , templateUrl: "../templates/timetable.html"
     }
 });
+
 app.directive('message', function () {
     return {
         controller: function ($scope, $http) {
@@ -169,8 +173,3 @@ app.directive('message', function () {
         , templateUrl: "../templates/message.html"
     }
 });
-
-function getWeekNum() {
-    var num = "1";
-    return $scope.weekNumber;
-}
