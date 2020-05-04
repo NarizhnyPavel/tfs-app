@@ -97,7 +97,29 @@ public class UniversityEntity {
     public UniversityEntity(AddUniversityDto addUniversityDto) {
         this.name = addUniversityDto.getName();
         this.weeks = addUniversityDto.getWeeks();
-        this.workDays = addUniversityDto.getWorkDays();
+        String workday = "";
+        if (addUniversityDto.getWorkDays().isMonday()) {
+            workday+='1';
+        }
+        if (addUniversityDto.getWorkDays().isTuesday()) {
+            workday+='2';
+        }
+        if (addUniversityDto.getWorkDays().isWednesday()) {
+            workday+='3';
+        }
+        if (addUniversityDto.getWorkDays().isThursday()) {
+            workday+='4';
+        }
+        if (addUniversityDto.getWorkDays().isFriday()) {
+            workday+='5';
+        }
+        if (addUniversityDto.getWorkDays().isSaturday()) {
+            workday+='6';
+        }
+        if (addUniversityDto.getWorkDays().isSunday()) {
+            workday+='7';
+        }
+        this.workDays = workday;
         this.lessonDuration = addUniversityDto.getLessonDuration();
         this.color1 = addUniversityDto.getColor1();
         this.color2 = addUniversityDto.getColor2();
