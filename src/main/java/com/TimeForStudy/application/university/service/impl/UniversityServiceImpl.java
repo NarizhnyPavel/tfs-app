@@ -94,39 +94,80 @@ public class UniversityServiceImpl implements UniversityService {
     /**
      * Изменение значений учебного заведения.
      *
-     * @param id               идентификатор.
-     * @param addUniversityDto учебное заведение.
+     * @param addUniversityAndLessonGridDto учебное заведение.
      */
     @Override
-    public void updateUniversity(long id, AddUniversityDto addUniversityDto) {
-        UniversityEntity updated = universityRepository.findById(id)
+    public void updateUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
+        UniversityEntity updated = universityRepository.findById((long) 1)
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-        if (addUniversityDto.getName() != null) {
-            updated.setName(addUniversityDto.getName());
+        if (addUniversityAndLessonGridDto.getName() != null) {
+            updated.setName(addUniversityAndLessonGridDto.getName());
         }
-        if (addUniversityDto.getLessonDuration() != 0) {
-            updated.setLessonDuration(addUniversityDto.getLessonDuration());
+        if (addUniversityAndLessonGridDto.getLessonDuration() != 0) {
+            updated.setLessonDuration(addUniversityAndLessonGridDto.getLessonDuration());
         }
-        if (addUniversityDto.getWeeks() != 0) {
-            updated.setWeeks(addUniversityDto.getWeeks());
+        if (addUniversityAndLessonGridDto.getWeeks() != 0) {
+            updated.setWeeks(addUniversityAndLessonGridDto.getWeeks());
         }
-        if (addUniversityDto.getWorkDays() != null) {
-            updated.setWorkDays(addUniversityDto.getWorkDays());
+        if (addUniversityAndLessonGridDto.getWorkDays() != null) {
+            updated.setWorkDays(addUniversityAndLessonGridDto.getWorkDays());
         }
-        if (addUniversityDto.getColor1() != null) {
-            updated.setColor1(addUniversityDto.getColor1());
+        if (addUniversityAndLessonGridDto.getColor1() != null) {
+            updated.setColor1(addUniversityAndLessonGridDto.getColor1());
         }
-        if (addUniversityDto.getColor2() != null) {
-            updated.setColor2(addUniversityDto.getColor2());
+        if (addUniversityAndLessonGridDto.getColor2() != null) {
+            updated.setColor2(addUniversityAndLessonGridDto.getColor2());
         }
-        if (addUniversityDto.getColor3() != null) {
-            updated.setColor3(addUniversityDto.getColor3());
+        if (addUniversityAndLessonGridDto.getColor3() != null) {
+            updated.setColor3(addUniversityAndLessonGridDto.getColor3());
         }
-        if (addUniversityDto.getLogo() != null) {
-            updated.setLogotype(addUniversityDto.getLogo());
+        if (addUniversityAndLessonGridDto.getLogo() != null) {
+            updated.setLogotype(addUniversityAndLessonGridDto.getLogo());
         }
-        //TODO доделать с lessonGrid
         universityRepository.save(updated);
+
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(1);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1());
+            lessonGridRepository.save(lessonGridEntity);
+        }
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(2);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2());
+            lessonGridRepository.save(lessonGridEntity);
+        }
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(3);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3());
+            lessonGridRepository.save(lessonGridEntity);
+        }
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(4);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4());
+            lessonGridRepository.save(lessonGridEntity);
+        }
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(5);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5());
+            lessonGridRepository.save(lessonGridEntity);
+        }
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(6);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6());
+            lessonGridRepository.save(lessonGridEntity);
+        }
+        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7() != null) {
+            List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(7);
+            LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
+            lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7());
+            lessonGridRepository.save(lessonGridEntity);
+        }
     }
 
     /**

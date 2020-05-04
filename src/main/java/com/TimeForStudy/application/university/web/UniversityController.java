@@ -66,10 +66,11 @@ public class UniversityController {
 
 
     /**
-     * Возвращает занятие по идентификатору.
+     * Возвращает информации об унивкрситете
+     * .
      *
      * @param id идентификатор.
-     * @return lessontypesзанятие
+     * @return UniversityDto информация об университете
      */
     @GetMapping(value = "/university/{id}")
     public UniversityDto getUniversity(@PathVariable long id) {
@@ -88,14 +89,13 @@ public class UniversityController {
     }
 
     /**
-     * Изменяет данное занятие.
+     * Изменяет данные об университете.
      *
-     * @param id идентификатор.
-     * @param addUniversityDto занятие.
+     * @param addUniversityAndLessonGridDto информация об университете.
      */
-    @PostMapping(value = "/university/update/{id}")
-    public String updateUniversity(@PathVariable long id, @RequestBody AddUniversityDto addUniversityDto) {
-        universityService.updateUniversity(id, addUniversityDto);
+    @PostMapping(value = "/university/update")
+    public String updateUniversity(@RequestBody AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
+        universityService.updateUniversity(addUniversityAndLessonGridDto);
         return "success";
     }
 

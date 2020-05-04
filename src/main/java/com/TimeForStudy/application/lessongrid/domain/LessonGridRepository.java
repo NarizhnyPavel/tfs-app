@@ -12,5 +12,6 @@ public interface LessonGridRepository extends JpaRepository<LessonGridEntity, Lo
 
     List<LessonGridEntity> findAllByUniversity(UniversityEntity universityEntity);
 
+    List<LessonGridEntity> findAllByLessonNumber(Integer lessonNumber);
 }
 

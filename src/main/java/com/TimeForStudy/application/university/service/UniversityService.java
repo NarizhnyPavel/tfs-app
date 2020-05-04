@@ -33,10 +33,9 @@ public interface UniversityService {
     /**
      * Изменение значений учебного заведения.
      *
-     * @param id идентификатор.
-     * @param addUniversityDto учебное заведение.
+     * @param addUniversityAndLessonGridDto учебное заведение.
      */
-    void updateUniversity(long id, AddUniversityDto addUniversityDto);
+    void updateUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto);
 
     /**
      * Удаление учебного заведения.
