@@ -23,22 +23,22 @@ public class NewLessonDto {
     /**
      *  Кабинет, в котором проходит занятие.
      */
-    private int classroom;
+    private long classroom;
 
     /**
      * Предмет преподаваемый на занятии.
      */
-    private String subject;
+    private long subject;
 
     /**
      * Преподаватель, который проводит занятие.
      */
-    private String professor;
+    private long professor;
 
     /**
      * Тип занятия.
      */
-    private String lessonType;
+    private long lessonType;
 
     /**
      * Список групп.

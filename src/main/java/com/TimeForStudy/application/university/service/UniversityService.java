@@ -18,10 +18,9 @@ public interface UniversityService {
     /**
      * Возвращение учебного заведения по идентификатору.
      *
-     * @param id идентификатор.
      * @return учебное заведение.
      */
-    UniversityDto getUniversityById(long id);
+    AddUniversityAndLessonGridDto getUniversityById();
 
     /**
      * Сохранение учебного заведения.

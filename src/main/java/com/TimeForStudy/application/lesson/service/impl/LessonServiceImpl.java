@@ -435,6 +435,15 @@ public class LessonServiceImpl implements LessonService {
 
         List<BoolLessonDto> boolLessonDto = new ArrayList<>();
 
+        for (PositionDto positionDto : newLessonDto.getPosition()) {
+            List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
+                    .findAllByPositionAndNumberAndDays(
+                            (int) positionDto.getNum().charAt(0),
+                            (int) positionDto.getNum().charAt(2),
+                            (int) positionDto.getNum().charAt(1)
+                    );
+            System.out.println(positionDto.getNum().charAt(0)+" "+positionDto.getNum().charAt(2)+" "+positionDto.getNum().charAt(1));
+        }
         /*
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndNumberAndAndDays(
