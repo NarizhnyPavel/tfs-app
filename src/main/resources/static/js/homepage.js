@@ -23,7 +23,7 @@ app.controller('control', function ($scope, $http) {
     $http.get('/user/1', config).then(function (response) {
         user = response.data;
     })
-    $http.get('/university/1', config).then(function (response) {
+    $http.get('/university', config).then(function (response) {
         university = response.data;
         document.getElementById('mainBlockId').style.backgroundColor = '#' + university.color1;
         document.getElementById('menu').style.backgroundColor = '#' + university.color2;

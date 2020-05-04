@@ -10,8 +10,9 @@ app.directive('addUniversity', function () {
                     'Content-Type': 'application/json'
                 }
             };
-            $http.get('/university/1', config).then(function (response) {
+            $http.get('/university', config).then(function (response) {
                 $scope.uniData = response.data;
+                alert(university.uniData.color1)
             });
             restore_main($scope);
 
@@ -22,11 +23,13 @@ app.directive('addUniversity', function () {
             // $scope.uniData.color2 = '#' + $scope.uniData.сolor2;
             // $scope.uniData.color3 = '#' + $scope.uniData.сolor3;
             // $scope.uniData.Logo = "https://yadi.sk/d/someurl";
-            $scope.lessonGrid1 = "08:00";
-            $scope.lessonGrid2 = "09:50";
-            $scope.lessonGrid3 = "11:20";
-            $scope.lessonGrid4 = "13:45";
-            $scope.lessonGrid5 = "15:35";
+            // $scope.lessonGrid1 = $scope.uniData.lessonGridPosition.position1;
+            // $scope.lessonGrid2 = $scope.uniData.lessonGridPosition.position2;
+            // $scope.lessonGrid3 = $scope.uniData.lessonGridPosition.position3;
+            // $scope.lessonGrid4 = $scope.uniData.lessonGridPosition.position4;
+            // $scope.lessonGrid5 = $scope.uniData.lessonGridPosition.position5;
+            // $scope.lessonGrid6 = $scope.uniData.lessonGridPosition.position6;
+            // $scope.lessonGrid7 = $scope.uniData.lessonGridPosition.position7;
 
             $scope.return = function(){
                 restore_main($scope);
@@ -110,34 +113,34 @@ function restore_main($scope){
 }
 
 function send($scope, $http){
-    var workdays_data = 0;
-    if ($scope.uniData.workDays.monday)
-        workdays_data = workdays_data * 10 + 1;
-    if ($scope.uniData.workDays.tuesday)
-        workdays_data = workdays_data * 10 + 2;
-    if ($scope.uniData.workDays.wednesday)
-        workdays_data = workdays_data * 10 + 3;
-    if ($scope.uniData.workDays.thursday)
-        workdays_data = workdays_data * 10 + 4;
-    if ($scope.uniData.workDays.friday)
-        workdays_data = workdays_data * 10 + 5;
-    if ($scope.uniData.workDays.saturday)
-        workdays_data = workdays_data * 10 + 6;
-    if ($scope.uniData.workDays.sunday)
-        workdays_data = workdays_data * 10 + 7;
+    // var workdays_data = 0;
+    // if ($scope.uniData.workDays.monday)
+    //     workdays_data = workdays_data * 10 + 1;
+    // if ($scope.uniData.workDays.tuesday)
+    //     workdays_data = workdays_data * 10 + 2;
+    // if ($scope.uniData.workDays.wednesday)
+    //     workdays_data = workdays_data * 10 + 3;
+    // if ($scope.uniData.workDays.thursday)
+    //     workdays_data = workdays_data * 10 + 4;
+    // if ($scope.uniData.workDays.friday)
+    //     workdays_data = workdays_data * 10 + 5;
+    // if ($scope.uniData.workDays.saturday)
+    //     workdays_data = workdays_data * 10 + 6;
+    // if ($scope.uniData.workDays.sunday)
+    //     workdays_data = workdays_data * 10 + 7;
     var lessons = {
-        position1: $scope.lessonGrid1,
-        position2: $scope.lessonGrid2,
-        position3: $scope.lessonGrid3,
-        position4: $scope.lessonGrid4,
-        position5: $scope.lessonGrid5,
-        position6: $scope.lessonGrid6,
-        position7: $scope.lessonGrid7
+        position1: $scope.uniData.lessonGridPosition.position1,
+        position2: $scope.uniData.lessonGridPosition.position2,
+        position3: $scope.uniData.lessonGridPosition.position3,
+        position4: $scope.uniData.lessonGridPosition.position4,
+        position5: $scope.uniData.lessonGridPosition.position5,
+        position6: $scope.uniData.lessonGridPosition.position6,
+        position7: $scope.uniData.lessonGridPosition.position7
     };
     var data = {
         name: $scope.uniData.name,
         weeks: $scope.uniData.weeks,
-        workDays: workdays_data,
+        workDays: $scope.uniData.workDays,
         lessonDuration: $scope.uniData.lessonDuration,
         color1: $scope.uniData.color1,
         color2: $scope.uniData.color2,
@@ -161,10 +164,6 @@ function send($scope, $http){
 function showHide(element_id) {
     var universityInfo = document.getElementById('universityInfo');
     universityInfo.style.display = "none";
-    // var search = document.getElementById('search');
-    // search.style.display = "none";
-    // var settings = document.getElementById('settings');
-    // settings.style.display = "none";
     var obj = document.getElementById(element_id);
     if (obj.style.display != "block") {
         obj.style.display = "block"; //Показываем элемент
