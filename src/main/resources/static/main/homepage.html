@@ -9,10 +9,9 @@
     <link href="../css/mainStyle.css" rel="stylesheet" />
     <link href="../css/menu.css" rel="stylesheet" />
     <link href="../css/timetable.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
     <script src="../lib/jquery/jquery.js"></script>
     <script src="../lib/jquery/jquery.maskedinput.min.js"></script>
     <script src="../lib/angular/angular.js"></script>
@@ -21,6 +20,7 @@
     <script src="../js/app.js"></script>
     <script src="../js/homepage.js"></script>
     <script src="../js/timetable.js"></script>
+    <script src="../js/searchController.js"></script>
 </head>
 
 <body ng-controller="control">
@@ -44,12 +44,14 @@
         </nav>
     </div>
     <div class="pages">
-        <div id="timetable" class="page" style="display: block;" ng-controller="timetableControl">
+        <div id="timetable" class="page"  ng-controller="timetableControl">
             <grid ></grid>
             <info-box ng-show="infoShow"></info-box>
         </div>
-        <div id="search" class="page">
-            <h2>Поиск</h2> </div>
+        <div id="search" class="page" style="display: block;">
+            <h2>Поиск</h2>
+            <search-block></search-block>
+        </div>
         <div id="settings" class="page">
             <h2>Настройки</h2> </div>
     </div>

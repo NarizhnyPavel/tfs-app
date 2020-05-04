@@ -1,6 +1,7 @@
 #timetable{
     background-color: darkseagreen;
     border-radius: 15px;
+    min-height: inherit;
 }
 #timetable tr{
     background-color: crimson;
@@ -29,8 +30,9 @@
     border: 1px solid #fff; 
     background-color: darkkhaki;
     border-radius: 10px;
-    /*height: auto;*/
-    width: 190px;
+    min-height: calc( ((100vw - 480px)/(1280 - 480) * (24 - 16) + 16px)*8);
+    min-width: calc( ((100vw - 480px)/(1280 - 480) * (24 - 16) + 16px)*7.5);
+    /*max-width: auto;*/
     vertical-align: top;
 }
 
@@ -53,9 +55,11 @@
     border-radius: 10px;
 }
 
-.day li{
+.day li, span{
     max-height: 60px;
-    font-size: 13pt;
+    /*font-size: 13pt;*/
+    /*font-size: calc( (100vw - Vmin)/(Vmax - Vmin) * (Fmax - Fmin) + Fmin);*/
+    font-size: calc( ((100vw - 480px)/(1280 - 480) * (24 - 16) + 16px)*0.8);
     list-style-type: none;
     padding: 0 2px;
     white-space: nowrap; /* Запрещаем перенос строк */

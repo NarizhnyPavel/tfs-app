@@ -3,7 +3,7 @@
     top: 0;
     text-align: center;
     height: 460px;
-    width: 600px;
+    width: 650px;
     background-color: #99CC66;
     border-radius: 25px;
     bottom: 0;
@@ -20,6 +20,10 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
     position: relative;
     height: 20px;
     margin: 35px 0px;
+}
+
+.register-fields td{
+
 }
 
 .register-header {
@@ -42,9 +46,9 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
 }
 
 .register-input {
-    width: 200px;
-    height: 35px;
-    font-size: 13px;
+    /*width: 200px;*/
+    height: 32px;
+    font-size: 17px;
     padding: 7px 0 4px 10px;
     border: 2px solid #cecece;
     background: #F6F6f6;
@@ -55,23 +59,20 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
     font-family: "Arial", Georgia, Serif;
     width: 30px;
     font-size: 20px;
-    padding: 7px 0 4px 10px;
+    /*padding: 7px 0 4px 10px;*/
 }
 
-.register-fields-h2 {
-    margin: 10px;
-    font-size: 16px;
-}
+
 
 .workdays {
-    width: 130px;
+    width: 200px;
     height: 200px;
     /*border: 1px solid grey;*/
 }
 
 .workdays tr {
     position: relative;
-    text-align: center;
+    text-align: right;
     vertical-align: middle;
     position: relative;
     height: 15px;
@@ -103,9 +104,9 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
 
 .lesson-tr{
     margin: 10px;
-    vertical-align: top;
+    vertical-align: center;
     height: 20px;
-    font-size: 15pt;
+    font-size: 20pt;
     background-color: #CCCC99;
     border-radius: 15px;
 }
@@ -118,7 +119,7 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
     -webkit-appearance: none;
     width: 55px;
     height: 30px;
-    font-size: 13px;
+    font-size: 20px;
     padding: 7px 0 4px 10px;
     border: 2px solid #cecece;
     background: #F6F6f6;
@@ -130,4 +131,19 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
     height: 10px;
     padding: 0;
     font-size: 12pt;
+}
+
+.register-fields-h2 {
+    background-color: #cccccc;
+    /*margin: 10px;*/
+    font-size: 28px;
+    width: 80px;
+    font-family: "Arial", Georgia, Serif;
+    height: 50px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.register-fields-h2 span{
+    height: 50px;
 }

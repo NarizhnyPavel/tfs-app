@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="addUniversityApp">
+<html lang="en" ng-app="pgApp">
 
 <head>
     <meta charset="UTF-8">
@@ -8,18 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Time For Study</title>
     <link href="../css/mainStyle.css" rel="stylesheet" />
-    <link href="../css/registerUniversity.css" rel="stylesheet" />
+    <link href="../css/universitySettings.css" rel="stylesheet" />
     <link href="../css/menu.css" rel="stylesheet" />
     <script src="../lib/jquery/jquery.js"></script>
     <script src="../lib/jquery/jquery.maskedinput.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="../lib/angular/angular.js"></script>
+    <script src="../lib/angular/angular.min.js"></script>
+    <script src="../lib/angular/angular-route.js"></script>
+    <script src="../js/universitySettings.js"></script>
 </head>
 
 <body>
-<div class="mainBlock" style="height: 700px;" ng-controller="control">
+<div class="mainBlock" style="height: 700px;">
     <div class="header"><span>Time For Study</span>
         <nav class="top-menu">
             <ul class="menu-main">
@@ -28,172 +28,27 @@
                         <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('universityInfo')" data-block-id="universityInfo">
                         <label for="tab_1" id="timetabel_label">Расписание</label>
                     </li>
-<!--                    <li>-->
-<!--                        <input type="radio" name="inset" value="" id="tab_2" onclick="showHide('search')" data-block-id="search">-->
-<!--                        <label for="tab_2" id="search_label">Поиск</label>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('settings')" data-block-id="settings">-->
-<!--                        <label for="tab_3" id="settings_label">Настройки</label>-->
-<!--                    </li>-->
+                    <li>
+                        <input type="radio" name="inset" value="" id="tab_2" onclick="showHide('search')" data-block-id="search">
+                        <label for="tab_2" id="search_label">Поиск</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('settings')" data-block-id="settings">
+                        <label for="tab_3" id="settings_label">Настройки</label>
+                    </li>
                 </ul>
             </ul>
         </nav>
     </div>
-    <div class="pages">
-        <div class="page" id="universityInfo">
-            <div class="register-fields">
+    <div class="pages" ng-controller="addUniControl">
+        <div class="page" style="display: block" id="universityInfo">
                 <div class="register-header"><span>Университет</span></div>
-                <table ng-show="viewPage1">
-                    <td>
-                        <div> <span class="register-label">Название</span>
-                            <input id="name" ng-model="uniData.Name" type="text" class="register-input"> </div>
-                        <div> <span class="register-label">Количество повторяющихся недель</span>
-                            <input type="number" id="weeks" min="1" max="4" ng-model="uniData.Weeks" value="1" step="1" class="register-input" style="height: 20px; width: 40px">
-                            <script>
-                                $(function () {
-                                    $("#weeks").mask("9");
-                                });
-                            </script>
-                        </div>
-                        <div> <span class="register-label">Продолжительность занятий</span>
-                            <input id="duration" ng-model="uniData.Duration" type="text" class="register-input" style="width: 50px;"><span>мин.</span>
-                            <script>
-                                $(function () {
-                                    $("#duration").mask("99");
-                                });
-                            </script>
-                        </div>
-                        <div> <span class="register-label">Код корпоративного цвета</span>
-                            <input placeholder="#000000" ng-model="uniData.Color" type="text" id="color" class="register-input" style="width: 60px;">
-                            <script>
-                                jQuery(function ($) {
-                                    //создания специального символа h для маски
-                                    $.mask.definitions['q'] = '[A-Fa-f0-9]';
-                                    $("#color").mask("#qqqqqq", {placeholder:"#FFFFFF"});
-                                });
-                            </script>
-                        </div>
-                        <div> <span class="register-label">Ссылка на логотип</span>
-                            <input id="url" placeholder="https://yadi.sk/d/" ng-model="uniData.Logo" type="text" class="register-input">
-                        </div>
-                        <script>
-                            jQuery(function ($) {
-                                //создания специального символа h для маски
-                                $.mask.definitions['a'] = false;
-                                $("#url").mask("https://yadi.sk/d/?***************");
-                            });
-                        </script>
-                    </td>
-                    <td>
-                        <h2  class="register-fields-h2">Рабочие дни</h2>
-                        <table id="days" class="workdays">
-                            <tr>
-                                <td><span class="workdays-span">ПН</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_mon" type="checkbox"> </td>
-                            </tr>
-                            <tr>
-                                <td><span class="workdays-span">ВТ</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_tue" type="checkbox"> </tr>
-                            <tr>
-                                <td><span class="workdays-span">СР</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_wed" type="checkbox"> </td>
-                            </tr>
-                            <tr>
-                                <td><span class="workdays-span">ЧТ</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_thu" type="checkbox"> </td>
-                            </tr>
-                            <tr>
-                                <td><span class="workdays-span">ПТ</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_fri" type="checkbox"> </td>
-                            </tr>
-                            <tr>
-                                <td><span class="workdays-span">СБ</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_sat" type="checkbox"> </td>
-                            </tr>
-                            <tr>
-                                <td><span class="workdays-span">ВС</span></td>
-                                <td>
-                                    <input class="workday" ng-model="uniData.WD_sun" type="checkbox"> </td>
-                            </tr>
-                        </table>
-                    </td>
-                </table>
-                <table ng-show="viewPage2" class="lesson">
-                    <tr>
-                        <td>Номер занятия</td>
-                        <td>Время начала</td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>1</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid1" type="text">
-                        </td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>2</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid2" type="text">
-                        </td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>3</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid3" type="text">
-                        </td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>4</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid4" type="text">
-                        </td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>5</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid5" type="text">
-                        </td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>6</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid6" type="text">
-                        </td>
-                    </tr>
-                    <tr class="lesson-tr">
-                        <td>7</td>
-                        <td>
-                            <input class="lesson-input" ng-model="lessonGrid7" type="text">
-                        </td>
-                    </tr>
-                    <script>
-                        $(function () {
-                            $(".lesson-input").mask("99:99");
-                        });
-                    </script>
-                </table>
-                <tr class="divLine">
-                    <button ng-show="returnShow" ng-click="return()" class="button" style="font-size: 22px">Назад</button>
-                    <button ng-click="button_click()" class="button" style="font-size: 22px">{{buttonLabel}}</button>
-            </div>
+                <add-university></add-university>
         </div>
     </div>
 </div>
 
-<script src="../lib/angular/angular.js"></script>
-<script src="../lib/angular/angular.min.js"></script>
-<script src="../lib/angular/angular-route.js"></script>
-<script src="../js/app.js"></script>
-<script src="../js/services.js"></script>
-<script src="../js/filters.js"></script>
-<script src="../js/directives.js"></script>
-<script src="../js/add-university.js"></script>
+
 <script>
     document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
 </script>
