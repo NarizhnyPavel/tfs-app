@@ -5,6 +5,7 @@ import com.TimeForStudy.application.classroom.model.ClassroomDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lesson.domain.LessonRepository;
 import com.TimeForStudy.application.lesson.model.*;
@@ -121,7 +122,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     /**
-     * Возвращение расписания занятий на день
+     * Возвращение расписания занятий на день для студента.
      *
      * @param addInfoLessonDto информация о расписании.
      * @return список дней.
@@ -139,7 +140,6 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
 
         List<DaysDto> daysDtos = new ArrayList<>();
-
 
         if (universityEntity.getWorkDays().indexOf('1') != -1) {
             daysDtos.add(formDaysDto(groupEntities, "Понедельник", addInfoLessonDto.getWeekNum(), 1));
@@ -193,7 +193,9 @@ public class LessonServiceImpl implements LessonService {
                     break;
                 }
             }
+
             if (flag) {
+
                 InfoLessonDto infoLessonDto = new InfoLessonDto();
                 List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
                         findAllByUniversity(lessonEntity.
@@ -214,10 +216,212 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 infoLessonDtos.add(infoLessonDto);
             }
+
         }
+
         daysDto.setInfoLessonDtos(infoLessonDtos);
 
         return daysDto;
+    }
+
+    /**
+     * Возвращение расписания на поиск.
+     *
+     * @param lessonByDto информация о расписании.
+     * @return
+     */
+    @Override
+    public List<DaysDto> getLessonBy(LessonByDto lessonByDto) {
+        List<DaysDto> daysDtos = new ArrayList<>();
+
+        UniversityEntity universityEntity = universityRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+
+        if (lessonByDto.getType()==1) {
+            if (universityEntity.getWorkDays().indexOf('1') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Понедельник", lessonByDto.getWeekNum(),1));
+            }
+            if (universityEntity.getWorkDays().indexOf('2') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Вторник", lessonByDto.getWeekNum(),2));
+            }
+            if (universityEntity.getWorkDays().indexOf('3') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Среда", lessonByDto.getWeekNum(),3));
+            }
+            if (universityEntity.getWorkDays().indexOf('4') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Четверг", lessonByDto.getWeekNum(),4));
+            }
+            if (universityEntity.getWorkDays().indexOf('5') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Пятница", lessonByDto.getWeekNum(),5));
+            }
+            if (universityEntity.getWorkDays().indexOf('6') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Суббота", lessonByDto.getWeekNum(),6));
+            }
+            if (universityEntity.getWorkDays().indexOf('7') != -1) {
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Воскресенье", lessonByDto.getWeekNum(),7));
+            }
+        } else  {
+
+            if (universityEntity.getWorkDays().indexOf('1') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Понедельник", lessonByDto.getWeekNum(),1));
+            }
+            if (universityEntity.getWorkDays().indexOf('2') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Вторник", lessonByDto.getWeekNum(),2));
+            }
+            if (universityEntity.getWorkDays().indexOf('3') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Среда", lessonByDto.getWeekNum(),3));
+            }
+            if (universityEntity.getWorkDays().indexOf('4') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Четверг", lessonByDto.getWeekNum(),4));
+            }
+            if (universityEntity.getWorkDays().indexOf('5') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Пятница", lessonByDto.getWeekNum(),5));
+            }
+            if (universityEntity.getWorkDays().indexOf('6') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Суббота", lessonByDto.getWeekNum(),6));
+            }
+            if (universityEntity.getWorkDays().indexOf('7') != -1) {
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Воскресенье", lessonByDto.getWeekNum(),7));
+            }
+        }
+
+        return daysDtos;
+    }
+
+    /**
+     * Формирование расписания для преподавателя.
+     */
+    public DaysDto formLessonByProfessor(Long id, String nameDay, Integer weekNum, Integer numberDay) {
+
+        DaysDto daysDto = new DaysDto();
+        daysDto.setDayName(nameDay);
+
+        List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
+                .findAllByPositionAndDays(weekNum, numberDay);
+        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
+                .findAllByPositionAndDays(0, numberDay);
+        lessonPositionEntities.addAll(lessonPositionEntities0);
+        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
+
+        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
+
+
+
+        for (LessonPositionEntity less : lessonPositionEntities) {
+            LessonEntity lessonEntity = less.getLesson();
+
+            if (lessonEntity.getUser().getId()==id) {
+
+                InfoLessonDto infoLessonDto = new InfoLessonDto();
+                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                        findAllByUniversity(lessonEntity.
+                                getSemester().
+                                getUniversity());
+                for (LessonGridEntity lessGrid : lessonGridEntities) {
+                    if (lessGrid.getLessonNumber() == less.getNumber()) {
+                        infoLessonDto.setTime(lessGrid.getTime());
+                        break;
+                    }
+                }
+                infoLessonDto.setId(less.getId());
+                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                infoLessonDtos.add(infoLessonDto);
+            }
+
+        }
+
+        daysDto.setInfoLessonDtos(infoLessonDtos);
+
+        return daysDto;
+    }
+
+    /**
+     * Формирование расписания для группы.
+     */
+    public DaysDto formLessonByGroup(Long id, String nameDay, Integer weekNum, Integer numberDay) {
+
+        DaysDto daysDto = new DaysDto();
+        daysDto.setDayName(nameDay);
+
+        List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
+                .findAllByPositionAndDays(weekNum, numberDay);
+        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
+                .findAllByPositionAndDays(0, numberDay);
+        lessonPositionEntities.addAll(lessonPositionEntities0);
+        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
+
+        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
+
+
+
+        for (LessonPositionEntity less : lessonPositionEntities) {
+            LessonEntity lessonEntity = less.getLesson();
+
+            GroupEntity groupEntity = groupRepository.findById(id)
+                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+
+            if (lessonEntity.getGroups().contains(groupEntity)) {
+
+                InfoLessonDto infoLessonDto = new InfoLessonDto();
+                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                        findAllByUniversity(lessonEntity.
+                                getSemester().
+                                getUniversity());
+                for (LessonGridEntity lessGrid : lessonGridEntities) {
+                    if (lessGrid.getLessonNumber() == less.getNumber()) {
+                        infoLessonDto.setTime(lessGrid.getTime());
+                        break;
+                    }
+                }
+                infoLessonDto.setId(less.getId());
+                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                infoLessonDtos.add(infoLessonDto);
+            }
+
+        }
+
+        daysDto.setInfoLessonDtos(infoLessonDtos);
+
+        return daysDto;
+    }
+
+
+    /**
+     * Валидация поиска.
+     *
+     * @param request строка валидации.
+     * @return коллекци валидации поиска.
+     */
+    @Override
+    public List<SearchDto> getSearch(String request){
+        List<SearchDto> searchDtos = new ArrayList<>();
+
+        List<UserEntity> userEntities = userRepository.findAllByRole((byte)2);
+
+        for (UserEntity user : userEntities) {
+            if (user.getName().contains(request)) {
+                searchDtos.add(new SearchDto(user.getId(), user.getName(), 1));
+            }
+        }
+
+        List<GroupEntity> groupEntities = groupRepository.findAll();
+
+        for (GroupEntity group : groupEntities) {
+            if (group.getNumber().contains(request)) {
+                searchDtos.add(new SearchDto(group.getId(), group.getNumber(), 0));
+            }
+        }
+
+        return searchDtos;
     }
 
     /**

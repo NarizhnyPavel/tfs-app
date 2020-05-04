@@ -20,12 +20,28 @@ public interface LessonService {
     LessonDto getLessonById(long id);
 
     /**
-     * Возвращение расписания занятий на день
+     * Возвращение расписания занятий для преподавателя.
      *
      * @param addInfoLessonDto информация о расписании.
      * @return
      */
     List<DaysDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto);
+
+    /**
+     * Возвращение расписания на поиск.
+     *
+     * @param lessonByDto информация о расписании.
+     * @return
+     */
+    List<DaysDto> getLessonBy(LessonByDto lessonByDto);
+
+    /**
+     * Валидация поиска.
+     *
+     * @param request строка валидации.
+     * @return
+     */
+    List<SearchDto> getSearch(String request);
 
     /**
      * Сохранение занятия.

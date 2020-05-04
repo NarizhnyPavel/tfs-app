@@ -33,7 +33,7 @@ public class LessonController {
     }
 
     /**
-     * Возвращение занятия по идентификатору.
+     * Возвращение расписания занятий для студента.
      *
      * @param addInfoLessonDto информация о лекции.
      * @return занятие.
@@ -41,6 +41,28 @@ public class LessonController {
     @PostMapping(value = "lesson/info")
     public List<DaysDto> getLessonInfo(@RequestBody AddInfoLessonDto addInfoLessonDto) {
         return lessonService.getLessonInfo(addInfoLessonDto);
+    }
+
+    /**
+     * Возвращение расписания из поиска.
+     *
+     * @param lessonByDto информация о лекции.
+     * @return занятие.
+     */
+    @PostMapping(value = "lesson/by")
+    public List<DaysDto> getLessonBy(@RequestBody LessonByDto lessonByDto) {
+        return lessonService.getLessonBy(lessonByDto);
+    }
+
+    /**
+     * Валидация в поиске.
+     *
+     * @param request наименование.
+     * @return список валидации.
+     */
+    @PostMapping(value = "/search")
+    public  List<SearchDto> valitedSearch(@RequestBody String request) {
+        return lessonService.getSearch(request);
     }
 
     /**
