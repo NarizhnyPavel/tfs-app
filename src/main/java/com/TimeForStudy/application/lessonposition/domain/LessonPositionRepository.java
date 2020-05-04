@@ -12,7 +12,7 @@ public interface LessonPositionRepository extends JpaRepository<LessonPositionEn
 
     List<LessonPositionEntity> findAllByPosition(Integer position);
 
-    List<LessonPositionEntity> findAllByPositionAndNumberAndAndDays(Integer position, Integer number, Integer days);
+    List<LessonPositionEntity> findAllByPositionAndNumberAndDays(Integer position, Integer number, Integer days);
 
     List<LessonPositionEntity> findAllByPositionAndDays(Integer position, Integer days);
 }

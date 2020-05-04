@@ -38,7 +38,7 @@ public class UniversityController {
      *
      * @return список занятий.
      */
-    @GetMapping(value = "/university")
+    @GetMapping(value = "/universities")
     public List<UniversityDto> getUniversities() {
         return universityService.findAll();
     }
@@ -69,12 +69,11 @@ public class UniversityController {
      * Возвращает информации об унивкрситете
      * .
      *
-     * @param id идентификатор.
      * @return UniversityDto информация об университете
      */
-    @GetMapping(value = "/university/{id}")
-    public UniversityDto getUniversity(@PathVariable long id) {
-        return universityService.getUniversityById(id);
+    @GetMapping(value = "/university")
+    public AddUniversityAndLessonGridDto getUniversity() {
+        return universityService.getUniversityById();
     }
 
     /**

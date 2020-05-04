@@ -5,10 +5,7 @@ import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
 import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
 import com.TimeForStudy.application.university.domain.UniversityRepository;
-import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
-import com.TimeForStudy.application.university.model.AddUniversityDto;
-import com.TimeForStudy.application.university.model.UniversitiesDto;
-import com.TimeForStudy.application.university.model.UniversityDto;
+import com.TimeForStudy.application.university.model.*;
 import com.TimeForStudy.application.university.service.UniversityService;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.model.ProfessorDto;
@@ -41,14 +38,49 @@ public class UniversityServiceImpl implements UniversityService {
     /**
      * Возвращение учебного заведения по идентификатору.
      *
-     * @param id идентификатор.
      * @return учебное заведение.
      */
     @Override
-    public UniversityDto getUniversityById(long id) {
-        UniversityEntity universityEntity = universityRepository.findById(id)
+    public AddUniversityAndLessonGridDto getUniversityById() {
+        UniversityEntity universityEntity = universityRepository.findById((long) 1)
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-        return UniversityDto.of(universityEntity);
+        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByUniversity(universityEntity);
+        AddUniversityAndLessonGridDto addUniversityAndLessonGridDto = new AddUniversityAndLessonGridDto();
+        LessonGridPosition lessonGridPosition = new LessonGridPosition();
+        for (LessonGridEntity lessonGrid : lessonGridEntities) {
+            if (lessonGrid.getLessonNumber()==1) {
+                lessonGridPosition.setPosition1(lessonGrid.getTime());
+            }
+            if (lessonGrid.getLessonNumber()==2) {
+                lessonGridPosition.setPosition2(lessonGrid.getTime());
+            }
+            if (lessonGrid.getLessonNumber()==3) {
+                lessonGridPosition.setPosition3(lessonGrid.getTime());
+            }
+            if (lessonGrid.getLessonNumber()==4) {
+                lessonGridPosition.setPosition4(lessonGrid.getTime());
+            }
+            if (lessonGrid.getLessonNumber()==5) {
+                lessonGridPosition.setPosition5(lessonGrid.getTime());
+            }
+            if (lessonGrid.getLessonNumber()==6) {
+                lessonGridPosition.setPosition6(lessonGrid.getTime());
+            }
+            if (lessonGrid.getLessonNumber()==7) {
+                lessonGridPosition.setPosition7(lessonGrid.getTime());
+            }
+        }
+
+        addUniversityAndLessonGridDto.setLessonGridPosition(lessonGridPosition);
+        addUniversityAndLessonGridDto.setColor1(universityEntity.getColor1());
+        addUniversityAndLessonGridDto.setColor2(universityEntity.getColor2());
+        addUniversityAndLessonGridDto.setColor3(universityEntity.getColor3());
+        addUniversityAndLessonGridDto.setLessonDuration(universityEntity.getLessonDuration());
+        addUniversityAndLessonGridDto.setLogo(universityEntity.getLogotype());
+        addUniversityAndLessonGridDto.setName(universityEntity.getName());
+        addUniversityAndLessonGridDto.setWeeks(universityEntity.getWeeks());
+        addUniversityAndLessonGridDto.setWorkDays(universityEntity.getWorkDays());
+        return addUniversityAndLessonGridDto;
     }
 
     /**
