@@ -38,10 +38,10 @@ public interface LessonService {
     /**
      * Валидация поиска.
      *
-     * @param request строка валидации.
+     * @param validateSearch строка валидации и тип.
      * @return
      */
-    List<SearchDto> getSearch(String request);
+    List<SearchDto> getSearch(ValidateSearch validateSearch);
 
     /**
      * Сохранение занятия.

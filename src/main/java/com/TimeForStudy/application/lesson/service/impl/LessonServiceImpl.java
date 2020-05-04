@@ -1,5 +1,6 @@
 package com.TimeForStudy.application.lesson.service.impl;
 
+import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.classroom.domain.ClassroomRepository;
 import com.TimeForStudy.application.classroom.model.ClassroomDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
@@ -398,29 +399,41 @@ public class LessonServiceImpl implements LessonService {
     /**
      * Валидация поиска.
      *
-     * @param request строка валидации.
+     * @param validateSearch строка валидации и тип.
      * @return коллекци валидации поиска.
      */
     @Override
-    public List<SearchDto> getSearch(String request){
+    public List<SearchDto> getSearch(ValidateSearch validateSearch){
         List<SearchDto> searchDtos = new ArrayList<>();
 
         List<UserEntity> userEntities = userRepository.findAllByRole((byte)2);
 
-        for (UserEntity user : userEntities) {
-            if (user.getName().contains(request)) {
-                searchDtos.add(new SearchDto(user.getId(), user.getName(), 1));
+        if (validateSearch.getType().isClassroom()) {
+            List<ClassroomEntity> classroomEntities = classroomRepository.findAll();
+
+            for (ClassroomEntity classroom : classroomEntities) {
+                if (String.valueOf(classroom.getNumber()).contains(validateSearch.getRequest())) {
+                    searchDtos.add(new SearchDto(classroom.getId(), String.valueOf(classroom.getNumber()), 2));
+                }
             }
         }
 
-        List<GroupEntity> groupEntities = groupRepository.findAll();
+        if (validateSearch.getType().isGroup()) {
+            List<GroupEntity> groupEntities = groupRepository.findAll();
 
-        for (GroupEntity group : groupEntities) {
-            if (group.getNumber().contains(request)) {
-                searchDtos.add(new SearchDto(group.getId(), group.getNumber(), 0));
+            for (GroupEntity group : groupEntities) {
+                if (group.getNumber().contains(validateSearch.getRequest())) {
+                    searchDtos.add(new SearchDto(group.getId(), group.getNumber(), 0));
+                }
             }
         }
-
+        if (validateSearch.getType().isProfessor()) {
+            for (UserEntity user : userEntities) {
+                if (user.getName().contains(validateSearch.getRequest())) {
+                    searchDtos.add(new SearchDto(user.getId(), user.getName(), 1));
+                }
+            }
+        }
         return searchDtos;
     }
 

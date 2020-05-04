@@ -11,11 +11,12 @@ public class SearchDto {
 
     private String label;
 
-    private int type;
+    private int  type;
 
     public SearchDto(long id, String label, int type) {
         this.id = id;
         this.label = label;
         this.type = type;
+
     }
 }

@@ -57,12 +57,12 @@ public class LessonController {
     /**
      * Валидация в поиске.
      *
-     * @param request наименование.
+     * @param validateSearch наименование и тип.
      * @return список валидации.
      */
     @PostMapping(value = "/search")
-    public  List<SearchDto> valitedSearch(@RequestBody String request) {
-        return lessonService.getSearch(request);
+    public  List<SearchDto> valitedSearch(@RequestBody ValidateSearch validateSearch) {
+        return lessonService.getSearch(validateSearch);
     }
 
     /**
