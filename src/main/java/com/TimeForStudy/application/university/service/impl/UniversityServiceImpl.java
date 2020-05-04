@@ -79,7 +79,29 @@ public class UniversityServiceImpl implements UniversityService {
         addUniversityAndLessonGridDto.setLogo(universityEntity.getLogotype());
         addUniversityAndLessonGridDto.setName(universityEntity.getName());
         addUniversityAndLessonGridDto.setWeeks(universityEntity.getWeeks());
-        addUniversityAndLessonGridDto.setWorkDays(universityEntity.getWorkDays());
+        Week workday = new Week();
+        if (universityEntity.getWorkDays().indexOf('1') != -1) {
+            workday.setMonday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('2') != -1) {
+            workday.setTuesday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('3') != -1) {
+            workday.setWednesday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('4') != -1) {
+            workday.setThursday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('5') != -1) {
+            workday.setFriday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('6') != -1) {
+            workday.setSaturday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('7') != -1) {
+            workday.setSunday(true);
+        }
+        addUniversityAndLessonGridDto.setWorkDays(workday);
         return addUniversityAndLessonGridDto;
     }
 
@@ -142,7 +164,29 @@ public class UniversityServiceImpl implements UniversityService {
             updated.setWeeks(addUniversityAndLessonGridDto.getWeeks());
         }
         if (addUniversityAndLessonGridDto.getWorkDays() != null) {
-            updated.setWorkDays(addUniversityAndLessonGridDto.getWorkDays());
+            String workday = "";
+            if (addUniversityAndLessonGridDto.getWorkDays().isMonday()) {
+                workday+='1';
+            }
+            if (addUniversityAndLessonGridDto.getWorkDays().isTuesday()) {
+                workday+='2';
+            }
+            if (addUniversityAndLessonGridDto.getWorkDays().isWednesday()) {
+                workday+='3';
+            }
+            if (addUniversityAndLessonGridDto.getWorkDays().isThursday()) {
+                workday+='4';
+            }
+            if (addUniversityAndLessonGridDto.getWorkDays().isFriday()) {
+                workday+='5';
+            }
+            if (addUniversityAndLessonGridDto.getWorkDays().isSaturday()) {
+                workday+='6';
+            }
+            if (addUniversityAndLessonGridDto.getWorkDays().isSunday()) {
+                workday+='7';
+            }
+            updated.setWorkDays(workday);
         }
         if (addUniversityAndLessonGridDto.getColor1() != null) {
             updated.setColor1(addUniversityAndLessonGridDto.getColor1());

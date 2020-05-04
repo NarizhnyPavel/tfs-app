@@ -25,7 +25,7 @@ public class AddUniversityAndLessonGridDto {
     /**
      * Количество учебных дней
      */
-    private String workDays;
+    private Week workDays;
 
     /**
      * Цвет №1
