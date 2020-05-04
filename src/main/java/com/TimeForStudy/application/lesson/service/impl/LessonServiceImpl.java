@@ -260,8 +260,8 @@ public class LessonServiceImpl implements LessonService {
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
                 daysDtos.add(formLessonByProfessor(lessonByDto.getId(),"Воскресенье", lessonByDto.getWeekNum(),7));
             }
-        } else  {
-
+        }
+        if (lessonByDto.getType()==0) {
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
                 daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Понедельник", lessonByDto.getWeekNum(),1));
             }
@@ -282,6 +282,29 @@ public class LessonServiceImpl implements LessonService {
             }
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
                 daysDtos.add(formLessonByGroup(lessonByDto.getId(),"Воскресенье", lessonByDto.getWeekNum(),7));
+            }
+        }
+        if (lessonByDto.getType()==2) {
+            if (universityEntity.getWorkDays().indexOf('1') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Понедельник", lessonByDto.getWeekNum(),1));
+            }
+            if (universityEntity.getWorkDays().indexOf('2') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Вторник", lessonByDto.getWeekNum(),2));
+            }
+            if (universityEntity.getWorkDays().indexOf('3') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Среда", lessonByDto.getWeekNum(),3));
+            }
+            if (universityEntity.getWorkDays().indexOf('4') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Четверг", lessonByDto.getWeekNum(),4));
+            }
+            if (universityEntity.getWorkDays().indexOf('5') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Пятница", lessonByDto.getWeekNum(),5));
+            }
+            if (universityEntity.getWorkDays().indexOf('6') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Суббота", lessonByDto.getWeekNum(),6));
+            }
+            if (universityEntity.getWorkDays().indexOf('7') != -1) {
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(),"Воскресенье", lessonByDto.getWeekNum(),7));
             }
         }
 
@@ -395,6 +418,57 @@ public class LessonServiceImpl implements LessonService {
         return daysDto;
     }
 
+    /**
+     * Формирование расписания для кабинеты.
+     */
+    public DaysDto formLessonByClassroom(Long id, String nameDay, Integer weekNum, Integer numberDay) {
+
+        DaysDto daysDto = new DaysDto();
+        daysDto.setDayName(nameDay);
+
+        List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
+                .findAllByPositionAndDays(weekNum, numberDay);
+        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
+                .findAllByPositionAndDays(0, numberDay);
+        lessonPositionEntities.addAll(lessonPositionEntities0);
+        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
+
+        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
+
+
+
+        for (LessonPositionEntity less : lessonPositionEntities) {
+            LessonEntity lessonEntity = less.getLesson();
+
+            if (lessonEntity.getClassroom().getId()==id) {
+
+                InfoLessonDto infoLessonDto = new InfoLessonDto();
+                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                        findAllByUniversity(lessonEntity.
+                                getSemester().
+                                getUniversity());
+                for (LessonGridEntity lessGrid : lessonGridEntities) {
+                    if (lessGrid.getLessonNumber() == less.getNumber()) {
+                        infoLessonDto.setTime(lessGrid.getTime());
+                        break;
+                    }
+                }
+                infoLessonDto.setId(less.getId());
+                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
+                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
+                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
+                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
+                infoLessonDtos.add(infoLessonDto);
+            }
+
+        }
+
+        daysDto.setInfoLessonDtos(infoLessonDtos);
+
+        return daysDto;
+    }
 
     /**
      * Валидация поиска.
