@@ -24,9 +24,9 @@
 </head>
 
 <body ng-controller="control">
-<div id="mainBlockId" class="mainBlock" style="height: 700px;">
+<div id="mainBlockId" class="mainBlock">
     <div class="header"><div><span>Time For Study</span></div>
-        <nav class="top-menu">
+        <nav id="menu" class="top-menu">
             <ul class="menu-main">
                 <li>
                     <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetabel">
@@ -46,6 +46,7 @@
     <div class="pages">
         <div id="timetable" class="page" style="display: block;" ng-controller="timetableControl">
             <grid ></grid>
+            <info-box ng-show="infoShow"></info-box>
         </div>
         <div id="search" class="page">
             <h2>Поиск</h2> </div>
