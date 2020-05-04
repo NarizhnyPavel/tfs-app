@@ -82,7 +82,7 @@ public class LessonController {
      * @param newLessonDto занятие.
      */
     @PostMapping(value = "/lesson/add")
-    public BoolLessonDto addLesson(@RequestBody NewLessonDto newLessonDto) {
+    public List<BoolLessonDto> addLesson(@RequestBody NewLessonDto newLessonDto) {
         return lessonService.saveLesson(newLessonDto);
     }
 

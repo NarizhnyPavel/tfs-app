@@ -28,7 +28,7 @@ public class UniversityDto {
     /**
      * Количество учебных дней
      */
-    private String workDays;
+    private Week workDays;
 
     /**
      * Цвет №1
@@ -60,7 +60,29 @@ public class UniversityDto {
         dto.setId(universityEntity.getId());
         dto.setName(universityEntity.getName());
         dto.setWeeks(universityEntity.getWeeks());
-        dto.setWorkDays(universityEntity.getWorkDays());
+        Week workday = new Week();
+        if (universityEntity.getWorkDays().indexOf('1') != -1) {
+            workday.setMonday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('2') != -1) {
+            workday.setTuesday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('3') != -1) {
+            workday.setWednesday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('4') != -1) {
+            workday.setThursday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('5') != -1) {
+            workday.setFriday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('6') != -1) {
+            workday.setSaturday(true);
+        }
+        if (universityEntity.getWorkDays().indexOf('7') != -1) {
+            workday.setSunday(true);
+        }
+        dto.setWorkDays(workday);
         dto.setColor1(universityEntity.getColor1());
         dto.setColor2(universityEntity.getColor2());
         dto.setColor3(universityEntity.getColor3());
@@ -74,7 +96,29 @@ public class UniversityDto {
         entity.setId(universityDto.getId());
         entity.setName(universityDto.getName());
         entity.setWeeks(universityDto.getWeeks());
-        entity.setWorkDays(universityDto.getWorkDays());
+        String workday = "";
+        if (universityDto.getWorkDays().isMonday()) {
+            workday+='1';
+        }
+        if (universityDto.getWorkDays().isTuesday()) {
+            workday+='2';
+        }
+        if (universityDto.getWorkDays().isWednesday()) {
+            workday+='3';
+        }
+        if (universityDto.getWorkDays().isThursday()) {
+            workday+='4';
+        }
+        if (universityDto.getWorkDays().isFriday()) {
+            workday+='5';
+        }
+        if (universityDto.getWorkDays().isSaturday()) {
+            workday+='6';
+        }
+        if (universityDto.getWorkDays().isSunday()) {
+            workday+='7';
+        }
+        entity.setWorkDays(workday);
         entity.setColor1(universityDto.getColor1());
         entity.setColor2(universityDto.getColor2());
         entity.setColor3(universityDto.getColor3());

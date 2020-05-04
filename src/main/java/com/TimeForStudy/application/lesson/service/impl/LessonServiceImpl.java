@@ -430,9 +430,12 @@ public class LessonServiceImpl implements LessonService {
      * @param newLessonDto занятие.
      */
     @Override
-    public BoolLessonDto saveLesson(NewLessonDto newLessonDto) {
+    public List<BoolLessonDto> saveLesson(NewLessonDto newLessonDto) {
 
-        BoolLessonDto boolLessonDto = new BoolLessonDto();
+
+        List<BoolLessonDto> boolLessonDto = new ArrayList<>();
+
+        /*
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndNumberAndAndDays(
                         newLessonDto.getPosition() / 100,
@@ -472,6 +475,8 @@ public class LessonServiceImpl implements LessonService {
                 lessonRepository.save(lessonEntity);
             }
         }
+
+         */
         return boolLessonDto;
     }
 

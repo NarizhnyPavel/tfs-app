@@ -48,7 +48,7 @@ public interface LessonService {
      *
      * @param newLessonDto занятие.
      */
-    BoolLessonDto saveLesson(NewLessonDto newLessonDto);
+    List<BoolLessonDto> saveLesson(NewLessonDto newLessonDto);
 
     /**
      * Изменение значений занятия.

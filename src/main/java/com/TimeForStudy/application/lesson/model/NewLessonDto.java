@@ -18,7 +18,7 @@ public class NewLessonDto {
     /**
      *  Позиция.
      */
-    private Integer position;
+    private List<PositionDto> position;
 
     /**
      *  Кабинет, в котором проходит занятие.

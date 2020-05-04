@@ -93,9 +93,10 @@ public class UniversityController {
      * @param id идентификатор.
      * @param addUniversityDto занятие.
      */
-    @PutMapping(value = "/university/update/{id}")
-    public void updateUniversity(@PathVariable long id, @RequestBody AddUniversityDto addUniversityDto) {
+    @PostMapping(value = "/university/update/{id}")
+    public String updateUniversity(@PathVariable long id, @RequestBody AddUniversityDto addUniversityDto) {
         universityService.updateUniversity(id, addUniversityDto);
+        return "success";
     }
 
     /**
