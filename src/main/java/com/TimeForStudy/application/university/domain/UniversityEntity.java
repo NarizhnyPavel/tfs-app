@@ -53,10 +53,22 @@ public class UniversityEntity {
     private String workDays;
 
     /**
-     * Цвет
+     * Цвет №1
      */
-    @Column(name = "color")
-    private String color;
+    @Column(name = "color1")
+    private String color1;
+
+    /**
+     * Цвет №2
+     */
+    @Column(name = "color2")
+    private String color2;
+
+    /**
+     * Цвет №3
+     */
+    @Column(name = "color3")
+    private String color3;
 
     /**
      * Логотип
@@ -87,7 +99,9 @@ public class UniversityEntity {
         this.weeks = addUniversityDto.getWeeks();
         this.workDays = addUniversityDto.getWorkDays();
         this.lessonDuration = addUniversityDto.getLessonDuration();
-        this.color = addUniversityDto.getColor();
+        this.color1 = addUniversityDto.getColor1();
+        this.color2 = addUniversityDto.getColor2();
+        this.color3 = addUniversityDto.getColor3();
         this.logotype = addUniversityDto.getLogo();
     }
 }

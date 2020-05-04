@@ -35,9 +35,19 @@ public class AddUniversityDto {
     private String workDays;
 
     /**
-     * Цвет
+     * Цвет №1
      */
-    private String color;
+    private String color1;
+
+    /**
+     * Цвет №2
+     */
+    private String color2;
+
+    /**
+     * Цвет №3
+     */
+    private String color3;
 
     /**
      * Логотип
@@ -53,7 +63,9 @@ public class AddUniversityDto {
         this.name = addUniversityAndLessonGridDto.getName();
         this.weeks = addUniversityAndLessonGridDto.getWeeks();
         this.workDays = addUniversityAndLessonGridDto.getWorkDays();
-        this.color = addUniversityAndLessonGridDto.getColor();
+        this.color1 = addUniversityAndLessonGridDto.getColor1();
+        this.color2 = addUniversityAndLessonGridDto.getColor2();
+        this.color3 = addUniversityAndLessonGridDto.getColor3();
         this.logo = addUniversityAndLessonGridDto.getLogo();
         this.lessonDuration = addUniversityAndLessonGridDto.getLessonDuration();
     }

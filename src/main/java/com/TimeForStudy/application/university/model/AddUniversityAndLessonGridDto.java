@@ -28,9 +28,19 @@ public class AddUniversityAndLessonGridDto {
     private String workDays;
 
     /**
-     * Цвет
+     * Цвет №1
      */
-    private String color;
+    private String color1;
+
+    /**
+     * Цвет №2
+     */
+    private String color2;
+
+    /**
+     * Цвет №3
+     */
+    private String color3;
 
     /**
      * Логотип

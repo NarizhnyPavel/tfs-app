@@ -31,9 +31,19 @@ public class UniversityDto {
     private String workDays;
 
     /**
-     * Цвет
+     * Цвет №1
      */
-    private String color;
+    private String color1;
+
+    /**
+     * Цвет №2
+     */
+    private String color2;
+
+    /**
+     * Цвет №3
+     */
+    private String color3;
 
     /**
      * Логотип
@@ -51,7 +61,9 @@ public class UniversityDto {
         dto.setName(universityEntity.getName());
         dto.setWeeks(universityEntity.getWeeks());
         dto.setWorkDays(universityEntity.getWorkDays());
-        dto.setColor(universityEntity.getColor());
+        dto.setColor1(universityEntity.getColor1());
+        dto.setColor2(universityEntity.getColor2());
+        dto.setColor3(universityEntity.getColor3());
         dto.setLogotype(universityEntity.getLogotype());
         dto.setLessonDuration(universityEntity.getLessonDuration());
         return dto;
@@ -63,7 +75,9 @@ public class UniversityDto {
         entity.setName(universityDto.getName());
         entity.setWeeks(universityDto.getWeeks());
         entity.setWorkDays(universityDto.getWorkDays());
-        entity.setColor(universityDto.getColor());
+        entity.setColor1(universityDto.getColor1());
+        entity.setColor2(universityDto.getColor2());
+        entity.setColor3(universityDto.getColor3());
         entity.setLogotype(universityDto.getLogotype());
         entity.setLessonDuration(universityDto.getLessonDuration());
         return entity;

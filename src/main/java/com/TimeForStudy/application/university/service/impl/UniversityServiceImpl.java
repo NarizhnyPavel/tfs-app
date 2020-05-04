@@ -113,8 +113,14 @@ public class UniversityServiceImpl implements UniversityService {
         if (addUniversityDto.getWorkDays() != null) {
             updated.setWorkDays(addUniversityDto.getWorkDays());
         }
-        if (addUniversityDto.getColor() != null) {
-            updated.setColor(addUniversityDto.getColor());
+        if (addUniversityDto.getColor1() != null) {
+            updated.setColor1(addUniversityDto.getColor1());
+        }
+        if (addUniversityDto.getColor2() != null) {
+            updated.setColor2(addUniversityDto.getColor2());
+        }
+        if (addUniversityDto.getColor3() != null) {
+            updated.setColor3(addUniversityDto.getColor3());
         }
         if (addUniversityDto.getLogo() != null) {
             updated.setLogotype(addUniversityDto.getLogo());
