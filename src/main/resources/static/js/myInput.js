@@ -66,7 +66,6 @@ app.directive('addLessonForm', function () {
                     alert(response.data);
                 });
             } ;
-
             $http.get('/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;
             });
