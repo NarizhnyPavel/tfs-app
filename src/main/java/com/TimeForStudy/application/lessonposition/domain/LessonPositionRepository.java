@@ -14,5 +14,5 @@ public interface LessonPositionRepository extends JpaRepository<LessonPositionEn
 
     List<LessonPositionEntity> findAllByPositionAndNumberAndAndDays(Integer position, Integer number, Integer days);
 
-    Integer findByLessonAndPosition(LessonEntity lessonEntity, Integer position);
+    List<LessonPositionEntity> findAllByPositionAndDays(Integer position, Integer days);
 }
