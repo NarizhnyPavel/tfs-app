@@ -1,2 +1,8 @@
-<input id="searchInput" type="text" ng-model="searchText">
-<button ng-click="search()">GO</button>
+<div class="filters"><input ng-show="searchShow" class="search-input" id="searchInput" type="text">
+    <div>
+        <button ng-click="filterProf()" id="prof" class="filter-button">Преподаватель</button>
+        <button ng-click="filterGroup()" id="group">Группа</button>
+        <!--    <span>/</span>-->
+        <button ng-click="filterRoom()" id="room" class="filter-button">Аудитория</button>
+    </div>
+</div>

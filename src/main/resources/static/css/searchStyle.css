@@ -1,0 +1,32 @@
+.filters{
+    margin-top: 20px;
+    display: inline-block;
+    border-color: black;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.filter-button{
+    width: auto;
+    /*display: inline-block;*/
+    -webkit-writing-mode: horizontal-tb !important;
+    -webkit-appearance: button;
+    background-color: white;
+    /*border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);*/
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 1px 7px 2px;
+    text-rendering: auto;
+    color: initial;
+    text-align: start;
+    margin: 0em;
+    font: 400 17px system-ui;
+}
+
+.search-input{
+    width: 250px;
+    height: 20px;
+    font-size: 20pt;
+}

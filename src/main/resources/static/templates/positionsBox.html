@@ -1,5 +1,5 @@
-<ul>
-    <li ng-repeat="position in positions track by $index" style="list-style-type: none; border: 1px solid #000; margin-right: 5px">
-        <span ng-click="deletePos(position.num)">{{position.label}}</span>
+<ul style="margin-left: 0px; padding: 0px;">
+    <li ng-repeat="position in positions track by $index" style="list-style-type: none; border: 1px solid #000; margin-right: -5px; ">
+        <span style="font-size: 13pt;" ng-click="deletePos(position.num)">{{position.label}}</span>
     </li>
 </ul>

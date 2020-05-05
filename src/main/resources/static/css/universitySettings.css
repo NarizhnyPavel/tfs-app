@@ -1,19 +1,16 @@
-.register-block {
-    position:relative;
+
+.register-fields {
+
+    border-color: black;
     top: 0;
     text-align: center;
     height: 460px;
-    width: 650px;
-    background-color: #99CC66;
+    width: 760px;
     border-radius: 25px;
     bottom: 0;
     left: 0;
-    margin: 0 auto; // центрует блок
-box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
-}
-
-.register-fields {
-    /*    text-align: center;*/
+    margin: 20px auto 0;
+    /*box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);*/
 }
 
 .register-fields div {
@@ -94,7 +91,7 @@ box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0
 .lesson{
     margin: 0 auto;
     width: 180px;
-    padding-bottom: 25px;
+    /*padding-bottom: 25px;*/
     border-radius: 10px;
 }
 

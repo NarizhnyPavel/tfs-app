@@ -2,6 +2,7 @@
     background-color: darkseagreen;
     border-radius: 15px;
     min-height: inherit;
+
 }
 #timetable tr{
     background-color: crimson;
@@ -10,6 +11,7 @@
 }
 
 #timetable h2{
+    padding-bottom: 5px ;
     margin-bottom: 3px;
     width: 350px;
     height: 50px;
@@ -78,4 +80,8 @@
     background: #fc0; /* Цвет фона */
     padding: 5px; /* Поля вокруг текста */
     text-overflow: ellipsis; /* Добавляем многоточие */
+}
+
+.days {
+    margin-bottom: 50px;
 }
