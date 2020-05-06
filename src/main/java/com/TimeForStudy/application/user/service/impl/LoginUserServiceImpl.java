@@ -1,18 +1,25 @@
 package com.TimeForStudy.application.user.service.impl;
 
+import ch.qos.logback.core.status.Status;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.LoginUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.unbescape.uri.UriEscape;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -52,37 +59,37 @@ public class LoginUserServiceImpl implements LoginUserService {
             if (user == null) {
                 return "null";
             } else {
-//                String send = "Авторизация в системе TimeForStudy\n" +
-//                        "Код ";
+                String send = "Авторизация в системе TimeForStudy\n" +
+                        "Код ";
 //                send += code;
 //                String _from = "";
 //                String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
-//
+
 //                final CloseableHttpClient httpClient = HttpClients.createDefault();
-//
+
 //                HttpGet request = new HttpGet(
 //                        "http://smspilot.ru/api.php" +
 //                                "?send=" + UriEscape.escapeUriPath(send) +
 //                                "&to=" + phone +
 //                                "&from=" + _from +
 //                                "&apikey=" + apikey);
-
+//
                 String result = "SUCCESS";
 //                try (CloseableHttpResponse response = httpClient.execute(request)) {
-                    // Get HttpResponse Status
+//                     Get HttpResponse Status
 //                    System.out.println(response.getStatusLine().toString());
 
 //                    HttpEntity entity = response.getEntity();
 //                    Header headers = entity.getContentType();
 //                    System.out.println(headers);
-
+//
 //                    if (entity != null) {
 //                        result = EntityUtils.toString(entity);
 //                        System.out.println(result);
-                        if (result.substring(0, 7).equals("SUCCESS"))
+//                        if (result.substring(0, 7).equals("SUCCESS"))
                             return "codeSent";
-                        else
-                            return "error";
+//                        else
+//                            return "error";
 //                    }
 //                } catch (ClientProtocolException e) {
 //                    e.printStackTrace();

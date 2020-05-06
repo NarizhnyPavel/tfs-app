@@ -3,17 +3,18 @@ var app = angular.module('homepg', []);
 
 var serverUrl = "http://localhost:8100";
 
-app.controller('control', function ($scope, $http) {
-    $scope.user = "";
+app.controller('control', function ($scope, $http, $window) {
+    $scope.user = $window.localStorage.user;
     $scope.university = "";
     var config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    $http.get(serverUrl + '/user/1', config).then(function (response) {
-        $scope.user = response.data;
-    });
+    // $http.get(serverUrl + '/user/1', config).then(function (response) {
+    //     $scope.user = response.data;
+    // }, function errorCallback(response) {
+    // });
     $http.get(serverUrl + '/university', config).then(function (response) {
         $scope.university = response.data;
         document.getElementById('mainBlockId').style.backgroundColor = '#' + $scope.university.color1;
@@ -145,6 +146,9 @@ app.directive('gridMain', function () {
             }
             $scope.show = function (lesson) {
                 $scope.lessonToView = lesson;
+                $scope.statusShow = true;
+                $scope.groupShow = false;
+                $scope.profShow = false;
                 $scope.info = "Дисциплина: " + lesson.subject + "" +
                     "\n Тип: " + lesson.lessonType +
                     "\n Преподаватель: " + lesson.professor +
@@ -203,6 +207,9 @@ app.directive('gridSearch', function () {
             }
             $scope.show = function (lesson) {
                 $scope.lessonToView = lesson;
+                $scope.statusShow = false;
+                $scope.groupShow = !filter.group;
+                $scope.profShow = !filter.professor;
                 $scope.info = "Дисциплина: " + lesson.subject + "" +
                     "\n Тип: " + lesson.lessonType +
                     "\n Преподаватель: " + lesson.professor +
@@ -324,25 +331,26 @@ app.directive('addLessonForm', function () {
                     var posistion = document.getElementById("week").value * 100 +
                         document.getElementById("workday").value * 10 +
                         +document.getElementById("time").value;
+
+                    var data = {
+                        position: $scope.positions,
+                        groups:  $scope.groups2,
+                        subject: selectedSubject,
+                        classroom: selectedClassroom,
+                        professor: selectedTeacher,
+                        lessonType: document.getElementById("type").value
+                    };
+                    // alert(data.lessonType);
                     alert('teacherId: ' + selectedTeacher + '\n' +
                         'classroomId: ' + selectedClassroom + '\n' +
                         'groupsId: ' + $scope.groups2.length + '\n' +
                         'position: ' + posistion + '\n' +
                         'subject: ' + selectedSubject + '\n' +
-                        'type: ' )
+                        'type: ' + document.getElementById("type").value);
+                    $http.post(serverUrl + '/lesson/add', data, config).then(function (response) {
+                        alert(response.data);
+                    });
                 }
-                // var data = {
-                //     positions: $scope.positions,
-                //     groups:  $scope.groups2,
-                //     subject: selectedSubject,
-                //     classroom: selectedClassroom,
-                //     professor: selectedTeacher,
-                //     type: document.getElementById("type").value
-                // };
-                //
-                // $http.post(serverUrl + '/lesson/add', data, config).then(function (response) {
-                //     alert(response.data);
-                // });
             };
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;

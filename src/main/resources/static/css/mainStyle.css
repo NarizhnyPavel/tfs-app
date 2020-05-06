@@ -12,8 +12,8 @@ body {
     margin-right: auto;
     width: 90%;
     background: #8ED9B6;
-    min-height: 800px;
-    max-height: 90%;
+    height: calc(100vh - 100px);
+    /*max-height: 95%;*/
     border-radius: 10px;
     box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
 }
@@ -82,12 +82,18 @@ body {
 .page{
     font-size: 15pt;
     width: 95%;
-    margin: 0 auto 50px;
+    margin: 0 auto 20px;
     display: none;
-    min-height: 450px;
+    /*min-height: 450px;*/
+    height: 100%;
     background-color: #8ED9B6;
     border-radius: 15px;
-    padding: 10px 10px 20px;
+    padding: 10px 10px 20px 10px;
+}
+
+.pages{
+    height: auto;
+    padding-bottom: 20px;
 }
 
 .page h2, h3{

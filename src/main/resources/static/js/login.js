@@ -66,7 +66,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             $http.post($location.absUrl() + "login/checkCode", data, config1).then(function (response) {
                 var data2 = response.data;
                 if (data2.id !== 0) {
-                    $window.localStorage.name = data2.name;
+                    $window.localStorage.user = data2;
                     var link;
                     // switch (data2.role) {
                     //     case 1:

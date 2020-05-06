@@ -1,7 +1,9 @@
 .timetableStyle{
-    /*background-color: darkseagreen;*/
+    background-color: darkseagreen;
     border-radius: 15px;
     min-height: inherit;
+    padding: 10px;
+    margin: 20px;
 }
 .timetableStyle tr{
     background-color: crimson;
