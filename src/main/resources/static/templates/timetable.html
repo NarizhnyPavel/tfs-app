@@ -1,15 +1,18 @@
-<h2>Расписание</h2>
-<div class="week-number-cell" style="padding-top: 10px">
-    <button ng-click="dec_week()"><</button>
-    <span class="dayName">неделя <b>{{week}}</b></span>
-    <button ng-click="inc_week()">></button>
-</div>
-<div class="days">
-<div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;"> <span class="dayName">{{day.dayName}}</span>
-    <ul ng-if="day.infoLessonDtos.length != 0">
-        <li ng-repeat="lesson in day.infoLessonDtos track by $index"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
-<!--        <li ng-repeat="lesson in day.lessons"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>-->
-    </ul>
-    <span ng-if="day.infoLessonDtos.length === 0"><br><br>Занятий нет</span>
-</div>
+<div class="timetableStyle">
+<!--    <h2>Расписание</h2>-->
+    <div class="week-number-cell" style="padding-top: 10px">
+        <button ng-click="dec_week()"><</button>
+        <span class="dayName">неделя <b>{{week}}</b></span>
+        <button ng-click="inc_week()">></button>
+    </div>
+    <div class="days">
+        <div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;"> <span class="dayName">{{day.dayName}}</span>
+            <ul ng-if="day.infoLessonDtos.length != 0">
+                <li ng-repeat="lesson in day.infoLessonDtos track by $index"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                <!--        <li ng-repeat="lesson in day.lessons"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>-->
+            </ul>
+            <span ng-if="day.infoLessonDtos.length === 0"><br><br>Занятий нет</span>
+        </div>
+    </div>
+    <info-box ng-show="infoShow"></info-box>
 </div>

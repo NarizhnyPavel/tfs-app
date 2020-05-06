@@ -1,23 +1,22 @@
-#timetable{
-    background-color: darkseagreen;
+.timetableStyle{
+    /*background-color: darkseagreen;*/
     border-radius: 15px;
     min-height: inherit;
-
 }
-#timetable tr{
+.timetableStyle tr{
     background-color: crimson;
     border-radius: 15px;
     height: 300px;
 }
 
-#timetable h2{
+.timetableStyle h2{
     padding-bottom: 5px ;
     margin-bottom: 3px;
     width: 350px;
     height: 50px;
 }
 
-#timetable h3{
+.timetableStyle h3{
     margin-top: 5px;
     margin-bottom: 25px;
     font-size: 14pt;
@@ -38,7 +37,7 @@
     vertical-align: top;
 }
 
-#timetable ul{
+.timetableStyle ul{
     text-align: left;
     margin-top: 20px;
     padding-left: 10px;

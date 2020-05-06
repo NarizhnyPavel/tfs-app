@@ -28,14 +28,24 @@
 
 <body ng-controller="control">
 <div id="mainBlockId" class="mainBlock">
-    <div class="header"><div>
-        <span>Time For Study</span>
-        <span>{{Uniname}}</span>
+    <div style="height: 170px">
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <span class="header">Time For Study</span>
+                </td>
+                <td >
+                    <p class="universityNameHeader">{{university.name}}</p>
+                </td>
+            </tr>
+            <tr><td colspan="2"><p class="universityNameHeader" style="font-size: 18px">Привет, {{user.name}}</p></td></tr>
+        </table>
     </div>
+    <div>
         <nav id="menu" class="top-menu">
             <ul class="menu-main">
                 <li>
-                    <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetabel">
+                    <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetable">
                     <label for="tab_1" id="timetabel_label">Расписание</label>
                 </li>
                 <li>
@@ -44,7 +54,7 @@
                 </li>
                 <li>
                     <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('lesson')" data-block-id="lesson">
-                    <label for="tab_3" id="lesson_label">Добавить lesson</label>
+                    <label for="tab_3" id="lesson_label">Добавить занятие</label>
                 </li>
                 <li>
                     <input type="radio" name="inset" value="" id="tab_4" onclick="showHide('settings')" data-block-id="settings">
@@ -55,19 +65,21 @@
     </div>
     <div class="pages">
         <div id="timetable" class="page" style="display: block;">
-            <grid ></grid>
-            <info-box ng-show="infoShow"></info-box>
+            <timetable-view type="main"></timetable-view>
+<!--            <info-box ng-show="infoShow"></info-box>-->
         </div>
         <div id="search" class="page" >
-            <h2>Поиск</h2>
+<!--            <h2>Поиск</h2>-->
             <search-block></search-block>
+            <timetable-view entity="entityToViewInTimeTable" type="search"></timetable-view>
+<!--            <info-box ng-show="infoShow"></info-box>-->
         </div>
         <div id="lesson" class="page" >
-            <h2>Добавление пары</h2>
-            <add-lesson-form></add-lesson-form>
+<!--            <h2>Добавление пары</h2>-->
+            <add-lesson-form ></add-lesson-form>
         </div>
         <div id="settings" class="page">
-            <h2>Настройки</h2>
+<!--            <h2>Настройки</h2>-->
             <university-settings></university-settings>
         </div>
     </div>

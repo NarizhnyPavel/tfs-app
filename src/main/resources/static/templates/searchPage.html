@@ -1,8 +1,7 @@
-<div class="filters"><input ng-show="searchShow" class="search-input" id="searchInput" type="text">
-    <div>
-        <button ng-click="filterProf()" id="prof" class="filter-button">Преподаватель</button>
-        <button ng-click="filterGroup()" id="group">Группа</button>
-        <!--    <span>/</span>-->
-        <button ng-click="filterRoom()" id="room" class="filter-button">Аудитория</button>
-    </div>
+<div><input id="searchDead" type="text" class="search-input" style="width: 400px" spellcheck="false"></div>
+<div class="filters">
+    <button id="prof" ng-click="filterProf()" id="prof" class="filter-button">Преподаватель</button>
+    <button ng-click="filterGroup()" id="group" class="filter-button">Группа</button>
+    <span>/</span>
+    <button ng-click="filterRoom()" id="room" class="filter-button">Аудитория</button>
 </div>

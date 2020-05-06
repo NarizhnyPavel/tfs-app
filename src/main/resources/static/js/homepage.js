@@ -1,33 +1,40 @@
-let university;
-let user;
+
 var app = angular.module('homepg', []);
 
-app.controller('control', function ($scope, $http) {
+var serverUrl = "http://localhost:8100";
 
+app.controller('control', function ($scope, $http) {
+    $scope.user = "";
+    $scope.university = "";
     var config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    $http.get('/user/1', config).then(function (response) {
-        user = response.data;
-    })
-    $http.get('/university', config).then(function (response) {
-        university = response.data;
-        document.getElementById('mainBlockId').style.backgroundColor = '#' + university.color1;
-        document.getElementById('menu').style.backgroundColor = '#' + university.color2;
-        // document.getElementById('timetable').style.backgroundColor = '#' + university.color2;
-        document.querySelector('.page').style.backgroundColor = '#' + university.color2;
+    $http.get(serverUrl + '/user/1', config).then(function (response) {
+        $scope.user = response.data;
     });
-    // alert(university.name);
-    $scope.info = "hello";
+    $http.get(serverUrl + '/university', config).then(function (response) {
+        $scope.university = response.data;
+        document.getElementById('mainBlockId').style.backgroundColor = '#' + $scope.university.color1;
+        document.getElementById('menu').style.backgroundColor = '#' + $scope.university.color2;
+        document.querySelector('.timetableStyle').style.backgroundColor = '#' + $scope.university.color3;
+        document.querySelector('.page').style.backgroundColor = '#' + $scope.university.color2;
+    });
+    // document.getElementById('timetable').style.backgroundColor = '#' + university.color2;
+    // $scope.info = "hello";
     $scope.infoShow = false;
+    $scope.entityToViewInTimeTable = {
+        id: 170, type: 1
+        , weekNum: 1
+    };
 });
 
-let minWeekNum;
-let maxWeekNum;
-let lessonToView;
-'use strict';
+var filter = {
+    professor: true,
+    group: true,
+    classroom: false
+};
 
 app.directive('searchBlock', function () {
     return {
@@ -38,49 +45,62 @@ app.directive('searchBlock', function () {
                 }
             };
             $scope.searchShow = false;
+            angular.element(document.querySelector('#prof')).css('backgroundColor', '#adadad');
+            angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
             $scope.filterProf = function () {
-                alert('hi');
-                // if (filter.professor === false){
-                //     filter.professor = true;
-                //     document.getElementById('#prof').style.backgroundColor = '#adadad';
-                // } else {
-                //     filter.professor = false;
-                //     document.getElementById('#prof').style.backgroundColor = 'white';
-                // }
+
+                if (filter.professor === false){
+                    filter.professor = true;
+                    angular.element(document.querySelector('#prof')).css('backgroundColor', '#adadad');
+                } else {
+                    filter.professor = false;
+                    angular.element(document.querySelector('#prof')).css('backgroundColor', 'white');
+                }
             };
             $scope.filterGroup = function () {
-                alert('hi');
-                // if (filter.classroom === true && filter.group === false){
-                //     filter.group = true;
-                //     filter.classroom = false;
-                //     document.getElementById('#group').style.backgroundColor = '#adadad';
-                //     document.getElementById('#room').style.backgroundColor = 'white';
-                // }else{
-                //     filter.group = false;
-                //     filter.classroom = true;
-                //     document.getElementById('#group').style.backgroundColor = 'white';
-                //     document.getElementById('#room').style.backgroundColor = '#adadad';
-                // }
+                filter.group = !filter.group;
+                filter.classroom = !filter.group;
+                if (filter.classroom === true && filter.group === false){
+                    angular.element(document.querySelector('#group')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#room')).css('backgroundColor', '#adadad');
+                }else{
+
+                    angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#room')).css('backgroundColor', 'white');
+                }
             };
             $scope.filterRoom = function () {
-                alert('hi');
+                filter.group = !filter.group;
+                filter.classroom = !filter.group;
+                if (filter.group === true && filter.classroom === false){
+                    angular.element(document.querySelector('#room')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
+                }else{
+                    angular.element(document.querySelector('#room')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#group')).css('backgroundColor', 'white');
+                }
                 // filter.professor = true;
-                // document.getElementById('#prof').style.backgroundColor = '#5e5e5e';
+                // angular.element((document.querySelector('#prof')).style.backgroundColor = '#5e5e5e';
             };
-            $('#searchInput').autocomplete({
-
+            $('#searchDead').autocomplete({
                 source: function (request, response) {
                     var data = {
                         request: request.term,
                         type: filter
                     };
-                    $http.post('/search', data, config).then(function (response2) {
+                    $http.post(serverUrl + '/search', data, config).then(function (response2) {
                         response(response2.data);
                     });
                 },
-                minLength: 1,
+                minLength: 2,
                 select: function displayItem(event, ui) {
-                    alert(ui.item.id + " " + ui.item.label + " " + ui.item.type);
+                    //TODO отображение расписания соответствующего элемента
+                    $scope.entityToViewInTimeTable = ui.item;
+                    $scope.entityToViewInTimeTable.weekNum = 1;
+                },
+                close: function refresh(event, ui) {
+                    // alert($scope.entityToViewInTimeTable.id + " " + $scope.entityToViewInTimeTable.type + " " + $scope.entityToViewInTimeTable.weekNum);
+                    $scope.$apply();
                 }
             });
         }
@@ -90,17 +110,18 @@ app.directive('searchBlock', function () {
     }
 });
 
-app.directive('grid', function () {
+app.directive('gridMain', function () {
     return {
+        scope:{},
         controller: function ($scope, $attrs, $http) {
-            minWeekNum = 1;
+            $scope.minWeekNum = 1;
             var config = {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             };
-            $http.get('/university/weeks', config).then(function (response) {
-                maxWeekNum = response.data;
+            $http.get(serverUrl + '/university/weeks', config).then(function (response) {
+                $scope.maxWeekNum = response.data;
             });
             $scope.week = 1;
             var data = {
@@ -109,14 +130,14 @@ app.directive('grid', function () {
             };
             refresh_timetable();
             $scope.inc_week = function () {
-                if ($scope.week < maxWeekNum) {
+                if ($scope.week < $scope.maxWeekNum) {
                     $scope.week++;
                     data.weekNum++;
                     refresh_timetable();
                 }
             }
             $scope.dec_week = function () {
-                if ($scope.week > minWeekNum) {
+                if ($scope.week > $scope.minWeekNum) {
                     $scope.week--;
                     data.weekNum--;
                     refresh_timetable();
@@ -133,11 +154,74 @@ app.directive('grid', function () {
                 $scope.$apply();
             }
             function refresh_timetable() {
-                $http.post('/lesson/info', data, config).then(function (response) {
+                $http.post(serverUrl + '/lesson/info', data, config).then(function (response) {
                     $scope.days2 = response.data;
                     $scope.$apply();
                 });
             }
+        }
+        , restrict: "E"
+        , templateUrl: "../templates/timetable.html",
+        transclude: true
+    }
+});
+
+app.directive('gridSearch', function () {
+    return {
+        scope:{
+            entity: '='
+        },
+        controller: function ($scope, $attrs, $http) {
+            $scope.minWeekNum = 1;
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            $http.get(serverUrl + '/university/weeks', config).then(function (response) {
+                $scope.maxWeekNum = response.data;
+            });
+            $scope.week = 1;
+            var data = {
+                id: 170, type: 1
+                , weekNum: 1
+            };
+            refresh_timetable();
+            $scope.inc_week = function () {
+                if ($scope.week < $scope.maxWeekNum) {
+                    $scope.week++;
+                    $scope.entity.weekNum++;
+                    // refresh_timetable();
+                }
+            }
+            $scope.dec_week = function () {
+                if ($scope.week > $scope.minWeekNum) {
+                    $scope.week--;
+                    $scope.entity.weekNum--;
+                    // refresh_timetable();
+                }
+            }
+            $scope.show = function (lesson) {
+                $scope.lessonToView = lesson;
+                $scope.info = "Дисциплина: " + lesson.subject + "" +
+                    "\n Тип: " + lesson.lessonType +
+                    "\n Преподаватель: " + lesson.professor +
+                    "\n Аудитория: " + lesson.classroom +
+                    "\n Статус: " + lesson.status + "";
+                $scope.infoShow = true;
+                $scope.$apply();
+            }
+            function refresh_timetable() {
+
+                $http.post(serverUrl + '/lesson/by', $scope.entity, config).then(function (response) {
+                    $scope.days2 = response.data;
+                    $scope.$apply();
+                });
+            }
+            // alert($scope.entity.id);
+            $scope.$watch('entity.weekNum', refresh_timetable);
+            $scope.$watch('entity.id', refresh_timetable);
+            $scope.$watch('entity.type', refresh_timetable);
         }
         , restrict: "E"
         , templateUrl: "../templates/timetable.html",
@@ -158,14 +242,6 @@ app.directive('infoBox', function () {
         , transclude: true
     }
 });
-
-var filter = {
-    professor: true,
-    group: true,
-    classroom: false
-};
-
-
 
 app.directive('groupBox', function () {
     return{
@@ -264,20 +340,20 @@ app.directive('addLessonForm', function () {
                 //     type: document.getElementById("type").value
                 // };
                 //
-                // $http.post('/lesson/add', data, config).then(function (response) {
+                // $http.post(serverUrl + '/lesson/add', data, config).then(function (response) {
                 //     alert(response.data);
                 // });
             };
-            $http.get('/university/weeks', config).then(function (response2) {
+            $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;
             });
-            $http.post('/workdays', config).then(function (response2) {
+            $http.post(serverUrl + '/workdays', config).then(function (response2) {
                 $scope.workdays = response2.data;
             });
-            $http.post('/times', config).then(function (response2) {
+            $http.post(serverUrl + '/times', config).then(function (response2) {
                 $scope.times = response2.data;
             });
-            $http.get('/lessontypes', config).then(function (response2) {
+            $http.get(serverUrl + '/lessontypes', config).then(function (response2) {
                 $scope.types = response2.data;
             });
 
@@ -310,7 +386,7 @@ app.directive('addLessonForm', function () {
             };
             $('#teacher').autocomplete({
                 source: function (request, response) {
-                    $http.post('/professors', request.term, config).then(function (response2) {
+                    $http.post(serverUrl + '/professors', request.term, config).then(function (response2) {
                         response(response2.data);
                     });
                 },
@@ -323,7 +399,7 @@ app.directive('addLessonForm', function () {
 
             $('#groups').autocomplete({
                 source: function (request, response) {
-                    $http.post('/groups', request.term, config).then(function (response2) {
+                    $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
                         response(response2.data);
                     });
                 },
@@ -343,7 +419,7 @@ app.directive('addLessonForm', function () {
 
             $('#classroom').autocomplete({
                 source: function (request, response) {
-                    $http.post('/classrooms', request.term, config).then(function (response2) {
+                    $http.post(serverUrl + '/classrooms', request.term, config).then(function (response2) {
                         response(response2.data);
                     });
                 },
@@ -356,7 +432,7 @@ app.directive('addLessonForm', function () {
 
             $('#subject').autocomplete({
                 source: function (request, response) {
-                    $http.post('/subjects', request.term, config).then(function (response2) {
+                    $http.post(serverUrl + '/subjects', request.term, config).then(function (response2) {
                         response(response2.data);
                     });
                 },
@@ -382,7 +458,7 @@ app.directive('universitySettings', function () {
                     'Content-Type': 'application/json'
                 }
             };
-            $http.get('/university', config).then(function (response) {
+            $http.get(serverUrl + '/university', config).then(function (response) {
                 $scope.uniData = response.data;
             });
             restore_main($scope);
@@ -514,3 +590,36 @@ function showHide(element_id) {
         obj.style.display = "block";
     }
 }
+
+app.directive('timetableView', function($compile){
+    "use strict";
+    return{
+        scope:{
+            entity: '='
+        },
+        restrict: 'E',
+        replace: true,
+        link: function(scope, element, attrs){
+            var render = function(){
+                var template = "";
+                switch(attrs.type){
+                    case "main":
+                        template = '<grid-main ></grid-main>';
+                        break;
+                    case "search":
+                        template = '<grid-search entity="entity"></grid-search>';
+                        break;
+                    // case "essay":
+                    //     template = '<essay></essay>';
+                    //     break;
+                }
+                element.html(template);
+                $compile(element.contents())(scope);
+            }
+            attrs.$observe('type', function(value) {
+                render();
+            });
+            render();
+        }
+    };
+});

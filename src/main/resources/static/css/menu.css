@@ -11,7 +11,7 @@
 .top-menu:after {
     content: "";
     position: absolute;
-    z-index: 2;
+    /*z-index: 2;*/
     left: 10px;
     width: 100%;
     height: 3px;
@@ -50,7 +50,7 @@
     border-top: 18px solid inherit;
     border-bottom: 18px solid inherit;
     transform: rotate(360deg);
-    z-index: -1;
+    /*z-index: -1;*/
 }
 
 .menu-main:before {
@@ -105,4 +105,5 @@
 
 #tab_1:checked ~ #timetabel_label, 
 #tab_2:checked ~ #search_label,
-#tab_3:checked ~ #settings_label { background: rgba(0, 0, 0, .2); }
+#tab_3:checked ~ #lesson_label,
+#tab_4:checked ~ #settings_label { background: rgba(0, 0, 0, .2); }
