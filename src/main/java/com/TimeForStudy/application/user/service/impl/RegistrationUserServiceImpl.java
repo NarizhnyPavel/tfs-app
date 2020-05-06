@@ -56,10 +56,10 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
                 userEntity.setName(registerDto.getName());
                 userEntity.setPhone(registerDto.getPhone());
                 userEntity.setRole(registerDto.getRole());
-//                userEntity.getGroups().add(updated);
-//                updated.getUsers().add(userEntity);
+                userEntity.getGroups().add(updated);
+                updated.getUsers().add(userEntity);
                 userRepository.save(userEntity);
-//                groupRepository.save(updated);
+                groupRepository.save(updated);
 //                GroupEntity groupEntity = groupRepository.findById((long) 1)
 //                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
 //                UserEntity userEntity = userRepository.findById((long) 42)

@@ -43,5 +43,5 @@ public class NewLessonDto {
     /**
      * Список групп.
      */
-    private List<GroupDto> groups;
+    private List<AddLessonGroup> groups;
 }

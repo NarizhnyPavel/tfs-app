@@ -93,7 +93,7 @@ app.directive('searchBlock', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 2,
+                minLength: 1,
                 select: function displayItem(event, ui) {
                     //TODO отображение расписания соответствующего элемента
                     $scope.entityToViewInTimeTable = ui.item;
@@ -398,7 +398,7 @@ app.directive('addLessonForm', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 2,
+                minLength: 1,
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
                     selectedTeacher = ui.item.id;
@@ -444,7 +444,7 @@ app.directive('addLessonForm', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 3,
+                minLength: 2,
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#subject')).css('border', "2px solid #cecece");
                     selectedSubject = ui.item.id;

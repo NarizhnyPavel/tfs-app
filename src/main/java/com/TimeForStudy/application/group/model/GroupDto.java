@@ -21,6 +21,7 @@ public class GroupDto {
      */
     private String number;
 
+
     public static GroupDto of(GroupEntity groupEntity) {
         GroupDto dto = new GroupDto();
         dto.setId(groupEntity.getId());

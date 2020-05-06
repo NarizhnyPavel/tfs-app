@@ -11,10 +11,12 @@ public class GroupsDto {
 
     private long id;
 
+    private int number;
 
     public GroupsDto(long id, String name) {
         this.id = id;
         this.label = name;
+        this.number = 1;
     }
 
 }

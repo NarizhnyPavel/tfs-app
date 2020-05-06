@@ -45,6 +45,11 @@ public class InfoLessonDto {
      */
     private String lessonType;
 
+    /**
+     * Группы
+     */
+    private String group;
+
     public InfoLessonDto( String time, int classroom, String subject, boolean status, String professor, String lessonType) {
         this.time = time;
         this.classroom = classroom;
