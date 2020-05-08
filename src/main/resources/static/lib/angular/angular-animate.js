@@ -221,7 +221,6 @@ function mergeAnimationDetails(element, oldAnimation, newAnimation) {
 
   extend(target, newOptions);
 
-  // TODO(matsko or sreeramu): proper fix is to maintain all animation callback in array and call at last,but now only leave has the callback so no issue with this.
   if (realDomOperation) {
     target.domOperation = realDomOperation;
   }
@@ -1161,7 +1160,6 @@ var $AnimateCssProvider = ['$animateProvider', /** @this */ function($animatePro
         helpers.blockTransitions(node, false);
       }
 
-      // TODO(matsko): for 1.5 change this code to have an animator object for better debugging
       return {
         $$willAnimate: true,
         end: endFn,
@@ -1767,9 +1765,6 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', /** @this */ function($
   }];
 }];
 
-// TODO(matsko): use caching here to speed things up for detection
-// TODO(matsko): add documentation
-//  by the time...
 
 var $$AnimateJsProvider = ['$animateProvider', /** @this */ function($animateProvider) {
   this.$get = ['$injector', '$$AnimateRunner', '$$jqLite',
@@ -1812,7 +1807,7 @@ var $$AnimateJsProvider = ['$animateProvider', /** @this */ function($animatePro
         var afterFn, beforeFn;
         if (event === 'leave') {
           beforeFn = 'leave';
-          afterFn = 'afterLeave'; // TODO(matsko): get rid of this
+          afterFn = 'afterLeave';
         } else {
           beforeFn = 'before' + event.charAt(0).toUpperCase() + event.substr(1);
           afterFn = event;
@@ -2014,7 +2009,6 @@ var $$AnimateJsProvider = ['$animateProvider', /** @this */ function($animatePro
 
         if (operations.length === 0) return;
 
-        // TODO(matsko): add documentation
         return function startAnimation(callback) {
           var runners = [];
           if (operations.length) {
@@ -2108,7 +2102,6 @@ var $$AnimateJsDriverProvider = ['$$animationProvider', /** @this */ function($$
     };
 
     function prepareAnimation(animationDetails) {
-      // TODO(matsko): make sure to check for grouped animations and delegate down to normal animations
       var element = animationDetails.element;
       var event = animationDetails.event;
       var options = animationDetails.options;
@@ -3020,7 +3013,6 @@ var $$AnimationProvider = ['$animateProvider', /** @this */ function($animatePro
       }
     }
 
-    // TODO(matsko): document the signature in a better way
     return function(element, event, options) {
       options = prepareAnimationOptions(options);
       var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
@@ -3175,7 +3167,6 @@ var $$AnimationProvider = ['$animateProvider', /** @this */ function($animatePro
 
       return runner;
 
-      // TODO(matsko): change to reference nodes
       function getAnchorNodes(node) {
         var SELECTOR = '[' + NG_ANIMATE_REF_ATTR + ']';
         var items = node.hasAttribute(NG_ANIMATE_REF_ATTR)
@@ -3252,7 +3243,7 @@ var $$AnimationProvider = ['$animateProvider', /** @this */ function($animatePro
               classes: cssClassesIntersection(fromAnimation.classes, toAnimation.classes),
               from: fromAnimation,
               to: toAnimation,
-              anchors: [] // TODO(matsko): change to reference nodes
+              anchors: []
             };
 
             // the anchor animations require that the from and to elements both have at least

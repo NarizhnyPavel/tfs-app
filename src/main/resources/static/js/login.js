@@ -2,6 +2,8 @@
 'use strict';
 var app = angular.module('myApp', []);
 
+var serverUrl = "http://localhost:8100";
+
 app.controller('loginController', function ($scope, $http, $location, $window) {
     $scope.formInfo = {};
     $scope.enterCode = false;
@@ -14,11 +16,27 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
 
     var config = {
         headers : {
-            'Accept': 'text/plain'
+            'Accept': 'text/plain',
         }
     }
-
+    $http.get(serverUrl + '/university', {
+        headers : {
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        $scope.university = response.data;
+        $window.localStorage.setItem('color1', response.data.color1);
+        $window.localStorage.setItem('color2', response.data.color2);
+        $window.localStorage.setItem('color3', response.data.color3);
+        // alert($window.localStorage.getItem('color1'));
+        // document.getElementById('mainBlockId').style.backgroundColor = '#' + $window.localStorage.getItem("color1");
+        // document.getElementById('.button').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
+        document.querySelector('.loginBlock').style.backgroundColor = '#' + $window.localStorage.getItem("color1");
+        document.querySelector('.button').style.backgroundColor = '#' + $window.localStorage.getItem("color1");
+        document.querySelector('.loginBlock').style.heigth = '350px';
+    });
     $scope.login = function () {
+        // alert('hi');
         if (!$scope.enterCode || $scope.buttonLabel === "Отправить код заново") {
             if (!$scope.formInfo.Phone) {
                 $scope.phoneRequired = 'Phone Required';
@@ -36,13 +54,13 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                             angular.element('.errorMessage').css('color', "black");
                             document.getElementById('inputPhone').readOnly = true;
                             document.getElementById('inputCode').readOnly = false;
-                            angular.element('.loginBlock').css('height', "300px");
+                            document.querySelector('.loginBlock').style.heigth = "350px";
                             $scope.errorShow = true;
                         } else if (response.data === "registrationNeeded"){
                             $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";
                             $scope.errorShow = true;
                             $scope.openRegistrationButton = true;
-                            angular.element('.loginBlock').css('height', "230px");
+                            angular.element(document.querySelector('.loginBlock')).css('height', "230px");
                         }
                     }, function error(response) {
                         $scope.postResultMessage = "Error with status: " + response.statusText;
@@ -65,8 +83,11 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
 
             $http.post($location.absUrl() + "login/checkCode", data, config1).then(function (response) {
                 var data2 = response.data;
+                // alert(data2.id)
                 if (data2.id !== 0) {
-                    $window.localStorage.user = data2;
+                    localStorage.setItem("userId", data2.id);
+                    localStorage.setItem("userName", data2.name);
+                    localStorage.setItem("userRole", data2.role);
                     var link;
                     // switch (data2.role) {
                     //     case 1:
@@ -117,7 +138,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                     $scope.postResultMessage = "";
                     $scope.errorShow = false;
                     document.getElementById('inputPhone').readOnly = true;
-                    angular.element('.loginBlock').css('height', "300px");
+                    angular.element(document.querySelector('.loginBlock')).css('height', "300px");
                 }
             }, function error(response) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;
@@ -136,8 +157,8 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 }
                 if (response.data === "groupError") {
                     $scope.postResultMessage = "Неверный номер группы!";
-                    angular.element('#inputGroup').css('border-color', "red");
-                    angular.element('.loginBlock').css('height', "310px");
+                    angular.element(document.querySelector('#inputGroup')).css('border-color', "red");
+                    angular.element(document.querySelector('.loginBlock')).css('height', "310px");
                 }
             }, function error(response) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;

@@ -760,9 +760,6 @@ function getBeginOperator(opEnd) {
   }
 }
 
-// TODO(chirayu): The interpolation endSymbol must also be accounted for. It
-// just so happens that "}" is an operator so it's in the list below.  But we
-// should support any other type of start/end interpolation symbol.
 var INTERESTING_OPERATORS_RE = /[[\]{}()'",]/g;
 MessageFormatParser.prototype.ruleInAngularExpression = function ruleInAngularExpression() {
   var match = this.searchRe(INTERESTING_OPERATORS_RE);
@@ -803,7 +800,6 @@ MessageFormatParser.prototype.ruleInAngularExpression = function ruleInAngularEx
     }
     // only the top level comma has relevance.
     if (this.angularOperatorStack.length === 0) {
-      // todo: does this need to be trimmed?
       this.expressionFn = this.$parse(this.text.substring(this.expressionStartIndex, match.index));
       // Needed to pretend to be $interpolate for tests copied from interpolateSpec.js
       this.expressionFn['exp'] = this.text.substring(this.expressionStartIndex, match.index);
