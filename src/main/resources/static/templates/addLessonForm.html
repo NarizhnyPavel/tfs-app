@@ -1,81 +1,83 @@
-<div class="groupAddBlock">
-    <table>
-        <tr>
-            <td >
-                <table id="pos-table">
-                    <tr class="groupAddBlock-field">
-                        <td><p>Номер недели:</p></td>
-                        <td>
-                            <input type="number" id="week" min="0" max="{{weeks}}" ng-model="week" value="1" step="1">
-                            <span style="font-size: 11pt">0-все недели</span>
-                        </td>
-                    </tr>
-                    <tr class="groupAddBlock-field">
-                        <td><p>День недели:</p></td>
-                        <td>
-                            <select name="workday" id="workday">
-                                <option ng-repeat="day in workdays" value="{{day.id}}" >{{day.label}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="groupAddBlock-field">
-                        <td><p>Время:</p></td>
-                        <td>
-                            <select name="workday" id="time">
-                                <option ng-repeat="time in times" value="{{time.id}}" >{{time.label}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button ng-click="addPosition()">Добавить</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <position-box></position-box>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td>
-                <table>
-                    <tr class="groupAddBlock-field">
-                        <td><p>Преподаватель:</p></td>
-                        <td>
-                            <input type="text" id="teacher" spellcheck="false" style="width: 300px"/>
-                        </td>
-                    </tr>
-                    <tr class="groupAddBlock-field">
-                        <td><p>Аудитория:</p></td>
-                        <td>
-                            <input type="text" id="classroom" spellcheck="false" style="width: 300px"/>
-                        </td>
-                    </tr>
-                    <tr class="groupAddBlock-field">
-                        <td><p>Группы:</p></td>
-                        <td>
-                            <input type="text" id="groups" spellcheck="false" style="width: 300px"/>
-                            `       <group-box></group-box>
-                        </td>
-                    </tr>
-                    <tr class="groupAddBlock-field">
-                        <td><p>Дисциплина:</p></td>
-                        <td>
-                            <input type="text" id="subject" spellcheck="false" style="width: 300px"/>
-                        </td>
-                    </tr>
-                    <tr class="groupAddBlock-field">
-                        <td><p>Тип занятия:</p></td>
-                        <td>
-                            <select id="type">
-                                <option ng-repeat="type in types" value="{{type.id}}" >{{type.label}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    <button ng-click="showLesson()">Проверить позиции</button>
+<div class="addLessonBlock">
+    <div class="groupAddBlock">
+        <table>
+            <tr>
+                <td >
+                    <table id="pos-table">
+                        <tr class="groupAddBlock-field">
+                            <td><p>Номер недели:</p></td>
+                            <td>
+                                <input type="number" id="week" min="0" max="{{weeks}}" ng-model="week" value="1" step="1">
+                                <span style="font-size: 11pt">0-все недели</span>
+                            </td>
+                        </tr>
+                        <tr class="groupAddBlock-field">
+                            <td><p>День недели:</p></td>
+                            <td>
+                                <select name="workday" id="workday">
+                                    <option ng-repeat="day in workdays" value="{{day.id}}" >{{day.label}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="groupAddBlock-field">
+                            <td><p>Время:</p></td>
+                            <td>
+                                <select name="workday" id="time">
+                                    <option ng-repeat="time in times" value="{{time.id}}" >{{time.label}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button ng-click="addPosition()">Добавить</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <position-box></position-box>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr class="groupAddBlock-field">
+                            <td><p>Преподаватель:</p></td>
+                            <td>
+                                <input type="text" id="teacher" spellcheck="false" style="width: 300px"/>
+                            </td>
+                        </tr>
+                        <tr class="groupAddBlock-field">
+                            <td><p>Аудитория:</p></td>
+                            <td>
+                                <input type="text" id="classroom" spellcheck="false" style="width: 300px"/>
+                            </td>
+                        </tr>
+                        <tr class="groupAddBlock-field">
+                            <td><p>Группы:</p></td>
+                            <td>
+                                <input type="text" id="groups" spellcheck="false" style="width: 300px"/>
+                                `       <group-box></group-box>
+                            </td>
+                        </tr>
+                        <tr class="groupAddBlock-field">
+                            <td><p>Дисциплина:</p></td>
+                            <td>
+                                <input type="text" id="subject" spellcheck="false" style="width: 300px"/>
+                            </td>
+                        </tr>
+                        <tr class="groupAddBlock-field">
+                            <td><p>Тип занятия:</p></td>
+                            <td>
+                                <select id="type">
+                                    <option ng-repeat="type in types" value="{{type.id}}" >{{type.label}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <button ng-click="showLesson()">Проверить позиции</button>
+    </div>
 </div>

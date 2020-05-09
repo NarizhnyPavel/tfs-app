@@ -22,23 +22,24 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js" type="text/javascript"></script>
 
     <script src="../js/homepage.js"></script>
 </head>
 
 <body ng-controller="control">
 <div id="mainBlockId" class="mainBlock">
-    <div style="height: 170px">
+    <div style="height: 150px">
         <table style="width: 100%">
             <tr>
                 <td>
-                    <span class="header">Time For Study</span>
+                    <span class="header">TimeForStudy</span>
                 </td>
                 <td >
                     <p class="universityNameHeader">{{university.name}}</p>
                 </td>
             </tr>
-            <tr><td colspan="2"><p class="universityNameHeader" style="font-size: 18px">Привет, {{user.name}}</p></td></tr>
+            <tr><td colspan="2"><p class="universityNameHeader" style="font-size: 18px; text-align: right; width: 100%">Привет, {{user.name}}</p></td></tr>
         </table>
     </div>
     <div>
@@ -72,11 +73,19 @@
 <!--            <h2>Поиск</h2>-->
             <search-block></search-block>
             <timetable-view entity="entityToViewInTimeTable" type="search"></timetable-view>
-<!--            <info-box ng-show="infoShow"></info-box>-->
+            <info-box ng-show="infoShow"></info-box>
         </div>
-        <div id="lesson" class="page" >
+        <div id="lesson"  class="page">
 <!--            <h2>Добавление пары</h2>-->
-            <add-lesson-form ></add-lesson-form>
+            <table>
+                <tr>
+                    <td ><add-lesson-form></add-lesson-form></td>
+                    <td ><search-block></search-block>
+                        <timetable-view entity="entityToViewInTimeTable" type="search"></timetable-view>
+                        <info-box ng-show="infoShow"></info-box>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div id="settings" class="page">
 <!--            <h2>Настройки</h2>-->

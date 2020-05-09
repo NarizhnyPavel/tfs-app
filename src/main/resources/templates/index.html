@@ -8,19 +8,31 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/loginStyle.css" />
     <link rel="stylesheet" href="css/mainStyle.css" />
+
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
     <script src="lib/jquery/jquery.js"></script>
     <script src="lib/jquery/jquery.maskedinput.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js" type="text/javascript"></script>
+
+    <script src="js/login.js"></script>
 </head>
 <body>
 <form role="form" ng-controller="loginController">
     <div class="loginBlock">
-        <div class="header">Time For Study</div>
+        <div class="loginHeader">Time For Study</div>
         <p class="divLine">
             <label id="phoneLabel" for="inputPhone">Телефон:</label>
             <input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
             <script>
-                $(function () {
-                    $("#inputPhone").mask("79999999999");
+                jQuery(function ($) {
+                    $("#inputPhone").mask("79999999999", {placeholder:"7__________"});
+                    // $("#inputPhone").mask("79999999999");
                 });
             </script>
         </p>
@@ -28,7 +40,8 @@
             <label id="codeLabel" for="inputCode">Код из смс:</label>
             <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
         <script>
-            $(function () {
+            jQuery(function ($) {
+                // $("#inputPhone").mask("79999999999", {placeholder:"7__________"});
                 $("#inputCode").mask("9999");
             });
         </script>
@@ -46,13 +59,6 @@
     </div>
 
 </form>
-<script src="lib/angular/angular.js"></script>
-<script src="lib/angular/angular-route.js"></script>
-<script src="js/app.js"></script>
-<script src="js/services.js"></script>
-<script src="js/login.js"></script>
-<script src="js/filters.js"></script>
-<script src="js/directives.js"></script>
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </body>
 
