@@ -15,10 +15,13 @@ import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionRepository;
+import com.TimeForStudy.application.lessontype.domain.LessonTypeEntity;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
+import com.TimeForStudy.application.semester.domain.SemesterEntity;
 import com.TimeForStudy.application.semester.domain.SemesterRepository;
 import com.TimeForStudy.application.semester.model.SemesterDto;
+import com.TimeForStudy.application.subject.domain.SubjectEntity;
 import com.TimeForStudy.application.subject.domain.SubjectRepository;
 import com.TimeForStudy.application.subject.model.SubjectDto;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
@@ -236,7 +239,7 @@ public class LessonServiceImpl implements LessonService {
      * Возвращение расписания на поиск.
      *
      * @param lessonByDto информация о расписании.
-     * @return
+     * @return список расписания по дням.
      */
     @Override
     public List<DaysDto> getLessonBy(LessonByDto lessonByDto) {
@@ -368,7 +371,6 @@ public class LessonServiceImpl implements LessonService {
             }
 
         }
-
         daysDto.setInfoLessonDtos(infoLessonDtos);
 
         return daysDto;
@@ -538,11 +540,24 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public List<BoolLessonDto> saveLesson(NewLessonDto newLessonDto) {
 
+        boolean mainFlag = false;
         List<BoolLessonDto> boolLessonDtos = new ArrayList<>();
         ClassroomEntity classroom = classroomRepository.findById(newLessonDto.getClassroom())
                 .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
         UserEntity userEntity = userRepository.findById(newLessonDto.getProfessor())
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        SubjectEntity subjectEntity = subjectRepository.findById(newLessonDto.getSubject())
+                .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
+        List<GroupEntity> groupEntities = new ArrayList<>();
+        for (AddLessonGroup group : newLessonDto.getGroups()) {
+            GroupEntity groupEntity = groupRepository.findById(group.getId())
+                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+            groupEntities.add(groupEntity);
+        }
+        LessonTypeEntity lessonTypeEntity = lessonTypeRepository.findById(newLessonDto.getLessonType())
+                .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
 
         for (PositionDto positionDto : newLessonDto.getPosition()) {
             BoolLessonDto boolLessonDto = new BoolLessonDto();
@@ -568,21 +583,35 @@ public class LessonServiceImpl implements LessonService {
                 //проверка кабинета
                 if (flagClassroom && (position.getLesson().getClassroom() == classroom)) {
                     boolLessonDto.setClassroom(0);
+                    mainFlag = true;
                     flagClassroom = false;
                 }
                 //проверка преподавателя
                 if (flagProfessor && (position.getLesson().getUser() == userEntity)) {
                     boolLessonDto.setProfessor(0);
+                    mainFlag = true;
                     flagProfessor = false;
                 }
                 //проверка групп
                 for (AddLessonGroup group : addLessonGroup) {
                     if (position.getLesson().getGroups().contains(group)) {
                         group.setNumber(0);
+                        mainFlag = true;
                     }
                 }
 
             }
+            if (mainFlag) {
+                LessonEntity lessonEntity = new LessonEntity();
+                lessonEntity.setGroups(groupEntities);
+                lessonEntity.setLessonType(lessonTypeEntity);
+                lessonEntity.setStatus(true);
+                lessonEntity.setSemester(semesterEntity);
+                lessonEntity.setUser(userEntity);
+                lessonEntity.setClassroom(classroom);
+                lessonEntity.setSubject(subjectEntity);
+            }
+            boolLessonDto.setPosition(positionDto.getNum());
             boolLessonDto.setGroups(addLessonGroup);
             boolLessonDtos.add(boolLessonDto);
         }

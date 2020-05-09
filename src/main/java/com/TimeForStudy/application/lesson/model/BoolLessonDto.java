@@ -8,6 +8,11 @@ import java.util.List;
 public class BoolLessonDto {
 
     /**
+     *  Позиция пары
+     */
+    private String position;
+
+    /**
      *  Кабинет, в котором проходит занятие
      */
     private int classroom;
