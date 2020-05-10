@@ -14,26 +14,22 @@ body{
     width: 530px;
     height: 250px;
     background: #8ED9B6;
+    color: white;
     border-radius: 10px;
     box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
-/*.loginBlock {*/
-/*    text-align: center;*/
-/*    !*    background: #8ED9B6;*!*/
-/*}*/
-
 .loginHeader {
     font-family: "Arial", Georgia, Serif;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 45px;
     display: inline-block;
     background-color: #adadad;
-border-radius: 5px;
+    border-radius: 15px;
     padding: 4px;
     margin: 15px auto;
     text-align: center;
-    text-shadow: 1px 2px 3px rgba(5,46,68,0.25);
+    text-shadow: 1px 5px 3px rgba(0, 0, 0, 0.1);
 }
 
 .errorMessage {
@@ -50,12 +46,14 @@ border-radius: 5px;
 
 .divLine {
     width: 550px;
+    height: 20px;
+    color: white;
     /* Ширина */
     text-align: left;
     /*margin-top: 30px;*/
     padding: 10px 5px 5px;
     /* Поля */
-    margin: 2px auto;
+    margin: 15px auto;
     transition: 0.6s;
     -moz-box-sizing: border-box;
     /* Для Firefox */
@@ -65,10 +63,27 @@ border-radius: 5px;
     /* Для IE и Opera */
 }
 
+.divLine label, span{
+    margin: 0 auto;
+    width: 100%;
+    text-align: right;
+    margin-left: -10px;
+}
+
+.divLine tr{
+    padding-left: 15px;
+}
+
+.divLine td{
+    padding-top: 5px;
+}
+
 input {
+    color: black;
     width: 200px;
     font-size: 13px;
-    padding: 7px 0 4px 10px;
+    padding: 7px 0 4px 15px;
+    margin-left: 5px;
     border: 2px solid #cecece;
     background: #F6F6f6;
     border-radius: 8px;
@@ -81,4 +96,8 @@ label {
 
 #error{
     padding: 0 0 -15px 0;
+}
+
+.buttonClass{
+    color: white;
 }

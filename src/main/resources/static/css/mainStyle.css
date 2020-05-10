@@ -53,7 +53,7 @@ body {
     text-align: center;
 }
 
-.button {
+.buttonClass {
     margin: 0 auto;
     border-radius: 6px;
     border-spacing: 30px 10px;
@@ -78,7 +78,7 @@ body {
     /*border: #6d6e71;*/
 }
 
-.button:hover {
+.buttonClass:hover {
     background-color: rgb( 75, 183, 141);
 }
 
