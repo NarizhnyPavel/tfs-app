@@ -8,6 +8,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/loginStyle.css" />
     <link rel="stylesheet" href="css/mainStyle.css" />
+    <link rel="icon" href="../icon/icon.png">
 
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular/angular.min.js"></script>
@@ -25,37 +26,46 @@
 <body>
 <form role="form" ng-controller="loginController">
     <div class="loginBlock">
-        <div class="loginHeader">Time For Study</div>
-        <p class="divLine">
-            <label id="phoneLabel" for="inputPhone">Телефон:</label>
-            <input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="formInfo.Phone" name="phone">
-            <script>
-                jQuery(function ($) {
-                    $("#inputPhone").mask("79999999999", {placeholder:"7__________"});
-                    // $("#inputPhone").mask("79999999999");
-                });
-            </script>
-        </p>
-        <p class="divLine" ng-show="enterCode">
-            <label id="codeLabel" for="inputCode">Код из смс:</label>
-            <input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code"></p>
-        <script>
-            jQuery(function ($) {
-                // $("#inputPhone").mask("79999999999", {placeholder:"7__________"});
-                $("#inputCode").mask("9999");
-            });
-        </script>
-        <p class="divLine" ng-show="registartionFields">
-            <label id="nameLabel" for="inputName">ФИО:</label>
-            <input width="300" id="inputName" placeholder="" ng-model="formInfo.Name">  </p>
-        <p class="divLine" ng-show="registartionFields">
-            <label id="groupLabel" for="inputGroup">Номер группы:</label>
-            <input width="300" id="inputGroup" placeholder="Необязательно" ng-model="formInfo.Group"> </p>
-        <tr class="divLine">
-            <p id="message" ng-show="postResultMessage"><span class="errorMessage" >{{postResultMessage}}</span> </p>
-            <button ng-show="openRegistrationButton" class="button" ng-click="registrateOpen()">Зарегистрироваться</button>
-            <button ng-show="enterLogin" class="button" ng-click="login()">{{buttonLabel}}</button>
-        </tr>
+        <div class="loginHeader">TimeForStudy</div>
+        <table style="margin-bottom: 20px; margin-top: 20px; width: 100%;">
+            <tr class="divLine" style="margin: 15px auto;">
+                <td><label id="phoneLabel" for="inputPhone">Телефон:</label></td>
+                <td><input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="phone" >
+                    <script>
+                           $("#inputPhone").mask("79999999999");
+                    </script>
+                </td>
+            </tr>
+            <tr ng-show="registartionFields" class="divLine">
+                <td><label id="nameLabel" for="inputName">ФИО:</label></td>
+                <td><input width="300" id="inputName" placeholder="" ng-model="formInfo.Name">  </td>
+            </tr>
+            <tr ng-show="registartionFields" class="divLine">
+                <td><label id="groupLabel" for="inputGroup">Номер группы:</label></td>
+                <td><input width="300" id="inputGroup" placeholder="Необязательно" ng-model="formInfo.Group"> </td>
+            </tr>
+            <tr class="divLine" ng-show="enterCode">
+                <td><label id="codeLabel" for="inputCode">Код из смс:</label></td>
+                <td><input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code">
+                    <script>
+                        jQuery(function ($) {
+                            $("#inputCode").mask("9999");
+                        });
+                    </script>
+                </td>
+            </tr>
+            <tr  class="divLine" id="message" ng-show="postResultMessage">
+                <td colspan="2"><label class="errorMessage" style="text-align: center">{{postResultMessage}}</label></td>
+            </tr>
+            <tr class="divLine">
+                <td colspan="2" style="padding-top: 20px; text-align: center;">
+                    <p>
+                    <button  id="buttonRegister" class="buttonClass" ng-show="openRegistrationButton"  ng-click="registrateOpen()">Зарегистрироваться</button>
+                    <button id="buttonLogin" ng-show="enterLogin" class="buttonClass" ng-click="login()">{{buttonLabel}}</button>
+                    </p>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </form>
