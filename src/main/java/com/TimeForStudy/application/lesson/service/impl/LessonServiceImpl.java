@@ -222,7 +222,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups1 = "";
                 for (GroupEntity group : lessonEntity.getGroups()) {
-                    groups1+=group.getNumber()+" ";
+                    groups1 += group.getNumber() + " ";
                 }
                 infoLessonDto.setGroup(groups1);
                 infoLessonDtos.add(infoLessonDto);
@@ -364,7 +364,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
                 for (GroupEntity group : lessonEntity.getGroups()) {
-                    groups+=group.getNumber()+" ";
+                    groups += group.getNumber() + " ";
                 }
                 infoLessonDto.setGroup(groups);
                 infoLessonDtos.add(infoLessonDto);
@@ -422,7 +422,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
                 for (GroupEntity group : lessonEntity.getGroups()) {
-                    groups+=group.getNumber()+" ";
+                    groups += group.getNumber() + " ";
                 }
                 infoLessonDto.setGroup(groups);
                 infoLessonDtos.add(infoLessonDto);
@@ -478,7 +478,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
                 for (GroupEntity group : lessonEntity.getGroups()) {
-                    groups+=group.getNumber()+" ";
+                    groups += group.getNumber() + " ";
                 }
                 infoLessonDto.setGroup(groups);
                 infoLessonDtos.add(infoLessonDto);
@@ -559,9 +559,22 @@ public class LessonServiceImpl implements LessonService {
         LessonTypeEntity lessonTypeEntity = lessonTypeRepository.findById(newLessonDto.getLessonType())
                 .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
 
+
+
+
         for (PositionDto positionDto : newLessonDto.getPosition()) {
+
             BoolLessonDto boolLessonDto = new BoolLessonDto();
-            List<AddLessonGroup> addLessonGroup = newLessonDto.getGroups();
+
+            List<AddLessonGroup> lessonGroups = new ArrayList<>();
+            for (AddLessonGroup group: newLessonDto.getGroups()) {
+                AddLessonGroup addLessonGroup = new AddLessonGroup();
+                addLessonGroup.setNumber(1);
+                addLessonGroup.setId(group.getId());
+                addLessonGroup.setLabel(group.getLabel());
+                lessonGroups.add(addLessonGroup);
+            }
+            boolLessonDto.setGroups(lessonGroups);
             List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                     .findAllByPositionAndDaysAndNumber(
                             Integer.parseInt(positionDto.getNum().substring(0, 1)),
@@ -590,14 +603,13 @@ public class LessonServiceImpl implements LessonService {
                 }
                 //проверка групп
                 int i = 0;
-                for (AddLessonGroup group : addLessonGroup) {
+                for (AddLessonGroup group1 : boolLessonDto.getGroups()) {
                     if (position.getLesson().getGroups().contains(groupEntities.get(i))) {
-                        group.setNumber(0);
+                        group1.setNumber(0);
                         mainFlag = false;
                     }
                     i++;
                 }
-
             }
 //            if (mainFlag) {
 //                LessonEntity lessonEntity = new LessonEntity();
@@ -610,11 +622,11 @@ public class LessonServiceImpl implements LessonService {
 //                lessonEntity.setSubject(subjectEntity);
 //                lessonRepository.save(lessonEntity);
 //            }
+
             boolLessonDto.setPosition(positionDto.getNum());
-            boolLessonDto.setGroups(addLessonGroup);
+
             boolLessonDtos.add(boolLessonDto);
         }
-
         return boolLessonDtos;
     }
 

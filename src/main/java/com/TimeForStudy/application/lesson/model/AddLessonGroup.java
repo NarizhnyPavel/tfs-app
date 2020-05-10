@@ -11,5 +11,5 @@ public class AddLessonGroup {
 
     private String label;
 
-    private int number;
+    private int number = 1;
 }
