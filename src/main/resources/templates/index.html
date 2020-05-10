@@ -32,7 +32,9 @@
                 <td><label id="phoneLabel" for="inputPhone">Телефон:</label></td>
                 <td><input id="inputPhone" type="text" placeholder="Phone 7xxxxxxxxxx" ng-model="phone" >
                     <script>
-                           $("#inputPhone").mask("79999999999");
+                           $("#inputPhone").click(function(){
+                               $(this).setCursorPosition(1);
+                           }).mask("79999999999");
                     </script>
                 </td>
             </tr>
@@ -48,9 +50,9 @@
                 <td><label id="codeLabel" for="inputCode">Код из смс:</label></td>
                 <td><input width="300" id="inputCode" placeholder="" ng-model="formInfo.Code">
                     <script>
-                        jQuery(function ($) {
-                            $("#inputCode").mask("9999");
-                        });
+                            $("#inputCode").click(function(){
+                                $(this).setCursorPosition(0);
+                            }).mask("9999");
                     </script>
                 </td>
             </tr>
