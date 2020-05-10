@@ -601,16 +601,17 @@ public class LessonServiceImpl implements LessonService {
                 }
 
             }
-            if (mainFlag) {
-                LessonEntity lessonEntity = new LessonEntity();
-                lessonEntity.setGroups(groupEntities);
-                lessonEntity.setLessonType(lessonTypeEntity);
-                lessonEntity.setStatus(true);
-                lessonEntity.setSemester(semesterEntity);
-                lessonEntity.setUser(userEntity);
-                lessonEntity.setClassroom(classroom);
-                lessonEntity.setSubject(subjectEntity);
-            }
+//            if (mainFlag) {
+//                LessonEntity lessonEntity = new LessonEntity();
+//                lessonEntity.setGroups(groupEntities);
+//                lessonEntity.setLessonType(lessonTypeEntity);
+//                lessonEntity.setStatus(true);
+//                lessonEntity.setSemester(semesterEntity);
+//                lessonEntity.setUser(userEntity);
+//                lessonEntity.setClassroom(classroom);
+//                lessonEntity.setSubject(subjectEntity);
+//                lessonRepository.save(lessonEntity);
+//            }
             boolLessonDto.setPosition(positionDto.getNum());
             boolLessonDto.setGroups(addLessonGroup);
             boolLessonDtos.add(boolLessonDto);
