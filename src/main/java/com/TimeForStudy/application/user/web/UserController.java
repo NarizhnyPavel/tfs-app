@@ -1,7 +1,9 @@
 package com.TimeForStudy.application.user.web;
 
+import com.TimeForStudy.application.lesson.model.AddLessonGroup;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +58,17 @@ public class UserController {
     }
 
     /**
+     * Возвращает групп пользователя по идентификатору.
+     *
+     * @param id идентификатор.
+     * @return пользователь.
+     */
+    @GetMapping(value = "/user/groups/{id}")
+    public List<AddLessonGroup> getUserGroups(@PathVariable long id) {
+        return userService.getUserGroupsById(id);
+    }
+
+    /**
      * Добавляет нового пользователя.
      *
      * @param addUserDto пользователь.
@@ -68,12 +81,11 @@ public class UserController {
     /**
      * Изменяет пользователя.
      *
-     * @param id идентификатор.
-     * @param addUserDto пользователь.
+     * @param updateUserDto пользователь.
      */
-    @PutMapping(value = "/user/update/{id}")
-    public void updateUser(@PathVariable long id, @RequestBody AddUserDto addUserDto) {
-        userService.updateUser(id, addUserDto);
+    @PostMapping(value = "/user/update")
+    public String updateUser(@RequestBody UpdateUserDto updateUserDto) {
+        return userService.updateUser(updateUserDto);
     }
 
     /**

@@ -559,9 +559,6 @@ public class LessonServiceImpl implements LessonService {
         LessonTypeEntity lessonTypeEntity = lessonTypeRepository.findById(newLessonDto.getLessonType())
                 .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
 
-
-
-
         for (PositionDto positionDto : newLessonDto.getPosition()) {
 
             BoolLessonDto boolLessonDto = new BoolLessonDto();

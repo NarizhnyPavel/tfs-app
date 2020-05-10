@@ -1,8 +1,12 @@
 package com.TimeForStudy.application.user.service;
 
+import com.TimeForStudy.application.lesson.model.AddLessonGroup;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -22,6 +26,14 @@ public interface UserService {
     UserDto getUserById(long id);
 
     /**
+     * Возвращает групп пользователя по идентификатору.
+     *
+     * @param id идентификатор.
+     * @return пользователь.
+     */
+    List<AddLessonGroup> getUserGroupsById(long id);
+
+    /**
      * Сохранение пользователя.
      *
      * @param addUserDto пользователь.
@@ -31,10 +43,9 @@ public interface UserService {
     /**
      * Изменение значений пользователя.
      *
-     * @param id идентификатор.
-     * @param addUserDto пользователь.
+     * @param updateUserDto идентификатор.
      */
-    void updateUser(long id, AddUserDto addUserDto);
+    String updateUser(UpdateUserDto updateUserDto);
 
     /**
      * Удаление пользователя.

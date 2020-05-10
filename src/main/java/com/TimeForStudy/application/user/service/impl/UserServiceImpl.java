@@ -1,11 +1,14 @@
 package com.TimeForStudy.application.user.service.impl;
 
+import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.lesson.model.AddLessonGroup;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.application.user.service.UserService;
 import com.TimeForStudy.error.ErrorDescription;
@@ -50,6 +53,18 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Возвращает групп пользователя по идентификатору.
+     *
+     * @param id идентификатор.
+     * @return пользователь.
+     */
+    @Override
+    public List<AddLessonGroup> getUserGroupsById(long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+        return user.getGroups().stream().map(AddLessonGroup::of).collect(Collectors.toList());
+    }
+
+    /**
      * Сохранение пользователя.
      *
      * @param addUserDto пользователь.
@@ -67,69 +82,63 @@ public class UserServiceImpl implements UserService {
     /**
      * Изменение значений пользователя.
      *
-     * @param id         идентификатор.
-     * @param addUserDto пользователь.
+     * @param updateUserDto пользователь.
      */
     @Override
-    public void updateUser(long id, AddUserDto addUserDto) {
-        UserEntity updated = userRepository.findById(id)
+    public String updateUser(UpdateUserDto updateUserDto) {
+        UserEntity userEntity = userRepository.findById(updateUserDto.getId())
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-        if (addUserDto.getGroups() != null) {
-            for (GroupDto group : addUserDto.getGroups()) {
-                groupRepository.findById(group.getId())
+        userEntity.setPhone(updateUserDto.getPhone());
+        userEntity.setName(updateUserDto.getName());
+        if (userEntity.getRole() == 4) {
+            userEntity.getGroups().clear();
+            for (AddLessonGroup group : updateUserDto.getGroups()) {
+                GroupEntity updated = groupRepository.findById(group.getId())
                         .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-            }
-            updated.setGroups(addUserDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
-        }
-        if (addUserDto.getPhone() != null) {
-            updated.setPhone(addUserDto.getPhone());
-        }
-        if (addUserDto.getName() != null) {
-            updated.setName(addUserDto.getName());
-        }
-        if (addUserDto.getRole() != 0) {
-            ErrorDescription.ROLE_DOES_NOT_MATCH
-                    .throwIfTrue((addUserDto.getRole() == 2) && (addUserDto.getRole() == 2));
-            updated.setRole(addUserDto.getRole());
-        }
-        userRepository.save(updated);
-    }
-
-    /**
-     * Удаление пользователя.
-     *
-     * @param id идентификатор.
-     */
-    @Override
-    public void deleteUser(long id) {
-        userRepository.deleteById(id);
-    }
-
-    /**
-     * Возвращение всех существующих пользователей.
-     *
-     * @return список пользователей.
-     */
-    @Override
-    public List<UserDto> findAll() {
-        List<UserEntity> userEntities = userRepository.findAll();
-        return userEntities.stream().map(UserDto::of).collect(Collectors.toList());
-    }
-
-    /**
-     * Возвращение преподавателей.
-     *
-     * @return список преподавателей.
-     */
-    public List<ProfessorDto> findAllProfessors(String name) {
-
-        List<UserEntity> userEntities = userRepository.findAllByRole((byte) 2);
-        List<ProfessorDto> professorDtos = new ArrayList<>();
-        for (UserEntity professor : userEntities) {
-            if (professor.getName().contains(name)) {
-                professorDtos.add(new ProfessorDto(professor.getId(), professor.getName()));
+                userEntity.getGroups().add(updated);
+                updated.getUsers().add(userEntity);
+                groupRepository.save(updated);
             }
         }
-        return professorDtos;
+        userRepository.save(userEntity);
+        return "success";
     }
-}
+
+        /**
+         * Удаление пользователя.
+         *
+         * @param id идентификатор.
+         */
+        @Override
+        public void deleteUser ( long id){
+            userRepository.deleteById(id);
+        }
+
+        /**
+         * Возвращение всех существующих пользователей.
+         *
+         * @return список пользователей.
+         */
+        @Override
+        public List<UserDto> findAll () {
+            List<UserEntity> userEntities = userRepository.findAll();
+            return userEntities.stream().map(UserDto::of).collect(Collectors.toList());
+        }
+
+        /**
+         * Возвращение преподавателей.
+         *
+         * @return список преподавателей.
+         */
+        public List<ProfessorDto> findAllProfessors (String name){
+
+            List<UserEntity> userEntities = userRepository.findAllByRole((byte) 2);
+            List<ProfessorDto> professorDtos = new ArrayList<>();
+            for (UserEntity professor : userEntities) {
+                if (professor.getName().contains(name)) {
+                    professorDtos.add(new ProfessorDto(professor.getId(), professor.getName()));
+                }
+            }
+            return professorDtos;
+        }
+    }
