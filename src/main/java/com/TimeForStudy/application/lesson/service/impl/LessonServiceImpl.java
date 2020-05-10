@@ -540,7 +540,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public List<BoolLessonDto> saveLesson(NewLessonDto newLessonDto) {
 
-        boolean mainFlag = false;
+        boolean mainFlag = true;
         List<BoolLessonDto> boolLessonDtos = new ArrayList<>();
         ClassroomEntity classroom = classroomRepository.findById(newLessonDto.getClassroom())
                 .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
@@ -565,8 +565,8 @@ public class LessonServiceImpl implements LessonService {
             List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                     .findAllByPositionAndDaysAndNumber(
                             Integer.parseInt(positionDto.getNum().substring(0, 1)),
-                            Integer.parseInt(positionDto.getNum().substring(2, 3)),
-                            Integer.parseInt(positionDto.getNum().substring(1, 2))
+                            Integer.parseInt(positionDto.getNum().substring(1, 2)),
+                            Integer.parseInt(positionDto.getNum().substring(2, 3))
                     );
             if (Integer.parseInt(positionDto.getNum().substring(0, 1)) != 0) {
                 List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
@@ -577,26 +577,24 @@ public class LessonServiceImpl implements LessonService {
                         );
                 lessonPositionEntities.addAll(lessonPositionEntities0);
             }
-            boolean flagClassroom = true;
-            boolean flagProfessor = true;
             for (LessonPositionEntity position : lessonPositionEntities) {
                 //проверка кабинета
-                if (flagClassroom && (position.getLesson().getClassroom() == classroom)) {
+                if (position.getLesson().getClassroom() == classroom) {
                     boolLessonDto.setClassroom(0);
-                    mainFlag = true;
-                    flagClassroom = false;
+                    mainFlag = false;
                 }
                 //проверка преподавателя
-                if (flagProfessor && (position.getLesson().getUser() == userEntity)) {
+                if (position.getLesson().getUser() == userEntity) {
                     boolLessonDto.setProfessor(0);
-                    mainFlag = true;
-                    flagProfessor = false;
+                    mainFlag = false;
                 }
                 //проверка групп
                 for (AddLessonGroup group : addLessonGroup) {
+
                     if (position.getLesson().getGroups().contains(group)) {
+                        System.out.println(1);
                         group.setNumber(0);
-                        mainFlag = true;
+                        mainFlag = false;
                     }
                 }
 
