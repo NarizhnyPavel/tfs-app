@@ -572,8 +572,8 @@ public class LessonServiceImpl implements LessonService {
                 List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
                         .findAllByPositionAndDaysAndNumber(
                                 0,
-                                Integer.parseInt(positionDto.getNum().substring(2, 3)),
-                                Integer.parseInt(positionDto.getNum().substring(1, 2))
+                                Integer.parseInt(positionDto.getNum().substring(1, 2)),
+                                Integer.parseInt(positionDto.getNum().substring(2, 3))
                         );
                 lessonPositionEntities.addAll(lessonPositionEntities0);
             }
@@ -589,13 +589,13 @@ public class LessonServiceImpl implements LessonService {
                     mainFlag = false;
                 }
                 //проверка групп
+                int i = 0;
                 for (AddLessonGroup group : addLessonGroup) {
-
-                    if (position.getLesson().getGroups().contains(group)) {
-                        System.out.println(1);
+                    if (position.getLesson().getGroups().contains(groupEntities.get(i))) {
                         group.setNumber(0);
                         mainFlag = false;
                     }
+                    i++;
                 }
 
             }
