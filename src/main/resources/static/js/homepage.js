@@ -183,7 +183,7 @@ app.directive('gridSearch', function () {
             entity: '='
         },
         controller: function ($scope, $attrs, $http, $window) {
-            document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+
             $scope.timetableShow = false;
             $scope.minWeekNum = 1;
             var config = {
@@ -224,18 +224,24 @@ app.directive('gridSearch', function () {
                 $scope.$apply();
             }
             function refresh_timetable() {
-                document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                // document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                 $http.post(serverUrl + '/lesson/by', $scope.entity, config).then(function (response) {
-                    if(response.data.length !== 0)
+                    if(response.data.length !== 0) {
                         $scope.timetableShow = true;
+                        // document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                    }
                     $scope.days2 = response.data;
                     $scope.$apply();
+                    // document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+
                 });
             }
             function refresh_timetable2() {
                 // $scope.week = 1;
                 // $scope.entity.weekNum = 1;
                 refresh_timetable();
+                document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+
             }
             // alert($scope.entity.id);
             // $scope.$watch('entity.weekNum', refresh_timetable2);
@@ -267,7 +273,10 @@ app.directive('groupBox', function () {
         controller: function ($scope) {
             $scope.delete = function (id) {
                 let index = $scope.groups2.findIndex(group => group.id === id);
+                console.log('удалил группу' + $scope.groups2[index].label);
                 $scope.groups2.splice(index, 1);
+                console.log($scope.groups2.length);
+
             }
         }, restrict: "E"
         , templateUrl: "../templates/groupBox.html"
@@ -288,9 +297,9 @@ app.directive('positionBox', function () {
     }
 });
 
-let selectedTeacher = -1;
-let selectedClassroom = -1;
-let selectedSubject = -1;
+let selectedTeacher = 170;
+let selectedClassroom = 5;
+let selectedSubject = 5;
 
 app.directive('addLessonForm', function () {
     return{
@@ -340,10 +349,6 @@ app.directive('addLessonForm', function () {
             }
             $scope.showLesson = function () {
                 if (checkFields() && checkFieldsPos()) {
-                    var posistion = document.getElementById("week").value * 100 +
-                        document.getElementById("workday").value * 10 +
-                        +document.getElementById("time").value;
-
                     var data = {
                         position: $scope.positions,
                         groups:  $scope.groups2,
@@ -352,15 +357,54 @@ app.directive('addLessonForm', function () {
                         professor: selectedTeacher,
                         lessonType: document.getElementById("type").value
                     };
-                    // alert(data.lessonType);
-                    alert('teacherId: ' + selectedTeacher + '\n' +
-                        'classroomId: ' + selectedClassroom + '\n' +
-                        'groupsId: ' + $scope.groups2.length + '\n' +
-                        'position: ' + posistion + '\n' +
-                        'subject: ' + selectedSubject + '\n' +
-                        'type: ' + document.getElementById("type").value);
                     $http.post(serverUrl + '/lesson/add', data, config).then(function (response) {
-                        alert(response.data);
+                        let answer = response.data;
+                        for (let i = 0; i < answer.length; i++) {
+                            let posIndex = $scope.positions.findIndex(pos => pos.num === answer[i].position);
+                            if (posIndex !== -1){
+                                console.log(posIndex);
+                                let position = $scope.positions[posIndex];
+                                position.status = 1;
+                                let group = true;
+                                for (let j = 0; j < answer[i].groups.length; j++) {
+                                    if($scope.groups2[j].number)
+                                        $scope.groups2[j].number = answer[i].groups[j].number;
+                                    if(!answer[i].groups[j].number)
+                                        group = false;
+                                }
+                                console.log('для позиции '+ position.label + ' group = ' + group);
+                                if (answer[i].professor === 0 || answer[i].classroom === 0 || !group){
+                                    position.status = 0;
+                                    let message = "";
+                                    if (answer[i].professor === 0) {
+                                        message = message + "преподавтель уже занят \n";
+                                        angular.element(document.querySelector('#teacher')).css('border-color', "red");
+                                    } else
+                                        angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
+                                    if (answer[i].classroom === 0) {
+                                        message = message + "аудитория уже занята \n";
+                                        angular.element(document.querySelector('#classroom')).css('border-color', "red");
+                                    } else
+                                        angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
+                                    if (!group){
+                                        console.log('Зашёл сюда');
+                                        let errGroups = $scope.groups2.filter(group => group.number === 0);
+                                        console.log(errGroups.length);
+                                        if (errGroups.length > 1)
+                                            message = message + "у групп ";
+                                        else
+                                            message = message + "у группы ";
+                                        for (let j = 0; j < errGroups.length; j++) {
+                                            message = message + errGroups[j].label + " ";
+                                        }
+                                        message = message + "уже есть пары";
+                                    }
+                                    position.errmessage = message;
+                                    console.log(position.errmessage);
+                                }
+                            }
+                        }
+                        $scope.$apply();
                     });
                 }
             };
@@ -382,6 +426,8 @@ app.directive('addLessonForm', function () {
                     var pos_num = document.getElementById("week").value * 100 +
                         document.getElementById("workday").value * 10+
                         + document.getElementById("time").value;
+                    if (pos_num < 100)
+                        pos_num = "0" + pos_num;
                     let index = $scope.positions.findIndex(position => position.num === pos_num);
                     if(index === -1) {
                         //проверка на наличие 0** в positions
@@ -393,8 +439,10 @@ app.directive('addLessonForm', function () {
                                 " " + $scope.workdays[document.getElementById("workday").value - 1].label +
                                 " " + $scope.times[document.getElementById("time").value - 1].label;
                         var pos = {
-                            num: pos_num,
-                            label: label
+                            num: "" + pos_num,
+                            label: label,
+                            status: 1,
+                            errmessage: ""
                         };
                         $scope.positions.push(pos);
 
@@ -433,7 +481,8 @@ app.directive('addLessonForm', function () {
                     $scope.$apply();
                 },
                 close: function () {
-                    $('#groups').text('Ваш текст');
+                    document.getElementById('groups').value = "";
+                    // $('#groups').text('Ваш текст');
                 }
             });
 
