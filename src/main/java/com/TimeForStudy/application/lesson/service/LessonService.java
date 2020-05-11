@@ -1,6 +1,8 @@
 package com.TimeForStudy.application.lesson.service;
 
 import com.TimeForStudy.application.lesson.model.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -23,15 +25,23 @@ public interface LessonService {
      * Возвращение расписания занятий для преподавателя.
      *
      * @param addInfoLessonDto информация о расписании.
-     * @return
+     * @return список дней.
      */
     List<DaysDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto);
+
+    /**
+     * Возвращение расписания занятий для студента.
+     *
+     * @param id информация о лекции.
+     * @return статус.
+     */
+    String inLessonStop(long id);
 
     /**
      * Возвращение расписания на поиск.
      *
      * @param lessonByDto информация о расписании.
-     * @return
+     * @return список дней.
      */
     List<DaysDto> getLessonBy(LessonByDto lessonByDto);
 
@@ -39,7 +49,7 @@ public interface LessonService {
      * Валидация поиска.
      *
      * @param validateSearch строка валидации и тип.
-     * @return
+     * @return список поиска.
      */
     List<SearchDto> getSearch(ValidateSearch validateSearch);
 

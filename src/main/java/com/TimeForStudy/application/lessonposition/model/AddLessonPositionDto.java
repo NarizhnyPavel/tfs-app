@@ -5,6 +5,8 @@ import com.TimeForStudy.application.lesson.model.LessonDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
  * Модель для добавления сущности позиция лекции
  *
@@ -15,16 +17,32 @@ import lombok.NoArgsConstructor;
 public class AddLessonPositionDto {
 
     /**
-     * Лекция
+     * Лекция.
      */
     private LessonDto lesson;
 
     /**
-     * Позиция
+     * Неделя.
      */
     private int position;
 
+    /**
+     * Номер пары.
+     */
     private int number;
 
+    /**
+     * День недели.
+     */
     private int days;
+
+    /**
+     * Статус.
+     */
+    private boolean status;
+
+    /**
+     * Время.
+     */
+    private LocalDate time;
 }

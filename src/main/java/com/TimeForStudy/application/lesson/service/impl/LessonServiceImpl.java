@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 
 import javax.sound.midi.Soundbank;
 import javax.swing.text.Position;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -141,10 +142,8 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
         //Группы
         List<GroupEntity> groupEntities = userEntity.getGroups();
-
         UniversityEntity universityEntity = universityRepository.findById((long) 1)
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-
         List<DaysDto> daysDtos = new ArrayList<>();
 
         if (universityEntity.getWorkDays().indexOf('1') != -1) {
@@ -172,26 +171,46 @@ public class LessonServiceImpl implements LessonService {
     }
 
     /**
+     * Возвращение расписания занятий для студента.
+     *
+     * @param id информация о лекции.
+     * @return статус.
+     */
+    @Override
+    public String inLessonStop(long id) {
+
+        LessonPositionEntity lessonPosition = lessonPositionRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
+        lessonPosition.setStatus(false);
+        LocalDate localDate = LocalDate.now();
+        if (lessonPosition.getPosition()==0) {
+            localDate = localDate.plusWeeks(1);
+        } else {
+            localDate = localDate.plusWeeks(2);
+        }
+        lessonPosition.setTime(localDate);
+        lessonPositionRepository.save(lessonPosition);
+        return "success";
+    }
+
+    /**
      * Формирование расписания на день
      */
     public DaysDto formDaysDto(List<GroupEntity> groupEntities, String nameDay, Integer weekNum, Integer numberDay) {
 
         DaysDto daysDto = new DaysDto();
         daysDto.setDayName(nameDay);
-
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
         List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
                 .findAllByPositionAndDays(0, numberDay);
         lessonPositionEntities.addAll(lessonPositionEntities0);
         Collections.sort(lessonPositionEntities, new SortByPositionLesson());
-
         List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
 
         for (LessonPositionEntity less : lessonPositionEntities) {
             LessonEntity lessonEntity = less.getLesson();
             List<GroupEntity> groups = lessonEntity.getGroups();
-
             boolean flag = false;
             for (GroupEntity group : groupEntities) {
                 if (groups.contains(group)) {
@@ -199,9 +218,7 @@ public class LessonServiceImpl implements LessonService {
                     break;
                 }
             }
-
             if (flag) {
-
                 InfoLessonDto infoLessonDto = new InfoLessonDto();
                 List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
                         findAllByUniversity(lessonEntity.
@@ -217,7 +234,14 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                infoLessonDto.setStatus(lessonEntity.isStatus());
+                if (!less.isStatus()) {
+                    LocalDate localDate = LocalDate.now();
+                    if (localDate.compareTo(less.getTime())>0) {
+                        less.setStatus(true);
+                        lessonPositionRepository.save(less);
+                    }
+                }
+                infoLessonDto.setStatus(less.isStatus());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups1 = "";
@@ -227,11 +251,8 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setGroup(groups1);
                 infoLessonDtos.add(infoLessonDto);
             }
-
         }
-
         daysDto.setInfoLessonDtos(infoLessonDtos);
-
         return daysDto;
     }
 
@@ -359,7 +380,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setStatus(less.isStatus());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -417,7 +438,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setStatus(less.isStatus());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -473,7 +494,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                infoLessonDto.setStatus(lessonEntity.isStatus());
+                infoLessonDto.setStatus(less.isStatus());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -648,7 +669,6 @@ public class LessonServiceImpl implements LessonService {
                     .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
             updated.setSubject(SubjectDto.on(addLessonDto.getSubject()));
         }
-        updated.setStatus(addLessonDto.isStatus());
 
         if (addLessonDto.getUser() != null) {
             UserEntity userEntity = userRepository.findById(addLessonDto.getUser().getId())

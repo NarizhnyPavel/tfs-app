@@ -104,7 +104,6 @@ public class LessonEntity {
     public LessonEntity(AddLessonDto addLessonDto) {
         this.classroom = ClassroomDto.on(addLessonDto.getClassroom());
         this.subject = SubjectDto.on(addLessonDto.getSubject());
-        this.status = addLessonDto.isStatus();
         this.user = UserDto.on(addLessonDto.getUser());
         this.semester = SemesterDto.on(addLessonDto.getSemester());
         this.lessonType = LessonTypeDto.on(addLessonDto.getLessonType());

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Сущность позиции занятия
@@ -54,6 +55,18 @@ public class LessonPositionEntity {
      */
     @Column(name = "days")
     private int days;
+
+    /**
+     * Статус
+     */
+    @Column(name = "status")
+    private boolean status;
+
+    /**
+     * Время отмены пары.
+     */
+    @Column(name = "time")
+    private LocalDate time;
 
     public LessonPositionEntity(AddLessonPositionDto addLessonPositionDto) {
         this.position = addLessonPositionDto.getPosition();

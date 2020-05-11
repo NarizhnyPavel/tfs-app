@@ -36,11 +36,6 @@ public class AddLessonDto {
     private SubjectDto subject;
 
     /**
-     * Статус
-     */
-    private boolean status;
-
-    /**
      * Преподаватель, который проводит занятие
      */
     private UserDto user;
