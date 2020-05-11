@@ -9,16 +9,19 @@ app.controller('control', function ($scope, $http, $window) {
         name: $window.localStorage.getItem("userName"),
         role: $window.localStorage.getItem("userRole"),
     };
+    $scope.dispetcherPages = false;
+    $scope.studprofPages = false;
+    if ($scope.user.role === "1")
+        $scope.dispetcherPages = true;
+    if ($scope.user.role === "3" || $scope.user.role === "4")
+        $scope.studprofPages = true;
+    console.log( $scope.user.role + ' ' + $scope.studprofPages + ' ' +  $scope.dispetcherPages)
     $scope.university = "";
     var config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    // $http.get(serverUrl + '/user/1', config).then(function (response) {
-    //     $scope.user = response.data;
-    // }, function errorCallback(response) {
-    // });
     $http.get(serverUrl + '/university', config).then(function (response) {
         $scope.university = response.data;
         $window.localStorage.setItem('color1', $scope.university.color1);
@@ -29,10 +32,7 @@ app.controller('control', function ($scope, $http, $window) {
         document.querySelector('.page').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
 
     });
-    // document.getElementById('timetable').style.backgroundColor = '#' + university.color2;
-    // $scope.info = "hello";
     $scope.infoShow = false;
-    // alert($scope.user.name);
     $scope.entityToViewInTimeTable = {
         id: $scope.user.id, type: $scope.user.role
         , weekNum: 1
@@ -106,6 +106,7 @@ app.directive('searchBlock', function () {
                     $scope.entityToViewInTimeTable.weekNum = 1;
                 },
                 close: function refresh(event, ui) {
+                    console.log('сущность изменилась');
                     $scope.$apply();
                 }
             });
@@ -183,8 +184,8 @@ app.directive('gridSearch', function () {
             entity: '='
         },
         controller: function ($scope, $attrs, $http, $window) {
-
-            $scope.timetableShow = false;
+            $scope.timetableShow = true;
+            document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             $scope.minWeekNum = 1;
             var config = {
                 headers: {
@@ -196,23 +197,21 @@ app.directive('gridSearch', function () {
             });
             $scope.week = 1;
             function changeWeek(){
-                // alert('hi');
                 $scope.week = $scope.entity.weekNum;
             }
             $scope.$watch('entity.weekNum', changeWeek());
             $scope.inc_week = function () {
                 if ($scope.entity.weekNum < $scope.maxWeekNum) {
-                    // $scope.week++;
+                    $scope.week++;
                     $scope.entity.weekNum++;
-
-                    // refresh_timetable();
+                    refresh_timetable();
                 }
             }
             $scope.dec_week = function () {
                 if ($scope.entity.weekNum > $scope.minWeekNum) {
-                    // $scope.week--;
+                    $scope.week--;
                     $scope.entity.weekNum--;
-                    // refresh_timetable();
+                    refresh_timetable();
                 }
             }
             $scope.show = function (lesson) {
@@ -223,30 +222,32 @@ app.directive('gridSearch', function () {
                 $scope.infoShow = true;
                 $scope.$apply();
             }
+            function changeBack() {
+                document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                angular.element(document.querySelector('.timetableStyle')).css('backgroundColor', '#' + $window.localStorage.getItem("color3"));
+                console.log('я пытался');
+            }
             function refresh_timetable() {
-                // document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                 $http.post(serverUrl + '/lesson/by', $scope.entity, config).then(function (response) {
                     if(response.data.length !== 0) {
                         $scope.timetableShow = true;
-                        // document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                        changeBack();
                     }
                     $scope.days2 = response.data;
                     $scope.$apply();
-                    // document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
-
                 });
+                changeBack();
             }
             function refresh_timetable2() {
-                // $scope.week = 1;
-                // $scope.entity.weekNum = 1;
+                console.log('таблица поменялась');
+                $scope.week = 1;
+                $scope.entity.weekNum = 1;
                 refresh_timetable();
-                document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
-
+                changeBack();
             }
-            // alert($scope.entity.id);
-            // $scope.$watch('entity.weekNum', refresh_timetable2);
+            // $scope.$watch('entity.weekNum', refresh_timetable);
             $scope.$watch('entity.id', refresh_timetable2);
-            $scope.$watch('entity.type', refresh_timetable2);
+            // $scope.$watch('entity.type', refresh_timetable2);
         }
         , restrict: "E"
         , templateUrl: "../templates/timetable.html",
@@ -655,8 +656,12 @@ function showHide(element_id) {
     search.style.display = "none";
     var settings = document.getElementById('settings');
     settings.style.display = "none";
-    var settings = document.getElementById('lesson');
-    settings.style.display = "none";
+    var lesson = document.getElementById('lesson');
+    if (lesson !== null)
+        lesson.style.display = "none";
+    var parser = document.getElementById('parser');
+    if (parser !== null)
+        parser.style.display = "none";
     var obj = document.getElementById(element_id);
     if (obj.style.display != "block") {
         obj.style.display = "block";
@@ -667,7 +672,7 @@ app.directive('timetableView', function($compile){
     "use strict";
     return{
         scope:{
-            entity: '='
+            entity1: '='
         },
         restrict: 'E',
         replace: true,
@@ -679,7 +684,7 @@ app.directive('timetableView', function($compile){
                         template = '<grid-main ></grid-main>';
                         break;
                     case "search":
-                        template = '<grid-search entity="entity"></grid-search>';
+                        template = '<grid-search entity="entity1"></grid-search>';
                         break;
                     // case "essay":
                     //     template = '<essay></essay>';

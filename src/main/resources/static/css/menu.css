@@ -4,8 +4,8 @@
     position: relative;
     background: #339966;
     /*width: 100%;*/
-    max-width: 100%;
-    min-width: 1400px;
+    max-width: 1400px;
+    min-width: 1000px;
     box-shadow: inset 1px 0 0 rgba(255, 255, 255, .1), inset -1px 0 0 rgba(255, 255, 255, .1), inset 150px 0 150px -150px rgba(255, 255, 255, .12), inset -150px 0 150px -150px rgba(255, 255, 255, .12);
 }
 
@@ -112,4 +112,5 @@
 #tab_1:checked ~ #timetabel_label, 
 #tab_2:checked ~ #search_label,
 #tab_3:checked ~ #lesson_label,
-#tab_4:checked ~ #settings_label { background: rgba(0, 0, 0, .2); }
+#tab_4:checked ~ #parser_label,
+#tab_5:checked ~ #settings_label { background: rgba(0, 0, 0, .2); }
