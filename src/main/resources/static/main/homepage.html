@@ -54,12 +54,12 @@
                     <label for="tab_2" id="search_label">Поиск</label>
                 </li>
                 <li ng-show="dispetcherPages">
-                    <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('lesson')" data-block-id="lesson">
+                    <input type="radio" name="inset" value="" id="tab_3" ng-checked="dispetcherPages" onclick="showHide('lesson')" data-block-id="lesson">
                     <label for="tab_3" id="lesson_label">Добавить занятие</label>
                 </li>
                 <li ng-show="dispetcherPages">
                     <input type="radio" name="inset" value="" id="tab_4" onclick="showHide('parser')" data-block-id="parser">
-                    <label for="tab_4" id="parser_label">Добавить занятие</label>
+                    <label for="tab_4" id="parser_label">Добавить данные</label>
                 </li>
                 <li>
                     <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('settings')" data-block-id="settings">
@@ -81,10 +81,10 @@
             <table style="width: 100%">
                 <tr>
                     <td ><add-lesson-form ng-show="dispetcherPages"></add-lesson-form></td>
-<!--                    <td ><search-block ng-if="dispetcherPages"></search-block>-->
-<!--                        <timetable-view ng-if="dispetcherPages" entity="entityToViewInTimeTable" type="search"></timetable-view>-->
-<!--                        <info-box ng-show="infoShow"></info-box>-->
-<!--                    </td>-->
+                    <td ><search-block ng-if="dispetcherPages"></search-block>
+                        <timetable-view ng-if="dispetcherPages" type="search"></timetable-view>
+                        <info-box ng-show="infoShow"></info-box>
+                    </td>
                 </tr>
             </table>
         </div>
