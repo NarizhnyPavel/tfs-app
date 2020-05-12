@@ -196,11 +196,11 @@ app.directive('gridSearch', function () {
         },
         controller: function ($scope, $attrs, $http, $window) {
             $scope.timetableShow = false;
+            $scope.tableId = "table2";
             $scope.entityFromSearch = {
                 id: "-1", type: "0"
                 , weekNum: 1
             };
-            document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             $scope.minWeekNum = 1;
             $scope.days2 = [];
             var config = {
@@ -238,20 +238,16 @@ app.directive('gridSearch', function () {
                 $scope.infoShow = true;
                 $scope.$apply();
             }
-            function changeBack() {
-                document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
-                angular.element(document.querySelector('.timetableStyle')).css('backgroundColor', '#' + $window.localStorage.getItem("color3"));
-            }
             function refresh_timetable() {
                 console.log('пытаюсь обновить таблицу для ' + $scope.entityFromSearch.id);
                 console.log($scope.entityFromSearch);
                 $http.post(serverUrl + '/lesson/by', $scope.entityFromSearch, config).then(function (response) {
                     if(response.data.length !== 0) {
                         $scope.timetableShow = true;
+
                     }
                     $scope.days2 = response.data;
                     $scope.$apply();
-                    document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                 });
             }
             $scope.$on('myCustomEvent2', function (event, data) {
@@ -260,7 +256,7 @@ app.directive('gridSearch', function () {
                 $scope.week = 1;
                 $scope.entityFromSearch.weekNum = 1;
                 refresh_timetable();
-                changeBack();
+                document.querySelector('#table2').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             });
         }
         , restrict: "E"
@@ -537,6 +533,8 @@ app.directive('universitySettings', function () {
         scope:{},
         controller: function ($scope, $http, $window) {
             document.querySelector('.register-fields').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
+            document.querySelector('#returnButtonUni').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            document.querySelector('#clickUni').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             var config = {
                 headers: {
                     'Content-Type': 'application/json'
@@ -651,6 +649,20 @@ app.directive('universitySettings', function () {
                 }, function error(response) {
                     alert("Сохранено");
                 });
+                // jQuery(function ($) {
+                //     $.mask.definitions['q'] = '[A-Fa-f0-9]';
+                //     $("#color1").click(function() {
+                //         $(this).setCursorPosition(1);
+                //     }).mask("#9999");;
+                // });
+                // $("#inputPhone").click(function(){
+                //     $(this).setCursorPosition(1);
+                // }).mask("79999999999");
+                // jQuery(function ($) {
+                //     $(function () {
+                //         $("#durationUni").mask("99");
+                //     });
+                // });
             }
         }
         , restrict: "E"
@@ -742,3 +754,43 @@ app.directive('searchView', function($compile){
         }
     };
 });
+
+app.directive('userSettings', function () {
+    return {
+        controller: function ($scope, $window) {
+            console.log("тукущая роль" + $window.localStorage.getItem("userRole"));
+            $scope.user.id = $window.localStorage.getItem("userRole");
+            $scope.groups2 = [
+                {
+                    id: 6,
+                    label: "7372",
+                    number: 1
+                }
+            ];
+            $scope.codeSended = false;
+            console.log('пытаюсь применить стиль '+ $window.localStorage.getItem("color2"));
+            $scope.varifytel = function() {
+
+            };
+            document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
+            document.querySelector('#varifyId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            document.querySelector('#saveSett').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+        },
+        restrict: "E",
+        templateUrl: "../templates/userSettings.html"
+
+    };
+});
+
+$.fn.setCursorPosition = function(pos) {
+    if ($(this).get(0).setSelectionRange) {
+        $(this).get(0).setSelectionRange(pos, pos);
+    } else if ($(this).get(0).createTextRange) {
+        var range = $(this).get(0).createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', pos);
+        range.moveStart('character', pos);
+        range.select();
+    }
+};
+

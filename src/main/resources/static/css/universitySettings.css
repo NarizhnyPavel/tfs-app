@@ -1,6 +1,4 @@
-
 .register-fields {
-
     border-color: black;
     top: 0;
     text-align: center;
@@ -60,8 +58,6 @@
     /*padding: 7px 0 4px 10px;*/
 }
 
-
-
 .workdays {
     width: 200px;
     height: 200px;
@@ -101,10 +97,10 @@
 }
 
 .lesson-tr{
-    margin: 10px;
+    margin: 0px;
     vertical-align: center;
     height: 20px;
-    font-size: 20pt;
+    font-size: 15pt;
     background-color: #CCCC99;
     border-radius: 15px;
 }
@@ -114,11 +110,12 @@
 }
 
 .lesson-input{
+    text-align: center;
     -webkit-appearance: none;
     width: 55px;
-    height: 30px;
+    height: 24px;
     font-size: 20px;
-    padding: 7px 0 4px 10px;
+    padding: 2px 0 4px 0px;
     border: 2px solid #cecece;
     background: #F6F6f6;
     border-radius: 10px;
@@ -144,4 +141,8 @@
 
 .register-fields-h2 span{
     height: 50px;
+}
+
+.register-fields table {
+    margin: 0 auto;
 }

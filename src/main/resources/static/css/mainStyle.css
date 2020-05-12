@@ -54,6 +54,7 @@ body {
 }
 
 .buttonClass {
+    color: white;
     margin: 0 auto;
     border-radius: 6px;
     border-spacing: 30px 10px;

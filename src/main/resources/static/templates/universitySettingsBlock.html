@@ -7,7 +7,7 @@
                     <td><input id="name" style="width: 350px" ng-model="uniData.name" type="text" class="register-input"></td>
                 </tr>
                 <tr> <td colspan="2"><span class="register-label">Количество повторяющихся недель   </span>
-                    <input type="number" id="weeks" min="1" max="4" ng-model="uniData.weeks" value="1" step="1" class="register-input" style="height: 20px; width: 40px">
+                    <input type="number" id="weeksUni" min="1" max="4" ng-model="uniData.weeks" value="1" step="1" class="register-input" style="height: 20px; width: 40px">
                     <script>
                         $(function () {
                             $("#weeks").mask("9");
@@ -16,7 +16,7 @@
                     </td>
                 </tr>
                 <tr> <td colspan="2"><span class="register-label">Продолжительность занятий</span>
-                    <input id="duration" ng-model="uniData.lessonDuration" type="text" class="register-input" style="width: 50px;"><span>мин.</span>
+                    <input id="durationUni" ng-model="uniData.lessonDuration" type="text" class="register-input" style="width: 50px;"><span>мин.</span>
                     <script>
                         $(function () {
                             $("#duration").mask("99");
@@ -29,18 +29,18 @@
                     <td colspan="3">
                         <table style="width: 100%">
                             <tr >
-                                <td><input style="width: 78px" placeholder="#000000" ng-model="uniData.color1" type="text" id="color1" class="register-input" style="width: 60px;">
+                                <td><input style="width: 78px" placeholder="000000" ng-model="uniData.color1" type="text" id="color1" class="register-input" style="width: 60px;">
                                     <script>
-                                        jQuery(function ($) {
-                                            //создания специального символа h для маски
-                                            $.mask.definitions['q'] = '[A-Fa-f0-9]';
-                                            $("#color1").mask("#qqqqqq", {placeholder:"#______"});
-                                        });
+                                        // jQuery(function ($) {
+                                        //     //создания специального символа h для маски
+                                        //     $.mask.definitions['q'] = '[A-Fa-f0-9]';
+                                        //     $("#color1").mask("#qqqqqq", {placeholder:"#______"});
+                                        // });
                                     </script>
                                 </td>
 
                                 <td>
-                                    <input style="width: 78px" placeholder="#000000" ng-model="uniData.color2" type="text" id="color2" class="register-input" style="width: 60px;">
+                                    <input style="width: 78px" placeholder="000000" ng-model="uniData.color2" type="text" id="color2" class="register-input" style="width: 60px;">
                                     <script>
                                         jQuery(function ($) {
                                             //создания специального символа h для маски
@@ -50,7 +50,7 @@
                                     </script>
                                 </td>
                                 <td>
-                                    <input style="width: 78px" placeholder="#000000" ng-model="uniData.color3" type="text" id="color3" class="register-input" style="width: 60px;">
+                                    <input style="width: 78px" placeholder="000000" ng-model="uniData.color3" type="text" id="color3" class="register-input" style="width: 60px;">
                                     <script>
                                         jQuery(function ($) {
                                             //создания специального символа h для маски
@@ -171,7 +171,7 @@
         </script>
     </table>
     <div class="divLine">
-        <button ng-show="returnShow" ng-click="return()" class="buttonClass" style="font-size: 22px">Назад</button>
-        <button ng-click="button_click()" class="buttonClass" style="font-size: 22px">{{buttonLabel}}</button>
+        <button id="returnButtonUni" ng-show="returnShow" ng-click="return()" class="buttonClass" style="font-size: 22px">Назад</button>
+        <button id="clickUni" ng-click="button_click()" class="buttonClass" style="font-size: 22px">{{buttonLabel}}</button>
     </div>
 </div>
