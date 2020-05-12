@@ -15,7 +15,7 @@ app.controller('control', function ($scope, $http, $window) {
         $scope.dispetcherPages = true;
         document.querySelector("#lesson").style.display = "block";
     }
-    if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "4")
+    if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2")
         $scope.studprofPages = true;
     console.log( $scope.user.role + ' ' + $scope.studprofPages + ' ' +  $scope.dispetcherPages)
     $scope.university = "";
