@@ -4,6 +4,7 @@ import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.model.AddLessonGroup;
+import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.AddUserDto;
@@ -141,4 +142,5 @@ public class UserServiceImpl implements UserService {
             }
             return professorDtos;
         }
+
     }

@@ -1,10 +1,12 @@
 package com.TimeForStudy.application.user.web;
 
 import com.TimeForStudy.application.lesson.model.AddLessonGroup;
+import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
+import com.TimeForStudy.application.user.service.LoginUserService;
 import com.TimeForStudy.application.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,11 @@ public class UserController {
      * {@link UserService}
      */
     private final UserService userService;
+
+    /**
+     * {@link LoginUserService}
+     */
+    private final LoginUserService loginUserService;
 
 
     /**
@@ -97,4 +104,27 @@ public class UserController {
     public void deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
     }
+
+    /**
+     * Проверка кода в настройках.
+     *
+     * @param verificationPair пара телефон - код.
+     * @return пользователь.
+     */
+    @PostMapping(value = "user/check/code")
+    public String checkCode(@RequestBody VerificationPair verificationPair) {
+        return loginUserService.settingsCheckCode(verificationPair);
+    }
+
+    /**
+     * Проверка телефона в настройках.
+     *
+     * @param phone телефон.
+     * @return статус.
+     */
+    @PostMapping(value = "user/edit/phone")
+    public String checkPhone(@RequestBody String phone) {
+        return loginUserService.settingsSendCode(phone);
+    }
+
 }

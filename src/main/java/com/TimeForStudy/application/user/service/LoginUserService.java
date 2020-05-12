@@ -35,4 +35,20 @@ public interface LoginUserService {
      * @return пользователь
      */
     UserDto checkCode(VerificationPair verificationPair);
+
+    /**
+     * Проверка телефона в настройках
+     *
+     * @param phone телефон
+     * @return статус
+     */
+    String settingsSendCode(String phone);
+
+    /**
+     * Проверка кода в настройках
+     *
+     * @param verificationPair пара код - телефон
+     * @return пользователь
+     */
+    String settingsCheckCode(VerificationPair verificationPair);
 }

@@ -1,6 +1,7 @@
 package com.TimeForStudy.application.user.service;
 
 import com.TimeForStudy.application.lesson.model.AddLessonGroup;
+import com.TimeForStudy.application.otherDataClasses.VerificationPair;
 import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UpdateUserDto;
@@ -67,5 +68,6 @@ public interface UserService {
      * @return список преподавателей.
      */
     List<ProfessorDto> findAllProfessors(String name);
+
 }
 

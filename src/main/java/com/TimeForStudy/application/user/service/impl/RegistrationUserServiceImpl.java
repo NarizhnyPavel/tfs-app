@@ -43,7 +43,7 @@ public class RegistrationUserServiceImpl implements RegistrationUserService {
      */
     @Override
     public String saveUser(RegisterDto registerDto) {
-        if (registerDto.getGroup()==null) {
+        if (registerDto.getGroup()=="") {
             UserEntity user = new UserEntity(registerDto);
             userRepository.save(user);
             return "success";
