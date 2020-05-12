@@ -2,6 +2,11 @@
 var app = angular.module('homepg', []);
 
 var serverUrl = "http://localhost:8100";
+var config = {
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
 
 app.controller('control', function ($scope, $http, $window) {
     $scope.user = {
@@ -17,13 +22,8 @@ app.controller('control', function ($scope, $http, $window) {
     }
     if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2")
         $scope.studprofPages = true;
-    console.log( $scope.user.role + ' ' + $scope.studprofPages + ' ' +  $scope.dispetcherPages)
     $scope.university = "";
-    var config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+
     $http.get(serverUrl + '/university', config).then(function (response) {
         $scope.university = response.data;
         $window.localStorage.setItem('color1', $scope.university.color1);
@@ -39,12 +39,18 @@ app.controller('control', function ($scope, $http, $window) {
         id: $scope.user.id, type: $scope.user.role
         , weekNum: 1
     };
+    $scope.groups2 = [];
     $scope.$on('myCustomEvent', function (event, data) {
-        console.log('меняю id на ' + data.someProp.id); // Данные, которые нам прислали
         $scope.entityToViewInTimeTable.id = data.someProp.id;
-        console.log('изменилась на ', $scope.entityToViewInTimeTable.id);
         $scope.$broadcast('myCustomEvent2', {
             someProp: $scope.entityToViewInTimeTable
+        });
+    });
+    $scope.$on('groupsSettEvent', function (event, data) {
+        console.log('контроллер получиль ' + data.comment);
+        $scope.$broadcast('groupsSettEvent2', {
+            prop: data.someProp,
+            comm: data.comment
         });
     });
 });
@@ -58,11 +64,6 @@ var filter = {
 app.directive('searchBlock', function () {
     return {
         controller: function ($scope, $http) {
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
             $scope.searchShow = false;
             angular.element(document.querySelector('#prof')).css('backgroundColor', '#adadad');
             angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
@@ -134,11 +135,6 @@ app.directive('gridMain', function () {
         controller: function ($scope, $attrs, $http, $window) {
             $scope.timetableShow = true;
             $scope.minWeekNum = 1;
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
                 $scope.maxWeekNum = response.data;
             });
@@ -202,11 +198,6 @@ app.directive('gridSearch', function () {
             };
             $scope.minWeekNum = 1;
             $scope.days2 = [];
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
                 $scope.maxWeekNum = response.data;
             });
@@ -281,11 +272,21 @@ app.directive('infoBox', function () {
 
 app.directive('groupBox', function () {
     return{
-        controller: function ($scope) {
+        // scope:{},
+        controller: function ($scope, $http) {
+            var ableToDelAll = true;
+            $scope.$on('groupsSettEvent2', function (event, data) {
+                console.log('я получиль' + data.comm);
+                $scope.groups2 = data.prop;
+                ableToDelAll = data.comm;
+            });
             $scope.delete = function (id) {
-                let index = $scope.groups2.findIndex(group => group.id === id);
-                $scope.groups2.splice(index, 1);
-                console.log($scope.groups2.length);
+                console.log('могу ли я удалять все? ' + ableToDelAll);
+                if (ableToDelAll || ($scope.groups2.length > 1)) {
+                    let index = $scope.groups2.findIndex(group => group.id === id);
+                    $scope.groups2.splice(index, 1);
+                    console.log($scope.groups2.length);
+                }
             }
         }, restrict: "E"
         , templateUrl: "../templates/groupBox.html"
@@ -316,11 +317,6 @@ app.directive('addLessonForm', function () {
         controller: function ($scope, $http) {
             $scope.groups2 = [];
             $scope.positions = [];
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
             function checkFields() {
                 if($scope.positions.length === 0)
                     angular.element(document.querySelector('#pos-table')).css('border', "2px solid red");
@@ -534,11 +530,6 @@ app.directive('universitySettings', function () {
             document.querySelector('.register-fields').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             document.querySelector('#returnButtonUni').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#clickUni').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
             $http.get(serverUrl + '/university', config).then(function (response) {
                 $scope.uniData = response.data;
             });
@@ -637,12 +628,7 @@ app.directive('universitySettings', function () {
                     logo : "",
                     lessonGridPosition: lessons
                 };
-                var config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-                var url = "/university/update";
+                var url = serverUrl + "/university/update";
                 $http.post(url, data, config).then(function (response) {
                     alert("Сохранено");
                 }, function error(response) {
@@ -756,27 +742,27 @@ app.directive('searchView', function($compile){
 
 app.directive('userSettings', function () {
     return {
+        scope: {},
         controller: function ($scope, $window, $http) {
-            $scope.user.id = $window.localStorage.getItem("userRole");
-            $scope.groups2 = [
-                {
-                    id: 6,
-                    label: "7372",
-                    number: 1
-                }
-            ];
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            $scope.user = {
+                id: $window.localStorage.getItem("userId"),
+                role: $window.localStorage.getItem("userRole"),
+                name: $window.localStorage.getItem("userName")
             };
-            $http.post(serverUrl + '/groups', "73", config).then(function (response2) {
-                $scope.groups2 = response2.data;
+            $scope.groups2 = [];
+            $http.get(serverUrl + '/user/groups/' + $scope.user.id, config).then(function (response) {
+                $scope.groups2 = response.data;
             });
             $scope.codeSended = false;
+            $scope.codeButLabel = "выслать код";
             $scope.varifytel = function() {
-
+                $scope.codeButLabel = "подтвердить";
+                $scope.codeSended = !$scope.codeSended;
             };
+            $scope.$emit('groupsSettEvent', {
+                someProp: $scope.groups2,
+                comment: false
+            });
             $(document).ready(function () {
                 $(function () {
                     $('#groupsset').autocomplete({
@@ -784,20 +770,23 @@ app.directive('userSettings', function () {
                             $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
                                 response(response2.data);
                             });
-                        }
-                        ,
-                        minLength: 1
-                        ,
+                        },
+                        minLength: 1,
                         select: function displayItem(event, ui) {
                             let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
                             if (index === -1) {
                                 $scope.groups2.push(ui.item);
                             }
-                            angular.element(document.querySelector('#groupsSet')).css('border', "2px solid #cecece");
+                            console.log('я отправиль');
+                            $scope.$emit('groupsSettEvent', {
+                                someProp: $scope.groups2,
+                                comment: false
+                            });
+                            angular.element(document.querySelector('#groupsset')).css('border', "2px solid #cecece");
                             $scope.$apply();
                         },
                         close: function () {
-                            document.getElementById('groupsSet').value = "";
+                            document.getElementById('groupsset').value = "";
                         }
                     });
                 });
@@ -805,9 +794,11 @@ app.directive('userSettings', function () {
             document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             document.querySelector('#varifyId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#saveSett').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            document.querySelector('#nameInput').value = $scope.user.name;
         },
         restrict: "E",
         templateUrl: "../templates/userSettings.html"
+        , transclude: true
 
     };
 });

@@ -46,7 +46,7 @@
         <nav id="menu" class="top-menu">
             <ul class="menu-main">
                 <li ng-if="studprofPages">
-                    <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetable">
+                    <input type="radio" name="inset" value="" id="tab_1"  onclick="showHide('timetable')" data-block-id="timetable">
                     <label for="tab_1" id="timetabel_label">Расписание</label>
                 </li>
                 <li ng-if="studprofPages">
@@ -62,14 +62,14 @@
                     <label for="tab_4" id="parser_label">Добавить данные</label>
                 </li>
                 <li>
-                    <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('settings')" data-block-id="settings">
+                    <input type="radio" name="inset" value="" id="tab_5" checked onclick="showHide('settings')" data-block-id="settings">
                     <label for="tab_5" id="settings_label">Настройки</label>
                 </li>
             </ul>
         </nav>
     </div>
     <div class="pages">
-        <div id="timetable" class="page" style="display: block;" ng-show="studprofPages">
+        <div id="timetable" class="page"  ng-show="studprofPages">
             <timetable-view type="main"></timetable-view>
         </div>
         <div id="search" class="page" ng-show="studprofPages">
@@ -80,21 +80,21 @@
         <div id="lesson"  class="page" ng-show="dispetcherPages">
             <table style="width: 100%">
                 <tr>
-                    <td ><add-lesson-form ng-show="dispetcherPages"></add-lesson-form></td>
+                    <td ><add-lesson-form ng-if="dispetcherPages"></add-lesson-form></td>
                     <td ><search-block ng-if="dispetcherPages"></search-block>
                         <timetable-view ng-if="dispetcherPages" type="search"></timetable-view>
-                        <info-box ng-show="infoShow"></info-box>
+                        <info-box ng-if="infoShow"></info-box>
                     </td>
                 </tr>
             </table>
         </div>
         <div id="parser" class="page" ng-show="dispetcherPages">
             <h2>тут парсер</h2>
-<!--            парсер-->
         </div>
-        <div id="settings" class="page">
-            <university-settings ng-show="dispetcherPages"></university-settings>
-            <user-settings ng-show="studprofPages"></user-settings>
+        <div id="settings" class="page" style="display: block;">
+            <university-settings ng-if="dispetcherPages"></university-settings>
+            <user-settings ng-if="studprofPages"></user-settings>
+
         </div>
     </div>
 </div>

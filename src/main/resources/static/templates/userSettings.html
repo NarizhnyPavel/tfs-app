@@ -1,44 +1,35 @@
 <div class="register-fields" id="settingsPage">
-<table>
-    <tr>
-        <td>
-            <span class="register-label">ФИО:</span>
-        </td>
-        <td colspan="2" style="text-align: left">
-            <input type="text" id="nameInput" class="register-input">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="register-label">Тел.:</span>
-        </td>
-        <td>
-            <input type="text" id="telInput" class="register-input">
-        </td>
-        <td>
-            <button id="varifyId" ng-click="varifytel()" class="buttonClass">выслать код</button>
-        </td>
-    </tr>
-    <tr ng-if="codeSended">
-        <td>
-        </td>
-        <td style="text-align: center; width: 10px;">
-            <span>Код:</span>
-            <input  style="width: 50px" type="text" id="codeInput" class="register-input">
-        </td>
-    </tr>
-    <tr ng-if="user.id >= 3">
-        <td>
-            <span>Ваши группы:</span>
-        </td>
-        <td>
-            <input type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" style="width: 160px; height: 20px; font-size: 10pt"/>
-            <group-box></group-box>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3"><button id="saveSett" ng-click="varifytel()" class="buttonClass">Сохранить изменения</button>
-        </td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td>
+                <span class="register-label2">ФИО:</span>
+            </td>
+            <td colspan="2" style="text-align: left">
+                <input type="text" id="nameInput" class="register-input" style="width: 280px">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="register-label2">Тел.:</span>
+            </td>
+            <td>
+                <input ng-if="!codeSended" type="text" id="telInput" class="register-input">
+                <span ng-if="codeSended">Присланный код:</span>
+                <input ng-if="codeSended" style="width: 50px" type="text" id="codeInput" class="register-input">
+            </td>
+            <td>
+                <button id="varifyId" ng-click="varifytel()" class="buttonClass">{{codeButLabel}}</button>
+            </td>
+        </tr>
+    </table>
+    <span ng-show="user.role >= 3" class="register-label2">Ваши группы:</span>
+    <input ng-show="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 160px; margin-top: 10px; height: 20px; font-size: 10pt"/>
+    <br> <group-box ng-show="user.role >= 3"></group-box>
+    <table>
+        <tr>
+            <td colspan="3"><button id="saveSett" ng-click="varifytel()" class="buttonClass">Сохранить изменения</button>
+            </td>
+        </tr>
+    </table>
+
 </div>
