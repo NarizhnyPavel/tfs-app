@@ -12,4 +12,10 @@ public class LessonByDto {
     private int weekNum;
 
     private int type;
+
+    public LessonByDto(long id, int weekNum, int type) {
+        this.id = id;
+        this.weekNum = weekNum;
+        this.type = type;
+    }
 }
