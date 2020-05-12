@@ -15,7 +15,7 @@ app.controller('control', function ($scope, $http, $window) {
         $scope.dispetcherPages = true;
         document.querySelector("#lesson").style.display = "block";
     }
-    if ($scope.user.role === "3" || $scope.user.role === "4")
+    if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "4")
         $scope.studprofPages = true;
     console.log( $scope.user.role + ' ' + $scope.studprofPages + ' ' +  $scope.dispetcherPages)
     $scope.university = "";
@@ -757,7 +757,7 @@ app.directive('searchView', function($compile){
 
 app.directive('userSettings', function () {
     return {
-        controller: function ($scope, $window) {
+        controller: function ($scope, $window, $http) {
             console.log("тукущая роль" + $window.localStorage.getItem("userRole"));
             $scope.user.id = $window.localStorage.getItem("userRole");
             $scope.groups2 = [
@@ -768,10 +768,33 @@ app.directive('userSettings', function () {
                 }
             ];
             $scope.codeSended = false;
-            console.log('пытаюсь применить стиль '+ $window.localStorage.getItem("color2"));
             $scope.varifytel = function() {
 
             };
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            $('#groupsset').autocomplete({
+                source: function (request, response) {
+                    $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
+                        response(response2.data);
+                    });
+                },
+                minLength: 1,
+                select: function displayItem(event, ui) {
+                    let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
+                    if(index === -1) {
+                        $scope.groups2.push(ui.item);
+                    }
+                    angular.element(document.querySelector('#groupsSet')).css('border', "2px solid #cecece");
+                    $scope.$apply();
+                },
+                close: function () {
+                    document.getElementById('groupsSet').value = "";
+                }
+            });
             document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             document.querySelector('#varifyId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#saveSett').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
