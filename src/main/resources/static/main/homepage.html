@@ -45,51 +45,57 @@
     <div>
         <nav id="menu" class="top-menu">
             <ul class="menu-main">
-                <li>
+                <li ng-if="studprofPages">
                     <input type="radio" name="inset" value="" id="tab_1" checked onclick="showHide('timetable')" data-block-id="timetable">
                     <label for="tab_1" id="timetabel_label">Расписание</label>
                 </li>
-                <li>
+                <li ng-if="studprofPages">
                     <input type="radio" name="inset" value="" id="tab_2" onclick="showHide('search')" data-block-id="search">
                     <label for="tab_2" id="search_label">Поиск</label>
                 </li>
-                <li>
-                    <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('lesson')" data-block-id="lesson">
+                <li ng-show="dispetcherPages">
+                    <input type="radio" name="inset" value="" id="tab_3" ng-checked="dispetcherPages" onclick="showHide('lesson')" data-block-id="lesson">
                     <label for="tab_3" id="lesson_label">Добавить занятие</label>
                 </li>
+                <li ng-show="dispetcherPages">
+                    <input type="radio" name="inset" value="" id="tab_4" onclick="showHide('parser')" data-block-id="parser">
+                    <label for="tab_4" id="parser_label">Добавить данные</label>
+                </li>
                 <li>
-                    <input type="radio" name="inset" value="" id="tab_4" onclick="showHide('settings')" data-block-id="settings">
-                    <label for="tab_4" id="settings_label">Настройки</label>
+                    <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('settings')" data-block-id="settings">
+                    <label for="tab_5" id="settings_label">Настройки</label>
                 </li>
             </ul>
         </nav>
     </div>
     <div class="pages">
-        <div id="timetable" class="page" style="display: block;">
+        <div id="timetable" class="page" style="display: block;" ng-show="studprofPages">
             <timetable-view type="main"></timetable-view>
-<!--            <info-box ng-show="infoShow"></info-box>-->
         </div>
-        <div id="search" class="page" >
-<!--            <h2>Поиск</h2>-->
-            <search-block></search-block>
-            <timetable-view entity="entityToViewInTimeTable" type="search"></timetable-view>
+        <div id="search" class="page" ng-show="studprofPages">
+            <search-block ng-if="studprofPages"></search-block>
+            <timetable-view ng-if="studprofPages" entity1="entityToViewInTimeTable" type="search"></timetable-view>
             <info-box ng-show="infoShow"></info-box>
         </div>
-        <div id="lesson"  class="page">
-<!--            <h2>Добавление пары</h2>-->
-            <table>
+        <div id="lesson"  class="page" ng-show="dispetcherPages">
+            <table style="width: 100%">
                 <tr>
-                    <td ><add-lesson-form></add-lesson-form></td>
-                    <td ><search-block></search-block>
-                        <timetable-view entity="entityToViewInTimeTable" type="search"></timetable-view>
+                    <td ><add-lesson-form ng-show="dispetcherPages"></add-lesson-form></td>
+                    <td ><search-block ng-if="dispetcherPages"></search-block>
+                        <timetable-view ng-if="dispetcherPages" type="search"></timetable-view>
                         <info-box ng-show="infoShow"></info-box>
                     </td>
                 </tr>
             </table>
         </div>
+        <div id="parser" class="page" ng-show="dispetcherPages">
+            <h2>тут парсер</h2>
+<!--            парсер-->
+        </div>
         <div id="settings" class="page">
-<!--            <h2>Настройки</h2>-->
-            <university-settings></university-settings>
+            <university-settings ng-show="dispetcherPages"></university-settings>
+            <h2 ng-show="studprofPages">тут настрйоки пользователя</h2>
+<!--            настройки пользователя-->
         </div>
     </div>
 </div>

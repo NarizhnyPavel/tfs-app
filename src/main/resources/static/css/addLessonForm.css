@@ -20,7 +20,7 @@
 
 .groupAddBlock td,tr{
     height: 30px;
-    margin: 0px;
+    margin: 0px auto;
     padding: 0px;
 }
 
@@ -35,4 +35,5 @@
 .addLessonBlock{
     background-color: #adadad;
     border-radius: 10px;
+    width: 650px;
 }
