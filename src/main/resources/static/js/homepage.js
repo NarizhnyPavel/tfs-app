@@ -133,7 +133,6 @@ app.directive('gridMain', function () {
         scope:{},
         controller: function ($scope, $attrs, $http, $window) {
             $scope.timetableShow = true;
-            document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             $scope.minWeekNum = 1;
             var config = {
                 headers: {
@@ -758,7 +757,6 @@ app.directive('searchView', function($compile){
 app.directive('userSettings', function () {
     return {
         controller: function ($scope, $window, $http) {
-            console.log("тукущая роль" + $window.localStorage.getItem("userRole"));
             $scope.user.id = $window.localStorage.getItem("userRole");
             $scope.groups2 = [
                 {
@@ -767,33 +765,42 @@ app.directive('userSettings', function () {
                     number: 1
                 }
             ];
-            $scope.codeSended = false;
-            $scope.varifytel = function() {
-
-            };
             var config = {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             };
-            $('#groupsset').autocomplete({
-                source: function (request, response) {
-                    $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
-                        response(response2.data);
+            $http.post(serverUrl + '/groups', "73", config).then(function (response2) {
+                $scope.groups2 = response2.data;
+            });
+            $scope.codeSended = false;
+            $scope.varifytel = function() {
+
+            };
+            $(document).ready(function () {
+                $(function () {
+                    $('#groupsset').autocomplete({
+                        source:                     function (request, response) {
+                            $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
+                                response(response2.data);
+                            });
+                        }
+                        ,
+                        minLength: 1
+                        ,
+                        select: function displayItem(event, ui) {
+                            let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
+                            if (index === -1) {
+                                $scope.groups2.push(ui.item);
+                            }
+                            angular.element(document.querySelector('#groupsSet')).css('border', "2px solid #cecece");
+                            $scope.$apply();
+                        },
+                        close: function () {
+                            document.getElementById('groupsSet').value = "";
+                        }
                     });
-                },
-                minLength: 1,
-                select: function displayItem(event, ui) {
-                    let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
-                    if(index === -1) {
-                        $scope.groups2.push(ui.item);
-                    }
-                    angular.element(document.querySelector('#groupsSet')).css('border', "2px solid #cecece");
-                    $scope.$apply();
-                },
-                close: function () {
-                    document.getElementById('groupsSet').value = "";
-                }
+                });
             });
             document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             document.querySelector('#varifyId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
