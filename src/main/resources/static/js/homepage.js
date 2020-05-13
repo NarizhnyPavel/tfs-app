@@ -924,6 +924,25 @@ app.directive('userSettings', function () {
     };
 });
 
+app.directive('groupList', function () {
+    return {
+        // scope: {},
+        controller: function ($scope, $window, $http) {
+            $http.post(serverUrl + '/user/groups/' + $scope.user.id, config).then(function (response) {
+                $scope.groups2 = response.data;
+                console.log('загружены группы длины ' + $scope.groups2.length);
+                groupsInitLength = $scope.groups2.length;
+                $window.localStorage.setItem("groupsLength", $scope.groups2.length);
+            });
+        },
+        restrict: "E",
+        templateUrl: "../templates/userSettings.html"
+        , transclude: true
+
+
+    };
+});
+
 $.fn.setCursorPosition = function(pos) {
     if ($(this).get(0).setSelectionRange) {
         $(this).get(0).setSelectionRange(pos, pos);
