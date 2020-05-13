@@ -46,7 +46,7 @@
         <nav id="menu" class="top-menu">
             <ul class="menu-main">
                 <li ng-if="studprofPages">
-                    <input type="radio" name="inset" value="" id="tab_1"  onclick="showHide('timetable')" data-block-id="timetable">
+                    <input type="radio" name="inset" value="" id="tab_1" ng-checked="studprofPages" onclick="showHide('timetable')" data-block-id="timetable">
                     <label for="tab_1" id="timetabel_label">Расписание</label>
                 </li>
                 <li ng-if="studprofPages">

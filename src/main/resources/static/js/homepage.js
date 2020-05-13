@@ -134,7 +134,7 @@ app.directive('gridMain', function () {
     return {
         scope:{},
         controller: function ($scope, $attrs, $http, $window) {
-            $scope.timetableShow = true;
+            $scope.timetableShow = false;
             $scope.minWeekNum = 1;
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
                 $scope.maxWeekNum = response.data;
@@ -145,6 +145,7 @@ app.directive('gridMain', function () {
                 , weekNum: 1
             };
             refresh_timetable();
+            // document.querySelector('.day').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             $scope.inc_week = function () {
                 if ($scope.week < $scope.maxWeekNum) {
                     $scope.week++;
@@ -161,8 +162,8 @@ app.directive('gridMain', function () {
             }
             $scope.show = function (lesson) {
                 $scope.lessonToView = lesson;
-                localStorage.setItem("lessonToViewStatus", $scope.lessonToView.status);
-                console.log($window.localStorage.getItem("lessonToViewStatus"));
+                $window.localStorage.setItem("lessonToViewStatus", $scope.lessonToView.status);
+                $window.localStorage.setItem("lessonToViewId", $scope.lessonToView.id);
                 $scope.statusShow = true;
                 $scope.groupShow = true;
                 $scope.profShow = true;
@@ -177,6 +178,7 @@ app.directive('gridMain', function () {
             function refresh_timetable() {
                 $http.post(serverUrl + '/lesson/info', data, config).then(function (response) {
                     document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                    $scope.timetableShow = true;
                     $scope.days2 = response.data;
                     $scope.$apply();
                 });
@@ -261,18 +263,28 @@ app.directive('gridSearch', function () {
 
 app.directive('infoBox', function () {
     return {
-        controller: function ($scope, $window) {
+        controller: function ($scope, $window, $http) {
             $scope.cancelShow = (($window.localStorage.getItem("userRole") === '3'));
             $scope.closeInfo = function () {
                 $scope.infoShow = false;
-                $scope.$apply();
+                // $scope.$apply();
             }
             $scope.cancelLesson = function () {
+                if (confirm("Отменить выбранное занятие?\n отмена снимается спустя неделю после изменения статуса")) {
+                    console.log('отменяю пару с id ' + $window.localStorage.getItem("lessonToViewId"));
+                    $http.post(serverUrl + '/lesson/stop', $window.localStorage.getItem("lessonToViewId"), config).then(function (response) {
+                        document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                        $scope.days2 = response.data;
+                        $scope.$apply();
+                    });
+                } else {
+                    console.log('отказались от отмены')
+                }
+                $scope.infoShow = false;
 
             }
             $scope.checkLess = function () {
-                console.log($window.localStorage.getItem("lessonToViewStatus"));
-                if ($window.localStorage.getItem("lessonToViewStatus") === 'проводится')
+                if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2')
                     return true;
                 else
                     return false;
