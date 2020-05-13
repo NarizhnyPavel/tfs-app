@@ -798,7 +798,9 @@ app.directive('userSettings', function () {
                                         $scope.saveButEnable = true;
                                         $scope.errorMess = "новый телефон подтверждён"
                                         angular.element(document.querySelector('#telInputSet')).attr('readOnly', 'true');
+                                        document.querySelector('#saveSett').disabled = false;
                                         $scope.errorShowSet = true;
+                                        $scope.user.tel = document.querySelector('#nameInput').value;
                                         document.querySelector('#settingsPage').style.height = "320px";
                                         $scope.codeButLabel = "выслать код";
                                         $scope.codeSended = false;
@@ -819,25 +821,24 @@ app.directive('userSettings', function () {
                 }
             };
             $scope.saveset = function() {
-                if ((document.querySelector('#telInputSet').value === $scope.user.tel) &&
-                    (document.querySelector('#nameInput').value !== $scope.user.tel)){
+                if ((document.querySelector('#telInputSet').value !== $scope.user.tel)){
                     var data = {
                         groups: $scope.groups2,
                         id: $scope.user.id,
                         name: document.querySelector('#nameInput').value,
                         phone: document.querySelector('#telInputSet').value
-                    }
-                    $http.post(serverUrl + "/ user/update", data , config).then(function (response) {
-                        if (response.data.id !== 0) {
-
-                        }
+                    };
+                    $http.post(serverUrl + "/user/update", data , {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                        console.log(response.data);
+                        $window.localStorage.setItem("userTel", document.querySelector('#telInputSet').value);
+                        $window.localStorage.setItem("userName", document.querySelector('#nameInput').value);
                     });
                 }
             };
             $(document).ready(function () {
                 $(function () {
                     $('#groupsset').autocomplete({
-                        source:                     function (request, response) {
+                        source: function (request, response) {
                             $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
                                 response(response2.data);
                             });
