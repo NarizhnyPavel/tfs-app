@@ -5,7 +5,7 @@
                 <span class="register-label2">ФИО:</span>
             </td>
             <td colspan="2" style="text-align: left">
-                <input type="text" id="nameInput" class="register-input" style="width: 310px">
+                <input type="text" id="nameInput" spellcheck="false" class="register-input" style="width: 310px">
             </td>
         </tr>
         <tr >
@@ -19,6 +19,7 @@
             </td>
             <td style="padding-top: 15px">
                 <button id="varifyId" ng-click="varifytel()" class="buttonClass">{{codeButLabel}}</button>
+
             </td>
         </tr>
         <tr ng-show="errorShowSet">
@@ -26,15 +27,13 @@
                 <span style="font-style: italic">{{errorMess}}</span>
             </td>
         </tr>
-    </table>
-    <span ng-show="user.role >= 3" class="register-label2" style="padding-top: 20px">Ваши группы:</span>
-    <input ng-if="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 210px; margin-top: 10px; text-align: center; height: 20px; font-size: 10pt"/>
-    <br> <group-box ng-show="user.role >= 3"></group-box>
-    <table style="margin-top: 15px">
         <tr>
-            <td colspan="3"><button id="saveSett" ng-click="saveset()" class="buttonClass">Сохранить изменения</button>
+            <td colspan="3">
+                <span ng-show="user.role >= 3" class="register-label2" style="padding-top: 20px">Ваши группы:</span>
+                <input ng-show="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 210px; margin-top: 10px; text-align: center; height: 20px; font-size: 10pt"/>
+                <br> <group-box ng-show="user.role >= 3"></group-box>
             </td>
         </tr>
     </table>
-
+    <button id="saveSett" ng-click="savesettings()" class="buttonClass">Сохранить изменения</button>
 </div>

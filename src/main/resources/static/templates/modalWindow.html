@@ -1,6 +1,7 @@
 <div class="popup-fade" >
     <div class="popup">
         <button class="popup-close" ng-click="closeInfo()">Закрыть</button>
+        <button ng-if="checkLess()" class="popup-cancel" ng-click="cancelLesson()">Отменить</button>
         <span>      <br>Дисциплина: {{lessonToView.subject}} <br> </span>
         <span> Тип: {{lessonToView.lessonType}} <br> </span>
         <span ng-show="groupShow">           Группа: {{lessonToView.group}} <br> </span>

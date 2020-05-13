@@ -20,10 +20,11 @@ app.controller('control', function ($scope, $http, $window) {
         $scope.dispetcherPages = true;
         document.querySelector("#lesson").style.display = "block";
     }
-    if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2")
+    if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2"){
+        document.querySelector("#timetable").style.display = "block";
         $scope.studprofPages = true;
+    }
     $scope.university = "";
-
     $http.get(serverUrl + '/university', config).then(function (response) {
         $scope.university = response.data;
         $window.localStorage.setItem('color1', $scope.university.color1);
@@ -133,7 +134,7 @@ app.directive('gridMain', function () {
     return {
         scope:{},
         controller: function ($scope, $attrs, $http, $window) {
-            $scope.timetableShow = true;
+            $scope.timetableShow = false;
             $scope.minWeekNum = 1;
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
                 $scope.maxWeekNum = response.data;
@@ -144,6 +145,7 @@ app.directive('gridMain', function () {
                 , weekNum: 1
             };
             refresh_timetable();
+            // document.querySelector('.day').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             $scope.inc_week = function () {
                 if ($scope.week < $scope.maxWeekNum) {
                     $scope.week++;
@@ -160,6 +162,8 @@ app.directive('gridMain', function () {
             }
             $scope.show = function (lesson) {
                 $scope.lessonToView = lesson;
+                $window.localStorage.setItem("lessonToViewStatus", $scope.lessonToView.status);
+                $window.localStorage.setItem("lessonToViewId", $scope.lessonToView.id);
                 $scope.statusShow = true;
                 $scope.groupShow = true;
                 $scope.profShow = true;
@@ -174,6 +178,7 @@ app.directive('gridMain', function () {
             function refresh_timetable() {
                 $http.post(serverUrl + '/lesson/info', data, config).then(function (response) {
                     document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                    $scope.timetableShow = true;
                     $scope.days2 = response.data;
                     $scope.$apply();
                 });
@@ -258,10 +263,31 @@ app.directive('gridSearch', function () {
 
 app.directive('infoBox', function () {
     return {
-        controller: function ($scope) {
+        controller: function ($scope, $window, $http) {
+            $scope.cancelShow = (($window.localStorage.getItem("userRole") === '3'));
             $scope.closeInfo = function () {
                 $scope.infoShow = false;
-                $scope.$apply();
+                // $scope.$apply();
+            }
+            $scope.cancelLesson = function () {
+                if (confirm("Отменить выбранное занятие?\n отмена снимается спустя неделю после изменения статуса")) {
+                    console.log('отменяю пару с id ' + $window.localStorage.getItem("lessonToViewId"));
+                    $http.post(serverUrl + '/lesson/stop', $window.localStorage.getItem("lessonToViewId"), config).then(function (response) {
+                        document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                        $scope.days2 = response.data;
+                        $scope.$apply();
+                    });
+                } else {
+                    console.log('отказались от отмены')
+                }
+                $scope.infoShow = false;
+
+            }
+            $scope.checkLess = function () {
+                if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2')
+                    return true;
+                else
+                    return false;
             }
         }
         , restrict: "E"
@@ -746,7 +772,7 @@ app.directive('searchView', function($compile){
 
 app.directive('userSettings', function () {
     return {
-        scope: {},
+        // scope: {},
         controller: function ($scope, $window, $http) {
             $scope.user = {
                 id: $window.localStorage.getItem("userId"),
@@ -754,16 +780,63 @@ app.directive('userSettings', function () {
                 name: $window.localStorage.getItem("userName"),
                 tel: $window.localStorage.getItem("userTel")
             };
-            console.log($scope.user.role);
+            $('#groupsset').autocomplete({
+                source: function (request, response) {
+                    $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
+                        response(response2.data);
+                    });
+                },
+                minLength: 1,
+                select: function displayItem(event, ui) {
+                    let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
+                    if (index === -1) {
+                        $scope.groups2.push(ui.item);
+                    }
+                    console.log('я отправиль');
+                    $scope.$emit('groupsSettEvent', {
+                        someProp: $scope.groups2,
+                        comment: false
+                    });
+                    angular.element(document.querySelector('#groupsset')).css('border', "2px solid #cecece");
+                    $scope.$apply();
+                },
+                close: function () {
+                    document.getElementById('groupsset').value = "";
+                }
+            });
             $scope.groups2 = [];
             $http.get(serverUrl + '/user/groups/' + $scope.user.id, config).then(function (response) {
                 $scope.groups2 = response.data;
+            });
+            $scope.$emit('groupsSettEvent', {
+                someProp: $scope.groups2,
+                comment: false
             });
             $scope.codeSended = false;
             $scope.errorShowSet = false;
             $scope.errorMess = "";
             $scope.saveButEnable = true;
             $scope.codeButLabel = "выслать код";
+            $scope.savesettings = function() {
+                // console.log(document.querySelector('#telInputSet').value + ' ' + $scope.user.tel);
+                if ((document.querySelector('#telInputSet').value === $scope.user.tel)){
+                    var data = {
+                        groups: $scope.groups2,
+                        id: $scope.user.id,
+                        name: document.querySelector('#nameInput').value,
+                        phone: document.querySelector('#telInputSet').value
+                    };
+                    $http.post(serverUrl + "/user/update", data , {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                        console.log(response.data);
+                        $window.localStorage.setItem("userTel", document.querySelector('#telInputSet').value);
+                        $window.localStorage.setItem("userName", document.querySelector('#nameInput').value);
+                    });
+                }else{
+                    $scope.errorMess = "требуется подтвердить телефон смс кодом";
+                    $scope.errorShowSet = true;
+                    document.querySelector('#settingsPage').style.height = "320px";
+                }
+            };
             $scope.varifytel = function() {
                 if (document.querySelector('#telInputSet').value !== $scope.user.tel) {
                     $http.post(serverUrl + "/login/checkPhone", document.getElementById('telInputSet').value, {headers: {'Accept': 'text/plain'}}).then(function (response) {
@@ -798,7 +871,9 @@ app.directive('userSettings', function () {
                                         $scope.saveButEnable = true;
                                         $scope.errorMess = "новый телефон подтверждён"
                                         angular.element(document.querySelector('#telInputSet')).attr('readOnly', 'true');
+                                        document.querySelector('#saveSett').disabled = false;
                                         $scope.errorShowSet = true;
+                                        $scope.user.tel = document.querySelector('#telInputSet').value;
                                         document.querySelector('#settingsPage').style.height = "320px";
                                         $scope.codeButLabel = "выслать код";
                                         $scope.codeSended = false;
@@ -818,50 +893,11 @@ app.directive('userSettings', function () {
 
                 }
             };
-            $scope.saveset = function() {
-                if ((document.querySelector('#telInputSet').value === $scope.user.tel) &&
-                    (document.querySelector('#nameInput').value !== $scope.user.tel)){
-                    var data = {
-                        groups: $scope.groups2,
-                        id: $scope.user.id,
-                        name: document.querySelector('#nameInput').value,
-                        phone: document.querySelector('#telInputSet').value
-                    }
-                    $http.post(serverUrl + "/ user/update", data , config).then(function (response) {
-                        if (response.data.id !== 0) {
+            $("#telInputSet").mask("79999999999");
+            $("#codeInput").click(function(){
+                $(this).setCursorPosition(1);
+            }).mask("9999");
 
-                        }
-                    });
-                }
-            };
-            $(document).ready(function () {
-                $(function () {
-                    $('#groupsset').autocomplete({
-                        source:                     function (request, response) {
-                            $http.post(serverUrl + '/groups', request.term, config).then(function (response2) {
-                                response(response2.data);
-                            });
-                        },
-                        minLength: 1,
-                        select: function displayItem(event, ui) {
-                            let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
-                            if (index === -1) {
-                                $scope.groups2.push(ui.item);
-                            }
-                            console.log('я отправиль');
-                            $scope.$emit('groupsSettEvent', {
-                                someProp: $scope.groups2,
-                                comment: false
-                            });
-                            angular.element(document.querySelector('#groupsset')).css('border', "2px solid #cecece");
-                            $scope.$apply();
-                        },
-                        close: function () {
-                            document.getElementById('groupsset').value = "";
-                        }
-                    });
-                });
-            });
             document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             if ($scope.user.role === "2")
                 document.querySelector('#settingsPage').style.height = "210px";

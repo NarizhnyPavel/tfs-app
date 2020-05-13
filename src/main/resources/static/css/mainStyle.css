@@ -139,3 +139,8 @@ body {
     right: 10px;
 }
 
+.popup-cancel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

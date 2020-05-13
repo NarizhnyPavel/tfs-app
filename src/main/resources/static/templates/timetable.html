@@ -8,8 +8,8 @@
     <div class="days">
         <div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;"> <span class="dayName">{{day.dayName}}</span>
             <ul ng-if="day.infoLessonDtos.length != 0">
-                <li ng-repeat="lesson in day.infoLessonDtos track by $index"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
-                <!--        <li ng-repeat="lesson in day.lessons"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.type}}">{{lesson.name}} </b></span> </li>-->
+                <li ng-if="lesson.status" ng-repeat="lesson in day.infoLessonDtos track by $index"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                <li ng-if="!lesson.status" ng-repeat="lesson in day.infoLessonDtos track by $index"> <span style="text-decoration: line-through" ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
             </ul>
             <span ng-if="day.infoLessonDtos.length === 0"><br><br>Занятий нет</span>
         </div>
