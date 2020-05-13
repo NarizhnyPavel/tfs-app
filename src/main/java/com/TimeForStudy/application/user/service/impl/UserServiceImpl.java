@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
         userEntity.setPhone(updateUserDto.getPhone());
         userEntity.setName(updateUserDto.getName());
-        if (userEntity.getRole() == 4) {
+        if ((userEntity.getRole() == 4) || (userEntity.getRole() == 3)) {
             userEntity.getGroups().clear();
             for (AddLessonGroup group : updateUserDto.getGroups()) {
                 GroupEntity updated = groupRepository.findById(group.getId())
