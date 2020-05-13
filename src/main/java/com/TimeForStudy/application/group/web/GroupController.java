@@ -5,6 +5,7 @@ import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.service.GroupService;
 import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,16 @@ public class GroupController {
     @GetMapping(value = "/group")
     public List<GroupDto> getGroups() {
         return groupService.findAll();
+    }
+
+    /**
+     * Возвращает список студентов группы.
+     *
+     * @return список групп.
+     */
+    @GetMapping(value = "/group/students/{id}")
+    public List<UserDto> getGroups(@PathVariable long id) {
+        return groupService.findStudentsByGroupId(id);
     }
 
     /**

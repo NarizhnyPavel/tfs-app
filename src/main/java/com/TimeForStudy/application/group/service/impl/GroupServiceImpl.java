@@ -9,6 +9,7 @@ import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.service.GroupService;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,18 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity groupEntity = groupRepository.findById(id)
                 .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
         return GroupDto.of(groupEntity);
+    }
+
+    /**
+     * Возвращает список студентов группы.
+     *
+     * @return список групп.
+     */
+    @Override
+    public List<UserDto> findStudentsByGroupId(long id) {
+       GroupEntity groupEntity = groupRepository.findById(id)
+       .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+       return groupEntity.getUsers().stream().map(UserDto::of).collect(Collectors.toList());
     }
 
     /**
