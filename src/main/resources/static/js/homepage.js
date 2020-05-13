@@ -805,9 +805,15 @@ app.directive('userSettings', function () {
                 }
             });
             $scope.groups2 = [];
+            $scope.messShow = false;
+            let groupsInitLength = 0;
             $http.get(serverUrl + '/user/groups/' + $scope.user.id, config).then(function (response) {
                 $scope.groups2 = response.data;
+                console.log('загружены группы длины ' + $scope.groups2.length);
+                groupsInitLength = $scope.groups2.length;
+                $window.localStorage.setItem("groupsLength", $scope.groups2.length);
             });
+            console.log($window.localStorage.getItem("groupsLength"));
             $scope.$emit('groupsSettEvent', {
                 someProp: $scope.groups2,
                 comment: false
@@ -819,7 +825,8 @@ app.directive('userSettings', function () {
             $scope.codeButLabel = "выслать код";
             $scope.savesettings = function() {
                 // console.log(document.querySelector('#telInputSet').value + ' ' + $scope.user.tel);
-                if ((document.querySelector('#telInputSet').value === $scope.user.tel)){
+                if ((document.querySelector('#telInputSet').value === $scope.user.tel) &&
+                    (document.querySelector('#nameInput').value !== $scope.user.name || $window.localStorage.getItem("groupsLength") !== (''+$scope.groups2.length))){
                     var data = {
                         groups: $scope.groups2,
                         id: $scope.user.id,
@@ -830,11 +837,14 @@ app.directive('userSettings', function () {
                         console.log(response.data);
                         $window.localStorage.setItem("userTel", document.querySelector('#telInputSet').value);
                         $window.localStorage.setItem("userName", document.querySelector('#nameInput').value);
+                        $scope.messShow = true
                     });
                 }else{
+                    if (document.querySelector('#telInputSet').value !== $scope.user.tel){
                     $scope.errorMess = "требуется подтвердить телефон смс кодом";
                     $scope.errorShowSet = true;
                     document.querySelector('#settingsPage').style.height = "320px";
+                    }
                 }
             };
             $scope.varifytel = function() {
@@ -868,6 +878,7 @@ app.directive('userSettings', function () {
                                     console.log()
                                     if (response.data === "success") {
                                         console.log('ну типа проверили');
+
                                         $scope.saveButEnable = true;
                                         $scope.errorMess = "новый телефон подтверждён"
                                         angular.element(document.querySelector('#telInputSet')).attr('readOnly', 'true');

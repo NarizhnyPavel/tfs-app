@@ -1,5 +1,5 @@
-<div class="register-fields2" id="settingsPage">
-    <table>
+<div class="register-fields2" id="settingsPage" >
+    <table style="margin-bottom: 10px">
         <tr>
             <td>
                 <span class="register-label2">ФИО:</span>
@@ -19,7 +19,6 @@
             </td>
             <td style="padding-top: 15px">
                 <button id="varifyId" ng-click="varifytel()" class="buttonClass">{{codeButLabel}}</button>
-
             </td>
         </tr>
         <tr ng-show="errorShowSet">
@@ -27,7 +26,7 @@
                 <span style="font-style: italic">{{errorMess}}</span>
             </td>
         </tr>
-        <tr>
+        <tr ng-show="user.role >= 3">
             <td colspan="3">
                 <span ng-show="user.role >= 3" class="register-label2" style="padding-top: 20px">Ваши группы:</span>
                 <input ng-show="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 210px; margin-top: 10px; text-align: center; height: 20px; font-size: 10pt"/>
@@ -35,5 +34,8 @@
             </td>
         </tr>
     </table>
-    <button id="saveSett" ng-click="savesettings()" class="buttonClass">Сохранить изменения</button>
+    <button id="saveSett" ng-click="savesettings()" style="margin-top: -20px" class="buttonClass">Сохранить изменения</button>
+    <br>
+    <span class="register-fields2" style="font-style: italic" ng-show="messShow">Данные успешно сохранены</span>
+
 </div>
