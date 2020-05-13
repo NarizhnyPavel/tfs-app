@@ -12,6 +12,20 @@
     /*box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);*/
 }
 
+.register-fields2 {
+    border-color: black;
+    top: 0;
+    text-align: center;
+    height: 290px;
+    width: 500px;
+    border-radius: 25px;
+    bottom: 0;
+    left: 0;
+    margin: 20px auto 0;
+    padding-top: 20px;
+    /*box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);*/
+}
+
 .register-fields div {
     position: relative;
     height: 20px;
@@ -49,6 +63,17 @@
     border: 2px solid #cecece;
     background: #F6F6f6;
     border-radius: 10px;
+}
+
+
+.register-input2 {
+    height: 32px;
+    font-size: 17px;
+    padding: 7px 0 4px 10px;
+    border: 2px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 10px;
+    margin-top: 15px;
 }
 
 .register-label {
@@ -151,6 +176,6 @@
     height: 50px;
 }
 
-.register-fields table {
+.register-fields2 table {
     margin: 0 auto;
 }

@@ -274,7 +274,7 @@ app.directive('groupBox', function () {
     return{
         // scope:{},
         controller: function ($scope, $http) {
-            var ableToDelAll = true;
+            var ableToDelAll = false;
             $scope.$on('groupsSettEvent2', function (event, data) {
                 console.log('я получиль' + data.comm);
                 $scope.groups2 = data.prop;
@@ -484,6 +484,10 @@ app.directive('addLessonForm', function () {
                     }
                     angular.element(document.querySelector('#groups')).css('border', "2px solid #cecece");
                     $scope.$apply();
+                    $scope.$emit('groupsSettEvent', {
+                        someProp: $scope.groups2,
+                        comment: true
+                    });
                 },
                 close: function () {
                     document.getElementById('groups').value = "";
@@ -747,22 +751,89 @@ app.directive('userSettings', function () {
             $scope.user = {
                 id: $window.localStorage.getItem("userId"),
                 role: $window.localStorage.getItem("userRole"),
-                name: $window.localStorage.getItem("userName")
+                name: $window.localStorage.getItem("userName"),
+                tel: $window.localStorage.getItem("userTel")
             };
+            console.log($scope.user.role);
             $scope.groups2 = [];
             $http.get(serverUrl + '/user/groups/' + $scope.user.id, config).then(function (response) {
                 $scope.groups2 = response.data;
             });
             $scope.codeSended = false;
+            $scope.errorShowSet = false;
+            $scope.errorMess = "";
+            $scope.saveButEnable = true;
             $scope.codeButLabel = "выслать код";
             $scope.varifytel = function() {
-                $scope.codeButLabel = "подтвердить";
-                $scope.codeSended = !$scope.codeSended;
+                if (document.querySelector('#telInputSet').value !== $scope.user.tel) {
+                    $http.post(serverUrl + "/login/checkPhone", document.getElementById('telInputSet').value, {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                        if (response.data === "registered") {
+                            $scope.errorMess = "этот телефон уже зарегистрирован"
+                            $scope.errorShowSet = true;
+                            document.querySelector('#settingsPage').style.height = "320px";
+                        } else {
+                            $scope.saveButEnable = false;
+                            document.querySelector('#saveSett').disabled = true;
+                            if (!$scope.codeSended || $scope.errorMess === "неверный код подтверждения") {
+                                $http.post(serverUrl + "/user/edit/phone", document.getElementById('telInputSet').value, {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                                    console.log(response.data);
+                                    if (response.data === "codeSent") {
+                                        $scope.errorShowSet = false;
+                                        $scope.errorMess = "";
+                                        document.querySelector('#settingsPage').style.height = "290px";
+                                        $scope.codeButLabel = "подтвердить";
+                                        $scope.codeSended = true;
+                                        angular.element(document.querySelector('#codeInput')).attr('readOnly', 'false');
+                                        document.getElementById('codeInput').readOnly = false;
+                                    }
+                                });
+                            } else {
+                                $http.post(serverUrl + "/user/check/code", {
+                                    phone: document.getElementById('telInputSet').value,
+                                    code: document.getElementById('codeInput').value
+                                }, {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                                    console.log()
+                                    if (response.data === "success") {
+                                        console.log('ну типа проверили');
+                                        $scope.saveButEnable = true;
+                                        $scope.errorMess = "новый телефон подтверждён"
+                                        angular.element(document.querySelector('#telInputSet')).attr('readOnly', 'true');
+                                        $scope.errorShowSet = true;
+                                        document.querySelector('#settingsPage').style.height = "320px";
+                                        $scope.codeButLabel = "выслать код";
+                                        $scope.codeSended = false;
+                                        angular.element(document.querySelector('#codeInput')).attr('readOnly', 'false');
+                                    }
+                                    if (response.data === "error") {
+                                        $scope.errorMess = "неверный код подтверждения";
+                                        $scope.codeButLabel = "выслать код";
+                                        $scope.errorShowSet = true;
+                                        document.querySelector('#settingsPage').style.height = "320px";
+                                        angular.element(document.querySelector('#codeInput')).attr('readOnly', 'true');
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                }
             };
-            $scope.$emit('groupsSettEvent', {
-                someProp: $scope.groups2,
-                comment: false
-            });
+            $scope.saveset = function() {
+                if ((document.querySelector('#telInputSet').value === $scope.user.tel) &&
+                    (document.querySelector('#nameInput').value !== $scope.user.tel)){
+                    var data = {
+                        groups: $scope.groups2,
+                        id: $scope.user.id,
+                        name: document.querySelector('#nameInput').value,
+                        phone: document.querySelector('#telInputSet').value
+                    }
+                    $http.post(serverUrl + "/ user/update", data , config).then(function (response) {
+                        if (response.data.id !== 0) {
+
+                        }
+                    });
+                }
+            };
             $(document).ready(function () {
                 $(function () {
                     $('#groupsset').autocomplete({
@@ -792,9 +863,12 @@ app.directive('userSettings', function () {
                 });
             });
             document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
+            if ($scope.user.role === "2")
+                document.querySelector('#settingsPage').style.height = "210px";
             document.querySelector('#varifyId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#saveSett').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#nameInput').value = $scope.user.name;
+            document.querySelector('#telInputSet').value = $scope.user.tel;
         },
         restrict: "E",
         templateUrl: "../templates/userSettings.html"

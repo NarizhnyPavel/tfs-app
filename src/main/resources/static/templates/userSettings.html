@@ -1,33 +1,38 @@
-<div class="register-fields" id="settingsPage">
+<div class="register-fields2" id="settingsPage">
     <table>
         <tr>
             <td>
                 <span class="register-label2">ФИО:</span>
             </td>
             <td colspan="2" style="text-align: left">
-                <input type="text" id="nameInput" class="register-input" style="width: 280px">
+                <input type="text" id="nameInput" class="register-input" style="width: 310px">
             </td>
         </tr>
-        <tr>
-            <td>
+        <tr >
+            <td style="padding-top: 15px">
                 <span class="register-label2">Тел.:</span>
             </td>
-            <td>
-                <input ng-if="!codeSended" type="text" id="telInput" class="register-input">
-                <span ng-if="codeSended">Присланный код:</span>
+            <td style="padding-top: 15px">
+                <input id="telInputSet"  style="width: 200px" ng-show="!codeSended" type="text" class="register-input">
+                <span ng-if="codeSended" style="width: 50px">Присланный код:</span>
                 <input ng-if="codeSended" style="width: 50px" type="text" id="codeInput" class="register-input">
             </td>
-            <td>
+            <td style="padding-top: 15px">
                 <button id="varifyId" ng-click="varifytel()" class="buttonClass">{{codeButLabel}}</button>
             </td>
         </tr>
+        <tr ng-show="errorShowSet">
+            <td colspan="3">
+                <span style="font-style: italic">{{errorMess}}</span>
+            </td>
+        </tr>
     </table>
-    <span ng-show="user.role >= 3" class="register-label2">Ваши группы:</span>
-    <input ng-show="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 160px; margin-top: 10px; height: 20px; font-size: 10pt"/>
+    <span ng-show="user.role >= 3" class="register-label2" style="padding-top: 20px">Ваши группы:</span>
+    <input ng-if="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 210px; margin-top: 10px; text-align: center; height: 20px; font-size: 10pt"/>
     <br> <group-box ng-show="user.role >= 3"></group-box>
-    <table>
+    <table style="margin-top: 15px">
         <tr>
-            <td colspan="3"><button id="saveSett" ng-click="varifytel()" class="buttonClass">Сохранить изменения</button>
+            <td colspan="3"><button id="saveSett" ng-click="saveset()" class="buttonClass">Сохранить изменения</button>
             </td>
         </tr>
     </table>

@@ -46,7 +46,6 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             } else {
                 if (document.getElementById('inputPhone').value.length === 11) {
                     var url = serverUrl + "login/login";
-
                     $scope.buttonLabel = "Войти";
                     $http.post(url, document.getElementById('inputPhone').value, config).then(function (response) {
                         if (response.data === "codeSent") {
@@ -89,6 +88,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                     localStorage.setItem("userId", data2.id);
                     localStorage.setItem("userName", data2.name);
                     localStorage.setItem("userRole", data2.role);
+                    localStorage.setItem("userTel", document.getElementById('inputPhone').value);
                     var link;
                     // switch (data2.role) {
                     //     case 1:
