@@ -62,14 +62,14 @@
                     <label for="tab_4" id="parser_label">Добавить данные</label>
                 </li>
                 <li>
-                    <input type="radio" name="inset" value="" id="tab_5" checked onclick="showHide('settings')" data-block-id="settings">
+                    <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('settings')" data-block-id="settings">
                     <label for="tab_5" id="settings_label">Настройки</label>
                 </li>
             </ul>
         </nav>
     </div>
     <div class="pages">
-        <div id="timetable" class="page"  ng-show="studprofPages">
+        <div id="timetable" class="page" ng-show="studprofPages">
             <timetable-view type="main"></timetable-view>
         </div>
         <div id="search" class="page" ng-show="studprofPages">
@@ -91,7 +91,7 @@
         <div id="parser" class="page" ng-show="dispetcherPages">
             <h2>тут парсер</h2>
         </div>
-        <div id="settings" class="page" style="display: block;">
+        <div id="settings" class="page">
             <university-settings ng-if="dispetcherPages"></university-settings>
             <user-settings ng-if="studprofPages"></user-settings>
 
