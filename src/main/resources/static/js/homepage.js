@@ -15,14 +15,17 @@ app.controller('control', function ($scope, $http, $window) {
         role: $window.localStorage.getItem("userRole"),
     };
     $scope.dispetcherPages = false;
-    $scope.studprofPages = false;
+    $scope.studPages = false;
+    $scope.profPages = false;
     if ($scope.user.role === "1") {
         $scope.dispetcherPages = true;
         document.querySelector("#lesson").style.display = "block";
     }
     if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2"){
         document.querySelector("#timetable").style.display = "block";
-        $scope.studprofPages = true;
+        $scope.studPages = true;
+        if ($scope.user.role === "2")
+            $scope.profPages = true;
     }
     $scope.university = "";
     $http.get(serverUrl + '/university', config).then(function (response) {
@@ -267,7 +270,6 @@ app.directive('infoBox', function () {
             $scope.cancelShow = (($window.localStorage.getItem("userRole") === '3'));
             $scope.closeInfo = function () {
                 $scope.infoShow = false;
-                // $scope.$apply();
             }
             $scope.cancelLesson = function () {
                 if (confirm("Отменить выбранное занятие?\n отмена снимается спустя неделю после изменения статуса")) {
@@ -281,10 +283,10 @@ app.directive('infoBox', function () {
                     console.log('отказались от отмены')
                 }
                 $scope.infoShow = false;
-
             }
             $scope.checkLess = function () {
-                if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2')
+                if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2'
+                )
                     return true;
                 else
                     return false;
@@ -628,7 +630,17 @@ app.directive('universitySettings', function () {
                 } else
                     angular.element(document.querySelector('#days')).css('border', "0");
             }
-
+            $.mask.definitions['q'] = '[A-Fa-f0-9]';
+            $("#weeksUni").mask("9");
+            $("#color1").mask("qqqqqq", {placeholder:"______"});
+            $("#color2").mask("qqqqqq", {placeholder:"______"});
+            $("#color3").mask("qqqqqq", {placeholder:"______"});
+            $("#durationUni").mask("99");
+            $(".lesson-input").mask("99:99");
+            // $("#telInputSet").mask("79999999999");
+            // $("#codeInput").click(function(){
+            //     $(this).setCursorPosition(1);
+            // }).mask("9999");
             function restore_main($scope){
                 document.querySelector('.register-fields').style.heigth = '420px';
                 $scope.buttonLabel = "Далее";
@@ -695,6 +707,9 @@ function showHide(element_id) {
     var lesson = document.getElementById('lesson');
     if (lesson !== null)
         lesson.style.display = "none";
+    var group = document.getElementById('groupInfo');
+    if (group !== null)
+        group.style.display = "none";
     var parser = document.getElementById('parser');
     if (parser !== null)
         parser.style.display = "none";
@@ -823,10 +838,10 @@ app.directive('userSettings', function () {
             $scope.errorMess = "";
             $scope.saveButEnable = true;
             $scope.codeButLabel = "выслать код";
+            let phoneEdited = false;
             $scope.savesettings = function() {
-                // console.log(document.querySelector('#telInputSet').value + ' ' + $scope.user.tel);
                 if ((document.querySelector('#telInputSet').value === $scope.user.tel) &&
-                    (document.querySelector('#nameInput').value !== $scope.user.name || $window.localStorage.getItem("groupsLength") !== (''+$scope.groups2.length))){
+                    (phoneEdited || document.querySelector('#nameInput').value !== $scope.user.name || $window.localStorage.getItem("groupsLength") !== (''+$scope.groups2.length))){
                     var data = {
                         groups: $scope.groups2,
                         id: $scope.user.id,
@@ -837,13 +852,20 @@ app.directive('userSettings', function () {
                         console.log(response.data);
                         $window.localStorage.setItem("userTel", document.querySelector('#telInputSet').value);
                         $window.localStorage.setItem("userName", document.querySelector('#nameInput').value);
-                        $scope.messShow = true
+                        $scope.messShow = true;
+                        if (phoneEdited) {
+                            document.querySelector('#settingsPage').style.height = "340px";
+                            if ($scope.user.role === '2')
+                                document.querySelector('#settingsPage').style.height = "230px";
+                        }
                     });
                 }else{
                     if (document.querySelector('#telInputSet').value !== $scope.user.tel){
-                    $scope.errorMess = "требуется подтвердить телефон смс кодом";
-                    $scope.errorShowSet = true;
-                    document.querySelector('#settingsPage').style.height = "320px";
+                        $scope.errorMess = "требуется подтвердить телефон смс кодом";
+                        $scope.errorShowSet = true;
+                        document.querySelector('#settingsPage').style.height = "320px";
+                        if ($scope.user.role === '2')
+                            document.querySelector('#settingsPage').style.height = "210px";
                     }
                 }
             };
@@ -854,6 +876,8 @@ app.directive('userSettings', function () {
                             $scope.errorMess = "этот телефон уже зарегистрирован"
                             $scope.errorShowSet = true;
                             document.querySelector('#settingsPage').style.height = "320px";
+                            if ($scope.user.role === '2')
+                                document.querySelector('#settingsPage').style.height = "210px";
                         } else {
                             $scope.saveButEnable = false;
                             document.querySelector('#saveSett').disabled = true;
@@ -864,6 +888,8 @@ app.directive('userSettings', function () {
                                         $scope.errorShowSet = false;
                                         $scope.errorMess = "";
                                         document.querySelector('#settingsPage').style.height = "290px";
+                                        if ($scope.user.role === '2')
+                                            document.querySelector('#settingsPage').style.height = "190px";
                                         $scope.codeButLabel = "подтвердить";
                                         $scope.codeSended = true;
                                         angular.element(document.querySelector('#codeInput')).attr('readOnly', 'false');
@@ -878,7 +904,7 @@ app.directive('userSettings', function () {
                                     console.log()
                                     if (response.data === "success") {
                                         console.log('ну типа проверили');
-
+                                        phoneEdited = true;
                                         $scope.saveButEnable = true;
                                         $scope.errorMess = "новый телефон подтверждён"
                                         angular.element(document.querySelector('#telInputSet')).attr('readOnly', 'true');
@@ -886,6 +912,8 @@ app.directive('userSettings', function () {
                                         $scope.errorShowSet = true;
                                         $scope.user.tel = document.querySelector('#telInputSet').value;
                                         document.querySelector('#settingsPage').style.height = "320px";
+                                        if ($scope.user.role === '2')
+                                            document.querySelector('#settingsPage').style.height = "210px";
                                         $scope.codeButLabel = "выслать код";
                                         $scope.codeSended = false;
                                         angular.element(document.querySelector('#codeInput')).attr('readOnly', 'false');
@@ -895,6 +923,8 @@ app.directive('userSettings', function () {
                                         $scope.codeButLabel = "выслать код";
                                         $scope.errorShowSet = true;
                                         document.querySelector('#settingsPage').style.height = "320px";
+                                        if ($scope.user.role === '2')
+                                            document.querySelector('#settingsPage').style.height = "210px";
                                         angular.element(document.querySelector('#codeInput')).attr('readOnly', 'true');
                                     }
                                 });
@@ -911,7 +941,7 @@ app.directive('userSettings', function () {
 
             document.querySelector('#settingsPage').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             if ($scope.user.role === "2")
-                document.querySelector('#settingsPage').style.height = "210px";
+                document.querySelector('#settingsPage').style.height = "190px";
             document.querySelector('#varifyId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#saveSett').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#nameInput').value = $scope.user.name;
@@ -926,17 +956,44 @@ app.directive('userSettings', function () {
 
 app.directive('groupList', function () {
     return {
-        // scope: {},
+        scope: {},
         controller: function ($scope, $window, $http) {
-            $http.post(serverUrl + '/user/groups/' + $scope.user.id, config).then(function (response) {
-                $scope.groups2 = response.data;
-                console.log('загружены группы длины ' + $scope.groups2.length);
-                groupsInitLength = $scope.groups2.length;
-                $window.localStorage.setItem("groupsLength", $scope.groups2.length);
+            $scope.students = [];
+            let groupId = 1;
+            // $http.get(serverUrl + '/group/students/' + groupId, config).then(function (response) {
+            //     $scope.students = response.data;
+            // });
+            $scope.studShow = false;
+            $scope.studentsTableShow = true;
+            $('#searchDead').autocomplete({
+                source: function (request, response) {
+                    var data = {
+                        request: request.term,
+                        type: {
+                            professor: false,
+                            group: true,
+                            classroom: false
+                        }
+                    };
+                    $http.post(serverUrl + '/search', data, config).then(function (response2) {
+                        response(response2.data);
+                    });
+                },
+                minLength: 1,
+                select: function displayItem(event, ui) {
+                    groupId = ui.item.id;
+                },
+                close: function refresh(event, ui) {
+                    $http.get(serverUrl + '/group/students/' + groupId, config).then(function (response) {
+                        $scope.students = response.data;
+                    });
+                    $scope.studShow = true;
+                    document.getElementById('searchDead').value = "";
+                }
             });
         },
         restrict: "E",
-        templateUrl: "../templates/userSettings.html"
+        templateUrl: "../templates/groupList.html"
         , transclude: true
 
 

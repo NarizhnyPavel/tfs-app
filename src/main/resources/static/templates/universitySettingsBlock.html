@@ -8,20 +8,11 @@
                 </tr>
                 <tr> <td colspan="2"><span class="register-label">Количество повторяющихся недель   </span>
                     <input type="number" id="weeksUni" min="1" max="4" ng-model="uniData.weeks" value="1" step="1" class="register-input" style="height: 20px; width: 40px">
-                    <script>
-                        $(function () {
-                            $("#weeks").mask("9");
-                        });
-                    </script></td>
+                    </td>
                     </td>
                 </tr>
                 <tr> <td colspan="2"><span class="register-label">Продолжительность занятий</span>
                     <input id="durationUni" ng-model="uniData.lessonDuration" type="text" class="register-input" style="width: 50px;"><span>мин.</span>
-                    <script>
-                        $(function () {
-                            $("#duration").mask("99");
-                        });
-                    </script>
                 </td>
                 </tr>
                 <tr> <td colspan="3"><span class="register-label">Корпоративные цвета</span></td></tr>
@@ -30,34 +21,13 @@
                         <table style="width: 100%">
                             <tr >
                                 <td><input style="width: 78px" placeholder="000000" ng-model="uniData.color1" type="text" id="color1" class="register-input" style="width: 60px;">
-                                    <script>
-                                        // jQuery(function ($) {
-                                        //     //создания специального символа h для маски
-                                        //     $.mask.definitions['q'] = '[A-Fa-f0-9]';
-                                        //     $("#color1").mask("#qqqqqq", {placeholder:"#______"});
-                                        // });
-                                    </script>
                                 </td>
 
                                 <td>
                                     <input style="width: 78px" placeholder="000000" ng-model="uniData.color2" type="text" id="color2" class="register-input" style="width: 60px;">
-                                    <script>
-                                        jQuery(function ($) {
-                                            //создания специального символа h для маски
-                                            $.mask.definitions['q'] = '[A-Fa-f0-9]';
-                                            $("#color2").mask("#qqqqqq", {placeholder:"#______"});
-                                        });
-                                    </script>
                                 </td>
                                 <td>
                                     <input style="width: 78px" placeholder="000000" ng-model="uniData.color3" type="text" id="color3" class="register-input" style="width: 60px;">
-                                    <script>
-                                        jQuery(function ($) {
-                                            //создания специального символа h для маски
-                                            $.mask.definitions['q'] = '[A-Fa-f0-9]';
-                                            $("#color3").mask("#qqqqqq", {placeholder:"#______"});
-                                        });
-                                    </script>
                                 </td>
                             </tr>
                         </table>

@@ -39,43 +39,53 @@
                     <p class="universityNameHeader">{{university.name}}</p>
                 </td>
             </tr>
-            <tr><td colspan="2"><p class="universityNameHeader" style="font-size: 18px; text-align: right; width: 100%">Привет, {{user.name}}</p></td></tr>
+            <tr>
+                <td colspan="2" ng-if="studPages && !profPages"><p class="universityNameHeader" style="font-size: 18px; text-align: right; width: 100%">Привет, {{user.name}}</p></td>
+                <td colspan="2" ng-if="profPages || dispetcherPages"><p class="universityNameHeader" style="font-size: 18px; text-align: right; width: 100%">Здравствуйте, {{user.name}}</p></td>
+            </tr>
         </table>
     </div>
     <div>
         <nav id="menu" class="top-menu">
             <ul class="menu-main">
-                <li ng-if="studprofPages">
-                    <input type="radio" name="inset" value="" id="tab_1" ng-checked="studprofPages" onclick="showHide('timetable')" data-block-id="timetable">
+                <li ng-if="studPages">
+                    <input type="radio" name="inset" value="" id="tab_1" ng-checked="studPages" onclick="showHide('timetable')" data-block-id="timetable">
                     <label for="tab_1" id="timetabel_label">Расписание</label>
                 </li>
-                <li ng-if="studprofPages">
+                <li ng-if="studPages">
                     <input type="radio" name="inset" value="" id="tab_2" onclick="showHide('search')" data-block-id="search">
                     <label for="tab_2" id="search_label">Поиск</label>
                 </li>
-                <li ng-show="dispetcherPages">
-                    <input type="radio" name="inset" value="" id="tab_3" ng-checked="dispetcherPages" onclick="showHide('lesson')" data-block-id="lesson">
-                    <label for="tab_3" id="lesson_label">Добавить занятие</label>
+                <li ng-if="profPages">
+                    <input type="radio" name="inset" value="" id="tab_3" onclick="showHide('groupInfo')" data-block-id="group">
+                    <label for="tab_3" id="group_label">Группы</label>
                 </li>
                 <li ng-show="dispetcherPages">
-                    <input type="radio" name="inset" value="" id="tab_4" onclick="showHide('parser')" data-block-id="parser">
-                    <label for="tab_4" id="parser_label">Добавить данные</label>
+                    <input type="radio" name="inset" value="" id="tab_4" ng-checked="dispetcherPages" onclick="showHide('lesson')" data-block-id="lesson">
+                    <label for="tab_4" id="lesson_label">Добавить занятие</label>
+                </li>
+                <li ng-show="dispetcherPages">
+                    <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('parser')" data-block-id="parser">
+                    <label for="tab_5" id="parser_label">Добавить данные</label>
                 </li>
                 <li>
-                    <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('settings')" data-block-id="settings">
-                    <label for="tab_5" id="settings_label">Настройки</label>
+                    <input type="radio" name="inset" value="" id="tab_6" onclick="showHide('settings')" data-block-id="settings">
+                    <label for="tab_6" id="settings_label">Настройки</label>
                 </li>
             </ul>
         </nav>
     </div>
     <div class="pages">
-        <div id="timetable" class="page" ng-show="studprofPages">
+        <div id="timetable" class="page" ng-show="studPages">
             <timetable-view type="main"></timetable-view>
         </div>
-        <div id="search" class="page" ng-show="studprofPages">
-            <search-block ng-if="studprofPages"></search-block>
-            <timetable-view ng-if="studprofPages" entity1="entityToViewInTimeTable" type="search"></timetable-view>
+        <div id="search" class="page" ng-show="studPages">
+            <search-block ng-if="studPages"></search-block>
+            <timetable-view ng-if="studPages" entity1="entityToViewInTimeTable" type="search"></timetable-view>
             <info-box ng-show="infoShow"></info-box>
+        </div>
+        <div id="groupInfo" class="page" ng-show="profPages">
+            <group-list></group-list>
         </div>
         <div id="lesson"  class="page" ng-show="dispetcherPages">
             <table style="width: 100%">
@@ -93,8 +103,7 @@
         </div>
         <div id="settings" class="page">
             <university-settings ng-if="dispetcherPages"></university-settings>
-            <user-settings ng-if="studprofPages"></user-settings>
-
+            <user-settings ng-if="studPages"></user-settings>
         </div>
     </div>
 </div>
