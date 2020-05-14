@@ -32,10 +32,10 @@ public interface LessonService {
     /**
      * Возвращение расписания занятий для студента.
      *
-     * @param id информация о лекции.
+     * @param lessonStopDto информация о лекции.
      * @return статус.
      */
-    String inLessonStop(long id);
+    String inLessonStop(LessonStopDto lessonStopDto);
 
     /**
      * Возвращение расписания на поиск.

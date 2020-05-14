@@ -31,15 +31,6 @@ public class LessonPositionDto {
      */
     private int days;
 
-    /**
-     * Статус.
-     */
-    private boolean status;
-
-    /**
-     * Время.
-     */
-    private LocalDate time;
 
     public static LessonPositionDto of(LessonPositionEntity lessonPositionEntity) {
 
@@ -48,8 +39,6 @@ public class LessonPositionDto {
         dto.setPosition(lessonPositionEntity.getPosition());
         dto.setDays(lessonPositionEntity.getDays());
         dto.setNumber(lessonPositionEntity.getNumber());
-        dto.setStatus(lessonPositionEntity.isStatus());
-        dto.setTime(lessonPositionEntity.getTime());
         return dto;
     }
 
@@ -60,8 +49,6 @@ public class LessonPositionDto {
         entity.setPosition(lessonPositionDto.getPosition());
         entity.setDays(lessonPositionDto.getDays());
         entity.setNumber(lessonPositionDto.getNumber());
-        entity.setStatus(lessonPositionDto.isStatus());
-        entity.setTime(lessonPositionDto.getTime());
         return entity;
     }
 }

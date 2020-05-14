@@ -35,12 +35,12 @@ public class LessonController {
     /**
      * Возвращение расписания занятий для студента.
      *
-     * @param id информация о лекции.
+     * @param lessonStopDto информация о лекции.
      * @return статус.
      */
     @PostMapping(value = "lesson/stop")
-    public String inLessonStop(@RequestBody long id) {
-        return lessonService.inLessonStop(id);
+    public String inLessonStop(@RequestBody LessonStopDto lessonStopDto) {
+        return lessonService.inLessonStop(lessonStopDto);
     }
 
     /**

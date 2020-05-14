@@ -36,13 +36,4 @@ public class AddLessonPositionDto {
      */
     private int days;
 
-    /**
-     * Статус.
-     */
-    private boolean status;
-
-    /**
-     * Время.
-     */
-    private LocalDate time;
 }
