@@ -1,7 +1,7 @@
 .groupAddBlock{
     display: inline-block;
     /*background-color: #5cb85c;*/
-    width: 650px;
+    width: 680px;
     border-color: black;
     top: 0;
     text-align: center;
@@ -35,5 +35,5 @@
 .addLessonBlock{
     background-color: #adadad;
     border-radius: 10px;
-    width: 650px;
+    width: 700px;
 }

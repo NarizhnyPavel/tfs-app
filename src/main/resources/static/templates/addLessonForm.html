@@ -2,7 +2,7 @@
     <div class="groupAddBlock">
         <table>
             <tr>
-                <td >
+                <td>
                     <table id="pos-table">
                         <tr class="groupAddBlock-field">
                             <td><p>Номер недели:</p></td>
@@ -32,11 +32,8 @@
                                 <button ng-click="addPosition()">Добавить</button>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="2">
-                                <position-box></position-box>
-                            </td>
-                        </tr>
+
+
                     </table>
                 </td>
                 <td>
@@ -77,7 +74,19 @@
                     </table>
                 </td>
             </tr>
+            <tr>
+            <tr>
+                <td colspan="2">
+                    <position-box></position-box>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <button ng-click="showLesson()">Проверить позиции</button>
+                </td>
+            </tr>
+            </tr>
         </table>
-        <button ng-click="showLesson()">Проверить позиции</button>
+
     </div>
 </div>
