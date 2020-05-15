@@ -70,7 +70,6 @@ public class GroupServiceImpl implements GroupService {
     class SortbyName implements Comparator<UserEntity> {
         // Используется для сортировки в порядке возрастания
         // фио
-
         public int compare(UserEntity a, UserEntity b)
         {
             return a.getName().charAt(0) - b.getName().charAt(0);
