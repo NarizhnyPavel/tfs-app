@@ -11,11 +11,14 @@ import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.error.ErrorDescription;
+import javafx.concurrent.Worker;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +48,8 @@ public class GroupServiceImpl implements GroupService {
         return GroupDto.of(groupEntity);
     }
 
+
+
     /**
      * Возвращает список студентов группы.
      *
@@ -54,9 +59,23 @@ public class GroupServiceImpl implements GroupService {
     public List<UserDto> findStudentsByGroupId(long id) {
        GroupEntity groupEntity = groupRepository.findById(id)
        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-       return groupEntity.getUsers().stream().map(UserDto::of).collect(Collectors.toList());
+       List<UserEntity> userEntities = groupEntity.getUsers();
+       Collections.sort(userEntities, new SortbyName());
+       return userEntities.stream().map(UserDto::of).collect(Collectors.toList());
     }
 
+    /**
+     * Сортировка пользователей по имени
+     */
+    class SortbyName implements Comparator<UserEntity> {
+        // Используется для сортировки в порядке возрастания
+        // фио
+
+        public int compare(UserEntity a, UserEntity b)
+        {
+            return a.getName().charAt(0) - b.getName().charAt(0);
+        }
+    }
     /**
      * Сохранение группы.
      *

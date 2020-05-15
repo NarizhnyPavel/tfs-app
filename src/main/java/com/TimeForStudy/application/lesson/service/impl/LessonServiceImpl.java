@@ -511,7 +511,6 @@ public class LessonServiceImpl implements LessonService {
 
         List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
 
-
         for (LessonPositionEntity less : lessonPositionEntities) {
             LessonEntity lessonEntity = less.getLesson();
 
