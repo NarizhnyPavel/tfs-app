@@ -168,23 +168,19 @@ app.directive('gridMain', function () {
                 $window.localStorage.setItem("lessonToViewStatus", $scope.lessonToView.status);
                 $window.localStorage.setItem("lessonToViewId", $scope.lessonToView.id);
                 $window.localStorage.setItem("lessonToViewWeek", $scope.week);
+                $window.localStorage.setItem("lessonToViewProfId", $scope.lessonToView.professorId);
                 $scope.statusShow = true;
                 $scope.groupShow = true;
                 $scope.profShow = true;
-                $scope.info = "Дисциплина: " + lesson.subject + "" +
-                    "\n Тип: " + lesson.lessonType +
-                    "\n Преподаватель: " + lesson.professor +
-                    "\n Аудитория: " + lesson.classroom +
-                    "\n Статус: " + lesson.status + "";
                 $scope.infoShow = true;
-                $scope.$apply();
+                // $scope.$apply();
             }
             function refresh_timetable() {
                 $http.post(serverUrl + '/lesson/info', data, config).then(function (response) {
                     document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                     $scope.timetableShow = true;
                     $scope.days2 = response.data;
-                    $scope.$apply();
+                    // $scope.$apply();
                 });
             }
         }
@@ -235,7 +231,7 @@ app.directive('gridSearch', function () {
                 $scope.groupShow = true;
                 $scope.profShow = true;
                 $scope.infoShow = true;
-                $scope.$apply();
+                $window.localStorage.setItem("lessonToViewProfId", $scope.lessonToView.professorId);
             }
             function refresh_timetable() {
                 console.log('пытаюсь обновить таблицу для ' + $scope.entityFromSearch.id);
@@ -246,7 +242,7 @@ app.directive('gridSearch', function () {
 
                     }
                     $scope.days2 = response.data;
-                    $scope.$apply();
+                    // $scope.$apply();
                 });
             }
             $scope.$on('myCustomEvent2', function (event, data) {
@@ -290,8 +286,9 @@ app.directive('infoBox', function () {
                 $scope.infoShow = false;
             }
             $scope.checkLess = function () {
+                console.log($window.localStorage.getItem("userId") + ' ' + $window.localStorage.getItem("lessonToViewProfId"))
                 if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2'
-                )
+                && ''+$window.localStorage.getItem("userId") === ''+$window.localStorage.getItem("lessonToViewProfId"))
                     return true;
                 else
                     return false;
@@ -309,12 +306,10 @@ app.directive('groupBox', function () {
         controller: function ($scope, $http) {
             var ableToDelAll = false;
             $scope.$on('groupsSettEvent2', function (event, data) {
-                console.log('я получиль' + data.comm);
                 $scope.groups2 = data.prop;
                 ableToDelAll = data.comm;
             });
             $scope.delete = function (id) {
-                console.log('могу ли я удалять все? ' + ableToDelAll);
                 if (ableToDelAll || ($scope.groups2.length > 1)) {
                     let index = $scope.groups2.findIndex(group => group.id === id);
                     $scope.groups2.splice(index, 1);
@@ -997,6 +992,10 @@ app.directive('groupList', function () {
                     $scope.studShow = true;
                     document.getElementById('searchDead').value = "";
                 }
+            });
+            $('.studtableStyle tr').each(function(i) {
+                var number = i + 1;
+                $(this).find('td:first').text(number+".");
             });
         },
         restrict: "E",

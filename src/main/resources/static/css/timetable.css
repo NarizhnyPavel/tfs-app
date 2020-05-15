@@ -12,14 +12,14 @@
     min-height: 100%;
     padding: 10px;
     margin: 0 auto;
-    counter-reset: schetchik;
+
 }
 .studtableStyle-table {
 
 }
 
 .studtableStyle table {
-
+    counter-reset: schetchik;
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 17px;
     text-align: left;
@@ -40,6 +40,10 @@
     padding: 10px 8px;
     background: white;
     text-align: center;
+}
+
+.studtableStyle tbody {
+
 }
 
 .studtableStyle table th:first-child {
@@ -70,16 +74,16 @@
     border: 1px solid #E7D5C0;
 }
 
-.studtableStyle tr:before {
-    content: counter(schetchik);
-    display: table-cell;
-    vertical-align: middle;
-    color: #978777;
-}
+/*.studtableStyle tr:before {*/
+/*    content: counter(schetchik);*/
+/*    display: table-cell;*/
+/*    vertical-align: middle;*/
+/*    color: #978777;*/
+/*}*/
 
-.studtableStyle tr{
-    counter-increment: schetchik;
-}
+/*.studtableStyle tr{*/
+/*    counter-increment: schetchik;*/
+/*}*/
 
 .timetableStyle tr{
 
