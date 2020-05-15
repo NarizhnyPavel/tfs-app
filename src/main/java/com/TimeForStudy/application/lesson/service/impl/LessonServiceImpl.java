@@ -240,18 +240,19 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities.size()!=0) {
-                    LocalDate localDate = LocalDate.now();
-                    if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                        infoLessonDto.setStatus(false);
-                        positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                    } else {
-                        infoLessonDto.setStatus(true);
+                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
+                boolean flagW = true;
+                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
+                    if (positionCancelEntity.getCancelWeek()==weekNum) {
+                        LocalDate localDate = LocalDate.now();
+                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
+                            flagW = false;
+                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
+                            break;
+                        }
                     }
-                } else {
-                    infoLessonDto.setStatus(true);
                 }
+                infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups1 = "";
@@ -390,18 +391,19 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities.size()!=0) {
-                    LocalDate localDate = LocalDate.now();
-                    if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                        infoLessonDto.setStatus(false);
-                        positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                    } else {
-                        infoLessonDto.setStatus(true);
+                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
+                boolean flagW = true;
+                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
+                    if (positionCancelEntity.getCancelWeek()==weekNum) {
+                        LocalDate localDate = LocalDate.now();
+                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
+                            flagW = false;
+                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
+                            break;
+                        }
                     }
-                } else {
-                    infoLessonDto.setStatus(true);
                 }
+                infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -459,18 +461,19 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities.size()!=0) {
-                    LocalDate localDate = LocalDate.now();
-                    if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                        infoLessonDto.setStatus(false);
-                        positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                    } else {
-                        infoLessonDto.setStatus(true);
+                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
+                boolean flagW = true;
+                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
+                    if (positionCancelEntity.getCancelWeek()==weekNum) {
+                        LocalDate localDate = LocalDate.now();
+                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
+                            flagW = false;
+                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
+                            break;
+                        }
                     }
-                } else {
-                    infoLessonDto.setStatus(true);
                 }
+                infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -526,18 +529,19 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities.size()!=0) {
-                    LocalDate localDate = LocalDate.now();
-                    if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                        infoLessonDto.setStatus(false);
-                        positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                    } else {
-                        infoLessonDto.setStatus(true);
+                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
+                boolean flagW = true;
+                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
+                    if (positionCancelEntity.getCancelWeek()==weekNum) {
+                        LocalDate localDate = LocalDate.now();
+                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
+                            flagW = false;
+                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
+                            break;
+                        }
                     }
-                } else {
-                    infoLessonDto.setStatus(true);
                 }
+                infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
