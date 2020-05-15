@@ -113,7 +113,6 @@ public class LoginUserServiceImpl implements LoginUserService {
         UserEntity user = userRepository.findByPhone(verificationPair.getPhone());
 
         UserDto dto = UserDto.of(user);
-        System.out.println(waitingList.toString());
         if (waitingList.get(verificationPair.getPhone()).compareTo(verificationPair.getCode()) == 0) {
             return dto;
             } else {
