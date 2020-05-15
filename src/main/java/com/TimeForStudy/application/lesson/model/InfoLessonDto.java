@@ -50,13 +50,19 @@ public class InfoLessonDto {
      */
     private String group;
 
-    public InfoLessonDto( String time, int classroom, String subject, boolean status, String professor, String lessonType) {
+    /**
+     * Преподаватель
+     */
+    private long professorId;
+
+    public InfoLessonDto( String time, int classroom, String subject, boolean status, String professor, String lessonType, long professorId) {
         this.time = time;
         this.classroom = classroom;
         this.subject = subject;
         this.status = status;
         this.professor = professor;
         this.lessonType = lessonType;
+        this.professorId = professorId;
     }
 
 }

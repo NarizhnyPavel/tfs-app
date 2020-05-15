@@ -254,6 +254,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setStatus(flagW);
+                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups1 = "";
@@ -406,6 +407,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setStatus(flagW);
+                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -477,6 +479,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setStatus(flagW);
+                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
@@ -545,6 +548,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setStatus(flagW);
+                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
                 String groups = "";
