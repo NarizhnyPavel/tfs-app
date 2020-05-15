@@ -246,10 +246,11 @@ public class LessonServiceImpl implements LessonService {
                     if (positionCancelEntity.getCancelWeek()==weekNum) {
                         LocalDate localDate = LocalDate.now();
                         if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                            flagW = false;
                             positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                            break;
+                        } else {
+                            flagW = false;
                         }
+                        break;
                     }
                 }
                 infoLessonDto.setStatus(flagW);
@@ -397,10 +398,11 @@ public class LessonServiceImpl implements LessonService {
                     if (positionCancelEntity.getCancelWeek()==weekNum) {
                         LocalDate localDate = LocalDate.now();
                         if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                            flagW = false;
                             positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                            break;
+                        } else {
+                            flagW = false;
                         }
+                        break;
                     }
                 }
                 infoLessonDto.setStatus(flagW);
@@ -467,10 +469,11 @@ public class LessonServiceImpl implements LessonService {
                     if (positionCancelEntity.getCancelWeek()==weekNum) {
                         LocalDate localDate = LocalDate.now();
                         if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                            flagW = false;
                             positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                            break;
+                        } else {
+                            flagW = false;
                         }
+                        break;
                     }
                 }
                 infoLessonDto.setStatus(flagW);
@@ -535,10 +538,11 @@ public class LessonServiceImpl implements LessonService {
                     if (positionCancelEntity.getCancelWeek()==weekNum) {
                         LocalDate localDate = LocalDate.now();
                         if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-                            flagW = false;
                             positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-                            break;
+                        } else {
+                            flagW = false;
                         }
+                        break;
                     }
                 }
                 infoLessonDto.setStatus(flagW);
