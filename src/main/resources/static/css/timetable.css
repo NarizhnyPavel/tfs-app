@@ -12,13 +12,14 @@
     min-height: 100%;
     padding: 10px;
     margin: 0 auto;
-
+    counter-reset: schetchik;
 }
 .studtableStyle-table {
 
 }
 
 .studtableStyle table {
+
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 17px;
     text-align: left;
@@ -28,9 +29,10 @@
     color: #452F21;
     margin: 30px auto;
     background-color: white;
+    width: 540px;
     display: inline-block;
     overflow: auto;
-    max-height: 450px;
+    max-height: 500px;
     /*max-width: ;*/
 }
 
@@ -62,11 +64,30 @@
     border-bottom-right-radius: 20px;
 }
 
+.studtableStyle td,
+.studtableStyle tbody tr:before {
+    padding: .1em .5em;
+    border: 1px solid #E7D5C0;
+}
+
+.studtableStyle tr:before {
+    content: counter(schetchik);
+    display: table-cell;
+    vertical-align: middle;
+    color: #978777;
+}
+
+.studtableStyle tr{
+    counter-increment: schetchik;
+}
+
 .timetableStyle tr{
+
     background-color: crimson;
     border-radius: 15px;
     height: 300px;
 }
+
 
 .timetableStyle h2{
     padding-bottom: 5px ;

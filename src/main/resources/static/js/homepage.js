@@ -167,6 +167,7 @@ app.directive('gridMain', function () {
                 $scope.lessonToView = lesson;
                 $window.localStorage.setItem("lessonToViewStatus", $scope.lessonToView.status);
                 $window.localStorage.setItem("lessonToViewId", $scope.lessonToView.id);
+                $window.localStorage.setItem("lessonToViewWeek", $scope.week);
                 $scope.statusShow = true;
                 $scope.groupShow = true;
                 $scope.profShow = true;
@@ -274,7 +275,11 @@ app.directive('infoBox', function () {
             $scope.cancelLesson = function () {
                 if (confirm("Отменить выбранное занятие?\n отмена снимается спустя неделю после изменения статуса")) {
                     console.log('отменяю пару с id ' + $window.localStorage.getItem("lessonToViewId"));
-                    $http.post(serverUrl + '/lesson/stop', $window.localStorage.getItem("lessonToViewId"), config).then(function (response) {
+                    let data = {
+                        id: $window.localStorage.getItem("lessonToViewId"),
+                        weeks: $window.localStorage.getItem("lessonToViewWeek")
+                    };
+                    $http.post(serverUrl + '/lesson/stop', data , config).then(function (response) {
                         document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                         $scope.days2 = response.data;
                         $scope.$apply();
@@ -335,14 +340,14 @@ app.directive('positionBox', function () {
     }
 });
 
-let selectedTeacher = 170;
-let selectedClassroom = 5;
-let selectedSubject = 5;
+let selectedTeacher = -1;
+let selectedClassroom = -1;
+let selectedSubject = -1;
 
 app.directive('addLessonForm', function () {
     return{
         scope: {},
-        controller: function ($scope, $http) {
+        controller: function ($scope, $http, $window) {
             $scope.groups2 = [];
             $scope.positions = [];
             function checkFields() {
@@ -461,8 +466,9 @@ app.directive('addLessonForm', function () {
                         + document.getElementById("time").value;
                     if (pos_num < 100)
                         pos_num = "0" + pos_num;
-                    let index = $scope.positions.findIndex(position => position.num === pos_num);
+                    let index = $scope.positions.findIndex(position => position.num === ''+pos_num);
                     if(index === -1) {
+                        console.log(pos_num);
                         //проверка на наличие 0** в positions
                         var label = document.getElementById("week").value + "нед. " +
                             " " + $scope.workdays[document.getElementById("workday").value - 1].label +
@@ -548,7 +554,8 @@ app.directive('addLessonForm', function () {
                     selectedSubject = ui.item.id;
                 }
             });
-
+            document.querySelector('#addPosBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            document.querySelector('#addLesBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
         }, restrict: "E"
         , templateUrl: "../templates/addLessonForm.html"
         , transclude: true

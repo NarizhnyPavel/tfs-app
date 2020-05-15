@@ -29,7 +29,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <button ng-click="addPosition()">Добавить</button>
+                                <button class="buttonClass" id="addPosBut" ng-click="addPosition()">Добавить</button>
                             </td>
                         </tr>
 
@@ -67,7 +67,7 @@
                             <td><p>Тип занятия:</p></td>
                             <td>
                                 <select id="type">
-                                    <option ng-repeat="type in types" value="{{type.id}}" >{{type.label}}</option>
+                                    <option  ng-repeat="type in types" value="{{type.id}}" >{{type.label}}</option>
                                 </select>
                             </td>
                         </tr>
@@ -75,18 +75,18 @@
                 </td>
             </tr>
             <tr>
-            <tr>
-                <td colspan="2">
-                    <position-box></position-box>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                <button ng-click="showLesson()">Проверить позиции</button>
-                </td>
-            </tr>
-            </tr>
-        </table>
 
+        </table>
+    <table style="min-height: 100px; width: 100%">
+        <tr>
+            <td rowspan="2" style="width: 200px">
+                <position-box></position-box>
+            </td>
+            <td rowspan="2" style="text-align: center; width: 400px">
+                <button id="addLesBut" class="buttonClass" style="margin: 0 auto" ng-click="showLesson()">Проверить позиции</button>
+            </td>
+        </tr>
+        </tr>
+    </table>
     </div>
 </div>
