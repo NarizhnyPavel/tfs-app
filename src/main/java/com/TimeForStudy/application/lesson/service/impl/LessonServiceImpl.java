@@ -241,7 +241,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities!=null) {
+                if (positionCancelEntities.size()!=0) {
                     LocalDate localDate = LocalDate.now();
                     if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
                         infoLessonDto.setStatus(false);
@@ -249,6 +249,8 @@ public class LessonServiceImpl implements LessonService {
                     } else {
                         infoLessonDto.setStatus(true);
                     }
+                } else {
+                    infoLessonDto.setStatus(true);
                 }
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -389,7 +391,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities!=null) {
+                if (positionCancelEntities.size()!=0) {
                     LocalDate localDate = LocalDate.now();
                     if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
                         infoLessonDto.setStatus(false);
@@ -397,6 +399,8 @@ public class LessonServiceImpl implements LessonService {
                     } else {
                         infoLessonDto.setStatus(true);
                     }
+                } else {
+                    infoLessonDto.setStatus(true);
                 }
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -456,7 +460,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities!=null) {
+                if (positionCancelEntities.size()!=0) {
                     LocalDate localDate = LocalDate.now();
                     if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
                         infoLessonDto.setStatus(false);
@@ -464,6 +468,8 @@ public class LessonServiceImpl implements LessonService {
                     } else {
                         infoLessonDto.setStatus(true);
                     }
+                } else {
+                    infoLessonDto.setStatus(true);
                 }
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
@@ -521,7 +527,7 @@ public class LessonServiceImpl implements LessonService {
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByCancelWeek(weekNum);
-                if (positionCancelEntities!=null) {
+                if (positionCancelEntities.size()!=0) {
                     LocalDate localDate = LocalDate.now();
                     if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
                         infoLessonDto.setStatus(false);
@@ -529,6 +535,8 @@ public class LessonServiceImpl implements LessonService {
                     } else {
                         infoLessonDto.setStatus(true);
                     }
+                } else {
+                    infoLessonDto.setStatus(true);
                 }
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
                 infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
