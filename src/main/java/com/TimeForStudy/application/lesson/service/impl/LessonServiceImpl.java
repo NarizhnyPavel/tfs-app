@@ -138,21 +138,18 @@ public class LessonServiceImpl implements LessonService {
 
         LessonPositionEntity lessonPosition = lessonPositionRepository.findById(lessonStopDto.getId())
                 .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
-        LocalDate localDate = LocalDate.now();
         DateDto dateDto = dateService
                 .getWeekNow(lessonPosition.getLesson().getSemester().getId());
-        int numberTest = 0;
-        if (dateDto.getNumberWeek()>lessonStopDto.getWeeks()) {
-            numberTest = (lessonStopDto.getWeeks() +
-                    lessonPosition.getLesson().getSemester().getUniversity().getWeeks() -
-                    dateDto.getNumberWeek())*7 - (lessonPosition.getDays()-dateDto.getNumberDay());
-        } else {
-            numberTest = (lessonStopDto.getWeeks()  -
-                    dateDto.getNumberWeek())*7 - (lessonPosition.getDays()-dateDto.getNumberDay());
-        }
-        localDate.plusDays(numberTest+1);
+        LocalDate localDate = dateService.getDayRequest(
+                lessonPosition.getLesson().getSemester().getUniversity().getWeeks(),
+                dateDto.getNumberWeek(),
+                dateDto.getNumberDay(),
+                lessonStopDto.getWeeks(),
+                lessonPosition.getDays()
+                );
+        localDate.plusDays(1);
         PositionCancelEntity positionCancelEntity = new PositionCancelEntity(localDate, lessonStopDto.getWeeks(), lessonPosition);
-//        positionCancelRepository.save(positionCancelEntity);
+        positionCancelRepository.save(positionCancelEntity);
         return "success";
     }
 
@@ -176,6 +173,8 @@ public class LessonServiceImpl implements LessonService {
             UniversityEntity universityEntity = universityRepository.findById((long) 1)
                     .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
             List<DaysDto> daysDtos = new ArrayList<>();
+
+
 
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
                 daysDtos.add(formDaysDto(groupEntities, "Понедельник", addInfoLessonDto.getWeekNum(), 1));
@@ -516,7 +515,26 @@ public class LessonServiceImpl implements LessonService {
 
         DaysDto daysDto = new DaysDto();
         daysDto.setDayName(nameDay);
-
+        // Текущий семестр
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        DateDto dateDto = dateService.getWeekNow(semesterEntity.getId());
+        // рассчёт даты выбранного дня
+        LocalDate localDateRequest = dateService.getDayRequest(
+                semesterEntity.getUniversity().getWeeks(),
+                dateDto.getNumberWeek(),
+                dateDto.getNumberDay(),
+                weekNum,
+                numberDay
+        );
+        // если это текущий день
+        if (localDateRequest == LocalDate.now()) {
+            daysDto.setStatus(true);
+        }
+        String date = localDateRequest.getDayOfMonth() + " " + localDateRequest.getMonth().name();
+        daysDto.setDate(date);
+        System.out.println(date);
+        System.out.println(dateDto.getNumberWeek() + " " + dateDto.getNumberDay() + " " + weekNum + " " + numberDay);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
         List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
@@ -587,7 +605,24 @@ public class LessonServiceImpl implements LessonService {
 
         DaysDto daysDto = new DaysDto();
         daysDto.setDayName(nameDay);
-
+        // Текущий семестр
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        DateDto dateDto = dateService.getWeekNow(semesterEntity.getId());
+        // рассчёт даты выбранного дня
+        LocalDate localDateRequest = dateService.getDayRequest(
+                semesterEntity.getUniversity().getWeeks(),
+                dateDto.getNumberWeek(),
+                dateDto.getNumberDay(),
+                weekNum,
+                numberDay
+        );
+        // если это текущий день
+        if (localDateRequest == LocalDate.now()) {
+            daysDto.setStatus(true);
+        }
+        String date = localDateRequest.getDayOfMonth() + " " + localDateRequest.getMonth().name();
+        daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
         List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
@@ -656,7 +691,24 @@ public class LessonServiceImpl implements LessonService {
 
         DaysDto daysDto = new DaysDto();
         daysDto.setDayName(nameDay);
-
+        // Текущий семестр
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        DateDto dateDto = dateService.getWeekNow(semesterEntity.getId());
+        // рассчёт даты выбранного дня
+        LocalDate localDateRequest = dateService.getDayRequest(
+                semesterEntity.getUniversity().getWeeks(),
+                dateDto.getNumberWeek(),
+                dateDto.getNumberDay(),
+                weekNum,
+                numberDay
+        );
+        // если это текущий день
+        if (localDateRequest == LocalDate.now()) {
+            daysDto.setStatus(true);
+        }
+        String date = localDateRequest.getDayOfMonth() + " " + localDateRequest.getMonth().name();
+        daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
         List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
@@ -729,7 +781,24 @@ public class LessonServiceImpl implements LessonService {
 
         DaysDto daysDto = new DaysDto();
         daysDto.setDayName(nameDay);
-
+        // Текущий семестр
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        DateDto dateDto = dateService.getWeekNow(semesterEntity.getId());
+        // рассчёт даты выбранного дня
+        LocalDate localDateRequest = dateService.getDayRequest(
+                semesterEntity.getUniversity().getWeeks(),
+                dateDto.getNumberWeek(),
+                dateDto.getNumberDay(),
+                weekNum,
+                numberDay
+        );
+        // если это текущий день
+        if (localDateRequest == LocalDate.now()) {
+            daysDto.setStatus(true);
+        }
+        String date = localDateRequest.getDayOfMonth() + " " + localDateRequest.getMonth().name();
+        daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
         List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository

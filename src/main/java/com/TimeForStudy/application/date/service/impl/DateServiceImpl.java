@@ -53,4 +53,22 @@ public class DateServiceImpl implements DateService {
         numberWeekBySemester+=1;
         return new DateDto(numberWeekBySemester, LocalDate.now().getDayOfWeek().getValue());
     }
+
+    /**
+     * Возвращает день и месяц необходимого запроса дня.
+     *
+     * @return номер недели.
+     */
+    @Override
+    public LocalDate getDayRequest(int numberWeek,int weekNow, int dayNow, int weekRequest, int dayRequest) {
+
+        int numberTest = 0;
+        if (weekNow>weekRequest) {
+            numberTest = (weekRequest + numberWeek - weekNow)*7 - (dayRequest - dayNow);
+        } else {
+            numberTest = (weekRequest - weekNow)*7 + (dayRequest - dayNow);
+        }
+
+        return LocalDate.now().plusDays(numberTest);
+    }
 }
