@@ -1,7 +1,7 @@
 <div class="studtableStyle" ng-show="studentsTableShow">
     <div class="searchBlock"><div ><span>Начните вводить номер группы: </span><input id="searchDead3" type="text" class="search-input" style="width: 250px; margin-bottom: 20px" spellcheck="false"></div>
     </div>
-    <table id="studTableId" style="max-width: 510px" ng-show="studShow">
+    <table id="studTableId" style="min-width: 570px" ng-show="studShow">
         <thead>
             <th></th>
             <th >
@@ -13,8 +13,7 @@
         </thead>
         <tbody ng-repeat="student in students">
         <tr>
-            <td><span>2</span></td>
-<!--            <td>{{student.num}}</td>-->
+            <td><span>{{student.number}}</span></td>
             <td ng-if="student.role === 4">{{student.name}}</td>
             <td ng-if="student.role === 3" style="font-weight: 600" title="староста">{{student.name}}</td>
             <td>{{student.phone}}</td>

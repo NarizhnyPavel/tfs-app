@@ -114,7 +114,7 @@ app.directive('searchBlockMain', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 1,
+                minLength: 2,
                 select: function displayItem(event, ui) {
                     $scope.entityToViewInTimeTable.id = ui.item.id;
                     $scope.entityToViewInTimeTable.type = ui.item.type;
@@ -182,7 +182,7 @@ app.directive('searchBlockDispatcher', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 1,
+                minLength: 2,
                 select: function displayItem(event, ui) {
                     $scope.entityToViewInTimeTable.id = ui.item.id;
                     $scope.entityToViewInTimeTable.type = ui.item.type;
@@ -210,7 +210,9 @@ app.directive('gridMain', function () {
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
                 $scope.maxWeekNum = response.data;
             });
-            $scope.week = 1;
+            $http.get(serverUrl + '/week/now/' + 1, config).then(function (response) {
+                $scope.week = response.data.numberWeek;
+            });
             var data = {
                 userId: $window.localStorage.getItem("userId")
                 , weekNum: 1
@@ -442,7 +444,7 @@ app.directive('addLessonForm', function () {
                     return true;
                 }
             }
-            $scope.showLesson = function () {
+            $scope.checkPositions = function () {
                 if (checkFields() && checkFieldsPos()) {
                     var data = {
                         position: $scope.positions,
@@ -493,14 +495,25 @@ app.directive('addLessonForm', function () {
                                         message = message + "уже есть пары";
                                     }
                                     position.errmessage = message;
-                                    console.log(position.errmessage);
-                                }
+                                } else
+                                    document.querySelector('#addLesBut').disabled = false;
                             }
                         }
                         $scope.$apply();
                     });
                 }
             };
+            $scope.addLesson = function(){
+                let data = {
+                    classroom: selectedClassroom,
+                    groups: $scope.groups2,
+                    lessonType: document.getElementById("type").value,
+                    position: $scope.positions,
+                    professor: selectedTeacher,
+                    subject: selectedSubject
+                }
+                console.log(data);
+            }
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;
             });
@@ -610,7 +623,9 @@ app.directive('addLessonForm', function () {
                 }
             });
             document.querySelector('#addPosBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            document.querySelector('#checkLesBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#addLesBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            document.querySelector('#addLesBut').disabled = true;
         }, restrict: "E"
         , templateUrl: "../templates/addLessonForm.html"
         , transclude: true
@@ -978,6 +993,34 @@ app.directive('userSettings', function () {
         templateUrl: "../templates/userSettings.html"
         , transclude: true
 
+    };
+});
+
+app.directive('parser', function () {
+    return {
+        scope: {},
+        controller: function ($scope, $window, $http) {
+            $scope.buttonPatserLabel = "";
+            $scope.studentsTableShow = true;
+            $scope.messageParserShow = false;
+            $scope.buttonParserLabel = "Отправить";
+            $scope.messageParser = "";
+            $scope.sendToParse = function () {
+                $http.post(serverUrl + "/parser", {
+                        url: document.querySelector('#parserUrl').value
+                    }
+                    , {headers: {'Accept': 'text/plain'}}).then(function (response) {
+
+                });
+            };
+            $.mask.definitions['a'] = false;
+            $("#parserUrl").mask("https://yadi.sk/d/?***************");
+            document.querySelector('#parserDivId').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
+            document.querySelector('#parserButtonId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+        },
+        restrict: "E",
+        templateUrl: "../templates/parser.html"
+        , transclude: true
     };
 });
 

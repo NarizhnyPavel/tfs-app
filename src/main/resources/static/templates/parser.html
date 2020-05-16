@@ -1,0 +1,19 @@
+<div class="register-fields2" id="parserDivId" style="min-width: 520px">
+    <span>Данна форма позволяет добавить новые данные в систему. <br>Ниже вы найдёте ссылку на скачивание шаблона.
+    <br> Помесите заполненный документ на Яндекс диск <br>и укажите публичную ссылек на него в поле ниже</span>
+    <table style="margin-top: 20px">
+        <tr>
+            <td>
+                <input type="text" id="parserUrl" spellcheck="false" class="register-input" style="width: 300px;">
+            </td>
+            <td>
+                <button id="parserButtonId" ng-click="sendToParse()" class="buttonClass">{{buttonParserLabel}}</button>
+            </td>
+        </tr>
+        <trt>
+            <td colspan="2" ng-show="messageParserShow">
+                {{messageParser}}
+            </td>
+        </trt>
+    </table>
+</div>

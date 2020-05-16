@@ -1,7 +1,6 @@
-package com.TimeForStudy.application.excelTable;
+package com.TimeForStudy.application.parser;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -30,10 +29,13 @@ public class FileDownloader{
     }
 
     public String readFileFromYandexDisk() throws IOException {
-        String fileName = UUID.randomUUID().toString() + extension;
-        FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-        fileOutputStream.getChannel()
-                .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
-        return fileName;
+        if (tryToConnect()) {
+            String fileName = UUID.randomUUID().toString() + extension;
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            fileOutputStream.getChannel()
+                    .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            return fileName;
+        }else
+            return "connectionError";
     }
 }

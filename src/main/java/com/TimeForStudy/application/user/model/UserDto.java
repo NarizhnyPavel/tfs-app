@@ -3,6 +3,7 @@ package com.TimeForStudy.application.user.model;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Модель представления сущности пользователь
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class UserDto {
 
     private long id;
@@ -29,6 +31,12 @@ public class UserDto {
      * Роль (1 - Диспетчер, 2 - Преподаватель, 3 - Староста, 4 - Студент)
      */
     private byte role;
+
+    public UserDto(String phone, String name, byte role) {
+        this.phone = phone;
+        this.name = name;
+        this.role = role;
+    }
 
     public static UserDto of(UserEntity user) {
         UserDto dto = new UserDto();
