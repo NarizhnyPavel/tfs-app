@@ -3,6 +3,11 @@ package com.TimeForStudy.application.university.model;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Модель сетки рабочих дней недели университета.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
 @RequiredArgsConstructor
 public class Week {
