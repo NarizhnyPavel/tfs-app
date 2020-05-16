@@ -6,6 +6,7 @@ import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
+import com.TimeForStudy.application.group.model.UsersByGroup;
 import com.TimeForStudy.application.group.service.GroupService;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.model.ProfessorDto;
@@ -56,12 +57,16 @@ public class GroupServiceImpl implements GroupService {
      * @return список групп.
      */
     @Override
-    public List<UserDto> findStudentsByGroupId(long id) {
+    public List<UsersByGroup> findStudentsByGroupId(long id) {
        GroupEntity groupEntity = groupRepository.findById(id)
        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
        List<UserEntity> userEntities = groupEntity.getUsers();
        Collections.sort(userEntities, new SortbyName());
-       return userEntities.stream().map(UserDto::of).collect(Collectors.toList());
+       List<UsersByGroup> usersByGroups = new ArrayList<>();
+       for (int i = 1;  i <= userEntities.size(); i++) {
+           usersByGroups.add(new UsersByGroup(i,userEntities.get(i-1).getName()));
+       }
+       return usersByGroups;
     }
 
     /**

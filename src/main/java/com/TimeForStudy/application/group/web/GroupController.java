@@ -3,6 +3,7 @@ package com.TimeForStudy.application.group.web;
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
+import com.TimeForStudy.application.group.model.UsersByGroup;
 import com.TimeForStudy.application.group.service.GroupService;
 import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UserDto;
@@ -41,7 +42,7 @@ public class GroupController {
      * @return список групп.
      */
     @GetMapping(value = "/group/students/{id}")
-    public List<UserDto> getGroups(@PathVariable long id) {
+    public List<UsersByGroup> getGroups(@PathVariable long id) {
         return groupService.findStudentsByGroupId(id);
     }
 

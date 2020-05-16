@@ -3,6 +3,7 @@ package com.TimeForStudy.application.group.service;
 import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
+import com.TimeForStudy.application.group.model.UsersByGroup;
 import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
@@ -31,7 +32,7 @@ public interface GroupService {
      *
      * @return список групп.
      */
-    List<UserDto> findStudentsByGroupId(long id);
+    List<UsersByGroup> findStudentsByGroupId(long id);
 
 
     /**
