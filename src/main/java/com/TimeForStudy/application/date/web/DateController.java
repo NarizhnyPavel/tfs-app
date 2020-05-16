@@ -25,13 +25,13 @@ public class DateController {
     private final DateService dateService;
 
     /**
-     * Возвращает список групп.
+     * Возвращает список группы.
      *
-     * @return список групп.
+     * @return список группы.
      */
     @GetMapping(value = "/week/now/{id}")
-    public DateDto postGroups(@PathVariable long semesterId) {
-        return dateService.getWeekNow(semesterId);
+    public DateDto postGroups(@PathVariable long id) {
+        return dateService.getWeekNow(id);
     }
 
 

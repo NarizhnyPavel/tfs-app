@@ -141,13 +141,17 @@ public class LessonServiceImpl implements LessonService {
         LocalDate localDate = LocalDate.now();
         DateDto dateDto = dateService
                 .getWeekNow(lessonPosition.getLesson().getSemester().getId());
-        // Рассчёт разницы между текущим днём и днём который отменили
-        int numberTest = (lessonStopDto.getWeeks()  -
-                    dateDto.getNumberWeek())*7 +
-                (lessonPosition.getDays()-dateDto.getNumberDay());
-        localDate = localDate.plusDays(numberTest);
-        localDate = localDate.plusWeeks(lessonPosition.getLesson().getSemester().getUniversity().getWeeks());
-//        PositionCancelEntity positionCancelEntity = new PositionCancelEntity(localDate, lessonStopDto.getWeeks(), lessonPosition);
+        int numberTest = 0;
+        if (dateDto.getNumberWeek()>lessonStopDto.getWeeks()) {
+            numberTest = (lessonStopDto.getWeeks() +
+                    lessonPosition.getLesson().getSemester().getUniversity().getWeeks() -
+                    dateDto.getNumberWeek())*7 - (lessonPosition.getDays()-dateDto.getNumberDay());
+        } else {
+            numberTest = (lessonStopDto.getWeeks()  -
+                    dateDto.getNumberWeek())*7 - (lessonPosition.getDays()-dateDto.getNumberDay());
+        }
+        localDate.plusDays(numberTest+1);
+        PositionCancelEntity positionCancelEntity = new PositionCancelEntity(localDate, lessonStopDto.getWeeks(), lessonPosition);
 //        positionCancelRepository.save(positionCancelEntity);
         return "success";
     }

@@ -48,8 +48,9 @@ public class DateServiceImpl implements DateService {
         // Номер текущей недели относительно семестра
         int numberWeekBySemester = (numberWeekNow%countWeekBySemester)-(numberWeekStartSemester%countWeekBySemester);
         if (numberWeekBySemester<0) {
-            numberWeekBySemester= 4 - numberWeekBySemester;
+            numberWeekBySemester= countWeekBySemester - numberWeekBySemester;
         }
-        return new DateDto(numberWeekBySemester++, LocalDate.now().getDayOfWeek().getValue());
+        numberWeekBySemester+=1;
+        return new DateDto(numberWeekBySemester, LocalDate.now().getDayOfWeek().getValue());
     }
 }
