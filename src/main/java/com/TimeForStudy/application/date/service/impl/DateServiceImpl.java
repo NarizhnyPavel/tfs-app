@@ -68,7 +68,7 @@ public class DateServiceImpl implements DateService {
         } else {
             numberTest = (weekRequest - weekNow)*7 + (dayRequest - dayNow);
         }
-
-        return LocalDate.now().plusDays(numberTest);
+        LocalDate request = LocalDate.now().plusDays(numberTest);
+        return request;
     }
 }

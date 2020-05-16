@@ -147,7 +147,7 @@ public class LessonServiceImpl implements LessonService {
                 lessonStopDto.getWeeks(),
                 lessonPosition.getDays()
                 );
-        localDate.plusDays(1);
+        localDate = localDate.plusDays(1);
         PositionCancelEntity positionCancelEntity = new PositionCancelEntity(localDate, lessonStopDto.getWeeks(), lessonPosition);
         positionCancelRepository.save(positionCancelEntity);
         return "success";
@@ -533,8 +533,6 @@ public class LessonServiceImpl implements LessonService {
         }
         String date = localDateRequest.getDayOfMonth() + " " + localDateRequest.getMonth().name();
         daysDto.setDate(date);
-        System.out.println(date);
-        System.out.println(dateDto.getNumberWeek() + " " + dateDto.getNumberDay() + " " + weekNum + " " + numberDay);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
         List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
