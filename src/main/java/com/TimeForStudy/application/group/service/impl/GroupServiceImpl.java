@@ -11,7 +11,7 @@ import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.error.ErrorDescription;
-import javafx.concurrent.Worker;
+//import javafx.concurrent.Worker;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;

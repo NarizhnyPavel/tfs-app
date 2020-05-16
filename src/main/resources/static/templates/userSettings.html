@@ -28,13 +28,13 @@
         </tr>
         <tr ng-show="user.role >= 3">
             <td colspan="3">
-                <span ng-show="user.role >= 3" class="register-label2" style="padding-top: 20px">Ваши группы:</span>
+                <span ng-if="user.role >= 3" class="register-label2" style="padding-top: 20px">Ваши группы:</span>
                 <input ng-show="user.role >= 3" type="text" id="groupsset" spellcheck="false" placeholder="выберите новые группы" class="register-input" style="width: 210px; margin-top: 10px; text-align: center; height: 20px; font-size: 10pt"/>
-                <br> <group-box ng-show="user.role >= 3"></group-box>
+                <br> <group-box ng-if="user.role >= 3"></group-box>
             </td>
         </tr>
     </table>
-    <button id="saveSett" ng-click="savesettings()"  class="buttonClass">Сохранить изменения</button>
+    <button id="saveSett" ng-click="savesettings()" style="margin-bottom: 20px" class="buttonClass">Сохранить изменения</button>
     <br>
     <span class="register-fields2" style="font-style: italic" ng-show="messShow">Данные успешно сохранены</span>
 

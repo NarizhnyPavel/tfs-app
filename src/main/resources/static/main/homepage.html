@@ -21,8 +21,12 @@
     <script src="../lib/jquery/jquery.maskedinput.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+
     <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js" type="text/javascript"></script>
+<!--    <script src="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.concat.min.js"></script>-->
+<!--    <script src="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css"></script>-->
+<!--    <script src="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/mCSB_buttons.png"></script>-->
 
     <script src="../js/homepage.js"></script>
 </head>
@@ -80,7 +84,7 @@
             <timetable-view type="main"></timetable-view>
         </div>
         <div id="search" class="page" ng-show="studPages">
-            <search-block ng-if="studPages"></search-block>
+            <search-view type="main" ng-if="studPages"></search-view>
             <timetable-view ng-if="studPages" entity1="entityToViewInTimeTable" type="search"></timetable-view>
             <info-box ng-show="infoShow"></info-box>
         </div>
@@ -88,10 +92,12 @@
             <group-list></group-list>
         </div>
         <div id="lesson"  class="page" ng-show="dispetcherPages">
+
             <table style="width: 100%">
                 <tr>
-                    <td ><add-lesson-form ng-if="dispetcherPages"></add-lesson-form></td>
-                    <td ><search-block ng-if="dispetcherPages"></search-block>
+                    <td><add-lesson-form ng-if="dispetcherPages"></add-lesson-form></td>
+                    <td>
+                        <search-view type="dispatcher"></search-view>
                         <timetable-view ng-if="dispetcherPages" type="search"></timetable-view>
                         <info-box ng-if="infoShow"></info-box>
                     </td>

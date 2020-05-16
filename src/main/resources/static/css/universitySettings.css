@@ -16,14 +16,17 @@
     border-color: black;
     top: 0;
     text-align: center;
-    height: 290px;
-    width: 500px;
+    min-height: 210px;
+    max-width: 500px;
     border-radius: 25px;
     bottom: 0;
     left: 0;
     margin: 20px auto 0;
     padding-top: 20px;
-    /*box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2), 5px 5px 5px rgba(0, 0, 0, 0.1);*/
+}
+
+.register-fields2 group-box{
+
 }
 
 .register-fields div {
