@@ -11,9 +11,12 @@ public class UsersByGroup {
 
     private String name;
 
-    public UsersByGroup (int number, String name, int role) {
+    private String phone;
+
+    public UsersByGroup (int number, String name, int role, String phone) {
         this.name = name;
         this.number = number;
         this.role = role;
+        this.phone = phone;
     }
 }

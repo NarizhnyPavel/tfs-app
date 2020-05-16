@@ -67,7 +67,14 @@ public class GroupServiceImpl implements GroupService {
        Collections.sort(userEntities, new SortbyName());
        List<UsersByGroup> usersByGroups = new ArrayList<>();
        for (int i = 1;  i <= userEntities.size(); i++) {
-           usersByGroups.add(new UsersByGroup(i,userEntities.get(i-1).getName(),userEntities.get(i-1).getRole()));
+           usersByGroups.add(
+                   new UsersByGroup(
+                           i,
+                           userEntities.get(i-1).getName(),
+                           userEntities.get(i-1).getRole(),
+                           userEntities.get(i-1).getPhone()
+                   )
+           );
        }
        return usersByGroups;
     }
