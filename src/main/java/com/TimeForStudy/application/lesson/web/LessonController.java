@@ -72,7 +72,7 @@ public class LessonController {
      * @return список валидации.
      */
     @PostMapping(value = "/search")
-    public  List<SearchDto> valitedSearch(@RequestBody ValidateSearch validateSearch) {
+    public  List<SearchDto> validatedSearch(@RequestBody ValidateSearch validateSearch) {
         return lessonService.getSearch(validateSearch);
     }
 

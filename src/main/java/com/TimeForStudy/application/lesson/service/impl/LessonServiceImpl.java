@@ -592,14 +592,14 @@ public class LessonServiceImpl implements LessonService {
             List<GroupEntity> groupEntities = groupRepository.findAll();
 
             for (GroupEntity group : groupEntities) {
-                if (group.getNumber().contains(validateSearch.getRequest())) {
+                if (group.getNumber().toLowerCase().contains(validateSearch.getRequest().toLowerCase())) {
                     searchDtos.add(new SearchDto(group.getId(), group.getNumber(), 0));
                 }
             }
         }
         if (validateSearch.getType().isProfessor()) {
             for (UserEntity user : userEntities) {
-                if (user.getName().contains(validateSearch.getRequest())) {
+                if (user.getName().toLowerCase().contains(validateSearch.getRequest().toLowerCase())) {
                     searchDtos.add(new SearchDto(user.getId(), user.getName(), 1));
                 }
             }
