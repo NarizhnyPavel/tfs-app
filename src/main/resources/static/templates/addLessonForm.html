@@ -1,6 +1,6 @@
 <div class="addLessonBlock">
     <div class="groupAddBlock">
-        <table>
+        <table style="max-width: 200px">
             <tr>
                 <td>
                     <table id="pos-table">
@@ -39,34 +39,34 @@
                 <td>
                     <table>
                         <tr class="groupAddBlock-field" ng-show="showDispFields">
-                            <td><p>Преподаватель:</p></td>
+                            <td><p style="text-align: right">Преподаватель:</p></td>
                             <td>
-                                <input type="text" id="teacher" spellcheck="false" style="width: 300px"/>
+                                <input type="text" id="teacher" spellcheck="false" style="width: 265px"/>
                             </td>
                         </tr>
                         <tr class="groupAddBlock-field" >
-                            <td><p>Аудитория:</p></td>
+                            <td><p style="text-align: right">Аудитория:</p></td>
                             <td>
-                                <input type="text" id="classroom" spellcheck="false" style="width: 300px"/>
+                                <input type="text" id="classroom" spellcheck="false" style="width: 265px"/>
                             </td>
                         </tr>
                         <tr class="groupAddBlock-field" ng-show="showDispFields">
-                            <td><p>Группы:</p></td>
+                            <td><p style="text-align: right">Группы:</p></td>
                             <td>
-                                <input type="text" id="groups" spellcheck="false" style="width: 300px"/>
+                                <input type="text" id="groups" spellcheck="false" style="width: 265px"/>
                                 `       <group-box></group-box>
                             </td>
                         </tr>
                         <tr class="groupAddBlock-field" ng-show="showDispFields">
-                            <td><p>Дисциплина:</p></td>
+                            <td><p style="text-align: right">Дисциплина:</p></td>
                             <td>
-                                <input type="text" id="subject" spellcheck="false" style="width: 300px"/>
+                                <input type="text" id="subject" spellcheck="false" style="width: 265px"/>
                             </td>
                         </tr>
                         <tr class="groupAddBlock-field" ng-show="showDispFields">
-                            <td><p>Тип занятия:</p></td>
+                            <td><p style="text-align: right">Тип занятия:</p></td>
                             <td>
-                                <select id="type">
+                                <select id="type" style="width: 265px">
                                     <option  ng-repeat="type in types" value="{{type.id}}" >{{type.label}}</option>
                                 </select>
                             </td>
@@ -83,8 +83,8 @@
                 <position-box></position-box>
             </td>
             <td rowspan="2" style="text-align: center; width: 400px">
-                <button id="checkLesBut" class="buttonClass" style="margin: 0 auto" ng-click="checkPositions()">Проверить корректность</button>
-                <button id="addLesBut" class="buttonClass" style="margin: 0 auto; margin-top: 8px;" ng-click="addLesson()">Добавить занятие</button>
+                <button id="checkLesBut" class="buttonClass" style="margin-left: -350px" ng-click="checkPositions()">Проверить корректность</button>
+                <button id="addLesBut" class="buttonClass" style="margin-left: 10px" ng-click="addLesson()">Добавить занятие</button>
             </td>
         </tr>
         </tr>
