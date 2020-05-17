@@ -1,5 +1,7 @@
 package com.TimeForStudy.application.parser.service;
 
+import java.io.IOException;
+
 /**
  * Сервис для Парсинга таблицы.
  *
@@ -10,5 +12,5 @@ public interface ParserService {
     /**
      * Получение url ссылки на парсикг
      */
-    String inUrlParser(String url);
+    String inUrlParser(String url) throws IOException;
 }

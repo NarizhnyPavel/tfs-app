@@ -1,6 +1,7 @@
 package com.TimeForStudy.application.user.model;
 
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.user.domain.UserEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,18 @@ public class AddUserDto {
      * Группы
      */
     private List<GroupDto> groups;
+
+    public AddUserDto(String phone, String name, byte role) {
+        this.phone = phone;
+        this.name = name;
+        this.role = role;
+    }
+
+    public static UserEntity on(AddUserDto addUserDto) {
+        UserEntity entity = new UserEntity();
+        entity.setPhone(addUserDto.getPhone());
+        entity.setName(addUserDto.getName());
+        entity.setRole(addUserDto.getRole());
+        return  entity;
+    }
 }

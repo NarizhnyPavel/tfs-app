@@ -1,5 +1,9 @@
 package com.TimeForStudy.application.parser.service;
 
+import com.TimeForStudy.application.classroom.model.AddClassroomDto;
+import com.TimeForStudy.application.group.model.AddGroupDto;
+import com.TimeForStudy.application.subject.model.AddSubjectDto;
+import com.TimeForStudy.application.user.model.AddUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -17,10 +21,10 @@ public class Parser {
     private static Parser instance = null;
 
     private String url;
-    ArrayList<UserDto> professors;
-    ArrayList<Integer> groups;
-    ArrayList<String> subjects;
-    ArrayList<Integer> classrooms;
+    public ArrayList<AddUserDto> professors;
+    public ArrayList<AddGroupDto> groups;
+    public ArrayList<AddSubjectDto> subjects;
+    public ArrayList<AddClassroomDto> classrooms;
 
     private Parser(){};
 
@@ -31,11 +35,11 @@ public class Parser {
         return instance;
     }
 
-    private void setUrl(String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    private String loadFromUrl() throws IOException {
+    public String loadFromUrl() throws IOException {
         FileDownloader fileDownloader = new FileDownloader(url, ".xlsx");
         String fileName = fileDownloader.readFileFromYandexDisk();
         if (fileName.compareTo("connectionError") == 0){

@@ -31,12 +31,6 @@ public class UserDto {
      */
     private byte role;
 
-    public UserDto(String phone, String name, byte role) {
-        this.phone = phone;
-        this.name = name;
-        this.role = role;
-    }
-
     public static UserDto of(UserEntity user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
