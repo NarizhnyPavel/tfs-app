@@ -100,7 +100,7 @@
                 <tr>
                     <td><add-lesson-form ng-if="dispetcherPages"></add-lesson-form></td>
                     <td>
-                        <search-view type="dispatcher"></search-view>
+                        <search-view ng-if="dispetcherPages" type="dispatcher"></search-view>
                         <timetable-view ng-if="dispetcherPages" type="search"></timetable-view>
                         <info-box ng-if="infoShow"></info-box>
                     </td>

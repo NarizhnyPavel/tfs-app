@@ -56,6 +56,7 @@ app.controller('control', function ($scope, $http, $window) {
             comm: data.comment
         });
     });
+    $scope.lessonToUpdate;
 });
 
 var filter = {
@@ -136,38 +137,38 @@ app.directive('searchBlockDispatcher', function () {
     return {
         controller: function ($scope, $http) {
             $scope.searchShow = false;
-            angular.element(document.querySelector('#prof')).css('backgroundColor', '#adadad');
-            angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
+            angular.element(document.querySelector('#profUpdate')).css('backgroundColor', '#adadad');
+            angular.element(document.querySelector('#groupUpdate')).css('backgroundColor', '#adadad');
             $scope.filterProf = function () {
                 if (filter.professor === false){
                     filter.professor = true;
-                    angular.element(document.querySelector('#prof')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#profUpdate')).css('backgroundColor', '#adadad');
                 } else {
                     filter.professor = false;
-                    angular.element(document.querySelector('#prof')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#profUpdate')).css('backgroundColor', 'white');
                 }
             };
             $scope.filterGroup = function () {
                 filter.group = !filter.group;
                 filter.classroom = !filter.group;
                 if (filter.classroom === true && filter.group === false){
-                    angular.element(document.querySelector('#group')).css('backgroundColor', 'white');
-                    angular.element(document.querySelector('#room')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#groupUpdate')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#roomUpdate')).css('backgroundColor', '#adadad');
                 }else{
 
-                    angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
-                    angular.element(document.querySelector('#room')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#groupUpdate')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#roomUpdate')).css('backgroundColor', 'white');
                 }
             };
             $scope.filterRoom = function () {
                 filter.group = !filter.group;
                 filter.classroom = !filter.group;
                 if (filter.group === true && filter.classroom === false){
-                    angular.element(document.querySelector('#room')).css('backgroundColor', 'white');
-                    angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#roomUpdate')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#groupUpdate')).css('backgroundColor', '#adadad');
                 }else{
-                    angular.element(document.querySelector('#room')).css('backgroundColor', '#adadad');
-                    angular.element(document.querySelector('#group')).css('backgroundColor', 'white');
+                    angular.element(document.querySelector('#roomUpdate')).css('backgroundColor', '#adadad');
+                    angular.element(document.querySelector('#groupUpdate')).css('backgroundColor', 'white');
                 }
             };
             $('#searchDead2').autocomplete({
@@ -789,8 +790,6 @@ app.directive('updateLessonForm', function () {
                         pos_num = "0" + pos_num;
                     let index = $scope.positions.findIndex(position => position.num === ''+pos_num);
                     if(index === -1) {
-                        console.log(pos_num);
-                        //проверка на наличие 0** в positions
                         var label = document.getElementById("week").value + "нед. " +
                             " " + $scope.workdays[document.getElementById("workday").value - 1].label +
                             " " + $scope.times[document.getElementById("time").value - 1].label;
@@ -807,13 +806,14 @@ app.directive('updateLessonForm', function () {
                         $scope.positions.push(pos);
 
                         angular.element(document.querySelector('#pos-table')).css('border', "none");
-
-                        $scope.$apply();
                     }
                 }
             };
 
-            $('#classroom').autocomplete({
+            $('#classroom').click(function(){
+                document.querySelector('#classroom').value = "";
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/classrooms', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -825,6 +825,10 @@ app.directive('updateLessonForm', function () {
                     selectedClassroom = ui.item.id;
                 }
             });
+
+            $("#inputPhone").click(function(){
+                $(this).setCursorPosition(1);
+            })
 
             document.querySelector('#addPosBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#checkLesBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
