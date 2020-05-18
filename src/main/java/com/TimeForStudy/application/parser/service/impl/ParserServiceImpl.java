@@ -47,7 +47,7 @@ public class ParserServiceImpl implements ParserService {
      * Получение url ссылки на парсикг
      */
     @Override
-    public String inUrlParser(String url) throws IOException {
+    public String inUrlParser(String url) {
         Parser parser = Parser.getInstance();
         parser.setUrl(url);
         String message = parser.loadFromUrl();

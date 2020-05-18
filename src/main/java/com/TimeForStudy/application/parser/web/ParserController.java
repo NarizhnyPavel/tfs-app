@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 /**
  * Обработчик запросов для парсинга.
  *
@@ -27,7 +29,12 @@ public class ParserController {
      */
     @PostMapping(value = "/parser/url")
     public String getProfessors(@RequestBody String url) {
-        return parserService.inUrlParser(url);
+        try {
+            return parserService.inUrlParser(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
 
 }

@@ -39,9 +39,14 @@ public class Parser {
         this.url = url;
     }
 
-    public String loadFromUrl() throws IOException {
+    public String loadFromUrl()  {
         FileDownloader fileDownloader = new FileDownloader(url, ".xlsx");
-        String fileName = fileDownloader.readFileFromYandexDisk();
+        String fileName = null;
+        try {
+            fileName = fileDownloader.readFileFromYandexDisk();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (fileName.compareTo("connectionError") == 0){
             File file = new File(fileName);
             XSSFWorkbook workbook = ExcelReader.getInstance().readWorkbook(fileName);

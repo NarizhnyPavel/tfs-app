@@ -68,7 +68,7 @@
     border-bottom-right-radius: 20px;
 }
 
-/*.studtableStyle td,*/
+.studtableStyle td,
 .studtableStyle tbody tr:before {
     padding: .1em .5em;
     border: 1px solid #E7D5C0;
