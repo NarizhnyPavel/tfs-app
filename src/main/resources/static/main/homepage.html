@@ -65,8 +65,12 @@
                     <label for="tab_3" id="group_label">Группы</label>
                 </li>
                 <li ng-show="dispetcherPages">
-                    <input type="radio" name="inset" value="" id="tab_4" ng-checked="dispetcherPages" onclick="showHide('lesson')" data-block-id="lesson">
-                    <label for="tab_4" id="lesson_label">Добавить занятие</label>
+                    <input type="radio" name="inset" value="" id="tab_4" ng-checked="dispetcherPages" onclick="showHide('lessonAdd')" data-block-id="lesson">
+                    <label for="tab_4" id="lessonAdd_label">Добавить занятие</label>
+                </li>
+                <li ng-show="profPages">
+                    <input type="radio" name="inset" value="" id="tab_7" ng-checked="profPages" onclick="showHide('lessonUpdate')" data-block-id="lesson">
+                    <label for="tab_7" id="lessonUpdate_label">Перенести занятие</label>
                 </li>
                 <li ng-show="dispetcherPages">
                     <input type="radio" name="inset" value="" id="tab_5" onclick="showHide('parser')" data-block-id="parser">
@@ -91,13 +95,25 @@
         <div id="groupInfo" class="page" ng-show="profPages">
             <group-list></group-list>
         </div>
-        <div id="lesson"  class="page" ng-show="dispetcherPages">
+        <div id="lessonAdd" class="page" ng-show="dispetcherPages">
             <table style="width: 100%">
                 <tr>
                     <td><add-lesson-form ng-if="dispetcherPages"></add-lesson-form></td>
                     <td>
                         <search-view type="dispatcher"></search-view>
                         <timetable-view ng-if="dispetcherPages" type="search"></timetable-view>
+                        <info-box ng-if="infoShow"></info-box>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="lessonUpdate"  class="page" ng-show="profPages">
+            <table style="width: 100%">
+                <tr>
+                    <td><update-lesson-form ng-if="profPages"></update-lesson-form></td>
+                    <td>
+                        <search-view type="dispatcher"></search-view>
+                        <timetable-view ng-if="profPages" type="search"></timetable-view>
                         <info-box ng-if="infoShow"></info-box>
                     </td>
                 </tr>
