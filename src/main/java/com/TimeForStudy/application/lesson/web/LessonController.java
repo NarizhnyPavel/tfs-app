@@ -77,14 +77,14 @@ public class LessonController {
     }
 
     /**
-     * Возвращает занятие по идентификатору.
+     * Возвращает данные для переноса лекции.
      *
      * @param id идентификатор.
      * @return занятие
      */
-    @GetMapping(value = "/lesson/{id}")
-    public LessonDto getLesson(@PathVariable long id) {
-        return lessonService.getLessonById(id);
+    @GetMapping(value = "/lesson/edit/{id}")
+    public LessonEditInfo getLesson(@PathVariable long id) {
+        return lessonService.getLessonEdit(id);
     }
 
     /**

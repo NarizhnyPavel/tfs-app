@@ -130,6 +130,18 @@ public class LessonServiceImpl implements LessonService {
     }
 
     /**
+     * Возвращает данные для переноса лекции.
+     *
+     * @param id идентификатор.
+     * @return занятие
+     */
+    @Override
+    public LessonEditInfo getLessonEdit(long id) {
+
+        return new LessonEditInfo();
+    }
+
+    /**
      * Возвращение расписания занятий для студента.
      *
      * @param lessonStopDto информация о лекции.
@@ -554,7 +566,7 @@ public class LessonServiceImpl implements LessonService {
                 numberDay
         );
         // если это текущий день
-        if (localDateRequest == LocalDate.now()) {
+        if (localDateRequest.equals(LocalDate.now())) {
             daysDto.setStatus(true);
         }
 
@@ -643,7 +655,7 @@ public class LessonServiceImpl implements LessonService {
                 numberDay
         );
         // если это текущий день
-        if (localDateRequest == LocalDate.now()) {
+        if (localDateRequest.equals(LocalDate.now())) {
             daysDto.setStatus(true);
         }
         String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
@@ -729,7 +741,7 @@ public class LessonServiceImpl implements LessonService {
                 numberDay
         );
         // если это текущий день
-        if (localDateRequest == LocalDate.now()) {
+        if (localDateRequest.equals(LocalDate.now())) {
             daysDto.setStatus(true);
         }
         String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
@@ -819,7 +831,7 @@ public class LessonServiceImpl implements LessonService {
                 numberDay
         );
         // если это текущий день
-        if (localDateRequest == LocalDate.now()) {
+        if (localDateRequest.equals(LocalDate.now())) {
             daysDto.setStatus(true);
         }
         String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());

@@ -1,6 +1,8 @@
 package com.TimeForStudy.application.lesson.service;
 
 import com.TimeForStudy.application.lesson.model.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,6 +22,14 @@ public interface LessonService {
      * @return занятие.
      */
     LessonDto getLessonById(long id);
+
+    /**
+     * Возвращает данные для переноса лекции.
+     *
+     * @param id идентификатор.
+     * @return занятие
+     */
+    LessonEditInfo getLessonEdit(long id);
 
     /**
      * Возвращение расписания занятий для преподавателя.
