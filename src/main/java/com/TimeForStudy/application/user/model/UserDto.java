@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class UserDto {
 
     private long id;

@@ -64,7 +64,7 @@ public class DateServiceImpl implements DateService {
 
         int numberTest = 0;
         if (weekNow>weekRequest) {
-            numberTest = (weekRequest + numberWeek - weekNow)*7 - (dayRequest - dayNow);
+            numberTest = (weekRequest + numberWeek - weekNow)*7 + (dayRequest - dayNow);
         } else {
             numberTest = (weekRequest - weekNow)*7 + (dayRequest - dayNow);
         }
