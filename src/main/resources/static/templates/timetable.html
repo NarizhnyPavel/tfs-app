@@ -6,7 +6,30 @@
     </div>
     <div class="days">
         <div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;">
-            <table>
+            <table ng-if="!day.status">
+                <caption>
+                    <span class="dayName" style="margin-bottom: 5px">{{day.date}}</span>
+                </caption>
+                <tbody>
+                <tr>
+                    <td style="max-width: 30px">
+                        <p class="dayName" style="height: 20px">{{day.dayName}}</p>
+                    </td>
+                    <td style="max-width: 190px">
+                        <ul ng-if="day.infoLessonDtos.length != 0" ng-repeat="lesson in day.infoLessonDtos track by $index">
+                            <li ng-if="lesson.status"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                            <li ng-if="!lesson.status"> <span style="text-decoration: line-through" ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                        </ul>
+                        <ul>
+                            <h4>
+                                <span ng-if="day.infoLessonDtos.length === 0"><br><br>Занятий нет</span>
+                            </h4>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table ng-if="day.status" style="background-color: #5cb85c">
                 <caption>
                     <span class="dayName" style="margin-bottom: 5px">{{day.date}}</span>
                 </caption>

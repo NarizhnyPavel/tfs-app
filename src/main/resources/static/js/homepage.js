@@ -57,7 +57,36 @@ app.controller('control', function ($scope, $http, $window) {
         });
     });
     $scope.lessonToUpdate;
+    sendNotification('Приветствуем!', {
+        body: 'Здесь будут важные уведомления',
+        icon: '../icon/icon.png',
+        dir: 'auto'
+    });
 });
+
+function sendNotification(title, options) {
+// Проверим, поддерживает ли браузер HTML5 Notifications
+    if (!("Notification" in window)) {
+        alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
+    } else if (Notification.permission === "granted") {
+        var notification = new Notification(title, options);
+
+        function clickFunc() {
+            alert('Пользователь кликнул на уведомление');
+        }
+
+        notification.onclick = clickFunc;
+    } else if (Notification.permission !== 'default') {
+        Notification.requestPermission(function (permission) {
+            if (permission === "granted") {
+                var notification = new Notification(title, options);
+
+            } else {
+                alert('Вы запретили показывать уведомления'); // Юзер отклонил наш запрос на показ уведомлений
+            }
+        });
+    }
+}
 
 var filter = {
     professor: true,
@@ -208,6 +237,7 @@ app.directive('gridMain', function () {
             $scope.timetableShow = false;
             $scope.minWeekNum = 1;
             $scope.days2 = [];
+            $
             // $scope.week;
             // $scope.weeknum;
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
@@ -226,16 +256,23 @@ app.directive('gridMain', function () {
                 if ($scope.week < $scope.maxWeekNum) {
                     $scope.week++;
                     data.weekNum++;
-                    refresh_timetable();
+                } else{
+                    $scope.week = $scope.minWeekNum;
+                    data.weekNum= $scope.minWeekNum;
                 }
+                refresh_timetable();
             }
             $scope.dec_week = function () {
                 if ($scope.week > $scope.minWeekNum) {
                     $scope.week--;
                     data.weekNum--;
-                    refresh_timetable();
+                } else {
+                    $scope.week = $scope.maxWeekNum;
+                    data.weekNum = $scope.maxWeekNum;
                 }
+                refresh_timetable();
             }
+
             $scope.show = function (lesson) {
                 $scope.lessonToView = lesson;
                 $window.localStorage.setItem("lessonToViewStatus", $scope.lessonToView.status);
@@ -287,18 +324,25 @@ app.directive('gridSearch', function () {
             }
             $scope.$watch('entityFromSearch.weekNum', changeWeek());
             $scope.inc_week = function () {
-                if ($scope.entityFromSearch.weekNum < $scope.maxWeekNum || $scope.entityFromSearch !== -1) {
+                if ($scope.entityFromSearch.weekNum < $scope.maxWeekNum) {
                     $scope.week++;
                     $scope.entityFromSearch.weekNum++;
-                    refresh_timetable();
+
+                } else{
+                    $scope.week = $scope.minWeekNum;
+                    $scope.entityFromSearch.weekNum = $scope.minWeekNum;
                 }
+                refresh_timetable();
             }
             $scope.dec_week = function () {
-                if ($scope.entityFromSearch.weekNum > $scope.minWeekNum || $scope.entityFromSearch !== -1) {
+                if ($scope.entityFromSearch.weekNum > $scope.minWeekNum) {
                     $scope.week--;
                     $scope.entityFromSearch.weekNum--;
-                    refresh_timetable();
+                } else{
+                    $scope.week = $scope.maxWeekNum;
+                    $scope.entityFromSearch.weekNum = $scope.maxWeekNum;
                 }
+                refresh_timetable();
             }
             $scope.show = function (lesson) {
                 $scope.lessonToView = lesson;
@@ -309,6 +353,7 @@ app.directive('gridSearch', function () {
                 $window.localStorage.setItem("lessonToViewProfId", -1);
                 $window.localStorage.setItem("lessonToViewStatus", -1);
                 $window.localStorage.setItem("lessonToViewId", -1);
+                $window.localStorage.setItem("lessonToUpdateId", lesson.id);
                 $window.localStorage.setItem("lessonToViewWeek", -1);
                 $window.localStorage.setItem("lessonToViewProfId", -1);
             }
@@ -339,7 +384,8 @@ app.directive('gridSearch', function () {
 app.directive('infoBox', function () {
     return {
         controller: function ($scope, $window, $http) {
-            $scope.cancelShow = (($window.localStorage.getItem("userRole") === '3'));
+            var cancelShow = (($window.localStorage.getItem("userRole") === '2'));
+            var updateShow = (($window.localStorage.getItem("userRole") === '2'));
             $scope.closeInfo = function () {
                 $scope.infoShow = false;
             }
@@ -354,18 +400,23 @@ app.directive('infoBox', function () {
                         $scope.days2 = response.data;
                         $scope.$apply();
                     });
-                } else {
-                    console.log('отказались от отмены')
                 }
                 $scope.infoShow = false;
             }
             $scope.checkLess = function () {
-                console.log()
                 if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2'
                 && ''+$window.localStorage.getItem("userId") === ''+$window.localStorage.getItem("lessonToViewProfId"))
                     return true;
                 else
                     return false;
+            }
+            $scope.checkLessToUpdate = function () {
+                if (updateShow && ''+$window.localStorage.getItem("userId") === ''+$window.localStorage.getItem("lessonToViewProfId")){
+                    var lessonId = $window.localStorage.getItem("lessonToUpdateId");
+                    $scope.$emit('senToUpdateForm', {
+                        someProp: $scope.entityToViewInTimeTable
+                    });
+                }
             }
         }
         , restrict: "E"
