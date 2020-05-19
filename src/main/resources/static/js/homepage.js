@@ -19,7 +19,7 @@ app.controller('control', function ($scope, $http, $window) {
     $scope.profPages = false;
     if ($scope.user.role === "1") {
         $scope.dispetcherPages = true;
-        document.querySelector("#lesson").style.display = "block";
+        document.querySelector("#lessonAdd").style.display = "block";
     }
     if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2"){
         document.querySelector("#timetable").style.display = "block";
@@ -408,6 +408,7 @@ app.directive('gridUpdate', function () {
             $scope.timetableShow = false;
             $scope.tableId = "table3";
             $scope.updatingLessonId = -1;
+            $scope.updatingLessonId_new = -1;
             $scope.entityFromSearch = {
                 id: "-1", type: "0"
                 , weekNum: 1
