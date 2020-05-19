@@ -177,25 +177,25 @@ public class LessonServiceImpl implements LessonService {
 
 
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Понедельник", addInfoLessonDto.getWeekNum(), 1));
+                daysDtos.add(formDaysDto(groupEntities, "ПН", addInfoLessonDto.getWeekNum(), 1));
             }
             if (universityEntity.getWorkDays().indexOf('2') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Вторник", addInfoLessonDto.getWeekNum(), 2));
+                daysDtos.add(formDaysDto(groupEntities, "ВТ", addInfoLessonDto.getWeekNum(), 2));
             }
             if (universityEntity.getWorkDays().indexOf('3') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Среда", addInfoLessonDto.getWeekNum(), 3));
+                daysDtos.add(formDaysDto(groupEntities, "СР", addInfoLessonDto.getWeekNum(), 3));
             }
             if (universityEntity.getWorkDays().indexOf('4') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Четверг", addInfoLessonDto.getWeekNum(), 4));
+                daysDtos.add(formDaysDto(groupEntities, "ЧТ", addInfoLessonDto.getWeekNum(), 4));
             }
             if (universityEntity.getWorkDays().indexOf('5') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Пятница", addInfoLessonDto.getWeekNum(), 5));
+                daysDtos.add(formDaysDto(groupEntities, "ПТ", addInfoLessonDto.getWeekNum(), 5));
             }
             if (universityEntity.getWorkDays().indexOf('6') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Суббота", addInfoLessonDto.getWeekNum(), 6));
+                daysDtos.add(formDaysDto(groupEntities, "СБ", addInfoLessonDto.getWeekNum(), 6));
             }
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
-                daysDtos.add(formDaysDto(groupEntities, "Воскресенье", addInfoLessonDto.getWeekNum(), 7));
+                daysDtos.add(formDaysDto(groupEntities, "ВС", addInfoLessonDto.getWeekNum(), 7));
             }
             return daysDtos;
         }
@@ -216,71 +216,71 @@ public class LessonServiceImpl implements LessonService {
 
         if (lessonByDto.getType() == 1) {
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Понедельник", lessonByDto.getWeekNum(), 1));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "ПН", lessonByDto.getWeekNum(), 1));
             }
             if (universityEntity.getWorkDays().indexOf('2') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Вторник", lessonByDto.getWeekNum(), 2));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "ВТ", lessonByDto.getWeekNum(), 2));
             }
             if (universityEntity.getWorkDays().indexOf('3') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Среда", lessonByDto.getWeekNum(), 3));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "СР", lessonByDto.getWeekNum(), 3));
             }
             if (universityEntity.getWorkDays().indexOf('4') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Четверг", lessonByDto.getWeekNum(), 4));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "ЧТ", lessonByDto.getWeekNum(), 4));
             }
             if (universityEntity.getWorkDays().indexOf('5') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Пятница", lessonByDto.getWeekNum(), 5));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "ПН", lessonByDto.getWeekNum(), 5));
             }
             if (universityEntity.getWorkDays().indexOf('6') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Суббота", lessonByDto.getWeekNum(), 6));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "СБ", lessonByDto.getWeekNum(), 6));
             }
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
-                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "Воскресенье", lessonByDto.getWeekNum(), 7));
+                daysDtos.add(formLessonByProfessor(lessonByDto.getId(), "ВС", lessonByDto.getWeekNum(), 7));
             }
         }
         if (lessonByDto.getType() == 0) {
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Понедельник", lessonByDto.getWeekNum(), 1));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "ПН", lessonByDto.getWeekNum(), 1));
             }
             if (universityEntity.getWorkDays().indexOf('2') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Вторник", lessonByDto.getWeekNum(), 2));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "ВТ", lessonByDto.getWeekNum(), 2));
             }
             if (universityEntity.getWorkDays().indexOf('3') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Среда", lessonByDto.getWeekNum(), 3));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "СР", lessonByDto.getWeekNum(), 3));
             }
             if (universityEntity.getWorkDays().indexOf('4') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Четверг", lessonByDto.getWeekNum(), 4));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "ЧТ", lessonByDto.getWeekNum(), 4));
             }
             if (universityEntity.getWorkDays().indexOf('5') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Пятница", lessonByDto.getWeekNum(), 5));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "ПТ", lessonByDto.getWeekNum(), 5));
             }
             if (universityEntity.getWorkDays().indexOf('6') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Суббота", lessonByDto.getWeekNum(), 6));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "СБ", lessonByDto.getWeekNum(), 6));
             }
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
-                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "Воскресенье", lessonByDto.getWeekNum(), 7));
+                daysDtos.add(formLessonByGroup(lessonByDto.getId(), "ВС", lessonByDto.getWeekNum(), 7));
             }
         }
         if (lessonByDto.getType() == 2) {
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Понедельник", lessonByDto.getWeekNum(), 1));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "ПН", lessonByDto.getWeekNum(), 1));
             }
             if (universityEntity.getWorkDays().indexOf('2') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Вторник", lessonByDto.getWeekNum(), 2));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "ВТ", lessonByDto.getWeekNum(), 2));
             }
             if (universityEntity.getWorkDays().indexOf('3') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Среда", lessonByDto.getWeekNum(), 3));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "СР", lessonByDto.getWeekNum(), 3));
             }
             if (universityEntity.getWorkDays().indexOf('4') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Четверг", lessonByDto.getWeekNum(), 4));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "ЧТ", lessonByDto.getWeekNum(), 4));
             }
             if (universityEntity.getWorkDays().indexOf('5') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Пятница", lessonByDto.getWeekNum(), 5));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "ПТ", lessonByDto.getWeekNum(), 5));
             }
             if (universityEntity.getWorkDays().indexOf('6') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Суббота", lessonByDto.getWeekNum(), 6));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "СБ", lessonByDto.getWeekNum(), 6));
             }
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
-                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "Воскресенье", lessonByDto.getWeekNum(), 7));
+                daysDtos.add(formLessonByClassroom(lessonByDto.getId(), "ВС", lessonByDto.getWeekNum(), 7));
             }
         }
 
@@ -531,7 +531,7 @@ public class LessonServiceImpl implements LessonService {
         if (localDateRequest == LocalDate.now()) {
             daysDto.setStatus(true);
         }
-        String date = localDateRequest.getDayOfMonth() + " " + localDateRequest.getMonth().name();
+        String date = localDateRequest.getDayOfMonth() + "." + localDateRequest.getMonth().getValue();
         daysDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
                 .findAllByPositionAndDays(weekNum, numberDay);
