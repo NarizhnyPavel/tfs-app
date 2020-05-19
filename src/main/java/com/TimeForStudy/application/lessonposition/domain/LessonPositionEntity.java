@@ -1,5 +1,6 @@
 package com.TimeForStudy.application.lessonposition.domain;
 
+import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.lessonposition.model.AddLessonPositionDto;
@@ -56,6 +57,12 @@ public class LessonPositionEntity {
     @Column(name = "days")
     private int days;
 
+    /**
+     * Кабинет, в котором проходит занятие
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "classroom_id")
+    private ClassroomEntity classroom;
 
     public LessonPositionEntity(AddLessonPositionDto addLessonPositionDto) {
         this.position = addLessonPositionDto.getPosition();

@@ -394,7 +394,7 @@ public class LessonServiceImpl implements LessonService {
             }
             for (LessonPositionEntity position : lessonPositionEntities) {
                 //проверка кабинета
-                if (position.getLesson().getClassroom() == classroom) {
+                if (position.getClassroom() == classroom) {
                     boolLessonDto.setClassroom(0);
                 }
                 //проверка преподавателя
@@ -453,6 +453,7 @@ public class LessonServiceImpl implements LessonService {
         lessonRepository.save(lessonEntity);
         for (PositionDto positionDto : newLessonDto.getPosition()) {
             LessonPositionEntity lessonPositionEntity = new LessonPositionEntity();
+            lessonPositionEntity.setClassroom(classroom);
             lessonPositionEntity.setDays(Integer.parseInt(positionDto.getNum().substring(1,2)));
             lessonPositionEntity.setPosition(Integer.parseInt(positionDto.getNum().substring(0,1)));
             lessonPositionEntity.setNumber(Integer.parseInt(positionDto.getNum().substring(2,3)));
@@ -590,7 +591,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setId(less.getId());
-                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setClassroom(less.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
@@ -674,7 +675,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setId(less.getId());
-                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setClassroom(less.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
@@ -763,7 +764,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setId(less.getId());
-                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setClassroom(less.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
@@ -849,7 +850,7 @@ public class LessonServiceImpl implements LessonService {
                     }
                 }
                 infoLessonDto.setId(less.getId());
-                infoLessonDto.setClassroom(lessonEntity.getClassroom().getNumber());
+                infoLessonDto.setClassroom(less.getClassroom().getNumber());
                 infoLessonDto.setSubject(lessonEntity.getSubject().getName());
                 infoLessonDto.setArc(lessonEntity.getSubject().getArc());
                 List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
