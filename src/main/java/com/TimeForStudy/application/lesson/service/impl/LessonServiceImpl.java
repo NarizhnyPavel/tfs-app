@@ -138,7 +138,18 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public LessonEditInfo getLessonEdit(long id) {
 
-        return new LessonEditInfo();
+        LessonPositionEntity lessonPositionEntity = lessonPositionRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
+        LessonEditInfo lessonEditInfo = new LessonEditInfo();
+        lessonEditInfo.setClassroom(Integer.toString(lessonPositionEntity.getClassroom().getNumber()));
+        lessonEditInfo.setClassroomId(lessonPositionEntity.getClassroom().getId());
+        lessonEditInfo.setLessonPosition(Integer.toString(
+                100*lessonPositionEntity.getPosition() +
+                        10*lessonPositionEntity.getDays() +
+                        lessonPositionEntity.getNumber()
+                )
+        );
+        return lessonEditInfo;
     }
 
     /**
