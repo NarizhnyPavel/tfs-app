@@ -1,9 +1,9 @@
-<div class="addLessonBlock" style="width: 300px; height: 415px">
+<div class="addLessonBlock" style="width: 300px; min-height: 415px">
     <div class="groupAddBlock" >
-        <table style="width: 300px; height: 415px">
+        <table style="min-width: 300px; height: 415px">
             <tr class="groupAddBlock-field" >
                 <td><p style="text-align: center">Аудитория:</p></td>
-                <td><input type="text" id="classroom" spellcheck="false" style="width: 20px"/></td>
+                <td><input type="text" id="classroom" spellcheck="false" style="width: 40px"/></td>
             </tr>
             <tr class="groupAddBlock-field">
                 <td><p>Номер недели:</p></td>
@@ -28,7 +28,11 @@
                     </select>
                 </td>
             </tr>
-
+            <tr ng-if="messageShow">
+                <td colspan="2">
+                    <p style="width: 300px">{{messageInfo}}</p>
+                </td>
+            </tr>
             <tr>
                 <td colspan="2" style="padding-top: 20px">
                     <button id="checkLesBut" class="buttonClass" style="margin-left: 10px; margin-bottom: 10px; padding: 4px" ng-click="checkPositions()">Проверить<br> корректность</button>

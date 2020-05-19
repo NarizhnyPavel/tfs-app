@@ -476,6 +476,10 @@ app.directive('gridUpdate', function () {
                     $scope.entityFromSearch.id = savedId;
                     $scope.updatingLessonId = data.someProp;
                 }
+                if (data.type === "new_position") {
+                    $scope.entityFromSearch.id = savedId;
+                    $scope.updatingLessonId = data.someProp;
+                }
                 $scope.week = 1;
                 $scope.entityFromSearch.weekNum = 1;
                 refresh_timetable();
@@ -522,7 +526,8 @@ app.directive('infoBox', function () {
             $scope.checkLessToUpdate = function () {
                 if (updateShow && ''+$window.localStorage.getItem("userId") === ''+ $window.localStorage.getItem("lessonToUpdateProfId")
                 && (document.querySelector('#lessonUpdate').style.display === 'block') &&
-                    $window.localStorage.getItem("lessonToUpdateId") !== updatingLessonId){
+                    $window.localStorage.getItem("lessonToUpdateId") !== updatingLessonId &&
+                    updatingLessonId === -1){
                     return true;
                 } else {
                     return false;
@@ -825,90 +830,74 @@ app.directive('updateLessonForm', function () {
     return{
         scope: {},
         controller: function ($scope, $http, $window) {
-            $scope.groups2 = [];
-            $scope.positions = [];
-            $scope.showDispFields = true;
+            // $scope.groups2 = [];
+            // $scope.positions = [];
+            // $scope.showDispFields = true;
+            $scope.messageShow = false;
+            $scope.messageInfo = "";
             let newClassroomId;
-            if ($window.localStorage.getItem("userRole") === '2'){
-                $scope.showDispFields = false;
-                angular.element(document.querySelector('#classroom')).css('width', "50px");
-            }
+            // if ($window.localStorage.getItem("userRole") === '2'){
+            //     $scope.showDispFields = false;
+            //     angular.element(document.querySelector('#classroom')).css('width', "50px");
+            // }
+
             function checkFields() {
-                if($scope.positions.length === 0)
-                    angular.element(document.querySelector('#pos-table')).css('border', "2px solid red");
-                else
-                    angular.element(document.querySelector('#pos-table')).css('border', "none");
-                if (selectedTeacher === -1){
-                    angular.element(document.querySelector('#teacher')).css('border-color', "red");}
-                else
-                    angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
-                if (selectedClassroom === -1)
+                if (document.querySelector('#classroom').value === "")
                     angular.element(document.querySelector('#classroom')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
-                if (selectedSubject === -1)
-                    angular.element(document.querySelector('#subject')).css('border-color', "red");
+                if (''+document.querySelector('#week').value === "")
+                    angular.element(document.querySelector('#weer')).css('border-color', "red");
                 else
-                    angular.element(document.querySelector('#subject')).css('border', "2px solid #cecece");
-                if ($scope.groups2.length === 0)
-                    angular.element(document.querySelector('#groups')).css('border-color', "red");
-                else
-                    angular.element(document.querySelector('#groups')).css('border', "2px solid #cecece");
-                if (selectedTeacher === -1 || selectedClassroom === -1 || selectedSubject === -1 || $scope.groups2.length === 0)
+                    angular.element(document.querySelector('#weer')).css('border', "2px solid #cecece");
+                if (document.querySelector('#classroom').value === "")
                     return false;
                 else
                     return true;
             }
-            function checkFieldsPos() {
-                if (document.getElementById("week").value === "") {
-                    angular.element(document.querySelector('#week')).css('border-color', "red");
-                    return false;
-                } else{
-                    angular.element(document.querySelector('#week')).css('border', "2px solid #cecece");
-                    return true;
-                }
-            }
+            $scope.groups2 = [{
+                id: 1,
+                label: "7371",
+                number: 1
+            }];
             $scope.checkPositions = function () {
-                if (checkFields() && checkFieldsPos()) {
+                if (checkFields() && $window.localStorage.getItem("lessonToUpdateId") > 0) {
+                    //TODO запрос данных для позиции по
+                    // $window.localStorage.getItem("lessonToUpdateId")
                     var data = {
-                        position: $scope.positions,
+                        // position: $scope.positions,
+                        position: [{
+                            // num: $window.localStorage.getItem("lessonToUpdateId"),
+                            num: "164",
+                            text: ""
+                        }],
                         groups:  $scope.groups2,
-                        subject: selectedSubject,
-                        classroom: selectedClassroom,
-                        professor: selectedTeacher,
-                        lessonType: document.getElementById("type").value
+                        // subject: selectedSubject,
+                        subject: 1,
+                        // classroom: selectedClassroom,
+                        classroom: 5,
+                        // professor: selectedTeacher,
+                        professor: 171,
+                        // lessonType: document.getElementById("type").value
+                        lessonType: ''+1
                     };
                     $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
-                        let answer = response.data;
-                        for (let i = 0; i < answer.length; i++) {
-                            let posIndex = $scope.positions.findIndex(pos => pos.num === answer[i].position);
-                            if (posIndex !== -1){
-                                let position = $scope.positions[posIndex];
-                                position.status = 1;
+                        let answer = response.data[0];
                                 let group = true;
-                                for (let j = 0; j < answer[i].groups.length; j++) {
+                                for (let j = 0; j < answer.groups.length; j++) {
                                     if($scope.groups2[j].number)
-                                        $scope.groups2[j].number = answer[i].groups[j].number;
-                                    if(!answer[i].groups[j].number)
+                                        $scope.groups2[j].number = answer.groups[j].number;
+                                    if(!answer.groups[j].number)
                                         group = false;
                                 }
-                                if (answer[i].professor === 0 || answer[i].classroom === 0 || !group){
-                                    position.status = 0;
+                                if (answer.professor === 0 || answer.classroom === 0 || !group){
                                     let message = "";
-                                    if (answer[i].professor === 0) {
-                                        message = message + "преподавтель уже занят \n";
-                                        angular.element(document.querySelector('#teacher')).css('border-color', "red");
-                                    } else
-                                        angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
-                                    if (answer[i].classroom === 0) {
-                                        message = message + "аудитория уже занята \n";
-                                        angular.element(document.querySelector('#classroom')).css('border-color', "red");
-                                    } else
-                                        angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
+                                    if (answer.professor === 0)
+                                        message = message + "в это время Вы уже заняты,\n";
+                                    if (answer.classroom === 0)
+                                        message = message + "аудитория уже занята,\n";
                                     if (!group){
-                                        console.log('Зашёл сюда');
                                         let errGroups = $scope.groups2.filter(group => group.number === 0);
-                                        console.log(errGroups.length);
                                         if (errGroups.length > 1)
                                             message = message + "у групп ";
                                         else
@@ -918,15 +907,13 @@ app.directive('updateLessonForm', function () {
                                         }
                                         message = message + "уже есть пары";
                                     }
-                                    position.errmessage = message;
+                                    $scope.messageInfo = message;
+                                    $scope.messageShow = true;
                                 } else
                                     document.querySelector('#addLesBut').disabled = false;
-                            }
+                            });
                         }
-                        $scope.$apply();
-                    });
-                }
-            };
+            }
             $scope.updateLesson = function(){
                 let data = {
                     classroom: selectedClassroom,
