@@ -8,8 +8,8 @@
         <div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;">
             <table>
                 <caption>
-                    <span ng-if="!day.status" class="dayName" style="margin-bottom: 5px">{{day.date}}</span>
-                    <span ng-if="day.status" class="dayName" style="margin-bottom: 5px; border: 5px double black;" title="Сегодня">{{day.date}}</span>
+<!--                    <span ng-if="!day.status" class="dayName" style="margin-bottom: 5px">{{day.date}}</span>-->
+<!--                    <span ng-if="day.status" class="dayName" style="margin-bottom: 5px; border: 5px double black;" title="Сегодня">{{day.date}}</span>-->
                 </caption>
                 <tbody>
                 <tr>
@@ -18,8 +18,8 @@
                     </td>
                     <td style="max-width: 190px">
                         <ul ng-if="day.infoLessonDtos.length != 0" ng-repeat="lesson in day.infoLessonDtos track by $index">
-                            <li ng-if="lesson.status"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
-                            <li ng-if="!lesson.status"> <span style="text-decoration: line-through" ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                            <li ng-if="''+lesson.id !== ''+updatingLessonId"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                            <li ng-if="''+lesson.id === ''+updatingLessonId" style="background-color: red"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
                         </ul>
                         <ul>
                             <h4>
