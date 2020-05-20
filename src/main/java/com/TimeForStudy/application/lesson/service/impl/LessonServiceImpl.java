@@ -143,11 +143,11 @@ public class LessonServiceImpl implements LessonService {
         LessonEditInfo lessonEditInfo = new LessonEditInfo();
         lessonEditInfo.setClassroom(Integer.toString(lessonPositionEntity.getClassroom().getNumber()));
         lessonEditInfo.setClassroomId(lessonPositionEntity.getClassroom().getId());
-        lessonEditInfo.setLessonPosition(Integer.toString(
-                100*lessonPositionEntity.getPosition() +
-                        10*lessonPositionEntity.getDays() +
-                        lessonPositionEntity.getNumber()
-                )
+        lessonEditInfo.setLessonPosition(
+                Integer.toString(lessonPositionEntity.getPosition()) + "" +
+                        Integer.toString(lessonPositionEntity.getDays()) + "" +
+                        Integer.toString(lessonPositionEntity.getNumber())
+
         );
         lessonEditInfo.setLessonType(lessonPositionEntity.getLesson().getLessonType().getName());
         lessonEditInfo.setProfessorId(lessonPositionEntity.getLesson().getUser().getId());
@@ -495,50 +495,22 @@ public class LessonServiceImpl implements LessonService {
     /**
      * Изменение значений занятия.
      *
-     * @param id           идентификатор.
-     * @param addLessonDto занятие.
+     * @param updatePosition новая информация.
      */
     @Override
-    public void updateLesson(long id, AddLessonDto addLessonDto) {
+    public String updateLesson(UpdatePosition updatePosition) {
 
-        LessonEntity updated = lessonRepository.findById(id)
-                .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
-        if (addLessonDto.getClassroom() != null) {
-            classroomRepository.findById(addLessonDto.getClassroom().getId())
-                    .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
-            updated.setClassroom(ClassroomDto.on(addLessonDto.getClassroom()));
-        }
-        if (addLessonDto.getSubject() != null) {
-            subjectRepository.findById(addLessonDto.getSubject().getId())
-                    .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
-            updated.setSubject(SubjectDto.on(addLessonDto.getSubject()));
-        }
-
-        if (addLessonDto.getUser() != null) {
-            UserEntity userEntity = userRepository.findById(addLessonDto.getUser().getId())
-                    .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-            ErrorDescription.ACCESS_IS_DENIED
-                    .throwIfFalse(userEntity.getRole() == 2);
-            updated.setUser(UserDto.on(addLessonDto.getUser()));
-        }
-        if (addLessonDto.getSemester() != null) {
-            semesterRepository.findById(addLessonDto.getSemester().getId())
-                    .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
-            updated.setSemester(SemesterDto.on(addLessonDto.getSemester()));
-        }
-        if (addLessonDto.getLessonType() != null) {
-            lessonTypeRepository.findById(addLessonDto.getLessonType().getId())
-                    .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
-            updated.setLessonType(LessonTypeDto.on(addLessonDto.getLessonType()));
-        }
-        if (addLessonDto.getGroups() != null) {
-            for (GroupDto group : addLessonDto.getGroups()) {
-                groupRepository.findById(group.getId())
-                        .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-            }
-            updated.setGroups(addLessonDto.getGroups().stream().map(GroupDto::on).collect(Collectors.toList()));
-        }
-        lessonRepository.save(updated);
+        LessonPositionEntity lessonPositionEntity = lessonPositionRepository
+                .findById(updatePosition.getOldPositionId())
+                .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
+        ClassroomEntity classroomEntity = classroomRepository.findById(updatePosition.getNewClassroomId())
+                .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
+        lessonPositionEntity.setClassroom(classroomEntity);
+        lessonPositionEntity.setPosition(Integer.parseInt(updatePosition.getNewPositionNum().substring(0,1)));
+        lessonPositionEntity.setDays(Integer.parseInt(updatePosition.getNewPositionNum().substring(1,2)));
+        lessonPositionEntity.setNumber(Integer.parseInt(updatePosition.getNewPositionNum().substring(2,3)));
+        lessonPositionRepository.save(lessonPositionEntity);
+        return "success";
     }
 
     /**

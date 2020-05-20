@@ -80,10 +80,9 @@ public interface LessonService {
     /**
      * Изменение значений занятия.
      *
-     * @param id идентификатор.
-     * @param addLessonDto занятие.
+     * @param updatePosition Обновлённые данные.
      */
-    void updateLesson(long id, AddLessonDto addLessonDto);
+    String updateLesson(UpdatePosition updatePosition);
 
     /**
      * Удаление занятия.

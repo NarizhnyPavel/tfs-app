@@ -2,6 +2,7 @@ package com.TimeForStudy.application.lesson.web;
 
 import com.TimeForStudy.application.lesson.model.*;
 import com.TimeForStudy.application.lesson.service.LessonService;
+import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -110,12 +111,11 @@ public class LessonController {
     /**
      * Изменяет данное занятие.
      *
-     * @param id идентификатор.
-     * @param addLessonDto занятие.
+     * @param updatePosition занятие.
      */
-    @PutMapping(value = "/lesson/update/{id}")
-    public void updateLesson(@PathVariable long id, @RequestBody AddLessonDto addLessonDto) {
-        lessonService.updateLesson(id, addLessonDto);
+    @PostMapping(value = "/lesson/update")
+    public String updateLesson(@RequestBody UpdatePosition updatePosition) {
+        return lessonService.updateLesson(updatePosition);
     }
 
     /**
