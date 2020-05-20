@@ -1,14 +1,20 @@
-package com.TimeForStudy.application.parser;
+package com.TimeForStudy.application.parser.service;
 
 import com.TimeForStudy.application.user.model.UserDto;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ParserService {
-    private static ParserService instance = null;
+/**
+ * Парсинг таблицы.
+ *
+ * @author Narizhny Pavel
+ */
+public class Parser {
+    private static Parser instance = null;
 
     private String url;
     ArrayList<UserDto> professors;
@@ -16,11 +22,11 @@ public class ParserService {
     ArrayList<String> subjects;
     ArrayList<Integer> classrooms;
 
-    private ParserService(){};
+    private Parser(){};
 
-    public static synchronized ParserService getInstance(){
+    public static synchronized Parser getInstance(){
         if (instance == null){
-            instance = new ParserService();
+            instance = new Parser();
         }
         return instance;
     }
@@ -35,13 +41,13 @@ public class ParserService {
         if (fileName.compareTo("connectionError") == 0){
             File file = new File(fileName);
             XSSFWorkbook workbook = ExcelReader.getInstance().readWorkbook(fileName);
-            ArrayList<UserDto> professors = ExcelReader.getInstance().getProfessors(workbook);
-            ArrayList<Integer> groups = ExcelReader.getInstance().getGroups(workbook);
-            ArrayList<String> subjects = ExcelReader.getInstance().getSubjects(workbook);
-            ArrayList<Integer> classrooms = ExcelReader.getInstance().getRooms(workbook);
-            return "успешно";
+            professors = ExcelReader.getInstance().getProfessors(workbook);
+            groups = ExcelReader.getInstance().getGroups(workbook);
+            subjects = ExcelReader.getInstance().getSubjects(workbook);
+            classrooms = ExcelReader.getInstance().getRooms(workbook);
+            return "Успешно";
         } else{
-            return "ошибка подключения";
+            return "Ошибка подключения";
         }
 
     }

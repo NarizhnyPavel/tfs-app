@@ -1,4 +1,4 @@
-package com.TimeForStudy.application.parser;
+package com.TimeForStudy.application.parser.service;
 
 import com.TimeForStudy.application.user.model.UserDto;
 import org.apache.poi.xssf.usermodel.XSSFRow;

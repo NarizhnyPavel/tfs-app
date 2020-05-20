@@ -1,4 +1,4 @@
-package com.TimeForStudy.application.parser;
+package com.TimeForStudy.application.parser.service;
 
 import java.io.*;
 import java.net.URL;
@@ -6,6 +6,11 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.UUID;
 
+/**
+ * Сервис для скачивания файла.
+ *
+ * @author Narizhny Pavel
+ */
 public class FileDownloader{
     private String address;
     private URL url;
