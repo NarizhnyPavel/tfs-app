@@ -149,6 +149,11 @@ public class LessonServiceImpl implements LessonService {
                         lessonPositionEntity.getNumber()
                 )
         );
+        lessonEditInfo.setLessonType(lessonPositionEntity.getLesson().getLessonType().getName());
+        lessonEditInfo.setProfessorId(lessonPositionEntity.getLesson().getUser().getId());
+        lessonEditInfo.setSubjectId(lessonPositionEntity.getLesson().getSubject().getId());
+        lessonEditInfo.setGroups(lessonPositionEntity.getLesson().getGroups().stream().map(AddLessonGroup::of).collect(Collectors.toList()));
+
         return lessonEditInfo;
     }
 
