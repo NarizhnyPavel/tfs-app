@@ -5,7 +5,7 @@
         <button ng-click="inc_week()">></button>
     </div>
     <div class="days">
-        <div class="day" ng-repeat="day in days2 track by $index" style="display: inline-block;">
+        <div class="day"  ng-repeat="day in days2 track by $index" style="display: inline-block;">
             <table>
                 <caption>
                     <span ng-if="!day.status" class="dayName" style="margin-bottom: 5px">{{day.date}}</span>

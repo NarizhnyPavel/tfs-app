@@ -28,7 +28,7 @@ public class NotificationController {
      *
      * @return список уведомлений.
      */
-    @GetMapping(value = "/notification")
+    @GetMapping(value = "/notifications")
     public List<NotificationDto> getNotifications() {
         return notificationService.findAll();
     }

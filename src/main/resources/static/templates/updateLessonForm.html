@@ -2,28 +2,28 @@
     <div class="groupAddBlock" >
         <table style="min-width: 300px; height: 415px">
             <tr class="groupAddBlock-field" >
-                <td><p style="text-align: center">Аудитория:</p></td>
-                <td><input type="text" id="classroom" spellcheck="false" style="width: 40px"/></td>
+                <td><p style="text-align: right">Аудитория:</p></td>
+                <td><input type="text" id="classroom" spellcheck="false" style="width: 105px"/></td>
             </tr>
             <tr class="groupAddBlock-field">
-                <td><p>Номер недели:</p></td>
+                <td><p style="text-align: right">Номер недели:</p></td>
                 <td>
-                    <input type="number" style="width: 30px" id="week" min="0" max="{{weeks}}" ng-model="week" value="1" step="1">
+                    <input type="number" style="width: 105px" id="week" min="0" max="{{weeks}}" ng-model="week" value="1" step="1">
                     <br><span style="font-size: 11pt">0-все недели</span>
                 </td>
             </tr>
             <tr class="groupAddBlock-field">
-                <td><p>День недели:</p></td>
+                <td><p style="text-align: right">День недели:</p></td>
                 <td>
-                    <select name="workday" id="workday">
-                        <option ng-repeat="day in workdays" value="{{day.id}}" >{{day.label}}</option>
+                    <select name="workday" id="workday" style="width: 105px">
+                        <option ng-repeat="day in workdays"  value="{{day.id}}" >{{day.label}}</option>
                     </select>
                 </td>
             </tr>
             <tr class="groupAddBlock-field">
-                <td><p>Время:</p></td>
+                <td><p style="text-align: right">Время:</p></td>
                 <td>
-                    <select name="workday" id="time">
+                    <select name="workday" id="time" style="width: 105px; text-align: center">
                         <option ng-repeat="time in times" value="{{time.id}}" >{{time.label}}</option>
                     </select>
                 </td>
@@ -35,7 +35,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="padding-top: 20px">
-                    <button id="checkLesBut" class="buttonClass" style="margin-left: 10px; margin-bottom: 10px; padding: 4px" ng-click="checkPositions()">Проверить<br> корректность</button>
+                    <button id="checkLesBut" class="buttonClass" style="width: 150px; margin-left: 10px; margin-bottom: 10px; padding: 0px" ng-click="checkPositions()">Проверить<br> корректность</button>
                     <br>
                     <button id="addLesBut" class="buttonClass" style="margin-left: 10px" ng-click="updateLesson()">Перенести</button>
                 </td>

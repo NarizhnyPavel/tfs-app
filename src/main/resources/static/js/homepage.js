@@ -8,6 +8,31 @@ var config = {
     }
 };
 
+
+function sendNotification(title, options) {
+// Проверим, поддерживает ли браузер HTML5 Notifications
+    if (!("Notification" in window)) {
+        alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
+    } else if (Notification.permission === "granted") {
+        var notification = new Notification(title, options);
+
+        function clickFunc() {
+            alert('Пользователь кликнул на уведомление');
+        }
+
+        notification.onclick = clickFunc;
+    } else if (Notification.permission !== 'default') {
+        Notification.requestPermission(function (permission) {
+            if (permission === "granted") {
+                var notification = new Notification(title, options);
+
+            } else {
+                alert('Вы запретили показывать уведомления'); // Юзер отклонил наш запрос на показ уведомлений
+            }
+        });
+    }
+}
+
 app.controller('control', function ($scope, $http, $window) {
     $scope.user = {
         id: $window.localStorage.getItem("userId"),
@@ -37,6 +62,19 @@ app.controller('control', function ($scope, $http, $window) {
         document.getElementById('menu').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
         document.querySelector('.page').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
 
+    });
+    // console.log('/notification/' +  $window.localStorage.getItem("userId"))
+    // if ($scope.user.role === "3" || $scope.user.role === "4"){
+    $http.get(serverUrl + '/notification/' +  $window.localStorage.getItem("userId"), config).then(function (response) {
+        let notifications = response.data;
+        console.log(notifications)
+        for (var i = 0; i < notifications.length; i++){
+            console.log(notifications[i]);
+            sendNotification(notifications[i].title, {
+                body: notifications[i].message,
+                icon: '../icon/icon.png'
+            });
+        }
     });
     $scope.infoShow = false;
     $scope.entityToViewInTimeTable = {
@@ -74,46 +112,21 @@ app.controller('control', function ($scope, $http, $window) {
         });
     });
     $scope.lessonToUpdate;
-    sendNotification('Приветствуем!', {
-        body: 'Здесь будут важные уведомления',
-        icon: '../icon/icon.png',
-        dir: 'auto'
-    });
+
 });
 
-function sendNotification(title, options) {
-// Проверим, поддерживает ли браузер HTML5 Notifications
-    if (!("Notification" in window)) {
-        alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
-    } else if (Notification.permission === "granted") {
-        var notification = new Notification(title, options);
 
-        function clickFunc() {
-            alert('Пользователь кликнул на уведомление');
-        }
 
-        notification.onclick = clickFunc;
-    } else if (Notification.permission !== 'default') {
-        Notification.requestPermission(function (permission) {
-            if (permission === "granted") {
-                var notification = new Notification(title, options);
 
-            } else {
-                alert('Вы запретили показывать уведомления'); // Юзер отклонил наш запрос на показ уведомлений
-            }
-        });
-    }
-}
-
-var filter = {
-    professor: true,
-    group: true,
-    classroom: false
-};
 
 app.directive('searchBlockMain', function () {
     return {
         controller: function ($scope, $http) {
+            var filter = {
+                professor: true,
+                group: true,
+                classroom: false
+            };
             $scope.searchShow = false;
             angular.element(document.querySelector('#prof')).css('backgroundColor', '#adadad');
             angular.element(document.querySelector('#group')).css('backgroundColor', '#adadad');
@@ -181,6 +194,11 @@ app.directive('searchBlockMain', function () {
 app.directive('searchBlockDispatcher', function () {
     return {
         controller: function ($scope, $http) {
+            var filter = {
+                professor: true,
+                group: true,
+                classroom: false
+            };
             $scope.searchShow = false;
             $scope.upfatingLessonId =-1;
             angular.element(document.querySelector('#profUpdate')).css('backgroundColor', '#adadad');
@@ -381,7 +399,6 @@ app.directive('gridSearch', function () {
                 $window.localStorage.setItem("lessonToViewProfId", -1);
                 $window.localStorage.setItem("lessonToViewStatus", -1);
                 $window.localStorage.setItem("lessonToViewId", lesson.id);
-                console.log('сейчас отразилась пара с positionId = ' + lesson.id);
                 $window.localStorage.setItem("lessonToUpdateId", lesson.id);
                 $window.localStorage.setItem("lessonToUpdateProfId", lesson.professorId);
                 $window.localStorage.setItem("lessonToViewWeek", -1);
@@ -408,6 +425,8 @@ app.directive('gridSearch', function () {
                 $scope.entityFromSearch.weekNum = 1;
                 refresh_timetable();
                 document.querySelector('#table2').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+                // document.querySelector('.day').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+
             });
         }
         , restrict: "E"
@@ -931,8 +950,6 @@ app.directive('updateLessonForm', function () {
                 if (pos_num < 100)
                     pos_num = "0" + pos_num;
                 if (checkFields() && $window.localStorage.getItem("lessonToUpdateId") > 0) {
-                    //TODO запрос данных для позиции по
-                    // $window.localStorage.getItem("lessonToUpdateId")
                     var data = {
                         // position: $scope.positions,
                         position: [{
@@ -1011,6 +1028,9 @@ app.directive('updateLessonForm', function () {
                         $scope.$emit('myCustomEvent_update', {
                             someProp: -1,
                             type: "deleteBorder"
+                        });
+                        $scope.$emit('stopLessonUpdateGrid', {
+                            prop: -1
                         });
                     }
                 });
@@ -1319,6 +1339,7 @@ app.directive('userSettings', function () {
                     let index = $scope.groups2.findIndex(group => group.id === ui.item.id);
                     if (index === -1) {
                         $scope.groups2.push(ui.item);
+                        $scope.$apply();
                     }
                     $scope.$emit('groupsSettEvent', {
                         someProp: $scope.groups2,
@@ -1358,13 +1379,16 @@ app.directive('userSettings', function () {
                         phone: document.querySelector('#telInputSet').value
                     };
                     $http.post(serverUrl + "/user/update", data , {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                        $scope.$emit('stopLessonUpdateGrid', {
+                            prop: -1
+                        });
                         $window.localStorage.setItem("userTel", document.querySelector('#telInputSet').value);
                         $window.localStorage.setItem("userName", document.querySelector('#nameInput').value);
                         $scope.messShow = true;
                         if (phoneEdited) {
-                        //     document.querySelector('#settingsPage').style.height = "340px";
-                            if ($scope.user.role === '2')
+                            if ($scope.user.role === '2') {
                                 document.querySelector('#settingsPage').style.height = "250px";
+                            }
                         }
                         $window.localStorage.setItem("groupsLength", $scope.groups2.length);
                         $scope.user.name = document.querySelector('#nameInput').value;
