@@ -2,11 +2,14 @@ package com.TimeForStudy.application.notification.model;
 
 import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
+import com.TimeForStudy.application.lessonposition.model.LessonPositionDto;
 import com.TimeForStudy.application.user.model.UserDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import java.time.LocalDate;
 
 
 /**
@@ -21,12 +24,12 @@ public class AddNotificationDto {
     /**
      * Позиция занятия
      */
-    private int lessonPosition;
+    private String lessonPosition;
 
     /**
      * Текст уведомления
      */
-    private String text;
+    private LocalDate date;
 
     /**
      * Тип уведомления (false - уведомление; true - запрос)
@@ -36,7 +39,7 @@ public class AddNotificationDto {
     /**
      * Лекция, к которой относится данное уведомление
      */
-    private LessonDto lessons;
+    private LessonPositionDto lessons;
 
     /**
      * Отправитель уведомления

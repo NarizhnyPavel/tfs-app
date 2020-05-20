@@ -4,6 +4,7 @@ import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import java.time.LocalDate;
 
 
 /**
@@ -19,12 +20,12 @@ public class NotificationDto {
     /**
      * Позиция занятия
      */
-    private int lessonPosition;
+    private String lessonPosition;
 
     /**
      * Текст уведомления
      */
-    private String text;
+    private LocalDate date;
 
     /**
      * Тип уведомления (false - уведомление; true - запрос)
@@ -35,7 +36,7 @@ public class NotificationDto {
         NotificationDto dto = new NotificationDto();
         dto.setId(notificationEntity.getId());
         dto.setLessonPosition(notificationEntity.getLessonPosition());
-        dto.setText(notificationEntity.getText());
+        dto.setDate(notificationEntity.getDate());
         dto.setType(notificationEntity.isType());
         return dto;
     }
@@ -44,7 +45,7 @@ public class NotificationDto {
         NotificationEntity entity = new NotificationEntity();
         entity.setId(notificationDto.getId());
         entity.setLessonPosition(notificationDto.getLessonPosition());
-        entity.setText(notificationDto.getText());
+        entity.setDate(notificationDto.getDate());
         entity.setType(notificationDto.isType());
         return entity;
     }

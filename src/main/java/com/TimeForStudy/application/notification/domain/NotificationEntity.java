@@ -1,9 +1,7 @@
 package com.TimeForStudy.application.notification.domain;
 
-import com.TimeForStudy.application.group.domain.GroupEntity;
-import com.TimeForStudy.application.group.model.GroupDto;
-import com.TimeForStudy.application.lesson.domain.LessonEntity;
-import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
+import com.TimeForStudy.application.lessonposition.model.LessonPositionDto;
 import com.TimeForStudy.application.notification.model.AddNotificationDto;
 import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.model.UserDto;
@@ -13,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Сущность уведомления
@@ -36,13 +35,13 @@ public class NotificationEntity {
      * Позиция занятия
      */
     @Column(name = "lesson_position")
-    private int lessonPosition;
+    private String lessonPosition;
 
     /**
      * Текст уведомления
      */
-    @Column(name = "text")
-    private String text;
+    @Column(name = "date")
+    private LocalDate date;
 
     /**
      * Тип уведомления (false - уведомление; true - запрос)
@@ -55,7 +54,7 @@ public class NotificationEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")
-    private LessonEntity lessons;
+    private LessonPositionEntity lessons;
 
     /**
      * Отправитель уведомления
@@ -66,8 +65,8 @@ public class NotificationEntity {
 
     public NotificationEntity (AddNotificationDto addNotificationDto) {
         this.lessonPosition = addNotificationDto.getLessonPosition();
-        this.text = addNotificationDto.getText();
-        this.lessons = LessonDto.on(addNotificationDto.getLessons());
+        this.date = addNotificationDto.getDate();
+        this.lessons = LessonPositionDto.on(addNotificationDto.getLessons());
         this.sender = UserDto.on(addNotificationDto.getSender());
         this.type = addNotificationDto.isType();
     }

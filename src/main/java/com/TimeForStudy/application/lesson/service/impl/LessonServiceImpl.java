@@ -21,6 +21,7 @@ import com.TimeForStudy.application.lessonposition.model.LessonPositionDto;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeEntity;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
+import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import com.TimeForStudy.application.positioncancel.domain.PositionCancelEntity;
 import com.TimeForStudy.application.positioncancel.domain.PositionCancelRepository;
 import com.TimeForStudy.application.semester.domain.SemesterEntity;
@@ -180,6 +181,14 @@ public class LessonServiceImpl implements LessonService {
         localDate = localDate.plusDays(1);
         PositionCancelEntity positionCancelEntity = new PositionCancelEntity(localDate, lessonStopDto.getWeeks(), lessonPosition);
         positionCancelRepository.save(positionCancelEntity);
+
+        NotificationEntity notificationEntity = new NotificationEntity();
+        notificationEntity.setType(false);
+        notificationEntity.setLessonPosition(lessonPosition.getPosition()+""+lessonPosition.getDays()+""+lessonPosition.getNumber());
+        notificationEntity.setSender(lessonPosition.getLesson().getUser());
+        notificationEntity.setLessons(lessonPosition);
+        notificationEntity.setDate(localDate);
+
         return "success";
     }
 
@@ -524,9 +533,8 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
         if (lessonPositionEntity.getLesson().getLessonPositions().size()==1) {
             lessonRepository.deleteById(lessonPositionEntity.getLesson().getId());
-        } else {
-            lessonPositionRepository.deleteById(id);
         }
+        lessonPositionRepository.deleteById(id);
         return "success";
     }
 
