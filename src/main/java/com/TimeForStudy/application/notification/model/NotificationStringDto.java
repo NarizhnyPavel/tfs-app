@@ -28,10 +28,18 @@ public class NotificationStringDto {
         }
         if (notificationEntity.isType()==false) {
             this.title = "Занятие отменено:";
+            String month = "";
+            String day = "";
             LocalDate localDate = notificationEntity.getDate().minusDays(1);
+            if (localDate.getMonth().getValue()<10) {
+                month = "0";
+            }
+            if (localDate.getDayOfMonth()<10) {
+                day = "0";
+            }
             this.message = notificationEntity.getSender().getName() + " отменил(а) занятие " +
                     notificationEntity.getLessons().getLesson().getSubject().getName() +
-                    " " + localDate.getDayOfMonth() + "." + localDate.getMonth().getValue() +
+                    " " + day + localDate.getDayOfMonth() + "." + month + localDate.getMonth().getValue() +
                     "." + localDate.getYear() + "г. в " + time + ".";
         } else {
 
