@@ -79,26 +79,6 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void updateNotification(long id, AddNotificationDto addNotificationDto) {
-        NotificationEntity updated = notificationRepository.findById(id)
-                .orElseThrow(ErrorDescription.NOTIFICATION_NOT_FOUNT::exception);
-        if (addNotificationDto.getLessons()!=null) {
-            lessonRepository.findById(addNotificationDto.getLessons().getId())
-                    .orElseThrow(ErrorDescription.LESSON_NOT_FOUNT::exception);
-            updated.setLessons(LessonDto.on(addNotificationDto.getLessons()));
-        }
-        if (addNotificationDto.getSender()!=null) {
-            userRepository.findById(addNotificationDto.getSender().getId())
-                    .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-            updated.setSender(UserDto.on(addNotificationDto.getSender()));
-        }
-            updated.setType(addNotificationDto.isType());
-        if (addNotificationDto.getText()!=null) {
-            updated.setText(addNotificationDto.getText());
-        }
-        if (addNotificationDto.getLessonPosition()!=0) {
-            updated.setLessonPosition(addNotificationDto.getLessonPosition());
-        }
-        notificationRepository.save(updated);
     }
 
     /**
