@@ -5,6 +5,7 @@ import com.TimeForStudy.application.classroom.model.AddClassroomDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.AddGroupDto;
+import com.TimeForStudy.application.parser.domain.ParserResponse;
 import com.TimeForStudy.application.parser.service.Parser;
 import com.TimeForStudy.application.parser.service.ParserService;
 import com.TimeForStudy.application.subject.domain.SubjectRepository;
@@ -47,10 +48,12 @@ public class ParserServiceImpl implements ParserService {
      * Получение url ссылки на парсикг
      */
     @Override
-    public String inUrlParser(String url) {
+    public ParserResponse inUrlParser(String url) {
         Parser parser = Parser.getInstance();
         parser.setUrl(url);
         String message = parser.loadFromUrl();
+        ParserResponse parserResponse = new ParserResponse();
+        parserResponse.setStatus(message);
         if (message=="Успешно") {
             List<AddUserDto> professors = parser.professors;
             List<AddGroupDto> groups = parser.groups;
@@ -60,7 +63,11 @@ public class ParserServiceImpl implements ParserService {
             groupRepository.saveAll(groups.stream().map(AddGroupDto::on).collect(Collectors.toList()));
             subjectRepository.saveAll(subjects.stream().map(AddSubjectDto::on).collect(Collectors.toList()));
             classroomRepository.saveAll(classrooms.stream().map(AddClassroomDto::on).collect(Collectors.toList()));
+            parserResponse.setGroupnum(groups.size());
+            parserResponse.setProfnum(professors.size());
+            parserResponse.setRoomnum(classrooms.size());
+            parserResponse.setSubjectnum(subjects.size());
         }
-        return message;
+        return parserResponse;
     }
 }

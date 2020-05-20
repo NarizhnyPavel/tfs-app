@@ -1,5 +1,6 @@
 package com.TimeForStudy.application.parser.web;
 
+import com.TimeForStudy.application.parser.domain.ParserResponse;
 import com.TimeForStudy.application.parser.service.ParserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,12 +29,12 @@ public class ParserController {
      * @return строка состояния.
      */
     @PostMapping(value = "/parser/url")
-    public String getProfessors(@RequestBody String url) {
+    public ParserResponse getProfessors(@RequestBody String url) {
         try {
             return parserService.inUrlParser(url);
         } catch (IOException e) {
             e.printStackTrace();
-            return "error";
+            return null;
         }
     }
 
