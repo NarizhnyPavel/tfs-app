@@ -42,13 +42,13 @@ public class NotificationStringDto {
                 pos = "Все недели";
             }
             switch (Integer.parseInt(notificationEntity.getLessonPosition().substring(1,2))) {
-                case 1:  week = "Понедельник";
-                case 2:  week = "Вторник";
-                case 3:  week = "Среда";
-                case 4:  week = "Четверг";
-                case 5:  week = "Пятница";
-                case 6:  week = "Суббота";
-                default: week = "Воскресенье";
+                case 1:  week = "Понедельник"; break;
+                case 2:  week = "Вторник"; break;
+                case 3:  week = "Среда"; break;
+                case 4:  week = "Четверг"; break;
+                case 5:  week = "Пятница"; break;
+                case 6:  week = "Суббота"; break;
+                default: week = "Воскресенье"; break;
             }
             this.message = notificationEntity.getLessons().getLesson().getUser().getName() +
                     " перенёс(перенесла) занятие " + notificationEntity.getLessons().getLesson().getSubject().getName() +
