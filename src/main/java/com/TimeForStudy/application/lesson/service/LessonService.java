@@ -54,11 +54,18 @@ public interface LessonService {
     List<SearchDto> getSearch(ValidateSearch validateSearch);
 
     /**
+     * Провеняет занятия.
+     *
+     * @param newLessonDto занятие.
+     */
+    List<BoolLessonDto> checkLesson(NewLessonDto newLessonDto);
+
+    /**
      * Сохранение занятия.
      *
      * @param newLessonDto занятие.
      */
-    List<BoolLessonDto> saveLesson(NewLessonDto newLessonDto);
+    String addLesson(NewLessonDto newLessonDto);
 
     /**
      * Изменение значений занятия.

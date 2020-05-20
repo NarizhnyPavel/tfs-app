@@ -88,13 +88,23 @@ public class LessonController {
     }
 
     /**
+     * Проверяет новое занятие.
+     *
+     * @param newLessonDto занятие.
+     */
+    @PostMapping(value = "/lesson/check")
+    public List<BoolLessonDto> checkLesson(@RequestBody NewLessonDto newLessonDto) {
+        return lessonService.checkLesson(newLessonDto);
+    }
+
+    /**
      * Добавляет новое занятие.
      *
      * @param newLessonDto занятие.
      */
     @PostMapping(value = "/lesson/add")
-    public List<BoolLessonDto> addLesson(@RequestBody NewLessonDto newLessonDto) {
-        return lessonService.saveLesson(newLessonDto);
+    public String addLesson(@RequestBody NewLessonDto newLessonDto) {
+        return lessonService.addLesson(newLessonDto);
     }
 
     /**

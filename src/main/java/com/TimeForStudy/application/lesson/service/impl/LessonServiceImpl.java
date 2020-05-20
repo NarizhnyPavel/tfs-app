@@ -334,27 +334,19 @@ public class LessonServiceImpl implements LessonService {
      * @param newLessonDto занятие.
      */
     @Override
-    public List<BoolLessonDto> saveLesson(NewLessonDto newLessonDto) {
+    public List<BoolLessonDto> checkLesson(NewLessonDto newLessonDto) {
 
-        boolean mainFlag = true;
         List<BoolLessonDto> boolLessonDtos = new ArrayList<>();
         ClassroomEntity classroom = classroomRepository.findById(newLessonDto.getClassroom())
                 .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
         UserEntity userEntity = userRepository.findById(newLessonDto.getProfessor())
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
-        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
-                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
-        SubjectEntity subjectEntity = subjectRepository.findById(newLessonDto.getSubject())
-                .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
         List<GroupEntity> groupEntities = new ArrayList<>();
         for (AddLessonGroup group : newLessonDto.getGroups()) {
             GroupEntity groupEntity = groupRepository.findById(group.getId())
                     .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
             groupEntities.add(groupEntity);
         }
-        LessonTypeEntity lessonTypeEntity = lessonTypeRepository.findById(newLessonDto.getLessonType())
-                .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
-
         for (PositionDto positionDto : newLessonDto.getPosition()) {
 
             BoolLessonDto boolLessonDto = new BoolLessonDto();
@@ -402,40 +394,63 @@ public class LessonServiceImpl implements LessonService {
                 //проверка кабинета
                 if (position.getLesson().getClassroom() == classroom) {
                     boolLessonDto.setClassroom(0);
-                    mainFlag = false;
                 }
                 //проверка преподавателя
                 if (position.getLesson().getUser() == userEntity) {
                     boolLessonDto.setProfessor(0);
-                    mainFlag = false;
                 }
                 //проверка групп
                 int i = 0;
                 for (AddLessonGroup group1 : boolLessonDto.getGroups()) {
                     if (position.getLesson().getGroups().contains(groupEntities.get(i))) {
                         group1.setNumber(0);
-                        mainFlag = false;
                     }
                     i++;
                 }
             }
-//            if (mainFlag) {
-//                LessonEntity lessonEntity = new LessonEntity();
-//                lessonEntity.setGroups(groupEntities);
-//                lessonEntity.setLessonType(lessonTypeEntity);
-//                lessonEntity.setStatus(true);
-//                lessonEntity.setSemester(semesterEntity);
-//                lessonEntity.setUser(userEntity);
-//                lessonEntity.setClassroom(classroom);
-//                lessonEntity.setSubject(subjectEntity);
-//                lessonRepository.save(lessonEntity);
-//            }
 
             boolLessonDto.setPosition(positionDto.getNum());
 
             boolLessonDtos.add(boolLessonDto);
         }
         return boolLessonDtos;
+    }
+
+    /**
+     * Сохранение занятия.
+     *
+     * @param newLessonDto занятие.
+     */
+    @Override
+    public String addLesson(NewLessonDto newLessonDto) {
+
+        ClassroomEntity classroom = classroomRepository.findById(newLessonDto.getClassroom())
+                .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
+        UserEntity userEntity = userRepository.findById(newLessonDto.getProfessor())
+                .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1) //переделать под семестры
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        SubjectEntity subjectEntity = subjectRepository.findById(newLessonDto.getSubject())
+                .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
+        List<GroupEntity> groupEntities = new ArrayList<>();
+        for (AddLessonGroup group : newLessonDto.getGroups()) {
+            GroupEntity groupEntity = groupRepository.findById(group.getId())
+                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+            groupEntities.add(groupEntity);
+        }
+        LessonTypeEntity lessonTypeEntity = lessonTypeRepository.findById(newLessonDto.getLessonType())
+                .orElseThrow(ErrorDescription.LESSON_TYPE_NOT_FOUNT::exception);
+        LessonEntity lessonEntity = new LessonEntity();
+        lessonEntity.setGroups(groupEntities);
+        lessonEntity.setLessonType(lessonTypeEntity);
+        lessonEntity.setStatus(true);
+        lessonEntity.setSemester(semesterEntity);
+        lessonEntity.setUser(userEntity);
+        lessonEntity.setClassroom(classroom);
+        lessonEntity.setSubject(subjectEntity);
+        lessonRepository.save(lessonEntity);
+
+        return "success";
     }
 
     /**
