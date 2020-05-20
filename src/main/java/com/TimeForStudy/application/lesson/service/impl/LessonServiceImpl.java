@@ -547,8 +547,15 @@ public class LessonServiceImpl implements LessonService {
      * @param id идентификатор.
      */
     @Override
-    public void deleteLesson(long id) {
-        lessonRepository.deleteById(id);
+    public String deleteLesson(long id) {
+        LessonPositionEntity lessonPositionEntity = lessonPositionRepository.findById(id)
+                .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
+        if (lessonPositionEntity.getLesson().getLessonPositions().size()==1) {
+            lessonRepository.deleteById(lessonPositionEntity.getLesson().getId());
+        } else {
+            lessonPositionRepository.deleteById(id);
+        }
+        return "success";
     }
 
     /**

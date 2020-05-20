@@ -90,7 +90,7 @@ public interface LessonService {
      *
      * @param id идентификатор.
      */
-    void deleteLesson(long id);
+    String deleteLesson(long id);
 
     /**
      * Возвращение всех существующих занятий.

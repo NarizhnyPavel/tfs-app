@@ -124,8 +124,8 @@ public class LessonController {
      * @param id идентификатор.
      */
     @DeleteMapping(value = "/lesson/delete/{id}")
-    public void deleteLesson(@PathVariable long id) {
-        lessonService.deleteLesson(id);
+    public String deleteLesson(@PathVariable long id) {
+        return lessonService.deleteLesson(id);
     }
 
 }
