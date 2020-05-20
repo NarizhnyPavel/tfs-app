@@ -11,6 +11,7 @@ var config = {
 
 function sendNotification(title, options) {
 // Проверим, поддерживает ли браузер HTML5 Notifications
+    console.log(Notification.permission)
     if (!("Notification" in window)) {
         alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
     } else if (Notification.permission === "granted") {
@@ -21,11 +22,10 @@ function sendNotification(title, options) {
         }
 
         notification.onclick = clickFunc;
-    } else if (Notification.permission !== 'default') {
+    } else if (Notification.permission === 'default' || Notification.permission === 'denied') {
         Notification.requestPermission(function (permission) {
             if (permission === "granted") {
                 var notification = new Notification(title, options);
-
             } else {
                 alert('Вы запретили показывать уведомления'); // Юзер отклонил наш запрос на показ уведомлений
             }
@@ -114,9 +114,6 @@ app.controller('control', function ($scope, $http, $window) {
     $scope.lessonToUpdate;
 
 });
-
-
-
 
 
 app.directive('searchBlockMain', function () {
@@ -334,7 +331,7 @@ app.directive('gridMain', function () {
             }
             $scope.$on('stopLessonUpdateGrid_timetable', function (event, data) {
                 $scope.week = 1;
-                $scope.entityFromSearch.weekNum = 1;
+                // $scope.entityFromSearch.weekNum = 1;
                 refresh_timetable();
                 document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             });
@@ -515,8 +512,8 @@ app.directive('gridUpdate', function () {
                     $scope.entityFromSearch.id = savedId;
                     $scope.updatingLessonId = data.someProp;
                 }
-                $scope.week = 1;
-                $scope.entityFromSearch.weekNum = 1;
+                // $scope.week = 1;
+                // $scope.entityFromSearch.weekNum = 1;
                 refresh_timetable();
                 document.querySelector('#table3').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             });
@@ -546,11 +543,10 @@ app.directive('infoBox', function () {
                     $http.post(serverUrl + '/lesson/stop', data , config).then(function (response) {
                         document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                         $scope.days2 = response.data;
-
                     });
                 }
                 $scope.infoShow = false;
-                $scope.$emit('myCustomEvent', {
+                $scope.$emit('stopLessonUpdateGrid', {
                     someProp: -1
                 });
             }
@@ -1012,6 +1008,8 @@ app.directive('updateLessonForm', function () {
                 var pos_num = document.getElementById("week").value * 100 +
                     document.getElementById("workday").value * 10+
                     + document.getElementById("time").value;
+                if (pos_num < 100)
+                    pos_num = "0" + pos_num;
                 let data = {
                     oldPositionId: $window.localStorage.getItem("lessonToUpdateId"),
                     newPositionNum: pos_num,
@@ -1093,10 +1091,11 @@ app.directive('updateLessonForm', function () {
             $scope.$on('sendToUpdateForm2', function (event, data) {
                 var position;
                 $http.get(serverUrl + '/lesson/edit/' + data.prop, config).then(function (response) {
+                    console.log()
                     position = response.data.lessonPosition;
-                    position
+                    console.log('подставляю ' + position)
                     document.querySelector('#time').value = position % 10;
-                    document.querySelector('#workday').value = ((position % 100 - 1) / 10).toFixed(0);
+                    document.querySelector('#workday').value = ((position % 100) / 10).toFixed(0);
                     document.querySelector('#week').value = (position / 100).toFixed(0);
                     newClassroomId = response.data.classroomId;
                     document.querySelector('#classroom').value = response.data.classroom;
@@ -1499,7 +1498,7 @@ app.directive('parser', function () {
                         url: document.querySelector('#parserUrl').value
                     }
                     , {headers: {'Accept': 'text/plain'}}).then(function (response) {
-                    console.log(response);
+                    console.log(response,data);
                 });
             };
             $.mask.definitions['a'] = false;
