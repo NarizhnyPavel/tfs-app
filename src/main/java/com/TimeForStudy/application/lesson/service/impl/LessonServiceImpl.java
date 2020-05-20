@@ -17,6 +17,7 @@ import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionRepository;
+import com.TimeForStudy.application.lessonposition.model.LessonPositionDto;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeEntity;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
@@ -34,6 +35,7 @@ import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.error.ErrorDescription;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -449,6 +451,14 @@ public class LessonServiceImpl implements LessonService {
         lessonEntity.setClassroom(classroom);
         lessonEntity.setSubject(subjectEntity);
         lessonRepository.save(lessonEntity);
+        for (PositionDto positionDto : newLessonDto.getPosition()) {
+            LessonPositionEntity lessonPositionEntity = new LessonPositionEntity();
+            lessonPositionEntity.setDays(Integer.parseInt(positionDto.getNum().substring(1,2)));
+            lessonPositionEntity.setPosition(Integer.parseInt(positionDto.getNum().substring(0,1)));
+            lessonPositionEntity.setNumber(Integer.parseInt(positionDto.getNum().substring(2,3)));
+            lessonPositionEntity.setLesson(lessonEntity);
+            lessonPositionRepository.save(lessonPositionEntity);
+        }
 
         return "success";
     }
