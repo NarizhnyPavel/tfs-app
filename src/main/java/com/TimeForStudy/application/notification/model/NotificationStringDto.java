@@ -27,13 +27,15 @@ public class NotificationStringDto {
             }
         }
         if (notificationEntity.isType()==false) {
-
+            this.title = "Занятие отменено:";
             LocalDate localDate = notificationEntity.getDate().minusDays(1);
-            this.message = localDate.toString() + " в " + time + " занятие по " +
+            this.message = notificationEntity.getSender().getName() + " отменил(а) занятие " +
                     notificationEntity.getLessons().getLesson().getSubject().getName() +
-                    " отменено!";
+                    " " + localDate.getDayOfMonth() + "." + localDate.getMonth().getValue() +
+                    "." + localDate.getYear() + "г. в " + time + ".";
         } else {
 
+            this.title = "Занятие перенесено:";
             String week = "";
             String pos = notificationEntity.getLessonPosition().substring(0,1) + " неделя";
             if (Integer.parseInt(notificationEntity.getLessonPosition().substring(0,1))==0) {
@@ -48,8 +50,9 @@ public class NotificationStringDto {
                 case 6:  week = "Суббота";
                 default: week = "Воскресенье";
             }
-            this.message = "Занятие по " + notificationEntity.getLessons().getLesson().getSubject().getName() +
-                    " перенесено на " + pos + " " + week + " в " + time;
+            this.message = notificationEntity.getLessons().getLesson().getUser().getName() +
+                    " перенёс(перенесла) занятие " + notificationEntity.getLessons().getLesson().getSubject().getName() +
+                    " на <" + pos + ", " + week + ", " + time + ">.";
         }
 
 
