@@ -51,7 +51,6 @@ app.controller('control', function ($scope, $http, $window) {
         });
     });
     $scope.$on('groupsSettEvent', function (event, data) {
-        console.log('контроллер получиль ' + data.comment);
         $scope.$broadcast('groupsSettEvent2', {
             prop: data.someProp,
             comm: data.comment
@@ -114,7 +113,7 @@ app.directive('searchBlockMain', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 2,
+                minLength: 1,
                 select: function displayItem(event, ui) {
                     $scope.entityToViewInTimeTable.id = ui.item.id;
                     $scope.entityToViewInTimeTable.type = ui.item.type;
@@ -182,7 +181,7 @@ app.directive('searchBlockDispatcher', function () {
                         response(response2.data);
                     });
                 },
-                minLength: 2,
+                minLength: 1,
                 select: function displayItem(event, ui) {
                     $scope.entityToViewInTimeTable.id = ui.item.id;
                     $scope.entityToViewInTimeTable.type = ui.item.type;
@@ -207,18 +206,21 @@ app.directive('gridMain', function () {
         controller: function ($scope, $attrs, $http, $window) {
             $scope.timetableShow = false;
             $scope.minWeekNum = 1;
+            $scope.days2 = [];
+            // $scope.week;
+            // $scope.weeknum;
             $http.get(serverUrl + '/university/weeks', config).then(function (response) {
                 $scope.maxWeekNum = response.data;
             });
-            $http.get(serverUrl + '/week/now/' + 1, config).then(function (response) {
-                $scope.week = response.data.numberWeek;
-            });
             var data = {
                 userId: $window.localStorage.getItem("userId")
-                , weekNum: 1
+                , weekNum: 0
             };
-            refresh_timetable();
-            // document.querySelector('.day').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            $http.get(serverUrl + '/week/now/' + 1, config).then(function (response) {
+                $scope.week = response.data.numberWeek;
+                data.weekNum = response.data.numberWeek;
+                refresh_timetable();
+            });
             $scope.inc_week = function () {
                 if ($scope.week < $scope.maxWeekNum) {
                     $scope.week++;
@@ -250,7 +252,6 @@ app.directive('gridMain', function () {
                     document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                     $scope.timetableShow = true;
                     $scope.days2 = response.data;
-                    // $scope.$apply();
                 });
             }
         }
@@ -277,6 +278,9 @@ app.directive('gridSearch', function () {
                 $scope.maxWeekNum = response.data;
             });
             $scope.week = 1;
+            // $http.get(serverUrl + '/week/now/' + 1, config).then(function (response) {
+            //     $scope.week = response.data.numberWeek;
+            // });
             function changeWeek(){
                 $scope.week = $scope.entityFromSearch.weekNum;
             }
@@ -301,13 +305,16 @@ app.directive('gridSearch', function () {
                 $scope.groupShow = true;
                 $scope.profShow = true;
                 $scope.infoShow = true;
-                $window.localStorage.setItem("lessonToViewProfId", $scope.lessonToView.professorId);
+                $window.localStorage.setItem("lessonToViewProfId", -1);
+                $window.localStorage.setItem("lessonToViewStatus", -1);
+                $window.localStorage.setItem("lessonToViewId", -1);
+                $window.localStorage.setItem("lessonToViewWeek", -1);
+                $window.localStorage.setItem("lessonToViewProfId", -1);
             }
             function refresh_timetable() {
                 $http.post(serverUrl + '/lesson/by', $scope.entityFromSearch, config).then(function (response) {
                     if(response.data.length !== 0) {
                         $scope.timetableShow = true;
-
                     }
                     $scope.days2 = response.data;
                     // $scope.$apply();
@@ -352,6 +359,7 @@ app.directive('infoBox', function () {
                 $scope.infoShow = false;
             }
             $scope.checkLess = function () {
+                console.log()
                 if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2'
                 && ''+$window.localStorage.getItem("userId") === ''+$window.localStorage.getItem("lessonToViewProfId"))
                     return true;
@@ -409,6 +417,11 @@ app.directive('addLessonForm', function () {
         controller: function ($scope, $http, $window) {
             $scope.groups2 = [];
             $scope.positions = [];
+            $scope.showDispFields = true;
+            if ($window.localStorage.getItem("userRole") === '2'){
+                $scope.showDispFields = false;
+                angular.element(document.querySelector('#classroom')).css('width', "50px");
+            }
             function checkFields() {
                 if($scope.positions.length === 0)
                     angular.element(document.querySelector('#pos-table')).css('border', "2px solid red");
@@ -454,7 +467,7 @@ app.directive('addLessonForm', function () {
                         professor: selectedTeacher,
                         lessonType: document.getElementById("type").value
                     };
-                    $http.post(serverUrl + '/lesson/add', data, config).then(function (response) {
+                    $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
                         let answer = response.data;
                         for (let i = 0; i < answer.length; i++) {
                             let posIndex = $scope.positions.findIndex(pos => pos.num === answer[i].position);
@@ -512,7 +525,10 @@ app.directive('addLessonForm', function () {
                     professor: selectedTeacher,
                     subject: selectedSubject
                 }
-                console.log(data);
+                $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                    if (response.data === "success")
+                        console.log('пара успешно добавена');
+                });
             }
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;
