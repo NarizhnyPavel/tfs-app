@@ -48,7 +48,7 @@ public class NotificationStringDto {
                 case 6:  week = "Суббота";
                 default: week = "Воскресенье";
             }
-            this.message = "Занятие по" + notificationEntity.getLessons().getLesson().getSubject().getName() +
+            this.message = "Занятие по " + notificationEntity.getLessons().getLesson().getSubject().getName() +
                     " перенесено на " + pos + " " + week + " в " + time;
         }
 
