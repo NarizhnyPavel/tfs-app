@@ -47,7 +47,7 @@ public class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (fileName.compareTo("connectionError") == 0){
+        if (fileName.compareTo("connectionError") != 0){
             File file = new File(fileName);
             XSSFWorkbook workbook = ExcelReader.getInstance().readWorkbook(fileName);
             professors = ExcelReader.getInstance().getProfessors(workbook);

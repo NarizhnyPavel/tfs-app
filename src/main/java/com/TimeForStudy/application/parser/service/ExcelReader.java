@@ -43,7 +43,7 @@ public class ExcelReader {
         rowIter.next();
         while (rowIter.hasNext()) {
             XSSFRow row = (XSSFRow) rowIter.next();
-            if (!row.getCell(0).getStringCellValue().isEmpty())
+            if (row.getCell(0) != null && !row.getCell(0).getStringCellValue().isEmpty())
                 if (!String.valueOf(row.getCell(1).getNumericCellValue()).isEmpty())
                     professors.add(new AddUserDto(String.valueOf(row.getCell(1).getNumericCellValue()), row.getCell(0).getStringCellValue(), (byte) 2));
         }
@@ -59,7 +59,7 @@ public class ExcelReader {
         try {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
-                if (!row.getCell(0).getStringCellValue().isEmpty())
+                if (row.getCell(0) != null && !row.getCell(0).getStringCellValue().isEmpty())
                     subjects.add(new AddSubjectDto(row.getCell(0).getStringCellValue(),row.getCell(1).getStringCellValue()));
             }
         } catch (Exception e){
@@ -76,7 +76,7 @@ public class ExcelReader {
         try {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
-                if ((row.getCell(0).getNumericCellValue() != 0))
+                if (row.getCell(0) != null && (row.getCell(0).getNumericCellValue() != 0))
                     rooms.add(new AddClassroomDto((int) row.getCell(0).getNumericCellValue()));
             }
         } catch (Exception e){
@@ -93,7 +93,7 @@ public class ExcelReader {
         try {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
-                if ((row.getCell(0).getStringCellValue().isEmpty()))
+                if (row.getCell(0) != null && !(row.getCell(0).getStringCellValue().isEmpty()))
                     groups.add(new AddGroupDto(row.getCell(0).getStringCellValue()));
             }
         } catch (Exception e){

@@ -760,8 +760,8 @@ app.directive('addLessonForm', function () {
                                     }
                                     position.errmessage = message;
                                 } else {
-                                    $scope.messageInfo = "";
-                                    $scope.messageShow = false;
+                                    $scope.messageInfo = "позиции корректны для добавления!";
+                                    $scope.messageShow = true;
                                     document.querySelector('#addLesBut').disabled = false;
                                 }
                             }
@@ -881,7 +881,6 @@ app.directive('addLessonForm', function () {
                     selectedClassroom = ui.item.id;
                 }
             });
-
             $('#subject').autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/subjects', request.term, config).then(function (response2) {
@@ -1490,19 +1489,25 @@ app.directive('parser', function () {
         controller: function ($scope, $window, $http) {
             $scope.buttonPatserLabel = "";
             $scope.studentsTableShow = true;
-            $scope.messageParserShow = false;
             $scope.buttonParserLabel = "Отправить";
+            $scope.messageParserShow = false;
             $scope.messageParser = "";
             $scope.sendToParse = function () {
-                $http.post(serverUrl + "/parser/url", {
-                        url: document.querySelector('#parserUrl').value
-                    }
+                document.querySelector('#parserButtonId').disable = true;
+                $scope.messageParserShow = true;
+                $scope.messageParser = "Обработка...";
+                $http.post(serverUrl + "/parser/url", document.querySelector('#parserUrl').value
                     , {headers: {'Accept': 'text/plain'}}).then(function (response) {
-                    console.log(response,data);
+                    console.log(response.data);
+                    if (response.data === "Успешно") {
+                        $scope.messageParserShow = true;
+                        $scope.messageParser = "Успешно!";
+                    }
                 });
             };
             $.mask.definitions['a'] = false;
-            $("#parserUrl").mask("https://yadi.sk/d/?***************");
+            $.mask.definitions['+']='[A-Za-z0-9_/]';
+            $("#parserUrl").mask("https://yadi.sk/?++++++++++++++++");
             document.querySelector('#parserDivId').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             document.querySelector('#parserButtonId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
         },
