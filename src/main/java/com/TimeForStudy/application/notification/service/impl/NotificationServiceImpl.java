@@ -1,20 +1,31 @@
 package com.TimeForStudy.application.notification.service.impl;
 
+import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
 import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lesson.domain.LessonRepository;
 import com.TimeForStudy.application.lesson.model.LessonDto;
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
+import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import com.TimeForStudy.application.notification.domain.NotificationRepository;
 import com.TimeForStudy.application.notification.model.AddNotificationDto;
 import com.TimeForStudy.application.notification.model.NotificationDto;
+import com.TimeForStudy.application.notification.model.NotificationStringDto;
 import com.TimeForStudy.application.notification.service.NotificationService;
+import com.TimeForStudy.application.university.domain.UniversityEntity;
+import com.TimeForStudy.application.university.domain.UniversityRepository;
+import com.TimeForStudy.application.user.domain.UserEntity;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.UserDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,9 +49,19 @@ public class NotificationServiceImpl implements NotificationService {
     private final LessonRepository lessonRepository;
 
     /**
+     * {@link LessonGridRepository}
+     */
+    private final LessonGridRepository lessonGridRepository;
+
+    /**
      * {@link UserRepository}
      */
     private final UserRepository userRepository;
+
+    /**
+     * {@link UniversityRepository}
+     */
+    private final UniversityRepository universityRepository;
 
 
     /**
@@ -50,10 +71,26 @@ public class NotificationServiceImpl implements NotificationService {
      * @return уведомление.
      */
     @Override
-    public NotificationDto getNotificationById(long id) {
-        NotificationEntity notificationEntity = notificationRepository.findById(id)
-                .orElseThrow(ErrorDescription.NOTIFICATION_NOT_FOUNT::exception);
-        return NotificationDto.of(notificationEntity);
+    public List<NotificationStringDto> getNotificationById(long id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
+        UniversityEntity universityEntity = universityRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        List<NotificationStringDto> notificationStringDtos = new ArrayList<>();
+        List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
+                findAllByUniversity(universityEntity);
+
+        for (GroupEntity groupEntity : userEntity.getGroups()) {
+            for (LessonEntity lessonEntity : groupEntity.getLessons()) {
+                for (LessonPositionEntity lessonPositionEntity : lessonEntity.getLessonPositions()) {
+                    for (NotificationEntity notificationEntity : lessonPositionEntity.getNotificationEntities()) {
+                        notificationStringDtos.add(new NotificationStringDto(notificationEntity, lessonGridEntities));
+                    }
+                }
+            }
+        }
+
+        return notificationStringDtos;
     }
 
     /**
@@ -87,8 +124,14 @@ public class NotificationServiceImpl implements NotificationService {
      * @param id идентификатор.
      */
     @Override
-    public void deleteNotification(long id) {
-        notificationRepository.deleteById(id);
+    public void deleteNotification(LessonPositionEntity id) {
+
+        LocalDate localDate = LocalDate.now();
+        for( NotificationEntity notificationEntity: id.getNotificationEntities()) {
+            if (localDate.compareTo(notificationEntity.getDate())>0) {
+                notificationRepository.delete(notificationEntity);
+            }
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import com.TimeForStudy.application.notification.domain.NotificationRepository;
+import com.TimeForStudy.application.notification.service.NotificationService;
 import com.TimeForStudy.application.positioncancel.domain.PositionCancelEntity;
 import com.TimeForStudy.application.positioncancel.domain.PositionCancelRepository;
 import com.TimeForStudy.application.semester.domain.SemesterEntity;
@@ -124,6 +125,11 @@ public class LessonServiceImpl implements LessonService {
     private final NotificationRepository notificationRepository;
 
     /**
+     * {@link NotificationService}
+     */
+    private final NotificationService notificationService;
+
+    /**
      * Возвращение занятия по идентификатору.
      *
      * @param id идентификатор.
@@ -187,14 +193,17 @@ public class LessonServiceImpl implements LessonService {
         localDate = localDate.plusDays(1);
         PositionCancelEntity positionCancelEntity = new PositionCancelEntity(localDate, lessonStopDto.getWeeks(), lessonPosition);
         positionCancelRepository.save(positionCancelEntity);
-
+        //формирование уведомления
         NotificationEntity notificationEntity = new NotificationEntity();
         notificationEntity.setType(false);
-        notificationEntity.setLessonPosition(lessonPosition.getPosition()+""+lessonPosition.getDays()+""+lessonPosition.getNumber());
+        notificationEntity.setLessonPosition(lessonStopDto.getWeeks() +
+                "" + lessonPosition.getDays() +
+                "" + lessonPosition.getNumber()
+        );
         notificationEntity.setSender(lessonPosition.getLesson().getUser());
         notificationEntity.setLessons(lessonPosition);
         notificationEntity.setDate(localDate);
-
+        notificationRepository.save(notificationEntity);
         return "success";
     }
 
@@ -525,6 +534,28 @@ public class LessonServiceImpl implements LessonService {
         lessonPositionEntity.setDays(Integer.parseInt(updatePosition.getNewPositionNum().substring(1,2)));
         lessonPositionEntity.setNumber(Integer.parseInt(updatePosition.getNewPositionNum().substring(2,3)));
         lessonPositionRepository.save(lessonPositionEntity);
+
+        NotificationEntity notificationEntity = new NotificationEntity();
+        notificationEntity.setType(true);
+        notificationEntity.setLessonPosition(updatePosition.getNewPositionNum());
+        notificationEntity.setSender(lessonPositionEntity.getLesson().getUser());
+        notificationEntity.setLessons(lessonPositionEntity);
+
+        // Текущий семестр
+        SemesterEntity semesterEntity = semesterRepository.findById((long) 1)
+                .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
+        DateDto dateDto = dateService.getWeekNow(semesterEntity.getId());
+        // рассчёт даты выбранного дня
+        LocalDate localDateRequest = dateService.getDayRequest(
+                semesterEntity.getUniversity().getWeeks(),
+                dateDto.getNumberWeek(),
+                dateDto.getNumberDay(),
+                Integer.parseInt(updatePosition.getNewPositionNum().substring(0,1)),
+                Integer.parseInt(updatePosition.getNewPositionNum().substring(1,2))
+        );
+        localDateRequest = localDateRequest.plusDays(1);
+        notificationEntity.setDate(localDateRequest);
+        notificationRepository.save(notificationEntity);
         return "success";
     }
 
@@ -630,6 +661,7 @@ public class LessonServiceImpl implements LessonService {
                         break;
                     }
                 }
+                notificationService.deleteNotification(less);
                 infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
@@ -714,6 +746,7 @@ public class LessonServiceImpl implements LessonService {
                         break;
                     }
                 }
+                notificationService.deleteNotification(less);
                 infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
@@ -803,6 +836,7 @@ public class LessonServiceImpl implements LessonService {
                         break;
                     }
                 }
+                notificationService.deleteNotification(less);
                 infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());
@@ -889,6 +923,7 @@ public class LessonServiceImpl implements LessonService {
                         break;
                     }
                 }
+                notificationService.deleteNotification(less);
                 infoLessonDto.setStatus(flagW);
                 infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
                 infoLessonDto.setProfessor(lessonEntity.getUser().getName());

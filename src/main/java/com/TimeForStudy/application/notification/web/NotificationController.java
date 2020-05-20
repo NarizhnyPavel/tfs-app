@@ -2,6 +2,7 @@ package com.TimeForStudy.application.notification.web;
 
 import com.TimeForStudy.application.notification.model.AddNotificationDto;
 import com.TimeForStudy.application.notification.model.NotificationDto;
+import com.TimeForStudy.application.notification.model.NotificationStringDto;
 import com.TimeForStudy.application.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,13 @@ public class NotificationController {
     }
 
     /**
-     * Возвращает уведомление по идентификатору.
+     * Возвращает уведомление по идентификатору пользователя.
      *
      * @param id идентификатор.
      * @return уведомление
      */
     @GetMapping(value = "/notification/{id}")
-    public NotificationDto getNotification(@PathVariable long id) {
+    public List<NotificationStringDto> getNotification(@PathVariable long id) {
         return notificationService.getNotificationById(id);
     }
 
@@ -53,24 +54,6 @@ public class NotificationController {
         notificationService.saveNotification(addNotificationDto);
     }
 
-    /**
-     * Изменяет данное уведомление.
-     *
-     * @param id идентификатор.
-     * @param addNotificationDto уведомление.
-     */
-    @PutMapping(value = "/notification/update/{id}")
-    public void updateNotification(@PathVariable long id, @RequestBody AddNotificationDto addNotificationDto) {
-        notificationService.updateNotification(id, addNotificationDto);
-    }
 
-    /**
-     * Удаляет уведомление.
-     *
-     * @param id идентификатор.
-     */
-    @DeleteMapping(value = "/notification/delete/{id}")
-    public void deleteNotification(@PathVariable long id) {
-        notificationService.deleteNotification(id);
+
     }
-}

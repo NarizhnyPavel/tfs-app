@@ -4,6 +4,7 @@ import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.lessonposition.model.AddLessonPositionDto;
+import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import com.TimeForStudy.application.university.model.UniversityDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +13,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Сущность позиции занятия
@@ -56,6 +58,12 @@ public class LessonPositionEntity {
      */
     @Column(name = "days")
     private int days;
+
+    /**
+     * Список позиций в сетке
+     */
+    @OneToMany(mappedBy = "lessons", fetch = FetchType.LAZY)
+    private List<NotificationEntity> notificationEntities;
 
     /**
      * Кабинет, в котором проходит занятие

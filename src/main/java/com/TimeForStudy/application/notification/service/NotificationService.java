@@ -1,7 +1,9 @@
 package com.TimeForStudy.application.notification.service;
 
+import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.notification.model.AddNotificationDto;
 import com.TimeForStudy.application.notification.model.NotificationDto;
+import com.TimeForStudy.application.notification.model.NotificationStringDto;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface NotificationService {
      * @param id идентификатор.
      * @return уведомление.
      */
-    NotificationDto getNotificationById(long id);
+    List<NotificationStringDto> getNotificationById(long id);
 
     /**
      * Сохранение уведомления.
@@ -40,7 +42,7 @@ public interface NotificationService {
      *
      * @param id идентификатор.
      */
-    void deleteNotification(long id);
+    void deleteNotification(LessonPositionEntity id);
 
     /**
      * Возвращение всех существующих уведомлений.
