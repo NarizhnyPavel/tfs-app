@@ -861,6 +861,12 @@ app.directive('updateLessonForm', function () {
                 number: 1
             }];
             $scope.checkPositions = function () {
+                var pos_num = document.getElementById("week").value * 100 +
+                    document.getElementById("workday").value * 10+
+                    + document.getElementById("time").value;
+                $scope.messageShow = false;
+                if (pos_num < 100)
+                    pos_num = "0" + pos_num;
                 if (checkFields() && $window.localStorage.getItem("lessonToUpdateId") > 0) {
                     //TODO запрос данных для позиции по
                     // $window.localStorage.getItem("lessonToUpdateId")
@@ -868,14 +874,14 @@ app.directive('updateLessonForm', function () {
                         // position: $scope.positions,
                         position: [{
                             // num: $window.localStorage.getItem("lessonToUpdateId"),
-                            num: "164",
+                            num: pos_num,
                             text: ""
                         }],
                         groups:  $scope.groups2,
                         // subject: selectedSubject,
                         subject: 1,
                         // classroom: selectedClassroom,
-                        classroom: 5,
+                        classroom: newClassroomId,
                         // professor: selectedTeacher,
                         professor: 171,
                         // lessonType: document.getElementById("type").value
@@ -909,8 +915,11 @@ app.directive('updateLessonForm', function () {
                                     }
                                     $scope.messageInfo = message;
                                     $scope.messageShow = true;
-                                } else
+                                } else {
+                                    $scope.messageInfo = "корректно для переноса";
+                                    $scope.messageShow = true;
                                     document.querySelector('#addLesBut').disabled = false;
+                                }
                             });
                         }
             }
@@ -979,7 +988,7 @@ app.directive('updateLessonForm', function () {
                 minLength: 1,
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
-                    selectedClassroom = ui.item.id;
+                    newClassroomId = ui.item.id;
                 }
             });
 
