@@ -1497,11 +1497,24 @@ app.directive('parser', function () {
                 $scope.messageParserShow = true;
                 $scope.messageParser = "Обработка...";
                 $http.post(serverUrl + "/parser/url", document.querySelector('#parserUrl').value
-                    , {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                    , config).then(function (response) {
                     console.log(response.data);
-                    if (response.data === "Успешно") {
+                    if (response.data.status === "Успешно") {
                         $scope.messageParserShow = true;
-                        $scope.messageParser = "Успешно!";
+                        let message = "";
+                        // $scope.messageParser = "Успешно!";
+                        if (response.data.profnum !== 0)
+                            message += "Добавлено " + response.data.profnum + " преподавателей<br>";
+                        if (response.data.subjectnum !== 0)
+                            message += "Добавлено " + response.data.subjectnum + " предметов\n";
+                        if (response.data.roomnum !== 0)
+                            response.data.message += "Добавлено " + response.data.roomnum + " аудиторий\n";
+                        if (response.data.groupnum !== 0)
+                            message += "Добавлено " + response.data.groupnum + " группа\n";
+                        $scope.messageParser = message;
+                    } else{
+                        $scope.messageParserShow = true;
+                        $scope.messageParser = response.data.status;
                     }
                 });
             };

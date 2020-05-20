@@ -25,8 +25,6 @@ public class FileDownloader{
     public boolean tryToConnect() {
         try {
             url = new URL("https://getfile.dokpub.com/yandex/get/" + address);
-//            https://getfile.dokpub.com/yandex/get/https://yadi.sk/i/4UTyPtO_GyOu
-//            https://getfile.dokpub.com/yandex/get/https://yadi.sk/i/4UTyPtO_GyOukQ
             readableByteChannel = Channels.newChannel(url.openStream());
         } catch (IOException e) {
             e.printStackTrace();
