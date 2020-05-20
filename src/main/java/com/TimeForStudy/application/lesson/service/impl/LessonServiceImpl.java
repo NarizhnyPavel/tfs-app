@@ -22,6 +22,7 @@ import com.TimeForStudy.application.lessontype.domain.LessonTypeEntity;
 import com.TimeForStudy.application.lessontype.domain.LessonTypeRepository;
 import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
 import com.TimeForStudy.application.notification.domain.NotificationEntity;
+import com.TimeForStudy.application.notification.domain.NotificationRepository;
 import com.TimeForStudy.application.positioncancel.domain.PositionCancelEntity;
 import com.TimeForStudy.application.positioncancel.domain.PositionCancelRepository;
 import com.TimeForStudy.application.semester.domain.SemesterEntity;
@@ -116,6 +117,11 @@ public class LessonServiceImpl implements LessonService {
      * {@link DateService}
      */
     private final DateService dateService;
+
+    /**
+     * {@link NotificationRepository}
+     */
+    private final NotificationRepository notificationRepository;
 
     /**
      * Возвращение занятия по идентификатору.
@@ -532,9 +538,11 @@ public class LessonServiceImpl implements LessonService {
         LessonPositionEntity lessonPositionEntity = lessonPositionRepository.findById(id)
                 .orElseThrow(ErrorDescription.LESSON_POSITION_NOT_FOUNT::exception);
         if (lessonPositionEntity.getLesson().getLessonPositions().size()==1) {
+            lessonPositionRepository.deleteById(id);
             lessonRepository.deleteById(lessonPositionEntity.getLesson().getId());
+        } else {
+            lessonPositionRepository.deleteById(id);
         }
-        lessonPositionRepository.deleteById(id);
         return "success";
     }
 
