@@ -19,7 +19,7 @@ app.controller('control', function ($scope, $http, $window) {
     $scope.profPages = false;
     if ($scope.user.role === "1") {
         $scope.dispetcherPages = true;
-        document.querySelector("#lesson").style.display = "block";
+        document.querySelector("#lessonAdd").style.display = "block";
     }
     if ($scope.user.role === "3" || $scope.user.role === "4" || $scope.user.role === "2"){
         document.querySelector("#timetable").style.display = "block";
@@ -50,10 +50,22 @@ app.controller('control', function ($scope, $http, $window) {
             someProp: $scope.entityToViewInTimeTable
         });
     });
+    $scope.$on('myCustomEvent_update', function (event, data) {
+        $scope.entityToViewInTimeTable.id = data.someProp.id;
+        $scope.$broadcast('myCustomEvent2_update', {
+            someProp: (data.type === "search" ? data.someProp : data.someProp),
+            type: data.type
+        });
+    });
     $scope.$on('groupsSettEvent', function (event, data) {
         $scope.$broadcast('groupsSettEvent2', {
             prop: data.someProp,
             comm: data.comment
+        });
+    });
+    $scope.$on('sendToUpdateForm', function (event, data) {
+        $scope.$broadcast('sendToUpdateForm2', {
+            prop: data.lessonId
         });
     });
     $scope.lessonToUpdate;
@@ -138,7 +150,6 @@ app.directive('searchBlockMain', function () {
                         request: request.term,
                         type: filter
                     };
-                    console.log(request.term);
                     $http.post(serverUrl + '/search', data, config).then(function (response2) {
                         response(response2.data);
                     });
@@ -166,6 +177,7 @@ app.directive('searchBlockDispatcher', function () {
     return {
         controller: function ($scope, $http) {
             $scope.searchShow = false;
+            $scope.upfatingLessonId =-1;
             angular.element(document.querySelector('#profUpdate')).css('backgroundColor', '#adadad');
             angular.element(document.querySelector('#groupUpdate')).css('backgroundColor', '#adadad');
             $scope.filterProf = function () {
@@ -206,7 +218,6 @@ app.directive('searchBlockDispatcher', function () {
                         request: request.term,
                         type: filter
                     };
-                    console.log(request.term);
                     $http.post(serverUrl + '/search', data, config).then(function (response2) {
                         response(response2.data);
                     });
@@ -217,10 +228,17 @@ app.directive('searchBlockDispatcher', function () {
                     $scope.entityToViewInTimeTable.type = ui.item.type;
                 },
                 close: function refresh(event, ui) {
-                    $scope.$emit('myCustomEvent', {
-                        someProp: $scope.entityToViewInTimeTable
-                    });
-
+                    if (document.querySelector('#lessonUpdate').style.display === 'block') {
+                        $scope.$emit('myCustomEvent_update', {
+                            someProp: $scope.entityToViewInTimeTable,
+                            type: "search"
+                        });
+                        $scope.updatingLessonId = $scope.entityToViewInTimeTable;
+                    } else{
+                        $scope.$emit('myCustomEvent', {
+                            someProp: $scope.entityToViewInTimeTable
+                        });
+                    }
                 }
             });
         }
@@ -354,6 +372,7 @@ app.directive('gridSearch', function () {
                 $window.localStorage.setItem("lessonToViewStatus", -1);
                 $window.localStorage.setItem("lessonToViewId", -1);
                 $window.localStorage.setItem("lessonToUpdateId", lesson.id);
+                $window.localStorage.setItem("lessonToUpdateProfId", lesson.professorId);
                 $window.localStorage.setItem("lessonToViewWeek", -1);
                 $window.localStorage.setItem("lessonToViewProfId", -1);
             }
@@ -376,7 +395,100 @@ app.directive('gridSearch', function () {
         }
         , restrict: "E"
         , require: "^searchBlock"
-        , templateUrl: "../templates/timetable.html",
+        , templateUrl: "../templates/timetable2.html",
+        transclude: true
+    }
+});
+
+app.directive('gridUpdate', function () {
+    return {
+        scope:{
+        },
+        controller: function ($scope, $attrs, $http, $window) {
+            $scope.timetableShow = false;
+            $scope.tableId = "table3";
+            $scope.updatingLessonId = -1;
+            $scope.updatingLessonId_new = -1;
+            $scope.entityFromSearch = {
+                id: "-1", type: "0"
+                , weekNum: 1
+            };
+            $scope.minWeekNum = 1;
+            $scope.days2 = [];
+            $http.get(serverUrl + '/university/weeks', config).then(function (response) {
+                $scope.maxWeekNum = response.data;
+            });
+            $scope.week = 1;
+            function changeWeek(){
+                $scope.week = $scope.entityFromSearch.weekNum;
+            }
+            $scope.$watch('entityFromSearch.weekNum', changeWeek());
+            $scope.inc_week = function () {
+                if ($scope.entityFromSearch.weekNum < $scope.maxWeekNum) {
+                    $scope.week++;
+                    $scope.entityFromSearch.weekNum++;
+
+                } else{
+                    $scope.week = $scope.minWeekNum;
+                    $scope.entityFromSearch.weekNum = $scope.minWeekNum;
+                }
+                refresh_timetable();
+            }
+            $scope.dec_week = function () {
+                if ($scope.entityFromSearch.weekNum > $scope.minWeekNum) {
+                    $scope.week--;
+                    $scope.entityFromSearch.weekNum--;
+                } else{
+                    $scope.week = $scope.maxWeekNum;
+                    $scope.entityFromSearch.weekNum = $scope.maxWeekNum;
+                }
+                refresh_timetable();
+            }
+            $scope.show = function (lesson) {
+                $scope.lessonToView = lesson;
+                $scope.statusShow = false;
+                $scope.groupShow = true;
+                $scope.profShow = true;
+                $scope.infoShow = true;
+                $window.localStorage.setItem("lessonToViewProfId", -1);
+                $window.localStorage.setItem("lessonToViewStatus", -1);
+                $window.localStorage.setItem("lessonToViewId", -1);
+                $window.localStorage.setItem("lessonToUpdateId", lesson.id);
+                $window.localStorage.setItem("lessonToUpdateProfId", lesson.professorId);
+                $window.localStorage.setItem("lessonToViewWeek", -1);
+                $window.localStorage.setItem("lessonToViewProfId", -1);
+            }
+            function refresh_timetable() {
+                $http.post(serverUrl + '/lesson/by', $scope.entityFromSearch, config).then(function (response) {
+                    if(response.data.length !== 0) {
+                        $scope.timetableShow = true;
+                    }
+                    $scope.days2 = response.data;
+                });
+            }
+            var savedId = -1;
+            $scope.$on('myCustomEvent2_update', function (event, data) {
+                if (data.type === "search") {
+                    savedId = data.someProp.id;
+                    $scope.entityFromSearch = data.someProp;
+                }
+                if (data.type === "update") {
+                    $scope.entityFromSearch.id = savedId;
+                    $scope.updatingLessonId = data.someProp;
+                }
+                if (data.type === "new_position") {
+                    $scope.entityFromSearch.id = savedId;
+                    $scope.updatingLessonId = data.someProp;
+                }
+                $scope.week = 1;
+                $scope.entityFromSearch.weekNum = 1;
+                refresh_timetable();
+                document.querySelector('#table3').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            });
+        }
+        , restrict: "E"
+        , require: "^searchBlock"
+        , templateUrl: "../templates/timetable2.html",
         transclude: true
     }
 });
@@ -410,13 +522,27 @@ app.directive('infoBox', function () {
                 else
                     return false;
             }
+            var updatingLessonId = -1;
             $scope.checkLessToUpdate = function () {
-                if (updateShow && ''+$window.localStorage.getItem("userId") === ''+$window.localStorage.getItem("lessonToViewProfId")){
-                    var lessonId = $window.localStorage.getItem("lessonToUpdateId");
-                    $scope.$emit('senToUpdateForm', {
-                        someProp: $scope.entityToViewInTimeTable
-                    });
+                if (updateShow && ''+$window.localStorage.getItem("userId") === ''+ $window.localStorage.getItem("lessonToUpdateProfId")
+                && (document.querySelector('#lessonUpdate').style.display === 'block') &&
+                    $window.localStorage.getItem("lessonToUpdateId") !== updatingLessonId &&
+                    updatingLessonId === -1){
+                    return true;
+                } else {
+                    return false;
                 }
+            }
+            $scope.updateLesson = function () {
+                $scope.$emit('sendToUpdateForm', {
+                    lessonId: $window.localStorage.getItem("lessonToUpdateId")
+                });
+                updatingLessonId = $window.localStorage.getItem("lessonToUpdateId")
+                $scope.$emit('myCustomEvent_update', {
+                    someProp: $window.localStorage.getItem("lessonToUpdateId"),
+                    type: "update"
+                });
+                $scope.infoShow = false;
             }
         }
         , restrict: "E"
@@ -704,89 +830,80 @@ app.directive('updateLessonForm', function () {
     return{
         scope: {},
         controller: function ($scope, $http, $window) {
-            $scope.groups2 = [];
-            $scope.positions = [];
-            $scope.showDispFields = true;
-            if ($window.localStorage.getItem("userRole") === '2'){
-                $scope.showDispFields = false;
-                angular.element(document.querySelector('#classroom')).css('width', "50px");
-            }
+            // $scope.groups2 = [];
+            // $scope.positions = [];
+            // $scope.showDispFields = true;
+            $scope.messageShow = false;
+            $scope.messageInfo = "";
+            let newClassroomId;
+            // if ($window.localStorage.getItem("userRole") === '2'){
+            //     $scope.showDispFields = false;
+            //     angular.element(document.querySelector('#classroom')).css('width', "50px");
+            // }
+
             function checkFields() {
-                if($scope.positions.length === 0)
-                    angular.element(document.querySelector('#pos-table')).css('border', "2px solid red");
-                else
-                    angular.element(document.querySelector('#pos-table')).css('border', "none");
-                if (selectedTeacher === -1){
-                    angular.element(document.querySelector('#teacher')).css('border-color', "red");}
-                else
-                    angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
-                if (selectedClassroom === -1)
+                if (document.querySelector('#classroom').value === "")
                     angular.element(document.querySelector('#classroom')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
-                if (selectedSubject === -1)
-                    angular.element(document.querySelector('#subject')).css('border-color', "red");
+                if (''+document.querySelector('#week').value === "")
+                    angular.element(document.querySelector('#weer')).css('border-color', "red");
                 else
-                    angular.element(document.querySelector('#subject')).css('border', "2px solid #cecece");
-                if ($scope.groups2.length === 0)
-                    angular.element(document.querySelector('#groups')).css('border-color', "red");
-                else
-                    angular.element(document.querySelector('#groups')).css('border', "2px solid #cecece");
-                if (selectedTeacher === -1 || selectedClassroom === -1 || selectedSubject === -1 || $scope.groups2.length === 0)
+                    angular.element(document.querySelector('#weer')).css('border', "2px solid #cecece");
+                if (document.querySelector('#classroom').value === "")
                     return false;
                 else
                     return true;
             }
-            function checkFieldsPos() {
-                if (document.getElementById("week").value === "") {
-                    angular.element(document.querySelector('#week')).css('border-color', "red");
-                    return false;
-                } else{
-                    angular.element(document.querySelector('#week')).css('border', "2px solid #cecece");
-                    return true;
-                }
-            }
+            $scope.groups2 = [{
+                id: 1,
+                label: "7371",
+                number: 1
+            }];
             $scope.checkPositions = function () {
-                if (checkFields() && checkFieldsPos()) {
+                var pos_num = document.getElementById("week").value * 100 +
+                    document.getElementById("workday").value * 10+
+                    + document.getElementById("time").value;
+                $scope.messageShow = false;
+                if (pos_num < 100)
+                    pos_num = "0" + pos_num;
+                if (checkFields() && $window.localStorage.getItem("lessonToUpdateId") > 0) {
+                    //TODO запрос данных для позиции по
+                    // $window.localStorage.getItem("lessonToUpdateId")
                     var data = {
-                        position: $scope.positions,
+                        // position: $scope.positions,
+                        position: [{
+                            // num: $window.localStorage.getItem("lessonToUpdateId"),
+                            num: pos_num,
+                            text: ""
+                        }],
                         groups:  $scope.groups2,
-                        subject: selectedSubject,
-                        classroom: selectedClassroom,
-                        professor: selectedTeacher,
-                        lessonType: document.getElementById("type").value
+                        // subject: selectedSubject,
+                        subject: 1,
+                        // classroom: selectedClassroom,
+                        classroom: newClassroomId,
+                        // professor: selectedTeacher,
+                        professor: 171,
+                        // lessonType: document.getElementById("type").value
+                        lessonType: ''+1
                     };
                     $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
-                        let answer = response.data;
-                        for (let i = 0; i < answer.length; i++) {
-                            let posIndex = $scope.positions.findIndex(pos => pos.num === answer[i].position);
-                            if (posIndex !== -1){
-                                let position = $scope.positions[posIndex];
-                                position.status = 1;
+                        let answer = response.data[0];
                                 let group = true;
-                                for (let j = 0; j < answer[i].groups.length; j++) {
+                                for (let j = 0; j < answer.groups.length; j++) {
                                     if($scope.groups2[j].number)
-                                        $scope.groups2[j].number = answer[i].groups[j].number;
-                                    if(!answer[i].groups[j].number)
+                                        $scope.groups2[j].number = answer.groups[j].number;
+                                    if(!answer.groups[j].number)
                                         group = false;
                                 }
-                                if (answer[i].professor === 0 || answer[i].classroom === 0 || !group){
-                                    position.status = 0;
+                                if (answer.professor === 0 || answer.classroom === 0 || !group){
                                     let message = "";
-                                    if (answer[i].professor === 0) {
-                                        message = message + "преподавтель уже занят \n";
-                                        angular.element(document.querySelector('#teacher')).css('border-color', "red");
-                                    } else
-                                        angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
-                                    if (answer[i].classroom === 0) {
-                                        message = message + "аудитория уже занята \n";
-                                        angular.element(document.querySelector('#classroom')).css('border-color', "red");
-                                    } else
-                                        angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
+                                    if (answer.professor === 0)
+                                        message = message + "в это время Вы уже заняты,\n";
+                                    if (answer.classroom === 0)
+                                        message = message + "аудитория уже занята,\n";
                                     if (!group){
-                                        console.log('Зашёл сюда');
                                         let errGroups = $scope.groups2.filter(group => group.number === 0);
-                                        console.log(errGroups.length);
                                         if (errGroups.length > 1)
                                             message = message + "у групп ";
                                         else
@@ -796,15 +913,16 @@ app.directive('updateLessonForm', function () {
                                         }
                                         message = message + "уже есть пары";
                                     }
-                                    position.errmessage = message;
-                                } else
+                                    $scope.messageInfo = message;
+                                    $scope.messageShow = true;
+                                } else {
+                                    $scope.messageInfo = "корректно для переноса";
+                                    $scope.messageShow = true;
                                     document.querySelector('#addLesBut').disabled = false;
-                            }
+                                }
+                            });
                         }
-                        $scope.$apply();
-                    });
-                }
-            };
+            }
             $scope.updateLesson = function(){
                 let data = {
                     classroom: selectedClassroom,
@@ -827,9 +945,6 @@ app.directive('updateLessonForm', function () {
             });
             $http.post(serverUrl + '/times', config).then(function (response2) {
                 $scope.times = response2.data;
-            });
-            $http.get(serverUrl + '/lessontypes', config).then(function (response2) {
-                $scope.types = response2.data;
             });
 
             $scope.addPosition = function(){
@@ -873,15 +988,25 @@ app.directive('updateLessonForm', function () {
                 minLength: 1,
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
-                    selectedClassroom = ui.item.id;
+                    newClassroomId = ui.item.id;
                 }
             });
 
-            $("#inputPhone").click(function(){
-                $(this).setCursorPosition(1);
-            })
+            $scope.$on('sendToUpdateForm2', function (event, data) {
+                var position;
+                $http.get(serverUrl + '/lesson/edit/' + data.prop, config).then(function (response) {
+                    position = response.data.lessonPosition;
+                    position
+                    document.querySelector('#time').value = position % 10;
+                    document.querySelector('#workday').value = ((position % 100 - 1) / 10).toFixed(0);
+                    document.querySelector('#week').value = (position / 100).toFixed(0);
+                    newClassroomId = response.data.classroomId;
+                    document.querySelector('#classroom').value = response.data.classroom;
+                });
 
-            document.querySelector('#addPosBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+
+            });
+
             document.querySelector('#checkLesBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#addLesBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
             document.querySelector('#addLesBut').disabled = true;
@@ -1047,9 +1172,9 @@ app.directive('timetableView', function($compile){
                     case "search":
                         template = '<grid-search></grid-search>';
                         break;
-                    // case "essay":
-                    //     template = '<essay></essay>';
-                    //     break;
+                    case "update":
+                        template = '<grid-update></grid-update>';
+                        break;
                 }
                 element.html(template);
                 $compile(element.contents())(scope);

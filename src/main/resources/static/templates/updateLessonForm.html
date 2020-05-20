@@ -1,15 +1,14 @@
-<div class="addLessonBlock" style="max-width: 350px">
-    <div class="groupAddBlock" style="max-width: 350px">
-        <table>
+<div class="addLessonBlock" style="width: 300px; min-height: 415px">
+    <div class="groupAddBlock" >
+        <table style="min-width: 300px; height: 415px">
             <tr class="groupAddBlock-field" >
                 <td><p style="text-align: center">Аудитория:</p></td>
-                <td><input type="text" id="classroom" spellcheck="false" style="width: 400px"/></td>
+                <td><input type="text" id="classroom" spellcheck="false" style="width: 40px"/></td>
             </tr>
-            <tr><td colspan="2"><p>Позиции пары:</p></td></tr>
             <tr class="groupAddBlock-field">
                 <td><p>Номер недели:</p></td>
                 <td>
-                    <input type="number" id="week" min="0" max="{{weeks}}" ng-model="week" value="1" step="1">
+                    <input type="number" style="width: 30px" id="week" min="0" max="{{weeks}}" ng-model="week" value="1" step="1">
                     <br><span style="font-size: 11pt">0-все недели</span>
                 </td>
             </tr>
@@ -29,21 +28,16 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr ng-if="messageShow">
                 <td colspan="2">
-                    <button class="buttonClass" id="addPosBut" ng-click="addPosition()">Добавить позицию</button>
+                    <p style="width: 300px">{{messageInfo}}</p>
                 </td>
             </tr>
             <tr>
-                <td rowspan="2" style="width: 200px" id="pos-table">
-                    <position-box></position-box>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
+                <td colspan="2" style="padding-top: 20px">
                     <button id="checkLesBut" class="buttonClass" style="margin-left: 10px; margin-bottom: 10px; padding: 4px" ng-click="checkPositions()">Проверить<br> корректность</button>
                     <br>
-                    <button id="addLesBut" class="buttonClass" style="margin-left: 10px" ng-click="updateLesson()">Сохранить</button>
+                    <button id="addLesBut" class="buttonClass" style="margin-left: 10px" ng-click="updateLesson()">Перенести</button>
                 </td>
             </tr>
         </table>
