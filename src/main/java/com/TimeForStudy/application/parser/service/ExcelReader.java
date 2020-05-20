@@ -55,6 +55,7 @@ public class ExcelReader {
         ArrayList<AddSubjectDto> subjects = new ArrayList<>();
         Iterator rowIter = sheet.rowIterator();
         rowIter.next();
+        rowIter.next();
         try {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
