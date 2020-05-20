@@ -2,8 +2,8 @@
     border-color: black;
     top: 0;
     text-align: center;
-    height: 400px;
-    width: 710px;
+    min-height: 400px;
+    width: 700px;
     border-radius: 25px;
     bottom: 0;
     left: 0;

@@ -3,6 +3,7 @@
         <button class="popup-close" ng-click="closeInfo()">Закрыть</button>
         <button ng-if="checkLess()" class="popup-cancel" ng-click="cancelLesson()">Отменить</button>
         <button ng-if="checkLessToUpdate()" class="popup-cancel" ng-click="updateLesson()">Перенести</button>
+        <button ng-if="checkLessToDelete()" class="popup-cancel" ng-click="deleteLesson()">Удалить</button>
         <span>      <br>Дисциплина: {{lessonToView.subject}} <br> </span>
         <span> Тип: {{lessonToView.lessonType}} <br> </span>
         <span ng-show="groupShow">           Группа: {{lessonToView.group}} <br> </span>

@@ -47,7 +47,7 @@ app.controller('control', function ($scope, $http, $window) {
     $scope.$on('myCustomEvent', function (event, data) {
         $scope.entityToViewInTimeTable.id = data.someProp.id;
         $scope.$broadcast('myCustomEvent2', {
-            someProp: $scope.entityToViewInTimeTable
+            someProp: data.someProp
         });
     });
     $scope.$on('myCustomEvent_update', function (event, data) {
@@ -66,6 +66,11 @@ app.controller('control', function ($scope, $http, $window) {
     $scope.$on('sendToUpdateForm', function (event, data) {
         $scope.$broadcast('sendToUpdateForm2', {
             prop: data.lessonId
+        });
+    });
+    $scope.$on('stopLessonUpdateGrid', function (event, data) {
+        $scope.$broadcast('stopLessonUpdateGrid_timetable', {
+            prop: -1
         });
     });
     $scope.lessonToUpdate;
@@ -301,7 +306,6 @@ app.directive('gridMain', function () {
                 $scope.groupShow = true;
                 $scope.profShow = true;
                 $scope.infoShow = true;
-                // $scope.$apply();
             }
             function refresh_timetable() {
                 $http.post(serverUrl + '/lesson/info', data, config).then(function (response) {
@@ -310,6 +314,12 @@ app.directive('gridMain', function () {
                     $scope.days2 = response.data;
                 });
             }
+            $scope.$on('stopLessonUpdateGrid_timetable', function (event, data) {
+                $scope.week = 1;
+                $scope.entityFromSearch.weekNum = 1;
+                refresh_timetable();
+                document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
+            });
         }
         , restrict: "E"
         , templateUrl: "../templates/timetable.html",
@@ -370,7 +380,8 @@ app.directive('gridSearch', function () {
                 $scope.infoShow = true;
                 $window.localStorage.setItem("lessonToViewProfId", -1);
                 $window.localStorage.setItem("lessonToViewStatus", -1);
-                $window.localStorage.setItem("lessonToViewId", -1);
+                $window.localStorage.setItem("lessonToViewId", lesson.id);
+                console.log('сейчас отразилась пара с positionId = ' + lesson.id);
                 $window.localStorage.setItem("lessonToUpdateId", lesson.id);
                 $window.localStorage.setItem("lessonToUpdateProfId", lesson.professorId);
                 $window.localStorage.setItem("lessonToViewWeek", -1);
@@ -382,11 +393,17 @@ app.directive('gridSearch', function () {
                         $scope.timetableShow = true;
                     }
                     $scope.days2 = response.data;
-                    // $scope.$apply();
+
                 });
             }
+            var savedId = -1;
             $scope.$on('myCustomEvent2', function (event, data) {
-                $scope.entityFromSearch = data.someProp;
+                if (data.someProp !== -1) {
+                    $scope.entityFromSearch = data.someProp;
+                    savedId = data.someProp.id;
+                    console.log('я сохранил id ', savedId);
+                } else
+                    $scope.entityFromSearch.id = savedId;
                 $scope.week = 1;
                 $scope.entityFromSearch.weekNum = 1;
                 refresh_timetable();
@@ -475,8 +492,7 @@ app.directive('gridUpdate', function () {
                 if (data.type === "update") {
                     $scope.entityFromSearch.id = savedId;
                     $scope.updatingLessonId = data.someProp;
-                }
-                if (data.type === "new_position") {
+                } else{
                     $scope.entityFromSearch.id = savedId;
                     $scope.updatingLessonId = data.someProp;
                 }
@@ -498,6 +514,7 @@ app.directive('infoBox', function () {
         controller: function ($scope, $window, $http) {
             var cancelShow = (($window.localStorage.getItem("userRole") === '2'));
             var updateShow = (($window.localStorage.getItem("userRole") === '2'));
+            var deleteShow = (($window.localStorage.getItem("userRole") === '1'));
             $scope.closeInfo = function () {
                 $scope.infoShow = false;
             }
@@ -510,10 +527,13 @@ app.directive('infoBox', function () {
                     $http.post(serverUrl + '/lesson/stop', data , config).then(function (response) {
                         document.querySelector('.timetableStyle').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
                         $scope.days2 = response.data;
-                        $scope.$apply();
+
                     });
                 }
                 $scope.infoShow = false;
+                $scope.$emit('myCustomEvent', {
+                    someProp: -1
+                });
             }
             $scope.checkLess = function () {
                 if ($window.localStorage.getItem("lessonToViewStatus") === "true" && $window.localStorage.getItem("userRole") === '2'
@@ -523,11 +543,23 @@ app.directive('infoBox', function () {
                     return false;
             }
             var updatingLessonId = -1;
+            $scope.$on('myCustomEvent2_update', function (event, data) {
+                if (data.type === "deleteBorder") {
+                    updatingLessonId = -1;
+                }
+            });
             $scope.checkLessToUpdate = function () {
                 if (updateShow && ''+$window.localStorage.getItem("userId") === ''+ $window.localStorage.getItem("lessonToUpdateProfId")
                 && (document.querySelector('#lessonUpdate').style.display === 'block') &&
                     $window.localStorage.getItem("lessonToUpdateId") !== updatingLessonId &&
                     updatingLessonId === -1){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            $scope.checkLessToDelete = function () {
+                if (deleteShow && (document.querySelector('#lessonAdd').style.display === 'block')){
                     return true;
                 } else {
                     return false;
@@ -542,6 +574,30 @@ app.directive('infoBox', function () {
                     someProp: $window.localStorage.getItem("lessonToUpdateId"),
                     type: "update"
                 });
+                $scope.infoShow = false;
+            }
+            $scope.deleteLesson = function () {
+                $scope.$emit('sendToUpdateForm', {
+                    lessonId: $window.localStorage.getItem("lessonToUpdateId")
+                });
+
+                if (confirm("Удалить выбранное занятие?")) {
+                    let data = {
+                        id: $window.localStorage.getItem("lessonToViewId"),
+                        weeks: $window.localStorage.getItem("lessonToViewWeek")
+                    };
+                    $http.delete(serverUrl + '/lesson/delete/'+ $window.localStorage.getItem("lessonToViewId"), {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                        if (response.data === "success")
+                            $scope.$emit('myCustomEvent', {
+                                someProp: -1
+                            });
+                    });
+                }
+                $scope.infoShow = false;
+                $scope.$emit('myCustomEvent', {
+                    someProp: -1
+                });
+                updatingLessonId = $window.localStorage.getItem("lessonToUpdateId")
                 $scope.infoShow = false;
             }
         }
@@ -596,6 +652,8 @@ app.directive('addLessonForm', function () {
             $scope.groups2 = [];
             $scope.positions = [];
             $scope.showDispFields = true;
+            $scope.messageInfo = "";
+            $scope.messageShow = false;
             if ($window.localStorage.getItem("userRole") === '2'){
                 $scope.showDispFields = false;
                 angular.element(document.querySelector('#classroom')).css('width', "50px");
@@ -686,11 +744,13 @@ app.directive('addLessonForm', function () {
                                         message = message + "уже есть пары";
                                     }
                                     position.errmessage = message;
-                                } else
+                                } else {
+                                    $scope.messageInfo = "";
+                                    $scope.messageShow = false;
                                     document.querySelector('#addLesBut').disabled = false;
+                                }
                             }
                         }
-                        $scope.$apply();
                     });
                 }
             };
@@ -704,8 +764,13 @@ app.directive('addLessonForm', function () {
                     subject: selectedSubject
                 }
                 $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
-                    if (response.data === "success")
-                        console.log('пара успешно добавена');
+                    if (response.data === "success"){
+                        $scope.messageInfo = "занятие добавлено";
+                        $scope.messageShow = true;
+                        $scope.$emit('myCustomEvent', {
+                            someProp: -1
+                        });
+                    }
                 });
             }
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
@@ -748,8 +813,6 @@ app.directive('addLessonForm', function () {
                         $scope.positions.push(pos);
 
                         angular.element(document.querySelector('#pos-table')).css('border', "none");
-
-                        $scope.$apply();
                     }
                 }
             };
@@ -763,6 +826,7 @@ app.directive('addLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
                     selectedTeacher = ui.item.id;
+                    $scope.$apply();
                 }
             });
 
@@ -779,7 +843,6 @@ app.directive('addLessonForm', function () {
                         $scope.groups2.push(ui.item);
                     }
                     angular.element(document.querySelector('#groups')).css('border', "2px solid #cecece");
-                    $scope.$apply();
                     $scope.$emit('groupsSettEvent', {
                         someProp: $scope.groups2,
                         comment: true
@@ -787,7 +850,7 @@ app.directive('addLessonForm', function () {
                 },
                 close: function () {
                     document.getElementById('groups').value = "";
-                    // $('#groups').text('Ваш текст');
+                    $scope.$apply();
                 }
             });
 
@@ -887,6 +950,10 @@ app.directive('updateLessonForm', function () {
                         // lessonType: document.getElementById("type").value
                         lessonType: ''+1
                     };
+                    $http.get(serverUrl + '/lesson/edit/' + $window.localStorage.getItem("lessonToUpdateId"), config).then(function (response) {
+                        data.professor = response.data.professorId;
+                        data.subject = response.data.subjectId;
+                    });
                     $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
                         let answer = response.data[0];
                                 let group = true;
@@ -915,6 +982,7 @@ app.directive('updateLessonForm', function () {
                                     }
                                     $scope.messageInfo = message;
                                     $scope.messageShow = true;
+                                    document.querySelector('#addLesBut').disabled = true;
                                 } else {
                                     $scope.messageInfo = "корректно для переноса";
                                     $scope.messageShow = true;
@@ -923,18 +991,28 @@ app.directive('updateLessonForm', function () {
                             });
                         }
             }
-            $scope.updateLesson = function(){
+            $scope.updateLesson = function() {
+                var pos_num = document.getElementById("week").value * 100 +
+                    document.getElementById("workday").value * 10+
+                    + document.getElementById("time").value;
                 let data = {
-                    classroom: selectedClassroom,
-                    groups: $scope.groups2,
-                    lessonType: document.getElementById("type").value,
-                    position: $scope.positions,
-                    professor: selectedTeacher,
-                    subject: selectedSubject
+                    oldPositionId: $window.localStorage.getItem("lessonToUpdateId"),
+                    newPositionNum: pos_num,
+                    newClassroomId: newClassroomId
                 }
-                $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
-                    if (response.data === "success")
-                        console.log('пара успешно добавена');
+                $http.post(serverUrl + '/lesson/update', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
+                    if (response.data === "success"){
+                        $scope.messageInfo = "занятие перенесено";
+                        $scope.messageShow = true;
+                        $scope.$emit('myCustomEvent_update', {
+                            someProp: -1,
+                            type: "update"
+                        });
+                        $scope.$emit('myCustomEvent_update', {
+                            someProp: -1,
+                            type: "deleteBorder"
+                        });
+                    }
                 });
             }
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
@@ -1027,7 +1105,8 @@ app.directive('universitySettings', function () {
                 $scope.uniData = response.data;
             });
             restore_main($scope);
-
+            $scope.messageInfo = "";
+            $scope.messageShow = false;
             $scope.return = function(){
                 restore_main($scope);
                 checkFields($scope);
@@ -1104,6 +1183,7 @@ app.directive('universitySettings', function () {
                 $scope.viewPage1 = true;
                 $scope.viewPage2 = false;
                 $scope.returnShow = false;
+                $scope.messageShow = false;
             }
 
             function send($scope, $http){
@@ -1129,15 +1209,17 @@ app.directive('universitySettings', function () {
                 };
                 var url = serverUrl + "/university/update";
                 $http.post(url, data, config).then(function (response) {
-                    alert("Сохранено");
+                    $scope.messageInfo = "Изменения сохранены! Обновите страницу.";
+                    $scope.messageShow = true;
                 }, function error(response) {
-                    alert("Сохранено");
+                    $scope.messageInfo = "Изменения сохранены! Обновите страницу.";
+                    $scope.messageShow = true;
                 });
                 // jQuery(function ($) {
                 //     $.mask.definitions['q'] = '[A-Fa-f0-9]';
                 //     $("#color1").click(function() {
                 //         $(this).setCursorPosition(1);
-                //     }).mask("#9999");;
+                //     }).mask("#qqqqqq");;
                 // });
                 // $("#inputPhone").click(function(){
                 //     $(this).setCursorPosition(1);
@@ -1243,7 +1325,6 @@ app.directive('userSettings', function () {
                         comment: false
                     });
                     angular.element(document.querySelector('#groupsset')).css('border', "2px solid #cecece");
-                    $scope.$apply();
                 },
                 close: function () {
                     document.getElementById('groupsset').value = "";
@@ -1390,11 +1471,11 @@ app.directive('parser', function () {
             $scope.buttonParserLabel = "Отправить";
             $scope.messageParser = "";
             $scope.sendToParse = function () {
-                $http.post(serverUrl + "/parser", {
+                $http.post(serverUrl + "/parser/url", {
                         url: document.querySelector('#parserUrl').value
                     }
                     , {headers: {'Accept': 'text/plain'}}).then(function (response) {
-
+                    console.log(response);
                 });
             };
             $.mask.definitions['a'] = false;

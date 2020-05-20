@@ -1,7 +1,7 @@
 <div class="register-fields">
     <table ng-show="viewPage1">
         <td>
-            <table>
+            <table style="margin-left: 10px">
                 <tr>
                     <td><span class="register-label">Название</span></td>
                     <td><input id="name" style="width: 350px" ng-model="uniData.name" type="text" class="register-input"></td>
@@ -138,5 +138,6 @@
     <div class="divLine">
         <button id="returnButtonUni" ng-show="returnShow" ng-click="return()" class="buttonClass" style="font-size: 22px">Назад</button>
         <button id="clickUni" ng-click="button_click()" class="buttonClass" style="font-size: 22px">{{buttonLabel}}</button>
+        <br><span ng-if="messageShow">{{messageInfo}}</span>
     </div>
 </div>
