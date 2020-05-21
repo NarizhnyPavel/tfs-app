@@ -510,7 +510,7 @@ app.directive('gridUpdate', function () {
                     $scope.updatingLessonId = data.someProp;
                 } else{
                     $scope.entityFromSearch.id = savedId;
-                    $scope.updatingLessonId = data.someProp;
+                    // $scope.updatingLessonId = data.someProp;
                 }
                 // $scope.week = 1;
                 // $scope.entityFromSearch.weekNum = 1;
@@ -1017,6 +1017,7 @@ app.directive('updateLessonForm', function () {
                 $http.post(serverUrl + '/lesson/update', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
                     if (response.data === "success"){
                         $scope.messageInfo = "занятие перенесено";
+                        document.querySelector('#addLesBut').disabled = true;
                         $scope.messageShow = true;
                         $scope.$emit('myCustomEvent_update', {
                             someProp: -1,
@@ -1094,7 +1095,7 @@ app.directive('updateLessonForm', function () {
                     position = response.data.lessonPosition;
                     console.log('подставляю ' + position)
                     document.querySelector('#time').value = position % 10;
-                    document.querySelector('#workday').value = ((position % 100) / 10).toFixed(0);
+                    document.querySelector('#workday').value = (((position % 100) / 10) - 1).toFixed(0);
                     document.querySelector('#week').value = (position / 100).toFixed(0);
                     newClassroomId = response.data.classroomId;
                     document.querySelector('#classroom').value = response.data.classroom;
@@ -1511,6 +1512,8 @@ app.directive('parser', function () {
                             response.data.message += "Добавлено " + response.data.roomnum + " аудиторий\n";
                         if (response.data.groupnum !== 0)
                             message += "Добавлено " + response.data.groupnum + " группа\n";
+                        if (message === "")
+                            message = "новых данных не обнаружено";
                         $scope.messageParser = message;
                     } else{
                         $scope.messageParserShow = true;

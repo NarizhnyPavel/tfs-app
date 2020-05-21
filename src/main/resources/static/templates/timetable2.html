@@ -19,7 +19,7 @@
                     <td style="max-width: 190px">
                         <ul ng-if="day.infoLessonDtos.length != 0" ng-repeat="lesson in day.infoLessonDtos track by $index">
                             <li ng-if="''+lesson.id !== ''+updatingLessonId"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
-                            <li ng-if="''+lesson.id === ''+updatingLessonId" style="border: 4px dotted red" title="это занятие переносится"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
+                            <li ng-if="''+lesson.id === ''+updatingLessonId" style="border: 4px ridge white" title="это занятие переносится"> <span ng-click="show(lesson)"> {{lesson.time}}: <b title="{{lesson.lessonType}}" style="">{{lesson.arc}} </b></span> </li>
                         </ul>
                         <ul>
                             <h4>
