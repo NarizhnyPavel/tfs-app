@@ -1466,7 +1466,7 @@ app.directive('parser', function () {
                         let message = "";
                         // $scope.messageParser = "Успешно!";
                         if (response.data.profnum !== 0)
-                            message += "Добавлено " + response.data.profnum + " преподавателей<br>";
+                            message += "Добавлено " + response.data.profnum + " преподавателя";
                         if (response.data.subjectnum !== 0)
                             message += "Добавлено " + response.data.subjectnum + " предметов\n";
                         if (response.data.roomnum !== 0)
@@ -1483,7 +1483,7 @@ app.directive('parser', function () {
                 });
             };
             $.mask.definitions['a'] = false;
-            $.mask.definitions['+']='[A-Za-z0-9_/]';
+            $.mask.definitions['+']='[A-Za-z0-9_/-]';
             $("#parserUrl").mask("https://yadi.sk/?++++++++++++++++");
             document.querySelector('#parserDivId').style.backgroundColor = '#' + $window.localStorage.getItem("color2");
             document.querySelector('#parserButtonId').style.backgroundColor = '#' + $window.localStorage.getItem("color3");

@@ -44,8 +44,8 @@ public class ExcelReader {
         while (rowIter.hasNext()) {
             XSSFRow row = (XSSFRow) rowIter.next();
             if (row.getCell(0) != null && !row.getCell(0).getStringCellValue().isEmpty())
-                if (!String.valueOf(row.getCell(1).getNumericCellValue()).isEmpty())
-                    professors.add(new AddUserDto(String.valueOf(row.getCell(1).getNumericCellValue()), row.getCell(0).getStringCellValue(), (byte) 2));
+                if (!String.valueOf(row.getCell(1).getStringCellValue()).isEmpty())
+                    professors.add(new AddUserDto(String.valueOf(row.getCell(1).getStringCellValue()), row.getCell(0).getStringCellValue(), (byte) 2));
         }
         return professors;
     }
