@@ -912,14 +912,14 @@ app.directive('updateLessonForm', function () {
             // $scope.showDispFields = true;
             $scope.messageShow = false;
             $scope.messageInfo = "";
-            let newClassroomId;
+            let newClassroomId = -1;
             // if ($window.localStorage.getItem("userRole") === '2'){
             //     $scope.showDispFields = false;
             //     angular.element(document.querySelector('#classroom')).css('width', "50px");
             // }
 
             function checkFields() {
-                if (document.querySelector('#classroom').value === "")
+                if (document.querySelector('#classroom').value === "" || newClassroomId === -1)
                     angular.element(document.querySelector('#classroom')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
@@ -932,11 +932,7 @@ app.directive('updateLessonForm', function () {
                 else
                     return true;
             }
-            $scope.groups2 = [{
-                id: 1,
-                label: "7371",
-                number: 1
-            }];
+            $scope.groups2 = [            ];
             $scope.checkPositions = function () {
                 var pos_num = document.getElementById("week").value * 100 +
                     document.getElementById("workday").value * 10+
@@ -965,6 +961,7 @@ app.directive('updateLessonForm', function () {
                     $http.get(serverUrl + '/lesson/edit/' + $window.localStorage.getItem("lessonToUpdateId"), config).then(function (response) {
                         data.professor = response.data.professorId;
                         data.subject = response.data.subjectId;
+                        data.groups = response.data.groups;
                     });
                     $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
                         let answer = response.data[0];
@@ -1085,6 +1082,14 @@ app.directive('updateLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
                     newClassroomId = ui.item.id;
+                },
+                open: function () {
+                    newClassroomId = -1;
+                    console.log('хотите поменять аудиторию?');
+                },
+                change: function () {
+                    if (newClassroomId === -1)
+                        document.querySelector('#classroom').value = "";
                 }
             });
 
