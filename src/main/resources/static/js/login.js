@@ -1,6 +1,6 @@
 /* Controllers */
 'use strict';
-var serverUrl = "https://whispering-mountain-53709.herokuapp.com/";
+var serverUrl = "https://timeforstudyetu.herokuapp.com/";
 
 var app = angular.module('myApp', []);
 
