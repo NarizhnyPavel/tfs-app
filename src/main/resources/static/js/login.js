@@ -4,6 +4,10 @@ var serverUrl = "https://timeforstudyetu.herokuapp.com";
 
 var app = angular.module('myApp', []);
 
+app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}]);
+
 app.controller('loginController', function ($scope, $http, $location, $window) {
     document.getElementById('inputPhone').value = '';
     $scope.formInfo = {

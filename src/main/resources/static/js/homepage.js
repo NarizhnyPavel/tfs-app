@@ -1,6 +1,10 @@
 
 var app = angular.module('homepg', []);
 
+app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}]);
+
 var serverUrl = "https://timeforstudyetu.herokuapp.com";
 var config = {
     headers: {
