@@ -50,7 +50,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 document.getElementById('inputPhone').valueRequired = 'Phone Required';
             } else {
                 if (document.getElementById('inputPhone').value.length === 11) {
-                    var url = serverUrl + "login/login";
+                    var url = serverUrl + "/login/login";
                     $scope.buttonLabel = "Войти";
                     $http.post(url, document.getElementById('inputPhone').value, config).then(function (response) {
                         if (response.data === "codeSent") {
@@ -87,7 +87,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 code: document.getElementById('inputCode').value
             };
 
-            $http.post(serverUrl + "login/checkCode", data, config1).then(function (response) {
+            $http.post(serverUrl + "/login/checkCode", data, config1).then(function (response) {
                 var data2 = response.data;
                 if (data2.id !== 0) {
                     localStorage.setItem("userId", data2.id);
@@ -120,7 +120,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             }
         };
         if ($scope.registartionFields === false) {
-            $http.post(serverUrl + "login/checkPhone", document.getElementById('inputPhone').value, config).then(function (response) {
+            $http.post(serverUrl + "/login/checkPhone", document.getElementById('inputPhone').value, config).then(function (response) {
                 if (response.data === "registered") {
                     angular.element(document.querySelector('.loginBlock')).css('height', '270px');
                     $scope.postResultMessage = "Пользователь с таким телефоном уже зарегистрирован";
@@ -142,7 +142,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                 name: $scope.formInfo.Name,
                 role: 4
             };
-            $http.post(serverUrl + "login/register", data, config).then(function (response) {
+            $http.post(serverUrl + "/login/register", data, config).then(function (response) {
                 if (response.data === "success") {
                     alert("successful registered");
                     $window.location.reload();
