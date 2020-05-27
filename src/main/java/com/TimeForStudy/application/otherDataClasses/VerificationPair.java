@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class VerificationPair {
     private String phone;
-    private Integer code;
+    private String code;
 
-    public VerificationPair(String phone, Integer code) {
+    public VerificationPair(String phone, String code) {
         this.phone = phone;
         this.code = code;
     }

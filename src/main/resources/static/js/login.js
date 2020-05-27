@@ -108,7 +108,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                     $scope.buttonLabel = "Отправить код заново";
                 }
             }, function error(response) {
-                $scope.postResultMessage = "Error with status: " + response.statusText;
+                $scope.postResultMessage = "Ошибка: " + response.data.statusText;
             });
         }
     }

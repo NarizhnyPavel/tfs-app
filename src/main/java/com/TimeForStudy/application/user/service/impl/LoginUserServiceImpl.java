@@ -35,7 +35,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     /**
      * Пара телефон - код
      */
-    HashMap<String, Integer> waitingList = new HashMap<>();
+    HashMap<String, String> waitingList = new HashMap<>();
 
     /**
      * {@link UserRepository}
@@ -53,7 +53,7 @@ public class LoginUserServiceImpl implements LoginUserService {
         UserEntity user = userRepository.findByPhone(phone);
         if (user != null) {
 //            Integer code = (int) (Math.random() * 8999) + 1000;
-            Integer code = 1111;
+            String code = "1111";
             waitingList.put(phone, code);
             new CodeTimer(phone);
             if (user == null) {
@@ -62,17 +62,17 @@ public class LoginUserServiceImpl implements LoginUserService {
                 String send = "Авторизация в системе TimeForStudy\n" +
                         "Код ";
 //                send += code;
-//                String _from = "";
-//                String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
+                String _from = "";
+                String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
+//
+                final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-//                final CloseableHttpClient httpClient = HttpClients.createDefault();
-
-//                HttpGet request = new HttpGet(
-//                        "http://smspilot.ru/api.php" +
-//                                "?send=" + UriEscape.escapeUriPath(send) +
-//                                "&to=" + phone +
-//                                "&from=" + _from +
-//                                "&apikey=" + apikey);
+                HttpGet request = new HttpGet(
+                        "http://smspilot.ru/api.php" +
+                                "?send=" + UriEscape.escapeUriPath(send) +
+                                "&to=" + phone +
+                                "&from=" + _from +
+                                "&apikey=" + apikey);
 //
                 String result = "SUCCESS";
 //                try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -129,7 +129,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public String settingsSendCode(String phone) {
 //            Integer code = (int) (Math.random() * 8999) + 1000;
-            Integer code = 1111;
+            String code = "1111";
             waitingList.put(phone, code);
             new CodeTimer(phone);
                 String send = "Авторизация в системе TimeForStudy\n" +
