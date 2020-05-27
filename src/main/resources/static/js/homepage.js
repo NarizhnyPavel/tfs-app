@@ -1,7 +1,7 @@
 
 var app = angular.module('homepg', []);
 
-var serverUrl = "https://timeforstudyetu.herokuapp.com/";
+var serverUrl = "https://timeforstudyetu.herokuapp.com";
 var config = {
     headers: {
         'Content-Type': 'application/json'
