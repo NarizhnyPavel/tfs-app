@@ -5,8 +5,8 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-var serverUrl = "https://timeforstudyetu.herokuapp.com";
-// var serverUrl = "http://localhost:8080";
+// var serverUrl = "https://timeforstudyetu.herokuapp.com";
+var serverUrl = "http://localhost:8080";
 var config = {
     headers: {
         'Content-Type': 'application/json'
@@ -1083,8 +1083,11 @@ app.directive('updateLessonForm', function () {
                 $http.get(serverUrl + '/lesson/edit/' + data2.prop, config).then(function (response) {
                     position = response.data.lessonPosition;
                     document.querySelector('#time').value = position % 10;
+                    console.log('time: ' + position % 10)
                     document.querySelector('#workday').value = (((position % 100) / 10)).toFixed(0);
-                    document.querySelector('#week').value = (position / 100).toFixed(0);
+                    console.log('workday: ' + (((position % 100) / 10)).toFixed(0))
+                    document.querySelector('#week').value = ((position / 100).toFixed(0) - 1).toFixed(0);
+                    console.log('week: ' + ((position / 100).toFixed(0) - 1))
                     newClassroomId = response.data.classroomId;
                     document.querySelector('#classroom').value = response.data.classroom;
                     let wait = $http.get(serverUrl + '/lesson/edit/' + $window.localStorage.getItem("lessonToUpdateId"), config).then(function (response) {
