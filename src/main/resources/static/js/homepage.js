@@ -782,13 +782,21 @@ app.directive('addLessonForm', function () {
                 }
                 $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
                     if (response.data === "success"){
-                        $scope.messageInfo = "занятие добавлено";
+                        $scope.messageInfo = "Занятие Добавлено";
                         $scope.messageShow = true;
                         $scope.$emit('myCustomEvent', {
                             someProp: -1
                         });
                     }
                 });
+                selectedSubject = -1;
+                document.querySelector('#subject').value = "";
+                selectedTeacher = -1;
+                document.querySelector('#teacher').value = "";
+                selectedClassroom = -1;
+                document.querySelector('#classroom').value = "";
+                $scope.positions = [];
+                $scope.groups2 = [];
             }
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;
@@ -832,7 +840,11 @@ app.directive('addLessonForm', function () {
                     }
                 }
             };
-            $('#teacher').autocomplete({
+            $('#teacher').click(function(){
+                document.querySelector('#teacher').value = "";
+                selectedTeacher = -1;
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/professors', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -845,8 +857,8 @@ app.directive('addLessonForm', function () {
                     $scope.$apply();
                 },
                 close: function () {
-                    if (selectedTeacher === -1 || newClassroomLabel === "")
-                        document.querySelector('#classroom').value = "";
+                    if (selectedTeacher === -1)
+                        document.querySelector('#teacher').value = "";
                 }
             });
 
@@ -874,7 +886,11 @@ app.directive('addLessonForm', function () {
                 }
             });
 
-            $('#classroom').autocomplete({
+            $('#classroom').click(function(){
+                selectedClassroom = -1;
+                document.querySelector('#classroom').value = "";
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/classrooms', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -884,9 +900,17 @@ app.directive('addLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
                     selectedClassroom = ui.item.id;
+                },
+                close: function () {
+                    if (selectedClassroom === -1)
+                        document.querySelector('#classroom').value = "";
                 }
             });
-            $('#subject').autocomplete({
+            $('#subject').click(function(){
+                selectedSubject = -1;
+                document.querySelector('#subject').value = "";
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/subjects', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -896,6 +920,10 @@ app.directive('addLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#subject')).css('border', "2px solid #cecece");
                     selectedSubject = ui.item.id;
+                },
+                close: function () {
+                    if (selectedSubject === -1)
+                        document.querySelector('#subject').value = "";
                 }
             });
             document.querySelector('#addPosBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
