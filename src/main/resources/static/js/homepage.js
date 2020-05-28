@@ -1481,31 +1481,46 @@ app.directive('parser', function () {
             $scope.studentsTableShow = true;
             $scope.buttonParserLabel = "Отправить";
             $scope.messageParserShow = false;
-            $scope.messageParser = "";
+            $scope.messageParser = {
+                info: "",
+                prof: "",
+                subj: "",
+                group: "",
+                room: ""
+            };
             $scope.sendToParse = function () {
                 document.querySelector('#parserButtonId').disable = true;
                 $scope.messageParserShow = true;
-                $scope.messageParser = "Обработка...";
+                $scope.messageParser.info = "Обработка...";
                 $http.post(serverUrl + "/parser/url", document.querySelector('#parserUrl').value
                     , config).then(function (response) {
                     if (response.data.status === "Успешно") {
                         $scope.messageParserShow = true;
+                        $scope.messageParser.info = "";
                         let message = "";
+                        if (response.data.profnum > 0)
+                        $scope.messageParser.prof = response.data.profnum;
+                        if (response.data.subjectnum > 0)
+                        $scope.messageParser.subj = response.data.subjectnum;
+                        if (response.data.roomnum > 0)
+                        $scope.messageParser.room = response.data.roomnum;
+                        if (response.data.groupnum > 0)
+                        $scope.messageParser.group = response.data.groupnum;
                         // $scope.messageParser = "Успешно!";
                         if (response.data.profnum !== 0)
-                            message += "Добавлено " + response.data.profnum + " преподавателей<br>";
+                            message += "Добавлено " + response.data.profnum + " преподавателей\n";
                         if (response.data.subjectnum !== 0)
                             message += "Добавлено " + response.data.subjectnum + " предметов\n";
                         if (response.data.roomnum !== 0)
-                            response.data.message += "Добавлено " + response.data.roomnum + " аудиторий\n";
+                            message += "Добавлено " + response.data.roomnum + " аудиторий\n";
                         if (response.data.groupnum !== 0)
-                            message += "Добавлено " + response.data.groupnum + " группа\n";
+                            message += "Добавлено " + response.data.groupnum + " группа";
                         if (message === "")
                             message = "новых данных не обнаружено";
-                        $scope.messageParser = message;
+                        // $scope.messageParser = message;
                     } else{
                         $scope.messageParserShow = true;
-                        $scope.messageParser = response.data.status;
+                        $scope.messageParser.info = response.data.status;
                     }
                 });
             };
