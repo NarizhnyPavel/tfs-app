@@ -719,12 +719,13 @@ app.directive('addLessonForm', function () {
                     };
                     $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
                         let answer = response.data;
+                        let check = true;
                         for (let i = 0; i < answer.length; i++) {
                             let posIndex = $scope.positions.findIndex(pos => pos.num === answer[i].position);
+                            let group = true;
                             if (posIndex !== -1){
                                 let position = $scope.positions[posIndex];
                                 position.status = 1;
-                                let group = true;
                                 for (let j = 0; j < answer[i].groups.length; j++) {
                                     if($scope.groups2[j].number)
                                         $scope.groups2[j].number = answer[i].groups[j].number;
@@ -732,6 +733,7 @@ app.directive('addLessonForm', function () {
                                         group = false;
                                 }
                                 if (answer[i].professor === 0 || answer[i].classroom === 0 || !group){
+                                    check = false;
                                     position.status = 0;
                                     let message = "";
                                     if (answer[i].professor === 0) {
@@ -756,13 +758,16 @@ app.directive('addLessonForm', function () {
                                         message = message + "уже есть пары";
                                     }
                                     position.errmessage = message;
-                                } else {
-                                    $scope.messageInfo = "позиции корректны для добавления!";
-                                    $scope.messageShow = true;
-                                    document.querySelector('#addLesBut').disabled = false;
                                 }
                             }
                         }
+                        if (check){
+                                $scope.messageInfo = "позиции корректны для добавления!";
+                                document.querySelector('#addLesBut').disabled = false
+                        } else{
+                            $scope.messageInfo = "имеются пересечения! смотрите контекстную справку для каждой позиции";
+                        }
+                        $scope.messageShow = true;
                     });
                 }
             };
@@ -777,13 +782,21 @@ app.directive('addLessonForm', function () {
                 }
                 $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
                     if (response.data === "success"){
-                        $scope.messageInfo = "занятие добавлено";
+                        $scope.messageInfo = "Занятие Добавлено";
                         $scope.messageShow = true;
                         $scope.$emit('myCustomEvent', {
                             someProp: -1
                         });
                     }
                 });
+                selectedSubject = -1;
+                document.querySelector('#subject').value = "";
+                selectedTeacher = -1;
+                document.querySelector('#teacher').value = "";
+                selectedClassroom = -1;
+                document.querySelector('#classroom').value = "";
+                $scope.positions = [];
+                $scope.groups2 = [];
             }
             $http.get(serverUrl + '/university/weeks', config).then(function (response2) {
                 $scope.weeks =  response2.data;
@@ -827,7 +840,11 @@ app.directive('addLessonForm', function () {
                     }
                 }
             };
-            $('#teacher').autocomplete({
+            $('#teacher').click(function(){
+                document.querySelector('#teacher').value = "";
+                selectedTeacher = -1;
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/professors', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -838,6 +855,10 @@ app.directive('addLessonForm', function () {
                     angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
                     selectedTeacher = ui.item.id;
                     $scope.$apply();
+                },
+                close: function () {
+                    if (selectedTeacher === -1)
+                        document.querySelector('#teacher').value = "";
                 }
             });
 
@@ -865,7 +886,11 @@ app.directive('addLessonForm', function () {
                 }
             });
 
-            $('#classroom').autocomplete({
+            $('#classroom').click(function(){
+                selectedClassroom = -1;
+                document.querySelector('#classroom').value = "";
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/classrooms', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -875,9 +900,17 @@ app.directive('addLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
                     selectedClassroom = ui.item.id;
+                },
+                close: function () {
+                    if (selectedClassroom === -1)
+                        document.querySelector('#classroom').value = "";
                 }
             });
-            $('#subject').autocomplete({
+            $('#subject').click(function(){
+                selectedSubject = -1;
+                document.querySelector('#subject').value = "";
+                $(this).setCursorPosition(0);
+            }).autocomplete({
                 source: function (request, response) {
                     $http.post(serverUrl + '/subjects', request.term, config).then(function (response2) {
                         response(response2.data);
@@ -887,6 +920,10 @@ app.directive('addLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#subject')).css('border', "2px solid #cecece");
                     selectedSubject = ui.item.id;
+                },
+                close: function () {
+                    if (selectedSubject === -1)
+                        document.querySelector('#subject').value = "";
                 }
             });
             document.querySelector('#addPosBut').style.backgroundColor = '#' + $window.localStorage.getItem("color3");
@@ -906,10 +943,11 @@ app.directive('updateLessonForm', function () {
             $scope.messageShow = false;
             $scope.messageInfo = "";
             let newClassroomId;
+            let newClassroomLabel;
             $scope.groups2 = [];
 
             function checkFields() {
-                if (document.querySelector('#classroom').value === "" || newClassroomId === -1)
+                if (document.querySelector('#classroom').value === "" || newClassroomId === -1 || document.querySelector('#classroom').value !== newClassroomLabel)
                     angular.element(document.querySelector('#classroom')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
@@ -917,7 +955,7 @@ app.directive('updateLessonForm', function () {
                     angular.element(document.querySelector('#weer')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#weer')).css('border', "2px solid #cecece");
-                if (document.querySelector('#classroom').value === "")
+                if (document.querySelector('#classroom').value === "" || document.querySelector('#classroom').value !== newClassroomLabel)
                     return false;
                 else
                     return true;
@@ -960,9 +998,9 @@ app.directive('updateLessonForm', function () {
                                 if (answer.professor === 0 || answer.classroom === 0 || !group){
                                     let message = "";
                                     if (answer.professor === 0)
-                                        message = message + "в это время Вы уже заняты \n";
+                                        message = message + "в это время Вы уже заняты <br>";
                                     if (answer.classroom === 0)
-                                        message = message + "аудитория уже занята \n";
+                                        message = message + "аудитория уже занята <br>";
                                     if (!group){
                                         let errGroups = data.groups.filter(group => group.number === 0);
                                         if (errGroups.length > 1)
@@ -1025,35 +1063,6 @@ app.directive('updateLessonForm', function () {
                 $scope.times = response2.data;
             });
 
-            $scope.addPosition = function(){
-                if (checkFieldsPos()){
-                    var pos_num = document.getElementById("week").value * 100 +
-                        document.getElementById("workday").value * 10+
-                        + document.getElementById("time").value;
-                    if (pos_num < 100)
-                        pos_num = "0" + pos_num;
-                    let index = $scope.positions.findIndex(position => position.num === ''+pos_num);
-                    if(index === -1) {
-                        var label = document.getElementById("week").value + "нед. " +
-                            " " + $scope.workdays[document.getElementById("workday").value - 1].label +
-                            " " + $scope.times[document.getElementById("time").value - 1].label;
-                        if (document.getElementById("week").value === '0')
-                            label = "все нед. " +
-                                " " + $scope.workdays[document.getElementById("workday").value - 1].label +
-                                " " + $scope.times[document.getElementById("time").value - 1].label;
-                        var pos = {
-                            num: "" + pos_num,
-                            label: label,
-                            status: 1,
-                            errmessage: ""
-                        };
-                        $scope.positions.push(pos);
-
-                        angular.element(document.querySelector('#pos-table')).css('border', "none");
-                    }
-                }
-            };
-
             $('#classroom').click(function(){
                 document.querySelector('#classroom').value = "";
                 $(this).setCursorPosition(0);
@@ -1067,13 +1076,18 @@ app.directive('updateLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
                     newClassroomId = ui.item.id;
+                    newClassroomLabel = ui.item.label;
                 },
                 open: function () {
                     newClassroomId = -1;
+                    newClassroomLabel = "";
                     document.querySelector('#classroom').value = "";
                 },
                 close: function () {
-                    if (newClassroomId === -1)
+                    if (newClassroomId === -1 || newClassroomLabel === "")
+                        document.querySelector('#classroom').value = "";
+                }, change: function () {
+                    if (newClassroomId === -1 || newClassroomLabel === "")
                         document.querySelector('#classroom').value = "";
                 }
             });
@@ -1089,6 +1103,7 @@ app.directive('updateLessonForm', function () {
                     document.querySelector('#week').value = ((position / 100).toFixed(0) - 1).toFixed(0);
                     console.log('week: ' + ((position / 100).toFixed(0) - 1))
                     newClassroomId = response.data.classroomId;
+                    newClassroomLabel = response.data.classroom;
                     document.querySelector('#classroom').value = response.data.classroom;
                     let wait = $http.get(serverUrl + '/lesson/edit/' + $window.localStorage.getItem("lessonToUpdateId"), config).then(function (response) {
                         data =  {
@@ -1494,31 +1509,46 @@ app.directive('parser', function () {
             $scope.studentsTableShow = true;
             $scope.buttonParserLabel = "Отправить";
             $scope.messageParserShow = false;
-            $scope.messageParser = "";
+            $scope.messageParser = {
+                info: "",
+                prof: "",
+                subj: "",
+                group: "",
+                room: ""
+            };
             $scope.sendToParse = function () {
                 document.querySelector('#parserButtonId').disable = true;
                 $scope.messageParserShow = true;
-                $scope.messageParser = "Обработка...";
+                $scope.messageParser.info = "Обработка...";
                 $http.post(serverUrl + "/parser/url", document.querySelector('#parserUrl').value
                     , config).then(function (response) {
                     if (response.data.status === "Успешно") {
                         $scope.messageParserShow = true;
+                        $scope.messageParser.info = "";
                         let message = "";
+                        if (response.data.profnum > 0)
+                        $scope.messageParser.prof = response.data.profnum;
+                        if (response.data.subjectnum > 0)
+                        $scope.messageParser.subj = response.data.subjectnum;
+                        if (response.data.roomnum > 0)
+                        $scope.messageParser.room = response.data.roomnum;
+                        if (response.data.groupnum > 0)
+                        $scope.messageParser.group = response.data.groupnum;
                         // $scope.messageParser = "Успешно!";
                         if (response.data.profnum !== 0)
-                            message += "Добавлено " + response.data.profnum + " преподавателей<br>";
+                            message += "Добавлено " + response.data.profnum + " преподавателей\n";
                         if (response.data.subjectnum !== 0)
                             message += "Добавлено " + response.data.subjectnum + " предметов\n";
                         if (response.data.roomnum !== 0)
-                            response.data.message += "Добавлено " + response.data.roomnum + " аудиторий\n";
+                            message += "Добавлено " + response.data.roomnum + " аудиторий\n";
                         if (response.data.groupnum !== 0)
-                            message += "Добавлено " + response.data.groupnum + " группа\n";
+                            message += "Добавлено " + response.data.groupnum + " группа";
                         if (message === "")
                             message = "новых данных не обнаружено";
-                        $scope.messageParser = message;
+                        // $scope.messageParser = message;
                     } else{
                         $scope.messageParserShow = true;
-                        $scope.messageParser = response.data.status;
+                        $scope.messageParser.info = response.data.status;
                     }
                 });
             };

@@ -1,7 +1,7 @@
 <div class="register-fields2" id="parserDivId" style="min-width: 520px">
     <span>Данная форма позволяет добавить новые данные в систему. <br>Ниже вы найдёте ссылку на скачивание шаблона.
     <br> Помесите заполненный документ на Яндекс.Диск <br>и укажите публичную ссылку на него в поле ниже.</span><br>
-    <a href="https://yadi.sk/i/NVbKK_2q2PvMRg" target="_blank">шаблон для добавления</a>
+    <a href="https://yadi.sk/i/gM7XrkUFjMfdlw" target="_blank">шаблон для добавления</a>
     <table style="margin-top: 20px">
         <tr>
             <td>
@@ -13,7 +13,13 @@
         </tr>
         <trt>
             <td colspan="2" ng-show="messageParserShow" style="text-align: center">
-                <p style="width: 250px">{{messageParser}}</p>
+                <br>
+                <p style="width: 350px; margin-bottom:0px; margin-top:6px;word-break: break-word; display: block" ng-if="messageParser.info !== ''">{{messageParser.info}}</p>
+                <p style="width: 350px; margin-bottom:0px; margin-top:0px; word-break: break-word; display: block" ng-if="messageParser.prof !== ''">Добавлено {{messageParser.prof}} преподавателей</p>
+                <p style="width: 350px; margin-bottom:0px; margin-top:0px; word-break: break-word; display: block" ng-if="messageParser.room !== ''">Добавлено {{messageParser.room}} аудиторий</p>
+                <p style="width: 350px; margin-bottom:0px; margin-top:0px; word-break: break-word; display: block" ng-if="messageParser.subj !== ''">Добавлено {{messageParser.subj}} предметов</p>
+                <p style="width: 350px; margin-bottom:0px; margin-bottom:10px; word-break: break-word; display: block" ng-if="messageParser.group !== ''">Добавлено {{messageParser.group}} групп</p>
+                <br>
             </td>
         </trt>
     </table>
