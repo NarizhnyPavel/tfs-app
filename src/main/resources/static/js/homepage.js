@@ -843,6 +843,10 @@ app.directive('addLessonForm', function () {
                     angular.element(document.querySelector('#teacher')).css('border', "2px solid #cecece");
                     selectedTeacher = ui.item.id;
                     $scope.$apply();
+                },
+                close: function () {
+                    if (selectedTeacher === -1 || newClassroomLabel === "")
+                        document.querySelector('#classroom').value = "";
                 }
             });
 
@@ -911,10 +915,11 @@ app.directive('updateLessonForm', function () {
             $scope.messageShow = false;
             $scope.messageInfo = "";
             let newClassroomId;
+            let newClassroomLabel;
             $scope.groups2 = [];
 
             function checkFields() {
-                if (document.querySelector('#classroom').value === "" || newClassroomId === -1)
+                if (document.querySelector('#classroom').value === "" || newClassroomId === -1 || document.querySelector('#classroom').value !== newClassroomLabel)
                     angular.element(document.querySelector('#classroom')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
@@ -922,7 +927,7 @@ app.directive('updateLessonForm', function () {
                     angular.element(document.querySelector('#weer')).css('border-color', "red");
                 else
                     angular.element(document.querySelector('#weer')).css('border', "2px solid #cecece");
-                if (document.querySelector('#classroom').value === "")
+                if (document.querySelector('#classroom').value === "" || document.querySelector('#classroom').value !== newClassroomLabel)
                     return false;
                 else
                     return true;
@@ -965,9 +970,9 @@ app.directive('updateLessonForm', function () {
                                 if (answer.professor === 0 || answer.classroom === 0 || !group){
                                     let message = "";
                                     if (answer.professor === 0)
-                                        message = message + "в это время Вы уже заняты \n";
+                                        message = message + "в это время Вы уже заняты <br>";
                                     if (answer.classroom === 0)
-                                        message = message + "аудитория уже занята \n";
+                                        message = message + "аудитория уже занята <br>";
                                     if (!group){
                                         let errGroups = data.groups.filter(group => group.number === 0);
                                         if (errGroups.length > 1)
@@ -1030,35 +1035,6 @@ app.directive('updateLessonForm', function () {
                 $scope.times = response2.data;
             });
 
-            $scope.addPosition = function(){
-                if (checkFieldsPos()){
-                    var pos_num = document.getElementById("week").value * 100 +
-                        document.getElementById("workday").value * 10+
-                        + document.getElementById("time").value;
-                    if (pos_num < 100)
-                        pos_num = "0" + pos_num;
-                    let index = $scope.positions.findIndex(position => position.num === ''+pos_num);
-                    if(index === -1) {
-                        var label = document.getElementById("week").value + "нед. " +
-                            " " + $scope.workdays[document.getElementById("workday").value - 1].label +
-                            " " + $scope.times[document.getElementById("time").value - 1].label;
-                        if (document.getElementById("week").value === '0')
-                            label = "все нед. " +
-                                " " + $scope.workdays[document.getElementById("workday").value - 1].label +
-                                " " + $scope.times[document.getElementById("time").value - 1].label;
-                        var pos = {
-                            num: "" + pos_num,
-                            label: label,
-                            status: 1,
-                            errmessage: ""
-                        };
-                        $scope.positions.push(pos);
-
-                        angular.element(document.querySelector('#pos-table')).css('border', "none");
-                    }
-                }
-            };
-
             $('#classroom').click(function(){
                 document.querySelector('#classroom').value = "";
                 $(this).setCursorPosition(0);
@@ -1072,13 +1048,18 @@ app.directive('updateLessonForm', function () {
                 select: function displayItem(event, ui) {
                     angular.element(document.querySelector('#classroom')).css('border', "2px solid #cecece");
                     newClassroomId = ui.item.id;
+                    newClassroomLabel = ui.item.label;
                 },
                 open: function () {
                     newClassroomId = -1;
+                    newClassroomLabel = "";
                     document.querySelector('#classroom').value = "";
                 },
                 close: function () {
-                    if (newClassroomId === -1)
+                    if (newClassroomId === -1 || newClassroomLabel === "")
+                        document.querySelector('#classroom').value = "";
+                }, change: function () {
+                    if (newClassroomId === -1 || newClassroomLabel === "")
                         document.querySelector('#classroom').value = "";
                 }
             });
@@ -1094,6 +1075,7 @@ app.directive('updateLessonForm', function () {
                     document.querySelector('#week').value = ((position / 100).toFixed(0) - 1).toFixed(0);
                     console.log('week: ' + ((position / 100).toFixed(0) - 1))
                     newClassroomId = response.data.classroomId;
+                    newClassroomLabel = response.data.classroom;
                     document.querySelector('#classroom').value = response.data.classroom;
                     let wait = $http.get(serverUrl + '/lesson/edit/' + $window.localStorage.getItem("lessonToUpdateId"), config).then(function (response) {
                         data =  {
