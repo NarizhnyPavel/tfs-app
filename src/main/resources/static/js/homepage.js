@@ -998,9 +998,9 @@ app.directive('updateLessonForm', function () {
                                 if (answer.professor === 0 || answer.classroom === 0 || !group){
                                     let message = "";
                                     if (answer.professor === 0)
-                                        message = message + "в это время Вы уже заняты <br>";
+                                        message = message + "в это время Вы уже заняты \n";
                                     if (answer.classroom === 0)
-                                        message = message + "аудитория уже занята <br>";
+                                        message = message + "аудитория уже занята \n";
                                     if (!group){
                                         let errGroups = data.groups.filter(group => group.number === 0);
                                         if (errGroups.length > 1)
@@ -1100,7 +1100,7 @@ app.directive('updateLessonForm', function () {
                     console.log('time: ' + position % 10)
                     document.querySelector('#workday').value = (((position % 100) / 10)).toFixed(0);
                     console.log('workday: ' + (((position % 100) / 10)).toFixed(0))
-                    document.querySelector('#week').value = ((position / 100).toFixed(0) - 1).toFixed(0);
+                    document.querySelector('#week').value = ((position / 100)).toFixed(0);
                     console.log('week: ' + ((position / 100).toFixed(0) - 1))
                     newClassroomId = response.data.classroomId;
                     newClassroomLabel = response.data.classroom;
