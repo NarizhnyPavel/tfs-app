@@ -763,6 +763,7 @@ app.directive('addLessonForm', function () {
                         }
                         if (check){
                                 $scope.messageInfo = "позиции корректны для добавления!";
+                                $scope.$apply()
                                 document.querySelector('#addLesBut').disabled = false
                         } else{
                             $scope.messageInfo = "имеются пересечения! смотрите контекстную справку для каждой позиции";
