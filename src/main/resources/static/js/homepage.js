@@ -719,12 +719,13 @@ app.directive('addLessonForm', function () {
                     };
                     $http.post(serverUrl + '/lesson/check', data, config).then(function (response) {
                         let answer = response.data;
+                        let check = true;
                         for (let i = 0; i < answer.length; i++) {
                             let posIndex = $scope.positions.findIndex(pos => pos.num === answer[i].position);
+                            let group = true;
                             if (posIndex !== -1){
                                 let position = $scope.positions[posIndex];
                                 position.status = 1;
-                                let group = true;
                                 for (let j = 0; j < answer[i].groups.length; j++) {
                                     if($scope.groups2[j].number)
                                         $scope.groups2[j].number = answer[i].groups[j].number;
@@ -732,6 +733,7 @@ app.directive('addLessonForm', function () {
                                         group = false;
                                 }
                                 if (answer[i].professor === 0 || answer[i].classroom === 0 || !group){
+                                    check = false;
                                     position.status = 0;
                                     let message = "";
                                     if (answer[i].professor === 0) {
@@ -756,13 +758,16 @@ app.directive('addLessonForm', function () {
                                         message = message + "уже есть пары";
                                     }
                                     position.errmessage = message;
-                                } else {
-                                    $scope.messageInfo = "позиции корректны для добавления!";
-                                    $scope.messageShow = true;
-                                    document.querySelector('#addLesBut').disabled = false;
                                 }
                             }
                         }
+                        if (check){
+                                $scope.messageInfo = "позиции корректны для добавления!";
+                                document.querySelector('#addLesBut').disabled = false
+                        } else{
+                            $scope.messageInfo = "имеются пересечения! смотрите контекстную справку для каждой позиции";
+                        }
+                        $scope.messageShow = true;
                     });
                 }
             };
