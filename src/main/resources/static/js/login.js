@@ -58,9 +58,11 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                             $scope.postResultMessage = "";
                             $scope.openRegistrationButton = false;
                             $scope.postResultMessage = "Код подтверждения отправлен";
-                            angular.element(document.querySelector('.errorMessage')).css('color', "white");
-                            angular.element(document.querySelector('#inputPhone')).attr('readOnly', 'true');
+                            console.log('отправлен')
+                            document.querySelector('#inputCode').readOnly = false;
+                            // angular.element(document.querySelector('#inputPhone')).attr('readOnly', 'false');
                             angular.element(document.querySelector('.loginBlock')).css('height', '300px');
+                            angular.element(document.querySelector('.errorMessage')).css('color', "white");
                             $scope.errorShow = true;
                         } else if (response.data === "registrationNeeded"){
                             $scope.postResultMessage = "Пользователь с таким телефоном не зарегистрирован";
@@ -89,6 +91,7 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
 
             $http.post(serverUrl + "/login/checkCode", data, config1).then(function (response) {
                 var data2 = response.data;
+                console.log(data2.id !== 0)
                 if (data2.id !== 0) {
                     localStorage.setItem("userId", data2.id);
                     localStorage.setItem("userName", data2.name);
@@ -100,15 +103,19 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
                     link[0].click();
                     link.remove();
                 } else {
-                    angular.element('.errorMessage').css('color', "red");
                     $scope.postResultMessage = 'Неверный код подтверждения';
                     $scope.errorShow = true;
                     // отправить код заново
-                    angular.element(document.querySelector('#inputCode')).attr('readOnly', 'true');
+                    document.querySelector('#inputCode').value = "";
+                    document.querySelector('#inputCode').readOnly = true;
+                    // angular.element(document.querySelector('#inputCode')).attr('readOnly', 'true');
                     $scope.buttonLabel = "Отправить код заново";
+                    angular.element(document.querySelector('.errorMessage')).css('color', "red");
+                    // angular.element('.errorMessage').css('color', "red");
                 }
             }, function error(response) {
-                $scope.postResultMessage = "Ошибка: " + response.data.statusText;
+                $scope.postResultMessage = "Ошибка. попробуйте войти заново!" ;
+                $scope.errorShow = true;
             });
         }
     }
@@ -123,14 +130,16 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             $http.post(serverUrl + "/login/checkPhone", document.getElementById('inputPhone').value, config).then(function (response) {
                 if (response.data === "registered") {
                     angular.element(document.querySelector('.loginBlock')).css('height', '270px');
+                    angular.element(document.querySelector('.errorMessage')).css('color', "red");
                     $scope.postResultMessage = "Пользователь с таким телефоном уже зарегистрирован";
                     $scope.errorShow = true;
                 } else {
+                    angular.element(document.querySelector('.errorMessage')).css('color', "white");
                     $scope.registartionFields = true;
                     $scope.enterLogin = false;
                     $scope.postResultMessage = "";
                     $scope.errorShow = false;
-                    angular.element(document.querySelector('#inputPhone')).attr('readOnly', 'true');
+                    angular.element(document.querySelector('#inputPhone')).attr('readOnly', 'false');
                 }
             }, function error(response) {
                 $scope.postResultMessage = "Error with status: " + response.statusText;
@@ -144,11 +153,15 @@ app.controller('loginController', function ($scope, $http, $location, $window) {
             };
             $http.post(serverUrl + "/login/register", data, config).then(function (response) {
                 if (response.data === "success") {
-                    alert("successful registered");
-                    $window.location.reload();
+                    angular.element(document.querySelector('.errorMessage')).css('color', "white");
+                    $scope.postResultMessage = "Успешно зарегистрированы!";
+                    angular.element(document.querySelector('.loginBlock')).css('height', "330px");
+                    $scope.errorShow = true;
+                    setTimeout(function() {window.location.reload();}, 1000);
                 }
                 if (response.data === "groupError") {
                     $scope.postResultMessage = "Неверный номер группы!";
+                    $scope.errorShow = true;
                     angular.element(document.querySelector('#inputGroup')).css('border-color', "red");
                     angular.element(document.querySelector('.loginBlock')).css('height', "330px");
                 }
