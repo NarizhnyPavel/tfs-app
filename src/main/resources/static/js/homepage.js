@@ -784,7 +784,7 @@ app.directive('addLessonForm', function () {
                 }
                 $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
                     if (response.data === "success"){
-                        $scope.messageInfo = "Занятие Добавлено";
+                        $scope.messageInfo = "Занятие добавлено!";
                         $scope.messageShow = true;
                         $scope.$emit('myCustomEvent', {
                             someProp: -1
