@@ -767,6 +767,7 @@ app.directive('addLessonForm', function () {
                         } else{
                             $scope.messageInfo = "имеются пересечения! смотрите контекстную справку для каждой позиции";
                         }
+                        console.log($scope.messageInfo)
                         $scope.messageShow = true;
                         $scope.$apply()
                     });
