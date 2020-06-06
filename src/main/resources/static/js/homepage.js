@@ -5,7 +5,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-var serverUrl = "https://timeforstudyetu.herokuapp.com";
+var serverUrl = "http://timeforstudyetu.herokuapp.com";
 // var serverUrl = "http://localhost:8080";
 var config = {
     headers: {
