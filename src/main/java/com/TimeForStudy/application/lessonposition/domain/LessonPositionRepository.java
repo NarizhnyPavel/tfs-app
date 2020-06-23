@@ -23,9 +23,10 @@ public interface LessonPositionRepository extends JpaRepository<LessonPositionEn
             "WHERE (l.week = :week or l.week = 0) and l.days = :day and l.lesson.user.id = :userId")
     List<LessonPositionEntity> findAllForSelectedUser(@Param("week") Integer week, @Param("day") Integer days, @Param("userId") Long userId);
 
-    @Query("select lesPos FROM LessonPositionEntity lesPos left join lesPos.lesson l join l.groups g join g.users u " +
+    @Query("FROM LessonPositionEntity lesPos left join lesPos.lesson l " +
+            "left join l.subject left join l.classroom left join l.groups g join g.users u " +
             "WHERE lesPos.lesson.id = l.id and u.id = :userId and " +
-            "lesPos.week = :week or lesPos.week = 0 and lesPos.days = :day")
+            "(lesPos.week = :week or lesPos.week = 0) and lesPos.days = :day")
     List<LessonPositionEntity> findAllForSelectedStudent(@Param("week") Integer week, @Param("day") Integer days, @Param("userId") Long userId);
 
 //    List<LessonPositionEntity> findAllByWeekAndDaysAndNumber();
