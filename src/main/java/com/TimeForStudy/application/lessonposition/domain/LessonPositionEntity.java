@@ -2,17 +2,14 @@ package com.TimeForStudy.application.lessonposition.domain;
 
 import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
-import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.lessonposition.model.AddLessonPositionDto;
 import com.TimeForStudy.application.notification.domain.NotificationEntity;
-import com.TimeForStudy.application.university.model.UniversityDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -42,10 +39,10 @@ public class LessonPositionEntity {
     private LessonEntity lesson;
 
     /**
-     * Позиция.
+     * Номер недели.
      */
     @Column(name = "position")
-    private int position;
+    private int week;
 
     /**
      * Номер.
@@ -73,7 +70,7 @@ public class LessonPositionEntity {
     private ClassroomEntity classroom;
 
     public LessonPositionEntity(AddLessonPositionDto addLessonPositionDto) {
-        this.position = addLessonPositionDto.getPosition();
+        this.week = addLessonPositionDto.getPosition();
         this.number = addLessonPositionDto.getNumber();
         this.days = addLessonPositionDto.getDays();
     }

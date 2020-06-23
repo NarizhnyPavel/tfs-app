@@ -75,7 +75,7 @@ public class LessonPositionServiceImpl implements LessonPositionService {
             updated.setLesson(LessonDto.on(addLessonPositionDto.getLesson()));
         }
         if (addLessonPositionDto.getPosition()!=0) {
-            updated.setPosition(addLessonPositionDto.getPosition());
+            updated.setWeek(addLessonPositionDto.getPosition());
         }
         if (addLessonPositionDto.getNumber()!=0) {
             updated.setNumber(addLessonPositionDto.getNumber());

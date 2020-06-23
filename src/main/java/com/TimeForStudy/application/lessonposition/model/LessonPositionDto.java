@@ -36,7 +36,7 @@ public class LessonPositionDto {
 
         LessonPositionDto dto = new LessonPositionDto();
         dto.setId(lessonPositionEntity.getId());
-        dto.setPosition(lessonPositionEntity.getPosition());
+        dto.setPosition(lessonPositionEntity.getWeek());
         dto.setDays(lessonPositionEntity.getDays());
         dto.setNumber(lessonPositionEntity.getNumber());
         return dto;
@@ -46,7 +46,7 @@ public class LessonPositionDto {
 
         LessonPositionEntity entity  = new LessonPositionEntity();
         entity.setId(lessonPositionDto.getId());
-        entity.setPosition(lessonPositionDto.getPosition());
+        entity.setWeek(lessonPositionDto.getPosition());
         entity.setDays(lessonPositionDto.getDays());
         entity.setNumber(lessonPositionDto.getNumber());
         return entity;
