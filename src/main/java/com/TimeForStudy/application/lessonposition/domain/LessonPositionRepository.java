@@ -23,10 +23,10 @@ public interface LessonPositionRepository extends JpaRepository<LessonPositionEn
             "left join l.lesson.classroom left join l.lesson.subject left join l.lesson.user " +
             "WHERE (l.week = :week or l.week = 0) and l.days = :day and l.lesson.user.id = :userId " +
             "ORDER by l.number ASC")
-    List<LessonPositionEntity> findAllForSelectedUser(@Param("week") Integer week, @Param("day") Integer days, @Param("userId") Long userId);
+    List<LessonPositionEntity> findAllForSelectedTeacher(@Param("week") Integer week, @Param("day") Integer days, @Param("userId") Long userId);
 
     @Query(value = "select new com.TimeForStudy.application.lesson.model.InfoLessonDto" +
-            "(l.id, grid.time, l.classroom.number, l.subject.name, l.subject.arc, cancel.id, l.user.name, l.lessonType.name, l.id, l.user.id) " +
+            "(lesPos.id, grid.time, l.classroom.number, l.subject.name, l.subject.arc, cancel.id, l.user.name, l.lessonType.name, l.id, l.user.id) " +
             " FROM LessonPositionEntity lesPos left join PositionCancelEntity cancel on lesPos.id = cancel.lessonPositionEntity.id left join lesPos.lesson l " +
             "left join l.subject left join l.classroom left join l.groups g join g.users u " +
             "left join l.semester.university.lessonGrids grid  " +
@@ -34,6 +34,9 @@ public interface LessonPositionRepository extends JpaRepository<LessonPositionEn
             "(lesPos.week = :week or lesPos.week = 0) and lesPos.days = :day " +
             "order by lesPos.number asc")
     List<InfoLessonDto> findAllForSelectedStudent(@Param("week") Integer week, @Param("day") Integer days, @Param("userId") Long userId);
+
+    @Query("from LessonPositionEntity pos where pos.id = :id")
+    LessonPositionEntity getById(@Param("id") Long id);
 
 
 }

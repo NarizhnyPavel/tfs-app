@@ -625,7 +625,7 @@ public class LessonServiceImpl implements LessonService {
                 groups += group.getNumber() + " ";
             }
             less.setGroup(groups);
-//            notificationService.deleteNotification(less);
+            notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
 
 //            List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
 //                boolean flagW = true;
@@ -696,9 +696,9 @@ public class LessonServiceImpl implements LessonService {
 //        }
             dayDto.setInfoLessonDtos(infoLessonDtos);
 //        daysDto.setInfoLessonDtos(infoLessonDtos);
-            return dayDto;
-        }
 //        infoLessonDto.setGroup(groups1);
+        return dayDto;
+    }
 
     /**
      * Формирование расписания для преподавателя.
@@ -726,7 +726,7 @@ public class LessonServiceImpl implements LessonService {
         String date = localDateRequest.getDayOfMonth() + " " + getNameMonth(localDateRequest.getMonth().getValue());
         dayDto.setDate(date);
         List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
-                .findAllForSelectedUser(weekNum, numberDay, id);
+                .findAllForSelectedTeacher(weekNum, numberDay, id);
 //        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
 //                .findAllByPositionAndDays(0, numberDay);
 //        lessonPositionEntities.addAll(lessonPositionEntities0);
