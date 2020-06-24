@@ -125,10 +125,9 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void deleteNotification(LessonPositionEntity id) {
-
         LocalDate localDate = LocalDate.now();
         for( NotificationEntity notificationEntity: id.getNotificationEntities()) {
-            if (localDate.compareTo(notificationEntity.getDate())>0) {
+            if (localDate.compareTo(notificationEntity.getDate()) > 0) {
                 notificationRepository.delete(notificationEntity);
             }
         }

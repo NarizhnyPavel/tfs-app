@@ -1,10 +1,6 @@
 package com.TimeForStudy.application.lesson.service;
 
 import com.TimeForStudy.application.lesson.model.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -37,10 +33,10 @@ public interface LessonService {
      * @param addInfoLessonDto информация о расписании.
      * @return список дней.
      */
-    List<DaysDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto);
+    List<DayDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto);
 
     /**
-     * Возвращение расписания занятий для студента.
+     * Отмена занятия на неделю.
      *
      * @param lessonStopDto информация о лекции.
      * @return статус.
@@ -53,7 +49,7 @@ public interface LessonService {
      * @param lessonByDto информация о расписании.
      * @return список дней.
      */
-    List<DaysDto> getLessonBy(LessonByDto lessonByDto);
+    List<DayDto> getLessonBy(LessonByDto lessonByDto);
 
     /**
      * Валидация поиска.

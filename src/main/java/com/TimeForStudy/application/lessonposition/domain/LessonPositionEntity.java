@@ -57,7 +57,7 @@ public class LessonPositionEntity {
     private int days;
 
     /**
-     * Список позиций в сетке
+     * Список связанных уведомлений
      */
     @OneToMany(mappedBy = "lessons", fetch = FetchType.LAZY)
     private List<NotificationEntity> notificationEntities;
