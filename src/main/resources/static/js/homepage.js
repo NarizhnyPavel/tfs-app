@@ -785,6 +785,7 @@ app.directive('addLessonForm', function () {
                 $http.post(serverUrl + '/lesson/add', data, {headers: {'Accept': 'text/plain'}}).then(function (response) {
                     if (response.data === "success"){
                         $scope.messageInfo = "Занятие добавлено!";
+                        document.querySelector('#addLesBut').disabled = true;
                         $scope.messageShow = true;
                         $scope.$emit('myCustomEvent', {
                             someProp: -1
@@ -1100,10 +1101,10 @@ app.directive('updateLessonForm', function () {
                     position = response.data.lessonPosition;
                     document.querySelector('#time').value = position % 10;
                     console.log('time: ' + position % 10)
-                    document.querySelector('#workday').value = (((position % 100) / 10)).toFixed(0);
-                    console.log('workday: ' + (((position % 100) / 10)).toFixed(0))
-                    document.querySelector('#week').value = ((position / 100)).toFixed(0);
-                    console.log('week: ' + ((position / 100).toFixed(0) - 1))
+                    document.querySelector('#workday').value = Math.trunc(((position % 100) / 10));
+                    console.log('workday: ' + Math.trunc(((position % 100) / 10)))
+                    document.querySelector('#week').value = Math.trunc((position / 100));
+                    console.log('week: ' + Math.trunc((position / 100)));
                     newClassroomId = response.data.classroomId;
                     newClassroomLabel = response.data.classroom;
                     document.querySelector('#classroom').value = response.data.classroom;

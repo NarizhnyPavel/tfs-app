@@ -12,6 +12,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -66,6 +67,7 @@ public class LoginUserServiceImpl implements LoginUserService {
                 String apikey = "7CBWUPSSQK232C52P01VP1FM5Z1RA3G7D1C7DE2BTLCF50B8OZ7RKCM85GRB95E2";
 //
                 final CloseableHttpClient httpClient = HttpClients.createDefault();
+
 
                 HttpGet request = new HttpGet(
                         "http://smspilot.ru/api.php" +
