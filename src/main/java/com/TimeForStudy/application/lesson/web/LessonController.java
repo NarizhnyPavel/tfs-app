@@ -45,12 +45,12 @@ public class LessonController {
     /**
      * Отмена пары.
      *
-     * @param addInfoLessonDto информация о лекции.
+     * @param getInfoLessonDto информация о лекции.
      * @return занятие.
      */
     @PostMapping(value = "lesson/info")
-    public List<DayDto> getLessonInfo(@RequestBody AddInfoLessonDto addInfoLessonDto) {
-        return lessonService.getLessonInfo(addInfoLessonDto);
+    public List<DayDto> getLessonInfo(@RequestBody GetInfoLessonDto getInfoLessonDto) {
+        return lessonService.getLessonInfo(getInfoLessonDto);
     }
 
     /**

@@ -28,12 +28,12 @@ public interface LessonService {
     LessonEditInfo getLessonEdit(long id);
 
     /**
-     * Возвращение расписания занятий для преподавателя.
+     * Возвращение расписания занятий.
      *
-     * @param addInfoLessonDto информация о расписании.
+     * @param getInfoLessonDto информация о расписании.
      * @return список дней.
      */
-    List<DayDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto);
+    List<DayDto> getLessonInfo(GetInfoLessonDto getInfoLessonDto);
 
     /**
      * Отмена занятия на неделю.

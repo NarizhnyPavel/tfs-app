@@ -10,7 +10,6 @@ import com.TimeForStudy.application.lesson.domain.LessonEntity;
 import com.TimeForStudy.application.lesson.domain.LessonRepository;
 import com.TimeForStudy.application.lesson.model.*;
 import com.TimeForStudy.application.lesson.service.LessonService;
-import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
 import com.TimeForStudy.application.lessonposition.domain.LessonPositionRepository;
@@ -197,17 +196,17 @@ public class LessonServiceImpl implements LessonService {
     /**
      * Возвращение расписания занятий  для студента.
      *
-     * @param addInfoLessonDto информация о расписании.
+     * @param getInfoLessonDto информация о расписании.
      * @return список дней.
      */
     @Override
-    public List<DayDto> getLessonInfo(AddInfoLessonDto addInfoLessonDto) {
+    public List<DayDto> getLessonInfo(GetInfoLessonDto getInfoLessonDto) {
 
         //User
-        UserEntity userEntity = userRepository.findById(addInfoLessonDto.getUserId())
+        UserEntity userEntity = userRepository.findById(getInfoLessonDto.getUserId())
                 .orElseThrow(ErrorDescription.USER_NOT_FOUNT::exception);
         if (userEntity.getRole()==2) {
-            return getLessonBy( new LessonByDto(userEntity.getId(), addInfoLessonDto.getWeekNum(),1));
+            return getLessonBy( new LessonByDto(userEntity.getId(), getInfoLessonDto.getWeekNum(),1));
         } else {
             //Группы
             List<GroupEntity> groupEntities = userEntity.getGroups();
@@ -216,31 +215,26 @@ public class LessonServiceImpl implements LessonService {
             List<DayDto> dayDtos = new ArrayList<>();
 
             if (universityEntity.getWorkDays().indexOf('1') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Понедельник", addInfoLessonDto.getWeekNum(), 1));
-//                daysDtos.add(formDaysDto(groupEntities, "Понедельник", addInfoLessonDto.getWeekNum(), 1));
+                dayDtos.add(formDayDto(userEntity, "Понедельник", getInfoLessonDto.getWeekNum(), 1));
             }
             if (universityEntity.getWorkDays().indexOf('2') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Вторник", addInfoLessonDto.getWeekNum(), 2));
-//                daysDtos.add(formDaysDto(groupEntities, "Вторник", addInfoLessonDto.getWeekNum(), 2));
+                dayDtos.add(formDayDto(userEntity, "Вторник", getInfoLessonDto.getWeekNum(), 2));
             }
             if (universityEntity.getWorkDays().indexOf('3') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Среда", addInfoLessonDto.getWeekNum(), 3));
-//                daysDtos.add(formDaysDto(groupEntities, "Среда", addInfoLessonDto.getWeekNum(), 3));
+                dayDtos.add(formDayDto(userEntity, "Среда", getInfoLessonDto.getWeekNum(), 3));
             }
             if (universityEntity.getWorkDays().indexOf('4') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Четверг", addInfoLessonDto.getWeekNum(), 4));
-//                daysDtos.add(formDaysDto(groupEntities, "Четверг", addInfoLessonDto.getWeekNum(), 4));
+                dayDtos.add(formDayDto(userEntity, "Четверг", getInfoLessonDto.getWeekNum(), 4));
             }
             if (universityEntity.getWorkDays().indexOf('5') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Пятница", addInfoLessonDto.getWeekNum(), 5));
-//                daysDtos.add(formDaysDto(groupEntities, "Пятница", addInfoLessonDto.getWeekNum(), 5));
+                dayDtos.add(formDayDto(userEntity, "Пятница", getInfoLessonDto.getWeekNum(), 5));
             }
             if (universityEntity.getWorkDays().indexOf('6') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Суббота", addInfoLessonDto.getWeekNum(), 6));
+                dayDtos.add(formDayDto(userEntity, "Суббота", getInfoLessonDto.getWeekNum(), 6));
 //                daysDtos.add(formDaysDto(groupEntities, "Суббота", addInfoLessonDto.getWeekNum(), 6));
             }
             if (universityEntity.getWorkDays().indexOf('7') != -1) {
-                dayDtos.add(formDayDto(userEntity, "Воскресенье", addInfoLessonDto.getWeekNum(), 7));
+                dayDtos.add(formDayDto(userEntity, "Воскресенье", getInfoLessonDto.getWeekNum(), 7));
 //                daysDtos.add(formDaysDto(groupEntities, "Воскресенье", addInfoLessonDto.getWeekNum(), 7));
             }
             return dayDtos;
@@ -610,12 +604,6 @@ public class LessonServiceImpl implements LessonService {
         dayDto.setDate(date);
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllForSelectedStudent(weekNum, numberDay, userEntity.getId());
-//        List<LessonPositionEntity> lessonPositionEntities = lessonPositionRepository
-//                .findAllForSelectedStudent(weekNum, numberDay, userEntity.getId());
-//        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
-//                .findAllByPositionAndDays(0, numberDay);
-//        lessonPositionEntities.addAll(lessonPositionEntities0);
-//        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
 
         for (InfoLessonDto less : infoLessonDtos) {
             LessonEntity lessonEntity = lessonRepository.getById(Long.parseLong(less.getGroup()));
@@ -625,77 +613,8 @@ public class LessonServiceImpl implements LessonService {
             }
             less.setGroup(groups);
             notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
-
-//            List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
-//                boolean flagW = true;
-//                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
-//                    if (positionCancelEntity.getCancelWeek()==weekNum) {
-//                        LocalDate localDate = LocalDate.now();
-//                        if (localDate.compareTo(positionCancelEntities.get(0).getTime()) > 0) {
-//                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-//                        } else {
-//                            flagW = false;
-//                        }
-//                        break;
-//                    }
-//                }
-//                notificationService.deleteNotification(less);
-//                less.setStatus(flagW);
         }
-//            LessonEntity lessonEntity = less.getLesson();
-////            List<GroupEntity> groups = lessonEntity.getGroups();
-////            boolean flag = false;
-////            for (GroupEntity group : groupEntities) {
-////                if (groups.contains(group)) {
-////                    flag = true;
-////                    break;
-////                }
-////            }
-////            if (flag) {
-//                InfoLessonDto infoLessonDto = new InfoLessonDto();
-//                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-//                        findAllByUniversity(lessonEntity.
-//                                getSemester().
-//                                getUniversity());
-//                for (LessonGridEntity lessGrid : lessonGridEntities) {
-//                    if (lessGrid.getLessonNumber() == less.getNumber()) {
-//                        infoLessonDto.setTime(lessGrid.getTime());
-//                        break;
-//                    }
-//                }
-//                infoLessonDto.setId(less.getId());
-//                infoLessonDto.setClassroom(less.getClassroom().getNumber());
-//                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-//                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-//                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
-//                boolean flagW = true;
-//                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
-//                    if (positionCancelEntity.getCancelWeek()==weekNum) {
-//                        LocalDate localDate = LocalDate.now();
-//                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-//                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-//                        } else {
-//                            flagW = false;
-//                        }
-//                        break;
-//                    }
-//                }
-//                notificationService.deleteNotification(less);
-//                infoLessonDto.setStatus(flagW);
-//                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
-//                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-//                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-//                String groups1 = "";
-//                for (GroupEntity group : lessonEntity.getGroups()) {
-//                    groups1 += group.getNumber() + " ";
-//                }
-//                infoLessonDto.setGroup(groups1);
-//                infoLessonDtos.add(infoLessonDto);
-////            }
-//        }
             dayDto.setInfoLessonDtos(infoLessonDtos);
-//        daysDto.setInfoLessonDtos(infoLessonDtos);
-//        infoLessonDto.setGroup(groups1);
         return dayDto;
     }
 
@@ -726,13 +645,6 @@ public class LessonServiceImpl implements LessonService {
         dayDto.setDate(date);
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllForSelectedTeacher(weekNum, numberDay, id);
-//        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
-//                .findAllByPositionAndDays(0, numberDay);
-//        lessonPositionEntities.addAll(lessonPositionEntities0);
-//        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
-
-//        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
-
 
         for (InfoLessonDto less : infoLessonDtos) {
             LessonEntity lessonEntity = lessonRepository.getById(Long.parseLong(less.getGroup()));
@@ -742,51 +654,6 @@ public class LessonServiceImpl implements LessonService {
             }
             less.setGroup(groups);
             notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
-//            LessonEntity lessonEntity = less.getLesson();
-
-//            if (lessonEntity.getUser().getId() == id) {
-
-//                InfoLessonDto infoLessonDto = new InfoLessonDto();
-//                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-//                        findAllByUniversity(lessonEntity.
-//                                getSemester().
-//                                getUniversity());
-//                for (LessonGridEntity lessGrid : lessonGridEntities) {
-//                    if (lessGrid.getLessonNumber() == less.getNumber()) {
-//                        infoLessonDto.setTime(lessGrid.getTime());
-//                        break;
-//                    }
-//                }
-//                infoLessonDto.setId(less.getId());
-//                infoLessonDto.setClassroom(less.getClassroom().getNumber());
-//                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-//                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-//                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
-//                boolean flagW = true;
-//                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
-//                    if (positionCancelEntity.getCancelWeek()==weekNum) {
-//                        LocalDate localDate = LocalDate.now();
-//                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-//                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-//                        } else {
-//                            flagW = false;
-//                        }
-//                        break;
-//                    }
-//                }
-//                notificationService.deleteNotification(less);
-//                infoLessonDto.setStatus(flagW);
-//                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
-//                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-//                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-//                String groups = "";
-//                for (GroupEntity group : lessonEntity.getGroups()) {
-//                    groups += group.getNumber() + " ";
-//                }
-//                less.setGroup(groups);
-//                infoLessonDtos.add(infoLessonDto);
-//            }
-
         }
         dayDto.setInfoLessonDtos(infoLessonDtos);
 
@@ -820,19 +687,8 @@ public class LessonServiceImpl implements LessonService {
         dayDto.setDate(date);
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllForSelectedGroup(weekNum, numberDay, id);
-//        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
-//                .findAllByPositionAndDays(0, numberDay);
-//        lessonPositionEntities.addAll(lessonPositionEntities0);
-//        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
-
-//        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
-
 
         for (InfoLessonDto less : infoLessonDtos) {
-//            LessonEntity lessonEntity = less.getLesson();
-//
-//            GroupEntity groupEntity = groupRepository.findById(id)
-//                    .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
             LessonEntity lessonEntity = lessonRepository.getById(Long.parseLong(less.getGroup()));
             String groups = "";
             for (GroupEntity group : lessonEntity.getGroups()) {
@@ -841,47 +697,6 @@ public class LessonServiceImpl implements LessonService {
             less.setGroup(groups);
             notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
             
-//            if (lessonEntity.getGroups().contains(groupEntity)) {
-//
-//                InfoLessonDto infoLessonDto = new InfoLessonDto();
-//                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-//                        findAllByUniversity(lessonEntity.
-//                                getSemester().
-//                                getUniversity());
-//                for (LessonGridEntity lessGrid : lessonGridEntities) {
-//                    if (lessGrid.getLessonNumber() == less.getNumber()) {
-//                        infoLessonDto.setTime(lessGrid.getTime());
-//                        break;
-//                    }
-//                }
-//                infoLessonDto.setId(less.getId());
-//                infoLessonDto.setClassroom(less.getClassroom().getNumber());
-//                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-//                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-//                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
-//                boolean flagW = true;
-//                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
-//                    if (positionCancelEntity.getCancelWeek()==weekNum) {
-//                        LocalDate localDate = LocalDate.now();
-//                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-//                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-//                        } else {
-//                            flagW = false;
-//                        }
-//                        break;
-//                    }
-//                }
-//                notificationService.deleteNotification(less);
-//                infoLessonDto.setStatus(flagW);
-//                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
-//                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-//                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-//                String groups = "";
-//                for (GroupEntity group : lessonEntity.getGroups()) {
-//                    groups += group.getNumber() + " ";
-//                }
-//                infoLessonDto.setGroup(groups);
-//                infoLessonDtos.add(infoLessonDto);
             }
 
         dayDto.setInfoLessonDtos(infoLessonDtos);
@@ -916,12 +731,6 @@ public class LessonServiceImpl implements LessonService {
         daysDto.setDate(date);
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllByForSelectedClassroom(weekNum, numberDay, id);
-//        List<LessonPositionEntity> lessonPositionEntities0 = lessonPositionRepository
-//                .findAllByPositionAndDays(0, numberDay);
-//        lessonPositionEntities.addAll(lessonPositionEntities0);
-//        Collections.sort(lessonPositionEntities, new SortByPositionLesson());
-//
-//        List<InfoLessonDto> infoLessonDtos = new ArrayList<>();
 
         for (InfoLessonDto less : infoLessonDtos) {
             LessonEntity lessonEntity = lessonRepository.getById(Long.valueOf(less.getGroup()));
@@ -932,48 +741,6 @@ public class LessonServiceImpl implements LessonService {
             }
             less.setGroup(groups);
             notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
-//            if (lessonEntity.getClassroom().getId() == id) {
-//
-//                InfoLessonDto infoLessonDto = new InfoLessonDto();
-//                List<LessonGridEntity> lessonGridEntities = lessonGridRepository.
-//                        findAllByUniversity(lessonEntity.
-//                                getSemester().
-//                                getUniversity());
-//                for (LessonGridEntity lessGrid : lessonGridEntities) {
-//                    if (lessGrid.getLessonNumber() == less.getNumber()) {
-//                        infoLessonDto.setTime(lessGrid.getTime());
-//                        break;
-//                    }
-//                }
-//                infoLessonDto.setId(less.getId());
-//                infoLessonDto.setClassroom(less.getClassroom().getNumber());
-//                infoLessonDto.setSubject(lessonEntity.getSubject().getName());
-//                infoLessonDto.setArc(lessonEntity.getSubject().getArc());
-//                List<PositionCancelEntity> positionCancelEntities = positionCancelRepository.findAllByLessonPositionEntity(less);
-//                boolean flagW = true;
-//                for (PositionCancelEntity positionCancelEntity : positionCancelEntities) {
-//                    if (positionCancelEntity.getCancelWeek()==weekNum) {
-//                        LocalDate localDate = LocalDate.now();
-//                        if (localDate.compareTo(positionCancelEntities.get(0).getTime())>0) {
-//                            positionCancelRepository.deleteById(positionCancelEntities.get(0).getId());
-//                        } else {
-//                            flagW = false;
-//                        }
-//                        break;
-//                    }
-//                }
-//                notificationService.deleteNotification(less);
-//                infoLessonDto.setStatus(flagW);
-//                infoLessonDto.setProfessorId(lessonEntity.getUser().getId());
-//                infoLessonDto.setProfessor(lessonEntity.getUser().getName());
-//                infoLessonDto.setLessonType(lessonEntity.getLessonType().getName());
-//                String groups = "";
-//                for (GroupEntity group : lessonEntity.getGroups()) {
-//                    groups += group.getNumber() + " ";
-//                }
-//                infoLessonDto.setGroup(groups);
-//                infoLessonDtos.add(infoLessonDto);
-//            }
 
         }
 
@@ -984,7 +751,6 @@ public class LessonServiceImpl implements LessonService {
 
 
     public String getNameMonth(int numberMonth) {
-
         switch (numberMonth) {
             case 1:  return "Января";
             case 2:  return "Февраля";
