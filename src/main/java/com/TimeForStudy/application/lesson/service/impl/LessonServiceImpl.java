@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -646,15 +647,15 @@ public class LessonServiceImpl implements LessonService {
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllForSelectedTeacher(weekNum, numberDay, id);
 
-        for (InfoLessonDto less : infoLessonDtos) {
-            LessonEntity lessonEntity = lessonRepository.getById(Long.parseLong(less.getGroup()));
-            String groups = "";
-            for (GroupEntity group : lessonEntity.getGroups()) {
-                groups += group.getNumber() + " ";
-            }
-            less.setGroup(groups);
-            notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
-        }
+        infoLessonDtos = infoLessonDtos.stream().map(it -> {
+            List<GroupEntity> groupEntities = lessonRepository.getById(Long.parseLong(it.getGroup())).getGroups();
+            String groups = groupEntities.stream().map(it2 -> {return it2.getNumber() + " ";}).collect(Collectors.toList()).toString();
+            groups = groups.substring(1, groups.length() - 2);
+            it.setGroup(groups);
+            notificationService.deleteNotification(lessonPositionRepository.getById(it.getId()));
+            return it;
+        }).collect(Collectors.toList());
+
         dayDto.setInfoLessonDtos(infoLessonDtos);
 
         return dayDto;
@@ -688,16 +689,14 @@ public class LessonServiceImpl implements LessonService {
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllForSelectedGroup(weekNum, numberDay, id);
 
-        for (InfoLessonDto less : infoLessonDtos) {
-            LessonEntity lessonEntity = lessonRepository.getById(Long.parseLong(less.getGroup()));
-            String groups = "";
-            for (GroupEntity group : lessonEntity.getGroups()) {
-                groups += group.getNumber() + " ";
-            }
-            less.setGroup(groups);
-            notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
-            
-            }
+        infoLessonDtos = infoLessonDtos.stream().map(it -> {
+            List<GroupEntity> groupEntities = lessonRepository.getById(Long.parseLong(it.getGroup())).getGroups();
+            String groups = groupEntities.stream().map(it2 -> {return it2.getNumber() + " ";}).collect(Collectors.toList()).toString();
+            groups = groups.substring(1, groups.length() - 2);
+            it.setGroup(groups);
+            notificationService.deleteNotification(lessonPositionRepository.getById(it.getId()));
+            return it;
+        }).collect(Collectors.toList());
 
         dayDto.setInfoLessonDtos(infoLessonDtos);
 
@@ -732,17 +731,14 @@ public class LessonServiceImpl implements LessonService {
         List<InfoLessonDto> infoLessonDtos = lessonPositionRepository
                 .findAllByForSelectedClassroom(weekNum, numberDay, id);
 
-        for (InfoLessonDto less : infoLessonDtos) {
-            LessonEntity lessonEntity = lessonRepository.getById(Long.valueOf(less.getGroup()));
-
-            String groups = "";
-            for (GroupEntity group : lessonEntity.getGroups()) {
-                groups += group.getNumber() + " ";
-            }
-            less.setGroup(groups);
-            notificationService.deleteNotification(lessonPositionRepository.getById(less.getId()));
-
-        }
+        infoLessonDtos = infoLessonDtos.stream().map(it -> {
+            List<GroupEntity> groupEntities = lessonRepository.getById(Long.parseLong(it.getGroup())).getGroups();
+            String groups = groupEntities.stream().map(it2 -> {return it2.getNumber() + " ";}).collect(Collectors.toList()).toString();
+            groups = groups.substring(1, groups.length() - 2);
+            it.setGroup(groups);
+            notificationService.deleteNotification(lessonPositionRepository.getById(it.getId()));
+            return it;
+        }).collect(Collectors.toList());
 
         daysDto.setInfoLessonDtos(infoLessonDtos);
 
