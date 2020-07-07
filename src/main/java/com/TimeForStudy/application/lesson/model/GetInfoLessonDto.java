@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class AddInfoLessonDto {
+public class GetInfoLessonDto {
 
     private Long userId;
 

@@ -2,8 +2,6 @@ package com.TimeForStudy.application.lesson.web;
 
 import com.TimeForStudy.application.lesson.model.*;
 import com.TimeForStudy.application.lesson.service.LessonService;
-import com.TimeForStudy.application.user.model.UpdateUserDto;
-import com.TimeForStudy.application.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,12 +45,12 @@ public class LessonController {
     /**
      * Отмена пары.
      *
-     * @param addInfoLessonDto информация о лекции.
+     * @param getInfoLessonDto информация о лекции.
      * @return занятие.
      */
     @PostMapping(value = "lesson/info")
-    public List<DaysDto> getLessonInfo(@RequestBody AddInfoLessonDto addInfoLessonDto) {
-        return lessonService.getLessonInfo(addInfoLessonDto);
+    public List<DayDto> getLessonInfo(@RequestBody GetInfoLessonDto getInfoLessonDto) {
+        return lessonService.getLessonInfo(getInfoLessonDto);
     }
 
     /**
@@ -62,7 +60,7 @@ public class LessonController {
      * @return занятие.
      */
     @PostMapping(value = "lesson/by")
-    public List<DaysDto> getLessonBy(@RequestBody LessonByDto lessonByDto) {
+    public List<DayDto> getLessonBy(@RequestBody LessonByDto lessonByDto) {
         return lessonService.getLessonBy(lessonByDto);
     }
 

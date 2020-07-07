@@ -78,18 +78,26 @@
             <tr>
 
         </table>
-    <table style="min-height: 100px; width: 100%">
-        <tr>
-            <td rowspan="2" style="width: 200px">
-                <position-box></position-box>
-            </td>
-            <td rowspan="2" style="text-align: center; width: 400px">
-                <span ng-if="messageShow" style="text-align:center; margin-bottom: 10px">{{messageInfo}}</span><br><br>
-                <button id="checkLesBut" class="buttonClass" style="margin-left: -80px" ng-click="checkPositions()">Проверить корректность</button>
-                <button id="addLesBut" class="buttonClass" style="margin-left: 10px" ng-click="addLesson()">Добавить занятие</button>
-            </td>
-        </tr>
-        </tr>
-    </table>
+        <table style="min-height: 100px; width: 600px">
+            <tr>
+                <td  style="width: 250px">
+                    <position-box style="max-width: 50px"></position-box>
+                </td>
+<!--            </tr>-->
+<!--            <tr>-->
+                <td style="width: 350px">
+                    <p ng-if="messageShow" style="width:350px; word-break: break-word; text-align:left; margin-bottom: 10px; margin-left: 15px; padding-left: 5px; margin-bottom: 10px">{{messageInfo}}</p>
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>-->
+                    <button id="checkLesBut" class="buttonClass" style="margin-left: 10px" ng-click="checkPositions()">Проверить корректность</button>
+                    <button id="addLesBut" class="buttonClass" style="margin-left: 10px" ng-click="addLesson()">Добавить занятие</button>
+                </td>
+            </tr>
+<!--            </tr>-->
+<!--            </tr>-->
+        </table>
+
     </div>
 </div>

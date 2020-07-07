@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class DaysDto {
+public class DayDto {
 
     /**
      * Наименование дня недели.
