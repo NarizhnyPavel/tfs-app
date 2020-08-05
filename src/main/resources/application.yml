@@ -1,0 +1,27 @@
+server:
+  port: 8100
+
+#----DEV----
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./h2-data/testdb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+---
+#----PROD---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://ec2-46-137-79-235.eu-west-1.compute.amazonaws.com:5432/d78fr7pa1g4bjo
+    username: ydzyakwsoahgzl
+    password: b54a79ebd1eed0a2bc8f88c793e34983be394c24b632f06128d3b5c46644031a
+    driver-class-name: org.postgresql.Driver
