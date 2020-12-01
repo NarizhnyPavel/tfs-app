@@ -1,61 +1,44 @@
 package com.TimeForStudy.application.university.service;
 
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
-import com.TimeForStudy.application.university.model.AddUniversityDto;
-import com.TimeForStudy.application.university.model.UniversitiesDto;
-import com.TimeForStudy.application.university.model.UniversityDto;
-import com.TimeForStudy.application.user.model.ProfessorDto;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности учебное заведение
+ * Интерфейс сервиса запросов к учебным заведениям.
  *
  * @author Velikanov Artyom
  */
 public interface UniversityService {
 
     /**
-     * Возвращение учебного заведения по идентификатору.
+     * Получение информации об учебном заведении.
      *
-     * @return учебное заведение.
+     * @return UniversityDto информация об учебном заведении.
      */
-    AddUniversityAndLessonGridDto getUniversityById();
+    AddUniversityAndLessonGridDto getUniversity();
 
     /**
-     * Сохранение учебного заведения.
+     * Редактирование данных об учебном заведении.
      *
-     * @param addUniversityAndLessonGridDto учебное заведение.
-     */
-    void saveUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto);
-
-    /**
-     * Изменение значений учебного заведения.
-     *
-     * @param addUniversityAndLessonGridDto учебное заведение.
+     * @param addUniversityAndLessonGridDto информация об университете.
+     * @return статус редактирования.
      */
     void updateUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto);
 
     /**
-     * Удаление учебного заведения.
+     * Получение списка рабочих дней недели.
      *
-     * @param id идентификатор.
+     * @return список преподавателей.
      */
-    void deleteUniversity(long id);
-
-
-    /**
-     * Возвращение всех существующих учебных заведений.
-     *
-     * @return список учебных заведений.
-     */
-    List<UniversityDto> findAll();
+    List<IdNameDto> findWorkDays();
 
     /**
-     * Возвращение дни недели.
+     * Получение количества недель.
      *
-     * @return дни недели.
+     * @return количество недель.
      */
-    List<UniversitiesDto> findWorkDays();
+    Integer getWeeksNumber();
 
 }

@@ -1,17 +1,20 @@
 package com.TimeForStudy.application.classroom.web;
 
-import com.TimeForStudy.application.classroom.model.AddClassroomDto;
-import com.TimeForStudy.application.classroom.model.ClassroomDto;
-import com.TimeForStudy.application.classroom.model.ClassroomsDto;
 import com.TimeForStudy.application.classroom.service.ClassroomService;
-import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
- * Обработчик запросов кабинета.
+ * Обработчик запросов учебных помещений.
  *
  * @author Velikanov Artyom.
  */
@@ -25,65 +28,65 @@ public class ClassroomController {
     private final ClassroomService classroomService;
 
     /**
-     * Возвращает список кабинетов.
+     * Получение списка всех учебных помещений.
      *
-     * @return список кабинетов.
+     * @return список учебных помещений.
      */
     @GetMapping(value = "/classroom")
-    public List<ClassroomDto> getClassrooms() {
+    public List<IdNameDto> getClassrooms() {
         return classroomService.findAll();
     }
 
     /**
-     * Возвращает список кабинетов.
+     * Получение списка учебных помещений по наименованию.
      *
-     * @return список кабинетов.
+     * @param name наименование учебного помещения.
+     * @return список учебных помещений.
      */
-    @PostMapping(value = "/classrooms")
-    public List<ClassroomsDto> postClassrooms(@RequestBody String name) {
+    @PostMapping(value = "/classroom")
+    public List<IdNameDto> postClassrooms(@RequestBody String name) {
         return classroomService.findAllClassrooms(name);
     }
 
-
     /**
-     * Возвращает кабинет по идентификатору.
+     * Получение учебного помещения по идентификатору.
      *
-     * @param id идентификатор.
-     * @return кабинет
+     * @param id идентификатор учебного помещения.
+     * @return учебное помещение.
      */
     @GetMapping(value = "/classroom/{id}")
-    public ClassroomDto getClassroom(@PathVariable long id) {
+    public IdNameDto getClassroom(@PathVariable Long id) {
         return classroomService.getClassroomById(id);
     }
 
     /**
-     * Добавляет новый кабинет.
+     * Создание нового учебного помещения.
      *
-     * @param addClassroomDto кабинет.
+     * @param classroom модель учебного помещения.
      */
-    @PostMapping(value = "/classroom/add")
-    public void addClassroom(@RequestBody AddClassroomDto addClassroomDto) {
-        classroomService.saveClassroom(addClassroomDto);
+    @PostMapping(value = "/admin/classroom")
+    public void addClassroom(@RequestBody IdNameDto classroom) {
+        classroomService.saveClassroom(classroom);
     }
 
     /**
-     * Изменяет данный кабинет.
+     * Редактирование учебного помещения.
      *
-     * @param id идентификатор.
-     * @param addClassroomDto кабинет.
+     * @param id идентификатор учебного помещения.
+     * @param classroom модель учебного помещения.
      */
-    @PutMapping(value = "/classroom/update/{id}")
-    public void updateClassroom(@PathVariable long id, @RequestBody AddClassroomDto addClassroomDto) {
-        classroomService.updateClassroom(id, addClassroomDto);
+    @PutMapping(value = "/admin/classroom/{id}")
+    public void updateClassroom(@PathVariable Long id, @RequestBody IdNameDto classroom) {
+        classroomService.updateClassroom(id, classroom);
     }
 
     /**
-     * Удаляет кабинет.
+     * Удаление учебного помещения.
      *
      * @param id идентификатор.
      */
-    @DeleteMapping(value = "/classroom/delete/{id}")
-    public void deleteClassroom(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/classroom/{id}")
+    public void deleteClassroom(@PathVariable Long id) {
         classroomService.deleteClassroom(id);
     }
 

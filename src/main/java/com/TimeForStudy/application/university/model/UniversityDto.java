@@ -3,57 +3,50 @@ package com.TimeForStudy.application.university.model;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
 import lombok.Data;
 
-import javax.persistence.Column;
-
 /**
- * Модель представления сущности учебного заведения
+ * Модель представления сущности учебного заведения.
  *
  * @author Velikanov Artyom
  */
 @Data
 public class UniversityDto {
 
-    private long id;
-
     /**
-     * Наименование университета
+     * Идентификатор.
+     */
+    private Long id;
+    /**
+     * Наименование университета.
      */
     private String name;
-
     /**
-     * Количество деления недель
+     * Количество деления недель.
      */
-    private int weeks;
-
+    private Integer weeks;
     /**
-     * Количество учебных дней
+     * Количество учебных дней.
      */
     private Week workDays;
-
     /**
-     * Цвет №1
+     * Цвет №1.
      */
     private String color1;
-
     /**
-     * Цвет №2
+     * Цвет №2.
      */
     private String color2;
-
     /**
-     * Цвет №3
+     * Цвет №3.
      */
     private String color3;
-
     /**
-     * Логотип
+     * Логотип.
      */
     private String logotype;
-
     /**
-     * Длительность одного занятия
+     * Длительность одного занятия.
      */
-    private int lessonDuration;
+    private Integer lessonDuration;
 
     public  static  UniversityDto of(UniversityEntity universityEntity) {
         UniversityDto dto = new UniversityDto();
@@ -91,7 +84,7 @@ public class UniversityDto {
         return dto;
     }
 
-    public static UniversityEntity on(UniversityDto universityDto) {
+    public static UniversityEntity convertUniversity(UniversityDto universityDto) {
         UniversityEntity entity = new UniversityEntity();
         entity.setId(universityDto.getId());
         entity.setName(universityDto.getName());

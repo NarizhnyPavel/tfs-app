@@ -1,47 +1,47 @@
 package com.TimeForStudy.application.subject.domain;
 
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
-import com.TimeForStudy.application.subject.model.SubjectDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
- * Сущность преподаваемой дисциплины
+ * Доменная модель <strong>Преподаваямая дисциплина</strong>
  *
  * @author Velikanov Artyom
  */
-@Entity @Data
+@Data
+@Entity
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
 @Table(name = "subject")
 public class SubjectEntity {
 
+    /**
+     * Идентификатор преподаваемой дисциплины.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_subject")
-    @SequenceGenerator(name="seq_subject", sequenceName="SEQ_SUBJECT", allocationSize=1)
-    @Column(name = "id")
-    private long id;
-
+    @SequenceGenerator(name="seq_subject", sequenceName="SEQ_SUBJECT", allocationSize = 1)
+    private Long id;
     /**
-     * Наименование преподаваемой дисциплины
+     * Наименование преподаваемой дисциплины.
      */
     @Column(name = "name")
     private String name;
-
     /**
-     * Сокращение
+     * Сокращение.
      */
     @Column(name = "arc")
     private String arc;
 
-    public SubjectEntity(AddSubjectDto addSubjectDto) {
-        this.name = addSubjectDto.getName();
-        this.arc = addSubjectDto.getArc();
-    }
 }

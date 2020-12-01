@@ -1,14 +1,17 @@
 package com.TimeForStudy.application.group.web;
 
-import com.TimeForStudy.application.group.model.AddGroupDto;
-import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.model.UsersByGroup;
 import com.TimeForStudy.application.group.service.GroupService;
-import com.TimeForStudy.application.user.model.ProfessorDto;
-import com.TimeForStudy.application.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -27,75 +30,76 @@ public class GroupController {
     private final GroupService groupService;
 
     /**
-     * Возвращает список групп.
+     * Получение списка групп.
      *
      * @return список групп.
      */
     @GetMapping(value = "/group")
-    public List<GroupDto> getGroups() {
+    public List<IdNameDto> getGroups() {
         return groupService.findAll();
     }
 
     /**
-     * Возвращает список студентов группы.
+     * Получение списка студентов группы.
      *
-     * @return список групп.
+     * @param id идентификатор группы.
+     * @return список студентов.
      */
-    @GetMapping(value = "/group/students/{id}")
-    public List<UsersByGroup> getGroups(@PathVariable long id) {
+    @GetMapping(value = "/teacher/group/students/{id}")
+    public List<UsersByGroup> getGroups(@PathVariable Long id) {
         return groupService.findStudentsByGroupId(id);
     }
 
     /**
-     * Возвращает список групп.
+     * Получение списка групп по наименованию.
      *
+     * @param name наименование группы.
      * @return список групп.
      */
-    @PostMapping(value = "/groups")
+    @PostMapping(value = "/group")
     public List<GroupsDto> postGroups(@RequestBody String name) {
         return groupService.findAllGroups(name);
     }
 
-
     /**
-     * Возвращает группу по идентификатору.
+     * Получение группы по идентификатору.
      *
-     * @param id идентификатор.
-     * @return группа
+     * @param id идентификатор группы.
+     * @return группа.
      */
     @GetMapping(value = "/group/{id}")
-    public GroupDto getGroup(@PathVariable long id) {
+    public IdNameDto getGroup(@PathVariable Long id) {
         return groupService.getGroupById(id);
     }
 
     /**
-     * Добавляет новую группу.
+     * Добавление группы.
      *
-     * @param addGroupDto группа.
+     * @param group группа.
      */
-    @PostMapping(value = "/group/add")
-    public void addGroup(@RequestBody AddGroupDto addGroupDto) {
-        groupService.saveGroup(addGroupDto);
+    @PostMapping(value = "/admin/group")
+    public void addGroup(@RequestBody IdNameDto group) {
+        groupService.saveGroup(group);
     }
 
     /**
-     * Изменяет данную группу.
+     * Редактирование группы.
      *
-     * @param id идентификатор.
-     * @param addGroupDto группа.
+     * @param id идентификатор группы.
+     * @param group группа.
      */
-    @PutMapping(value = "/group/update/{id}")
-    public void updateGroup(@PathVariable long id, @RequestBody AddGroupDto addGroupDto) {
-        groupService.updateGroup(id, addGroupDto);
+    @PutMapping(value = "/admin/group/{id}")
+    public void updateGroup(@PathVariable Long id, @RequestBody IdNameDto group) {
+        groupService.updateGroup(id, group);
     }
 
     /**
-     * Удаляет группу.
+     * Удаление группы.
      *
-     * @param id идентификатор.
+     * @param id идентификатор группы.
      */
-    @DeleteMapping(value = "/group/delete/{id}")
-    public void deleteGroup(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/group/{id}")
+    public void deleteGroup(@PathVariable Long id) {
         groupService.deleteGroup(id);
     }
 

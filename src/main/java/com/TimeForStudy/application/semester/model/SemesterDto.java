@@ -1,45 +1,32 @@
 package com.TimeForStudy.application.semester.model;
 
-import com.TimeForStudy.application.semester.domain.SemesterEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import javax.persistence.*;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 /**
- * Модель представления сущности семестр
+ * Модель представления сущности семестр.
  *
  * @author Velikanov Artyom
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class SemesterDto {
 
-    private long id;
-
     /**
-     * Дата начала
+     * Идентификатор.
      */
-    @Column(name = "start")
-    private LocalDate start;
-
+    private Long id;
     /**
-     * Дата окончания
+     * Дата начала.
      */
-    @Column(name = "end")
-    private LocalDate end;
+    private LocalDate startDate;
+    /**
+     * Дата окончания.
+     */
+    private LocalDate endDate;
 
-    public static SemesterDto of(SemesterEntity semesterEntity) {
-        SemesterDto dto = new SemesterDto();
-        dto.setId(semesterEntity.getId());
-        dto.setStart(semesterEntity.getStart());
-        dto.setEnd(semesterEntity.getEnd());
-        return dto;
-    }
-
-    public static SemesterEntity on(SemesterDto semesterDto) {
-        SemesterEntity entity = new SemesterEntity();
-        entity.setId(semesterDto.getId());
-        entity.setStart(semesterDto.getStart());
-        entity.setEnd(semesterDto.getEnd());
-        return entity;
-    }
 }

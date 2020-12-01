@@ -1,32 +1,27 @@
 package com.TimeForStudy.application.group.service.impl;
 
-import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
-import com.TimeForStudy.application.group.model.AddGroupDto;
-import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.model.UsersByGroup;
 import com.TimeForStudy.application.group.service.GroupService;
-import com.TimeForStudy.application.user.domain.UserEntity;
-import com.TimeForStudy.application.user.model.ProfessorDto;
-import com.TimeForStudy.application.user.model.UserDto;
+import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.error.ApplicationException;
 import com.TimeForStudy.error.ErrorDescription;
-//import javafx.concurrent.Worker;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.temporal.TemporalField;
-import java.time.temporal.WeekFields;
-import java.util.*;
-import java.util.function.ToIntFunction;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * Реализация сервиса CRUD запросов к сущности группа
+ * Реализация сервиса запросов к группам.
  *
  * @author Velikanov Artyom
  */
@@ -40,79 +35,69 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
 
     /**
-     * Возвращение группы по идентификатору.
+     * Получение группы по идентификатору.
      *
-     * @param id идентификатор.
+     * @param id идентификатор группы.
      * @return группа.
      */
     @Override
-    public GroupDto getGroupById(long id) {
-        GroupEntity groupEntity = groupRepository.findById(id)
+    public IdNameDto getGroupById(Long id) {
+        GroupEntity group = groupRepository.findById(id)
                 .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-        return GroupDto.of(groupEntity);
+        return IdNameDto.of(group.getId(), group.getNumber());
     }
 
-
-
     /**
-     * Возвращает список студентов группы.
+     * Получение списка студентов группы.
      *
-     * @return список групп.
+     * @param id идентификатор группы.
+     * @return список студентов.
      */
     @Override
-    public List<UsersByGroup> findStudentsByGroupId(long id) {
-       GroupEntity groupEntity = groupRepository.findById(id)
-       .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-       List<UserEntity> userEntities = groupEntity.getUsers();
-       Collections.sort(userEntities, new SortbyName());
-       List<UsersByGroup> usersByGroups = new ArrayList<>();
-       for (int i = 1;  i <= userEntities.size(); i++) {
-           usersByGroups.add(
-                   new UsersByGroup(
-                           i,
-                           userEntities.get(i-1).getName(),
-                           userEntities.get(i-1).getRole(),
-                           userEntities.get(i-1).getPhone()
-                   )
-           );
-       }
-       return usersByGroups;
+    //TODO сделать у группы поле Староста
+    public List<UsersByGroup> findStudentsByGroupId(Long id) {
+        GroupEntity group = groupRepository.findById(id)
+                .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        List<User> users = group.getUsers().stream()
+                .sorted(Comparator.comparing(it -> it.getUserInfo().getLastName()))
+                .collect(Collectors.toList());
+        List<UsersByGroup> usersByGroups = new ArrayList<>();
+        IntStream.range(0, users.size())
+                .forEach(i -> usersByGroups.add(
+                        UsersByGroup.of(
+                                i + 1,
+                                2,
+                                users.get(i).getUserInfo().getFullName(),
+                                users.get(i).getPhone()
+                        )
+                ));
+        return usersByGroups;
     }
 
     /**
-     * Сортировка пользователей по имени
-     */
-    class SortbyName implements Comparator<UserEntity> {
-        // Используется для сортировки в порядке возрастания
-        // фио
-        public int compare(UserEntity a, UserEntity b)
-        {
-            return a.getName().charAt(0) - b.getName().charAt(0);
-        }
-    }
-    /**
-     * Сохранение группы.
+     * Добавление группы.
      *
-     * @param addGroupDto группа.
+     * @param group группа.
      */
     @Override
-    public void saveGroup(AddGroupDto addGroupDto) {
-        GroupEntity groupEntity = new GroupEntity(addGroupDto);
-        groupRepository.save(groupEntity);
+    public void saveGroup(IdNameDto group) {
+        GroupEntity entity = new GroupEntity();
+        entity.setNumber(group.getName());
+        groupRepository.save(entity);
     }
 
     /**
-     * Изменение значений группы.
+     * Редактирование группы.
      *
-     * @param id идентификатор.
-     * @param addGroupDto группа.
+     * @param id идентификатор группы.
+     * @param group группа.
      */
     @Override
-    public void updateGroup(long id, AddGroupDto addGroupDto) {
+    public void updateGroup(Long id, IdNameDto group) {
         GroupEntity updated = groupRepository.findById(id)
                 .orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
-        if (addGroupDto.getNumber()!=null) {
-            updated.setNumber(addGroupDto.getNumber());
+        if (StringUtils.isNotBlank(group.getName())) {
+            updated.setNumber(group.getName());
         }
         groupRepository.save(updated);
     }
@@ -120,40 +105,44 @@ public class GroupServiceImpl implements GroupService {
     /**
      * Удаление группы.
      *
-     * @param id идентификатор.
+     * @param id идентификатор группы.
      */
     @Override
-    public void deleteGroup(long id) {
+    public void deleteGroup(Long id) {
+        GroupEntity group = groupRepository.findById(id).orElseThrow(ErrorDescription.GROUP_NOT_FOUNT::exception);
+        if (!CollectionUtils.isEmpty(group.getUsers()))
+            throw new ApplicationException(ErrorDescription.GROUP_HAS_STUDENTS);
         groupRepository.deleteById(id);
     }
 
     /**
-     * Возвращение всех существующих групп.
+     * Получение списка групп.
      *
      * @return список групп.
      */
     @Override
-    public List<GroupDto> findAll() {
-        List<GroupEntity> groupEntities = groupRepository.findAll();
-        return groupEntities.stream().map(GroupDto::of).collect(Collectors.toList());
+    public List<IdNameDto> findAll() {
+        List<GroupEntity> groups = groupRepository.findAll();
+        return groups.stream()
+                .map(it -> IdNameDto.of(it.getId(), it.getNumber()))
+                .collect(Collectors.toList());
     }
 
     /**
-     * Возвращение группы.
+     * Получение списка групп по наименованию.
      *
-     * @return список группы.
+     * @param name наименование группы.
+     * @return список групп.
      */
     @Override
     public List<GroupsDto> findAllGroups(String name) {
-
-        List<GroupEntity> groupEntities = groupRepository.findAll();
-        List<GroupsDto> groupsDtos= new ArrayList<>();
-        for (GroupEntity group : groupEntities) {
+        List<GroupsDto> groups = new ArrayList<>();
+        groupRepository.findAll().forEach(group -> {
             if (group.getNumber().contains(name)) {
-                groupsDtos.add(new GroupsDto(group.getId(), group.getNumber()));
+                groups.add(GroupsDto.of(group.getId(), group.getNumber(), 1));
             }
-        }
-        return groupsDtos;
+        });
+        return groups;
     }
 
 }

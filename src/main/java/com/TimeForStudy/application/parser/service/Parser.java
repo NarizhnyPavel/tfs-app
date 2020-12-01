@@ -1,12 +1,9 @@
 package com.TimeForStudy.application.parser.service;
 
-import com.TimeForStudy.application.classroom.model.AddClassroomDto;
-import com.TimeForStudy.application.group.model.AddGroupDto;
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
+import com.TimeForStudy.application.common.IdNameDto;
+import com.TimeForStudy.application.subject.model.SubjectDto;
 import com.TimeForStudy.application.user.model.AddUserDto;
-import com.TimeForStudy.application.user.model.UserDto;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +19,9 @@ public class Parser {
 
     private String url;
     public ArrayList<AddUserDto> professors;
-    public ArrayList<AddGroupDto> groups;
-    public ArrayList<AddSubjectDto> subjects;
-    public ArrayList<AddClassroomDto> classrooms;
+    public ArrayList<IdNameDto> groups;
+    public ArrayList<SubjectDto> subjects;
+    public ArrayList<IdNameDto> classrooms;
 
     private Parser(){};
 

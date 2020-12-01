@@ -1,44 +1,30 @@
 package com.TimeForStudy.application.lessongrid.model;
 
-import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
-import com.TimeForStudy.application.university.domain.UniversityEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import javax.persistence.*;
+import lombok.NoArgsConstructor;
 
 /**
- * Модель представления сущности сетки расписания
+ * Модель представления сущности сетки расписания.
  *
  * @author Velikanov Artyom
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class LessonGridDto {
 
-    private long id;
-
     /**
-     * Номер пары
+     * Идентификатор.
      */
-    private int lessonNumber;
-
+    private Long id;
     /**
-     * Время лекции
+     * Номер пары.
+     */
+    private Integer lessonNumber;
+    /**
+     * Время лекции.
      */
     private String time;
 
-    public static LessonGridDto of(LessonGridEntity lessonGridEntity) {
-        LessonGridDto dto = new LessonGridDto();
-        dto.setId(lessonGridEntity.getId());
-        dto.setLessonNumber(lessonGridEntity.getLessonNumber());
-        dto.setTime(lessonGridEntity.getTime());
-        return dto;
-    }
-
-    public static LessonGridEntity on(LessonGridDto lessonGridDto) {
-        LessonGridEntity entity = new LessonGridEntity();
-        entity.setId(lessonGridDto.getId());
-        entity.setLessonNumber(lessonGridDto.getLessonNumber());
-        entity.setTime(lessonGridDto.getTime());
-        return entity;
-    }
 }

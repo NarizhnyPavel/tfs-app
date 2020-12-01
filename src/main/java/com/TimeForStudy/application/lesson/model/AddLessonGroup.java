@@ -1,30 +1,34 @@
 package com.TimeForStudy.application.lesson.model;
 
 import com.TimeForStudy.application.group.domain.GroupEntity;
-import com.TimeForStudy.application.group.model.GroupDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Модель добавления связки группы и занятия.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AddLessonGroup {
 
-    private long id;
-
+    /**
+     * Идентификатор.
+     */
+    private Long id;
+    /**
+     * Поле со значением.
+     */
     private String label;
-
-    private int number = 1;
+    /**
+     * Номер.
+     */
+    private Integer number = 1;
 
     public static AddLessonGroup of(GroupEntity groupEntity) {
-        AddLessonGroup dto = new AddLessonGroup();
-        dto.setId(groupEntity.getId());
-        dto.setLabel(groupEntity.getNumber());
-        return dto;
+        return new AddLessonGroup(groupEntity.getId(),
+                groupEntity.getNumber(), Integer.parseInt(groupEntity.getNumber()));
     }
-    public static GroupEntity on(AddLessonGroup addLessonGroup) {
-        GroupEntity entity = new GroupEntity();
-        entity.setId(addLessonGroup.getId());
-        entity.setNumber(addLessonGroup.getLabel());
-        return entity;
-    }
+
 }

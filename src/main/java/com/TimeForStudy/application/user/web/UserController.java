@@ -1,15 +1,19 @@
 package com.TimeForStudy.application.user.web;
 
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.lesson.model.AddLessonGroup;
-import com.TimeForStudy.application.otherDataClasses.VerificationPair;
-import com.TimeForStudy.application.user.model.AddUserDto;
-import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.model.RoleDto;
 import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
-import com.TimeForStudy.application.user.service.LoginUserService;
 import com.TimeForStudy.application.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,103 +32,96 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * {@link LoginUserService}
-     */
-    private final LoginUserService loginUserService;
-
-
-    /**
-     * Возвращает список пользователей.
+     * Получение списка пользователей.
      *
      * @return список пользователей.
      */
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/admin/user")
     public List<UserDto> getUsers() {
         return userService.findAll();
     }
 
     /**
-     * Возвращает список преподавателей.
+     * Поиск по ФИО пользователей.
      *
-     * @return список преподавателей.
+     * @param name подстрока, по которой осуществляется поиск.
+     * @return список пользователей.
      */
-    @PostMapping(value = "/professors")
-    public List<ProfessorDto> getProfessors(@RequestBody String name) {
-        return userService.findAllProfessors(name);
+    @PostMapping(value = "/admin/user")
+    public List<UserDto> getUsers(@RequestBody String name) {
+        return userService.findByUserName(name);
     }
 
     /**
-     * Возвращает пользователя по идентификатору.
+     * Получение списка ролей пользователя.
+     *
+     * @return список ролей.
+     */
+    @GetMapping(value = "/admin/user/role")
+    public List<RoleDto> getUserRoles() {
+        return userService.getUserRoles();
+    }
+
+    /**
+     * Смена роли пользователя.
+     *
+     * @param id идентификатор пользователя.
+     * @param roleDto модель выбранной роли.
+     */
+    @PutMapping(value = "/admin/user/role/{id}")
+    public void changeUserRole(@PathVariable Long id, @RequestBody RoleDto roleDto){
+        userService.changeUserRole(id, roleDto);
+    }
+
+    /**
+     * Поиск преподавателей с поиском по подстроке в имени.
+     *
+     * @param name подстрока.
+     * @return список преподвателей.
+     */
+    @PostMapping(value = "/admin/professors")
+    public List<IdNameDto> getProfessors(@RequestBody String name) {
+        return userService.getProfessors(name);
+    }
+
+    /**
+     * Получение пользователя по идентификатору.
      *
      * @param id идентификатор.
      * @return пользователь.
      */
-    @GetMapping(value = "/user/{id}")
-    public UserDto getUser(@PathVariable long id) {
-        return userService.getUserById(id);
-    }
+    @GetMapping(value = "/admin/user/{id}")
+    public UserDto getUser(@PathVariable Long id) { return userService.findById(id); }
 
     /**
-     * Возвращает групп пользователя по идентификатору.
+     * Получение списка групп пользователя по идентификатору.
      *
      * @param id идентификатор.
-     * @return пользователь.
+     * @return список групп.
      */
     @GetMapping(value = "/user/groups/{id}")
-    public List<AddLessonGroup> getUserGroups(@PathVariable long id) {
-        return userService.getUserGroupsById(id);
+    public List<AddLessonGroup> getUserGroups(@PathVariable Long id) {
+        return userService.getUserGroups(id);
     }
 
-    /**
-     * Добавляет нового пользователя.
-     *
-     * @param addUserDto пользователь.
-     */
-    @PostMapping(value = "/user/add")
-    public void addUser(@RequestBody AddUserDto addUserDto) {
-        userService.saveUser(addUserDto);
-    }
-
-    /**
-     * Изменяет пользователя.
+     /**
+     * Редактирование информацию о текущем пользователе.
      *
      * @param updateUserDto пользователь.
      */
-    @PostMapping(value = "/user/update")
-    public String updateUser(@RequestBody UpdateUserDto updateUserDto) {
-        return userService.updateUser(updateUserDto);
+    @PutMapping(value = "/user")
+    public void updateUser(@RequestBody UpdateUserDto updateUserDto) {
+        userService.updateCurrentUser(updateUserDto);
     }
 
     /**
-     * Удаляет пользователя.
+     * Удаление пользователя.
      *
      * @param id идентификатор.
      */
-    @DeleteMapping(value = "/user/delete/{id}")
-    public void deleteUser(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/user/{id}")
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-    }
-
-    /**
-     * Проверка кода в настройках.
-     *
-     * @param verificationPair пара телефон - код.
-     * @return пользователь.
-     */
-    @PostMapping(value = "user/check/code")
-    public String checkCode(@RequestBody VerificationPair verificationPair) {
-        return loginUserService.settingsCheckCode(verificationPair);
-    }
-
-    /**
-     * Проверка телефона в настройках.
-     *
-     * @param phone телефон.
-     * @return статус.
-     */
-    @PostMapping(value = "user/edit/phone")
-    public String checkPhone(@RequestBody String phone) {
-        return loginUserService.settingsSendCode(phone);
     }
 
 }

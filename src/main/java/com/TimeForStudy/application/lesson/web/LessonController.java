@@ -1,9 +1,24 @@
 package com.TimeForStudy.application.lesson.web;
 
-import com.TimeForStudy.application.lesson.model.*;
+import com.TimeForStudy.application.lesson.model.BoolLessonDto;
+import com.TimeForStudy.application.lesson.model.DayDto;
+import com.TimeForStudy.application.lesson.model.GetInfoLessonDto;
+import com.TimeForStudy.application.lesson.model.LessonByDto;
+import com.TimeForStudy.application.lesson.model.LessonEditInfo;
+import com.TimeForStudy.application.lesson.model.LessonStopDto;
+import com.TimeForStudy.application.lesson.model.NewLessonDto;
+import com.TimeForStudy.application.lesson.model.SearchDto;
+import com.TimeForStudy.application.lesson.model.UpdatePosition;
+import com.TimeForStudy.application.lesson.model.ValidateSearch;
 import com.TimeForStudy.application.lesson.service.LessonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,31 +37,21 @@ public class LessonController {
     private final LessonService lessonService;
 
     /**
-     * Возвращает список занятий.
+     * Отмена занятия.
      *
-     * @return список занятий.
-     */
-    @GetMapping(value = "/lesson")
-    public List<LessonDto> getLessons() {
-        return lessonService.findAll();
-    }
-
-    /**
-     * Возвращение расписания занятий для студента.
-     *
-     * @param lessonStopDto информация о лекции.
+     * @param lessonStopDto информация о занятии.
      * @return статус.
      */
-    @PostMapping(value = "lesson/stop")
+    @PostMapping(value = "/teacher/lesson/stop")
     public String inLessonStop(@RequestBody LessonStopDto lessonStopDto) {
         return lessonService.inLessonStop(lessonStopDto);
     }
 
     /**
-     * Отмена пары.
+     * Получение расписание занятий для главной страницы пользователя.
      *
-     * @param getInfoLessonDto информация о лекции.
-     * @return занятие.
+     * @param getInfoLessonDto информация о занятие.
+     * @return расписание занятий.
      */
     @PostMapping(value = "lesson/info")
     public List<DayDto> getLessonInfo(@RequestBody GetInfoLessonDto getInfoLessonDto) {
@@ -54,10 +59,10 @@ public class LessonController {
     }
 
     /**
-     * Возвращение расписания из поиска.
+     * Получение расписания из поиска.
      *
-     * @param lessonByDto информация о лекции.
-     * @return занятие.
+     * @param lessonByDto информация о занятие.
+     * @return расписание занятий.
      */
     @PostMapping(value = "lesson/by")
     public List<DayDto> getLessonBy(@RequestBody LessonByDto lessonByDto) {
@@ -71,27 +76,28 @@ public class LessonController {
      * @return список валидации.
      */
     @PostMapping(value = "/search")
-    public  List<SearchDto> validatedSearch(@RequestBody ValidateSearch validateSearch) {
+    public List<SearchDto> validatedSearch(@RequestBody ValidateSearch validateSearch) {
         return lessonService.getSearch(validateSearch);
     }
 
     /**
-     * Возвращает данные для переноса лекции.
+     * Получение данных для переноса занятия.
      *
-     * @param id идентификатор.
-     * @return занятие
+     * @param id идентификатор занятия.
+     * @return занятие.
      */
-    @GetMapping(value = "/lesson/edit/{id}")
-    public LessonEditInfo getLesson(@PathVariable long id) {
+    @GetMapping(value = "/teacher/lesson/{id}")
+    public LessonEditInfo getLesson(@PathVariable Long id) {
         return lessonService.getLessonEdit(id);
     }
 
     /**
-     * Проверяет новое занятие.
+     * Проверка новых значений для занятия.
      *
      * @param newLessonDto занятие.
+     * @return список признаков валидации данных.
      */
-    @PostMapping(value = "/lesson/check")
+    @PostMapping(value = "/teacher/lesson/check")
     public List<BoolLessonDto> checkLesson(@RequestBody NewLessonDto newLessonDto) {
         return lessonService.checkLesson(newLessonDto);
     }
@@ -100,29 +106,32 @@ public class LessonController {
      * Добавляет новое занятие.
      *
      * @param newLessonDto занятие.
+     * @return статус добавления занятия.
      */
-    @PostMapping(value = "/lesson/add")
+    @PostMapping(value = "/admin/lesson")
     public String addLesson(@RequestBody NewLessonDto newLessonDto) {
         return lessonService.addLesson(newLessonDto);
     }
 
     /**
-     * Изменяет данное занятие.
+     * Перенос занятия.
      *
-     * @param updatePosition занятие.
+     * @param updatePosition данные для переноса.
+     * @return статус переноса занятия.
      */
-    @PostMapping(value = "/lesson/update")
+    @PutMapping(value = "/teacher/lesson/move")
     public String updateLesson(@RequestBody UpdatePosition updatePosition) {
         return lessonService.updateLesson(updatePosition);
     }
 
     /**
-     * Удаляет занятие.
+     * Удаление занятие.
      *
-     * @param id идентификатор.
+     * @param id идентификатор занятия.
+     * @return статус удаления занятия.
      */
-    @DeleteMapping(value = "/lesson/delete/{id}")
-    public String deleteLesson(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/lesson/{id}")
+    public String deleteLesson(@PathVariable Long id) {
         return lessonService.deleteLesson(id);
     }
 

@@ -1,0 +1,2 @@
+--Тестовые данные учебного заведения--
+INSERT INTO university (id, name, weeks, work_days, lesson_duration, color1, logotype_url, color2, color3) VALUES (seq_university.nextval, 'Санкт-Петербургский государственный электротехнический университет «ЛЭТИ» имени В. И. Ульянова (Ленина)', 2, '123456', 90, '05336e', '', 'bb8d54', '6d6e71');

@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.TimeForStudy.config.JwtProperties",
+      "sourceType": "com.TimeForStudy.config.JwtProperties"
+    },
+    {
+      "name": "jwt.token",
+      "type": "com.TimeForStudy.config.JwtProperties",
+      "sourceType": "com.TimeForStudy.config.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.token.secret",
+      "type": "java.lang.String",
+      "sourceType": "com.TimeForStudy.config.JwtProperties$token",
+      "description": "Закрытый ключ jwt токена."
+    },
+    {
+      "name": "jwt.token.expire",
+      "type": "java.lang.String",
+      "sourceType": "com.TimeForStudy.config.JwtProperties$token",
+      "description": "Время жизни ключа."
+    }
+  ] }

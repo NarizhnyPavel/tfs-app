@@ -14,7 +14,7 @@ import java.time.temporal.WeekFields;
 import java.util.Locale;
 
 /**
- * Сервис для работы с временем
+ * Реализация сервиса для работы с временем.
  *
  * @author Velikanov Artyom
  */
@@ -28,45 +28,51 @@ public class DateServiceImpl implements DateService {
     private final SemesterRepository semesterRepository;
 
     /**
-     * Возвращение номера текущей недели.
+     * Получение номера текущей недели и дня
+     * относительно начала семестра.
      *
-     * @return номер недели.
+     * @param semesterId идентификатор семестра.
+     * @return номер недели и номер дня недели.
      */
     @Override
-    public DateDto getWeekNow(long semesterId) {
+    public DateDto getWeekNow(Long semesterId) {
 
         SemesterEntity semesterEntity = semesterRepository.findById(semesterId)
                 .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
         // Объект для получения номера недели с начала года
         TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
         // Номер недели с начала года недели начала семестра
-        int numberWeekStartSemester = semesterEntity.getStart().get(woy);
+        Integer numberWeekStartSemester = semesterEntity.getStart().get(woy);
         // Номер текущей недели
-        int numberWeekNow = LocalDate.now().get(woy);
+        Integer numberWeekNow = LocalDate.now().get(woy);
         // Количество недель (делителей) семестра
-        int countWeekBySemester = semesterEntity.getUniversity().getWeeks();
+        Integer countWeekBySemester = semesterEntity.getUniversity().getWeeks();
         // Номер текущей недели относительно семестра
-        int numberWeekBySemester = (numberWeekNow%countWeekBySemester)-(numberWeekStartSemester%countWeekBySemester);
-        if (numberWeekBySemester<0) {
-            numberWeekBySemester= countWeekBySemester - numberWeekBySemester;
+        Integer numberWeekBySemester = (numberWeekNow % countWeekBySemester) - (numberWeekStartSemester % countWeekBySemester);
+        if (numberWeekBySemester < 0) {
+            numberWeekBySemester = countWeekBySemester - numberWeekBySemester;
         }
-        numberWeekBySemester+=1;
-        return new DateDto(numberWeekBySemester, LocalDate.now().getDayOfWeek().getValue());
+        numberWeekBySemester += 1;
+        return DateDto.of(numberWeekBySemester, LocalDate.now().getDayOfWeek().getValue());
     }
 
     /**
-     * Возвращает день и месяц необходимого запроса дня.
+     * Получение дня и месяца необходимого запроса дня.
      *
-     * @return номер недели.
+     * @param numberWeek номер недели.
+     * @param weekNow номер текущей недели.
+     * @param dayNow номер текущего дня.
+     * @param weekRequest запрашиваемая неделя.
+     * @param dayRequest запрашиваемый день.
+     * @return день и месяц.
      */
     @Override
-    public LocalDate getDayRequest(int numberWeek,int weekNow, int dayNow, int weekRequest, int dayRequest) {
-
-        int numberTest = 0;
-        if (weekNow>weekRequest) {
-            numberTest = (weekRequest + numberWeek - weekNow)*7 + (dayRequest - dayNow);
+    public LocalDate getDayRequest(Integer numberWeek, Integer weekNow, Integer dayNow, Integer weekRequest, Integer dayRequest) {
+        Integer numberTest;
+        if (weekNow > weekRequest) {
+            numberTest = (weekRequest + numberWeek - weekNow) * 7 + (dayRequest - dayNow);
         } else {
-            numberTest = (weekRequest - weekNow)*7 + (dayRequest - dayNow);
+            numberTest = (weekRequest - weekNow) * 7 + (dayRequest - dayNow);
         }
         LocalDate request = LocalDate.now().plusDays(numberTest);
         return request;

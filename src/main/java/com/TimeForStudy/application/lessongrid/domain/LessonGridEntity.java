@@ -1,63 +1,57 @@
 package com.TimeForStudy.application.lessongrid.domain;
 
-import com.TimeForStudy.application.lessongrid.model.AddLessonGridDto;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
-import com.TimeForStudy.application.university.model.AddUniversityDto;
-import com.TimeForStudy.application.university.model.LessonGridPosition;
-import com.TimeForStudy.application.university.model.UniversityDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
- * Сущность сетки расписания
+ * Доменная модель <strong>Сетка расписания</strong>
  *
  * @author Velikanov Artyom
  */
-@Entity @Data
+@Data
+@Entity
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
 @Table(name = "lesson_grid")
 public class LessonGridEntity {
 
+    /**
+     * Идентификатор сетки расписания.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_lesson_grid")
-    @SequenceGenerator(name="seq_lesson_grid", sequenceName="SEQ_LESSON_GRID", allocationSize=1)
-    @Column(name = "id")
-    private long id;
-
+    @SequenceGenerator(name="seq_lesson_grid", sequenceName="SEQ_LESSON_GRID", allocationSize = 1)
+    private Long id;
     /**
-     * Номер пары
+     * Номер пары.
      */
     @Column(name = "lesson_number")
-    private int lessonNumber;
-
+    private Integer lessonNumber;
     /**
-     * Время лекции
+     * Время лекции.
      */
     @Column(name = "time")
     private String time;
-
     /**
-     * Университет
+     * Университет.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id")
     private UniversityEntity university;
 
-    public LessonGridEntity(AddLessonGridDto addLessonGridDto) {
-        this.lessonNumber = addLessonGridDto.getLessonNumber();
-        this.time = addLessonGridDto.getTime();
-        this.university = UniversityDto.on(addLessonGridDto.getUniversity());
-    }
-
-    public LessonGridEntity (String time, int lessonNumber, UniversityEntity universityEntity) {
-        this.lessonNumber = lessonNumber;
-        this.time = time;
-        this.university = universityEntity;
-    }
 }

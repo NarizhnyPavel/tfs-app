@@ -1,23 +1,20 @@
 package com.TimeForStudy.application.subject.service.impl;
 
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.subject.domain.SubjectEntity;
 import com.TimeForStudy.application.subject.domain.SubjectRepository;
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
-import com.TimeForStudy.application.subject.model.SubjectsDto;
 import com.TimeForStudy.application.subject.service.SubjectService;
-import com.TimeForStudy.application.user.domain.UserEntity;
-import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Реализация сервиса CRUD запросов к сущности преподаваемая дисциплина
+ * Реализация сервиса запросов к преподаваемым дисциплинам.
  *
  * @author Velikanov Artyom
  */
@@ -31,44 +28,46 @@ public class SubjectServiceImpl implements SubjectService {
     private final SubjectRepository subjectRepository;
 
     /**
-     * Возвращение преподаваемой дисциплины по идентификатору.
+     * Получение преподаваемой дисциплины по идентификатору.
      *
      * @param id идентификатор.
-     * @return преподаваемая дисциплина.
+     * @return преподаваемая дисциплина
      */
     @Override
-    public SubjectDto getSubjectById(long id) {
-        SubjectEntity subjectEntity = subjectRepository.findById(id)
+    public SubjectDto getSubjectById(Long id) {
+        SubjectEntity subject = subjectRepository.findById(id)
                 .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
-        return SubjectDto.of(subjectEntity);
+        return SubjectDto.of(subject.getId(), subject.getName(), subject.getArc());
     }
 
     /**
-     * Сохранение преподаваемой дисциплины.
+     * Добавление преподаваемой дисциплины.
      *
-     * @param addSubjectDto преподаваемая дисциплина.
+     * @param subject преподаваемая дисциплина.
      */
     @Override
-    public void saveSubject(AddSubjectDto addSubjectDto) {
-        SubjectEntity subjectEntity = new SubjectEntity(addSubjectDto);
-        subjectRepository.save(subjectEntity);
+    public void saveSubject(SubjectDto subject) {
+        SubjectEntity entity = new SubjectEntity();
+        entity.setArc(subject.getArc());
+        entity.setName(subject.getName());
+        subjectRepository.save(entity);
     }
 
     /**
-     * Изменение значений преподаваемой дисциплины.
+     * Редактирование преподаваемой дисциплины.
      *
-     * @param id идентификатор.
-     * @param addSubjectDto преподаваемая дисциплина.
+     * @param id         идентификатор.
+     * @param subjectDto преподаваемая дисциплина.
      */
     @Override
-    public void updateSubject(long id, AddSubjectDto addSubjectDto) {
+    public void updateSubject(Long id, SubjectDto subjectDto) {
         SubjectEntity updated = subjectRepository.findById(id)
                 .orElseThrow(ErrorDescription.SUBJECT_NOT_FOUNT::exception);
-        if (addSubjectDto.getName()!=null) {
-            updated.setName(addSubjectDto.getName());
+        if (Objects.nonNull(subjectDto.getName())) {
+            updated.setName(subjectDto.getName());
         }
-        if (addSubjectDto.getArc()!=null) {
-            updated.setArc(addSubjectDto.getArc());
+        if (Objects.nonNull(subjectDto.getArc())) {
+            updated.setArc(subjectDto.getArc());
         }
         subjectRepository.save(updated);
     }
@@ -79,36 +78,33 @@ public class SubjectServiceImpl implements SubjectService {
      * @param id идентификатор.
      */
     @Override
-    public void deleteSubject(long id) {
+    public void deleteSubject(Long id) {
         subjectRepository.deleteById(id);
     }
 
     /**
-     * Возвращение всех существующих преподаваемых дисциплин.
+     * Получение списка преподаваемых дисциплин.
      *
-     * @return список преподаваемый дисциплин.
+     * @return список преподаваемых дисциплин.
      */
     @Override
     public List<SubjectDto> findAll() {
-        List<SubjectEntity> subjectEntities = subjectRepository.findAll();
-        return subjectEntities.stream().map(SubjectDto::of).collect(Collectors.toList());
+        return subjectRepository.findAll().stream()
+                .map(it -> SubjectDto.of(it.getId(), it.getName(), it.getArc()))
+                .collect(Collectors.toList());
     }
 
     /**
-     * Возвращение всех существующих преподаваемых дисциплин.
+     * Получение дисциплин по наименованию.
      *
-     * @return список преподаваемый дисциплин.
+     * @param name наименование дисциплины.
+     * @return список преподаваемых дисциплин.
      */
     @Override
-    public List<SubjectsDto> findAllSubjects(String name) {
-
-        List<SubjectEntity> subjectEntities = subjectRepository.findAll();
-        List<SubjectsDto> subjectsDtos = new ArrayList<>();
-        for (SubjectEntity subject : subjectEntities) {
-            if (subject.getName().contains(name)) {
-                subjectsDtos.add(new SubjectsDto(subject.getId(), subject.getName()));
-            }
-        }
-        return subjectsDtos;
+    public List<IdNameDto> findAllSubjects(String name) {
+        return subjectRepository.findAll().stream()
+                .filter(it -> it.getName().contains(name))
+                .map(subject -> IdNameDto.of(subject.getId(), subject.getName()))
+                .collect(Collectors.toList());
     }
 }

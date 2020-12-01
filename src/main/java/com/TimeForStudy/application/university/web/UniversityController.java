@@ -1,16 +1,13 @@
 package com.TimeForStudy.application.university.web;
 
-import com.TimeForStudy.application.university.domain.UniversityEntity;
-import com.TimeForStudy.application.university.domain.UniversityRepository;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
-import com.TimeForStudy.application.university.model.AddUniversityDto;
-import com.TimeForStudy.application.university.model.UniversitiesDto;
-import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.application.university.service.UniversityService;
-import com.TimeForStudy.application.user.model.ProfessorDto;
-import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -29,82 +26,45 @@ public class UniversityController {
     private final UniversityService universityService;
 
     /**
-     * {@link UniversityRepository}
-     */
-    private final UniversityRepository universityRepository;
-
-    /**
-     * Возвращает список занятий.
-     *
-     * @return список занятий.
-     */
-    @GetMapping(value = "/universities")
-    public List<UniversityDto> getUniversities() {
-        return universityService.findAll();
-    }
-
-    /**
-     * Возвращает количество недель.
+     * Получение количества недель.
      *
      * @return количество недель.
      */
     @GetMapping(value = "/university/weeks")
-    public int getWeeks() {
-        UniversityEntity universityEntity = universityRepository.findById((long) 1).orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-        return universityEntity.getWeeks();
+    public Integer getWeeks() {
+        return universityService.getWeeksNumber();
     }
 
     /**
-     * Возвращает список преподавателей.
+     * Получение списка рабочих дней недели.
      *
      * @return список преподавателей.
      */
-    @PostMapping(value = "/workdays")
-    public List<UniversitiesDto> postWorkDays() {
+    @GetMapping(value = "/university/workdays")
+    public List<IdNameDto> postWorkDays() {
         return universityService.findWorkDays();
     }
 
-
     /**
-     * Возвращает информации об унивкрситете
-     * .
+     * Получение информации об учебном заведении.
      *
-     * @return UniversityDto информация об университете
+     * @return UniversityDto информация об учебном заведении.
      */
     @GetMapping(value = "/university")
     public AddUniversityAndLessonGridDto getUniversity() {
-        return universityService.getUniversityById();
+        return universityService.getUniversity();
     }
 
     /**
-     * Добавляет новое занятие.
-     *
-     * @param addUniversityAndLessonGridDto занятие.
-     */
-    @PostMapping(value = "university/add")
-    public String addUniversity(@RequestBody AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
-        universityService.saveUniversity(addUniversityAndLessonGridDto);
-        return "success";
-    }
-
-    /**
-     * Изменяет данные об университете.
+     * Редактирование данных об учебном заведении.
      *
      * @param addUniversityAndLessonGridDto информация об университете.
+     * @return статус редактирования.
      */
-    @PostMapping(value = "/university/update")
+    @PutMapping(value = "/admin/university")
     public String updateUniversity(@RequestBody AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
         universityService.updateUniversity(addUniversityAndLessonGridDto);
         return "success";
     }
 
-    /**
-     * Удаляет занятие.
-     *
-     * @param id идентификатор.
-     */
-    @DeleteMapping(value = "/university/delete/{id}")
-    public void deleteUniversity(@PathVariable long id) {
-        universityService.deleteUniversity(id);
-    }
 }

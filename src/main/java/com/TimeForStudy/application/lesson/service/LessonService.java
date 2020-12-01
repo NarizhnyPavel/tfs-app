@@ -5,92 +5,82 @@ import com.TimeForStudy.application.lesson.model.*;
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности занятие
+ * Интерфейс сервис запросов занятия.
  *
  * @author Velikanov Artyom
  */
 public interface LessonService {
 
     /**
-     * Возвращение занятия по идентификатору.
+     * Получение данных для переноса занятия.
      *
-     * @param id идентификатор.
+     * @param id идентификатор занятия.
      * @return занятие.
      */
-    LessonDto getLessonById(long id);
+    LessonEditInfo getLessonEdit(Long id);
 
     /**
-     * Возвращает данные для переноса лекции.
+     * Получение расписание занятий для главной страницы пользователя.
      *
-     * @param id идентификатор.
-     * @return занятие
-     */
-    LessonEditInfo getLessonEdit(long id);
-
-    /**
-     * Возвращение расписания занятий.
-     *
-     * @param getInfoLessonDto информация о расписании.
-     * @return список дней.
+     * @param getInfoLessonDto информация о занятие.
+     * @return расписание занятий.
      */
     List<DayDto> getLessonInfo(GetInfoLessonDto getInfoLessonDto);
 
     /**
-     * Отмена занятия на неделю.
+     * Отмена занятия.
      *
-     * @param lessonStopDto информация о лекции.
+     * @param lessonStopDto информация о занятии.
      * @return статус.
      */
     String inLessonStop(LessonStopDto lessonStopDto);
 
     /**
-     * Возвращение расписания на поиск.
+     * Получение расписания из поиска.
      *
-     * @param lessonByDto информация о расписании.
-     * @return список дней.
+     * @param lessonByDto информация о занятие.
+     * @return расписание занятий.
      */
     List<DayDto> getLessonBy(LessonByDto lessonByDto);
 
     /**
-     * Валидация поиска.
+     * Валидация в поиске.
      *
-     * @param validateSearch строка валидации и тип.
-     * @return список поиска.
+     * @param validateSearch наименование и тип.
+     * @return список валидации.
      */
     List<SearchDto> getSearch(ValidateSearch validateSearch);
 
     /**
-     * Провеняет занятия.
+     * Проверка новых значений для занятия.
      *
      * @param newLessonDto занятие.
+     * @return список признаков валидации данных.
      */
     List<BoolLessonDto> checkLesson(NewLessonDto newLessonDto);
 
     /**
-     * Сохранение занятия.
+     * Добавляет новое занятие.
      *
      * @param newLessonDto занятие.
+     * @return статус добавления занятия.
      */
     String addLesson(NewLessonDto newLessonDto);
 
     /**
-     * Изменение значений занятия.
+     * Перенос занятия.
      *
-     * @param updatePosition Обновлённые данные.
+     * @param updatePosition данные для переноса.
+     * @return статус переноса занятия.
      */
     String updateLesson(UpdatePosition updatePosition);
 
     /**
-     * Удаление занятия.
+     * Удаление занятие.
      *
-     * @param id идентификатор.
+     * @param id идентификатор занятия.
+     * @return статус удаления занятия.
      */
-    String deleteLesson(long id);
+    String deleteLesson(Long id);
 
-    /**
-     * Возвращение всех существующих занятий.
-     *
-     * @return список занятий.
-     */
-    List<LessonDto> findAll();
 }

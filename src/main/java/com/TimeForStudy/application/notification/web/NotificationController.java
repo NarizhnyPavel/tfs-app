@@ -1,11 +1,10 @@
 package com.TimeForStudy.application.notification.web;
 
-import com.TimeForStudy.application.notification.model.AddNotificationDto;
 import com.TimeForStudy.application.notification.model.NotificationDto;
-import com.TimeForStudy.application.notification.model.NotificationStringDto;
 import com.TimeForStudy.application.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,36 +23,13 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     /**
-     * Возвращает список уведомлений.
+     * Получение уведомлений для текущего пользователя.
      *
-     * @return список уведомлений.
+     * @return уведомления.
      */
-    @GetMapping(value = "/notifications")
-    public List<NotificationDto> getNotifications() {
-        return notificationService.findAll();
+    @GetMapping(value = "/notification")
+    public List<NotificationDto> getNotification() {
+        return notificationService.getNotifications();
     }
 
-    /**
-     * Возвращает уведомление по идентификатору пользователя.
-     *
-     * @param id идентификатор.
-     * @return уведомление
-     */
-    @GetMapping(value = "/notification/{id}")
-    public List<NotificationStringDto> getNotification(@PathVariable long id) {
-        return notificationService.getNotificationById(id);
-    }
-
-    /**
-     * Добавляет новое уведомление.
-     *
-     * @param addNotificationDto уведомление.
-     */
-    @PostMapping(value = "/notification/add")
-    public void addNotification(@RequestBody AddNotificationDto addNotificationDto) {
-        notificationService.saveNotification(addNotificationDto);
-    }
-
-
-
-    }
+}

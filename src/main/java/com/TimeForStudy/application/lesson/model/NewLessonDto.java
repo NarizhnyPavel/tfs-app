@@ -1,47 +1,45 @@
 package com.TimeForStudy.application.lesson.model;
 
-import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.group.model.GroupsDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 /**
- * Модель добавления лекции.
+ * Модель добавления занятия.
  *
  * @author Velikanov Artyom.
  */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class NewLessonDto {
 
     /**
      *  Позиция.
      */
     private List<PositionDto> position;
-
     /**
      *  Кабинет, в котором проходит занятие.
      */
-    private long classroom;
-
+    private Long classroom;
     /**
      * Предмет преподаваемый на занятии.
      */
-    private long subject;
-
+    private Long subject;
     /**
      * Преподаватель, который проводит занятие.
      */
-    private long professor;
-
+    private Long professor;
     /**
      * Тип занятия.
      */
-    private long lessonType;
-
+    private Long lessonType;
     /**
      * Список групп.
      */
-    private List<AddLessonGroup> groups;
+    private List<GroupsDto> groups;
 }

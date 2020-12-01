@@ -12,17 +12,32 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Week {
 
+    /**
+     * Понедельник.
+     */
     private boolean monday = false;
-
+    /**
+     * Вторник.
+     */
     private boolean tuesday = false;
-
+    /**
+     * Среда.
+     */
     private boolean wednesday = false;
-
+    /**
+     * Четверг.
+     */
     private boolean thursday = false;
-
+    /**
+     * Пятница.
+     */
     private boolean friday = false;
-
+    /**
+     * Суббота.
+     */
     private boolean saturday = false;
-
+    /**
+     * Воскресенье.
+     */
     private boolean sunday = false;
 }

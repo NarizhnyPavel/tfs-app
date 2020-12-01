@@ -1,59 +1,59 @@
 package com.TimeForStudy.application.subject.service;
 
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
-import com.TimeForStudy.application.subject.model.SubjectsDto;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности преподаваемая дисциплина
+ * Интерфейс сервиса запросов к преподаваемым дисциплинам.
  *
  * @author Velikanov Artyom
  */
 public interface SubjectService {
 
     /**
-     * Возвращение преподаваемой дисциплины по идентификатору.
+     * Получение преподаваемой дисциплины по идентификатору.
      *
      * @param id идентификатор.
-     * @return преподаваемая дисциплина.
+     * @return преподаваемая дисциплина
      */
-    SubjectDto getSubjectById(long id);
+    SubjectDto getSubjectById(Long id);
 
     /**
-     * Сохранение преподаваемой дисциплины.
+     * Добавление преподаваемой дисциплины.
      *
-     * @param addSubjectDto преподаваемая дисциплина.
+     * @param subject преподаваемая дисциплина.
      */
-    void saveSubject(AddSubjectDto addSubjectDto);
+    void saveSubject(SubjectDto subject);
 
     /**
-     * Изменение значений преподаваемой дисциплины.
+     * Редактирование преподаваемой дисциплины.
      *
      * @param id идентификатор.
-     * @param addSubjectDto преподаваемая дисциплина.
+     * @param subjectDto преподаваемая дисциплина.
      */
-    void updateSubject(long id, AddSubjectDto addSubjectDto);
+    void updateSubject(Long id, SubjectDto subjectDto);
 
     /**
      * Удаление преподаваемой дисциплины.
      *
      * @param id идентификатор.
      */
-    void deleteSubject(long id);
+    void deleteSubject(Long id);
 
     /**
-     * Возвращение всех существующих преподаваемых дисциплин.
+     * Получение списка преподаваемых дисциплин.
      *
-     * @return список преподаваемый дисциплин.
+     * @return список преподаваемых дисциплин.
      */
     List<SubjectDto> findAll();
 
     /**
-     * Возвращение всех существующих преподаваемых дисциплин.
+     * Получение дисциплин по наименованию.
      *
-     * @return список преподаваемый дисциплин.
+     * @param name наименовае дисциплины.
+     * @return список преподаваемых дисциплин.
      */
-    List<SubjectsDto> findAllSubjects(String name);
+    List<IdNameDto> findAllSubjects(String name);
 }

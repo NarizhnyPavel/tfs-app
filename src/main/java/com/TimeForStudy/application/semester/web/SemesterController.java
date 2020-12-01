@@ -1,10 +1,15 @@
 package com.TimeForStudy.application.semester.web;
 
-import com.TimeForStudy.application.semester.model.AddSemesterDto;
 import com.TimeForStudy.application.semester.model.SemesterDto;
 import com.TimeForStudy.application.semester.service.SemesterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,54 +28,54 @@ public class SemesterController {
     private final SemesterService semesterService;
 
     /**
-     * Возвращает список семестров.
+     * Получение списка семестров.
      *
      * @return список семестров.
      */
-    @GetMapping(value = "/semester")
+    @GetMapping(value = "/admin/semester")
     public List<SemesterDto> getSemesters() {
         return semesterService.findAll();
     }
 
     /**
-     * Возвращает семестр по идентификатору.
+     * Получение семестра по идентификатору.
      *
      * @param id идентификатор.
-     * @return семестр
+     * @return семестр.
      */
-    @GetMapping(value = "/semester/{id}")
-    public SemesterDto getSemester(@PathVariable long id) {
+    @GetMapping(value = "/admin/semester/{id}")
+    public SemesterDto getSemester(@PathVariable Long id) {
         return semesterService.getSemesterById(id);
     }
 
     /**
-     * Добавляет новый семестр.
+     * Добавление семестра.
      *
-     * @param addSemesterDto семестр.
+     * @param semester семестр.
      */
-    @PostMapping(value = "/semester/add")
-    public void addSemester(@RequestBody AddSemesterDto addSemesterDto) {
-        semesterService.saveSemester(addSemesterDto);
+    @PostMapping(value = "/admin/semester")
+    public void addSemester(@RequestBody SemesterDto semester) {
+        semesterService.saveSemester(semester);
     }
 
     /**
-     * Изменяет данный семестр.
+     * Редактирование семестра.
      *
      * @param id идентификатор.
-     * @param addSemesterDto семестр.
+     * @param semester семестр.
      */
-    @PutMapping(value = "/semester/update/{id}")
-    public void updateSemester(@PathVariable long id, @RequestBody AddSemesterDto addSemesterDto) {
-        semesterService.updateSemester(id, addSemesterDto);
+    @PutMapping(value = "/admin/semester/{id}")
+    public void updateSemester(@PathVariable Long id, @RequestBody SemesterDto semester) {
+        semesterService.updateSemester(id, semester);
     }
 
     /**
-     * Удаляет семестр.
+     * Удаление семестра.
      *
      * @param id идентификатор.
      */
-    @DeleteMapping(value = "/semester/delete/{id}")
-    public void deleteSemester(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/semester/{id}")
+    public void deleteSemester(@PathVariable Long id) {
         semesterService.deleteSemester(id);
     }
 }
