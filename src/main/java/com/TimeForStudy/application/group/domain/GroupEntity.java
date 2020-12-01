@@ -1,54 +1,58 @@
 package com.TimeForStudy.application.group.domain;
 
-import com.TimeForStudy.application.group.model.AddGroupDto;
 import com.TimeForStudy.application.lesson.domain.LessonEntity;
-import com.TimeForStudy.application.user.domain.UserEntity;
+import com.TimeForStudy.application.user.domain.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Сущность группы
+ * Доменная модель <strong>Группа</strong>
  *
  * @author Velikanov Artyom
  */
-@Entity @Data
+@Data
+@Entity
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
 @Table(name = "group_tb")
 public class GroupEntity {
 
+    /**
+     * Идентификатор группы.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_group")
-    @SequenceGenerator(name="seq_group", sequenceName="SEQ_GROUP", allocationSize=1)
-    @Column(name = "id")
-    private long id;
-
+    @SequenceGenerator(name="seq_group", sequenceName="SEQ_GROUP", allocationSize = 1)
+    private Long id;
     /**
-     * Номер группы
+     * Номер группы.
      */
     @Column(name = "number")
     private String number;
-
     /**
-     *  Лекции, проводимые у данной группы
+     *  Лекции, проводимые у данной группы.
      */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
     private List<LessonEntity> lessons = new ArrayList<>();
-
     /**
-     *  Студенты, принадлежащие группе
+     *  Студенты, принадлежащие группе.
      */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups")
-    private List<UserEntity> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
-    public  GroupEntity(AddGroupDto addGroupDto) {
-        this.number = addGroupDto.getNumber();
-    }
 }

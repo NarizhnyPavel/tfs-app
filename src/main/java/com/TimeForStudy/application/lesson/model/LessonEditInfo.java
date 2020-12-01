@@ -5,21 +5,41 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Модель редактирования занятия.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
 @RequiredArgsConstructor
 public class LessonEditInfo {
 
-    private long classroomId;
-
+    /**
+     * Идентификатор помещения.
+     */
+    private Long classroomId;
+    /**
+     * Идентификатор номер помещения.
+     */
     private String classroom;
-
-    private long professorId;
-
-    private long subjectId;
-
+    /**
+     * Идентификатор преподавателя.
+     */
+    private Long professorId;
+    /**
+     * Идентификатор дисциплины.
+     */
+    private Long subjectId;
+    /**
+     * Список учебных групп.
+     */
     private List<AddLessonGroup> groups;
-
+    /**
+     * Тип занятия.
+     */
     private String lessonType;
-
+    /**
+     * Позиция занятия.
+     */
     private String lessonPosition;
 }

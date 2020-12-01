@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для добавления сущности учебное заведение
+ * Модель для добавления сущности учебное заведение.
  *
  * @author Velikanov Artyom
  */
@@ -13,47 +13,39 @@ import lombok.NoArgsConstructor;
 public class AddUniversityAndLessonGridDto {
 
     /**
-     * Наименование университета
+     * Наименование университета.
      */
     private String name;
-
     /**
-     * Количество деления недель
+     * Количество деления недель.
      */
-    private int weeks;
-
+    private Integer weeks;
     /**
-     * Количество учебных дней
+     * Количество учебных дней.
      */
     private Week workDays;
-
     /**
-     * Цвет №1
+     * Цвет №1.
      */
     private String color1;
-
     /**
-     * Цвет №2
+     * Цвет №2.
      */
     private String color2;
-
     /**
-     * Цвет №3
+     * Цвет №3.
      */
     private String color3;
-
     /**
-     * Логотип
+     * Логотип.
      */
     private String logo;
-
     /**
-     * Длительность одного занятия
+     * Длительность одного занятия.
      */
-    private int lessonDuration;
-
+    private Integer lessonDuration;
     /**
-     * Список сетки занятий
+     * Список сетки занятий.
      */
     private LessonGridPosition lessonGridPosition;
 }

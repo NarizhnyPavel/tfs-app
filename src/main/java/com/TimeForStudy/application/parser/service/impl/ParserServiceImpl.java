@@ -1,22 +1,21 @@
 package com.TimeForStudy.application.parser.service.impl;
 
+import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.classroom.domain.ClassroomRepository;
-import com.TimeForStudy.application.classroom.model.AddClassroomDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.group.domain.GroupEntity;
 import com.TimeForStudy.application.group.domain.GroupRepository;
-import com.TimeForStudy.application.group.model.AddGroupDto;
-import com.TimeForStudy.application.parser.domain.ParserResponse;
+import com.TimeForStudy.application.parser.model.ParserResponse;
 import com.TimeForStudy.application.parser.service.Parser;
 import com.TimeForStudy.application.parser.service.ParserService;
+import com.TimeForStudy.application.subject.domain.SubjectEntity;
 import com.TimeForStudy.application.subject.domain.SubjectRepository;
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
+import com.TimeForStudy.application.subject.model.SubjectDto;
 import com.TimeForStudy.application.user.domain.UserRepository;
 import com.TimeForStudy.application.user.model.AddUserDto;
-import com.TimeForStudy.application.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +44,11 @@ public class ParserServiceImpl implements ParserService {
     private final UserRepository userRepository;
 
     /**
-     * Получение url ссылки на парсикг
+     * Парсинг таблицы по url.
+     * Таблица должна располагаться на яндекс диске.
+     *
+     * @param url публичная ссылка для доступа к таблице.
+     * @return строка состояния.
      */
     @Override
     public ParserResponse inUrlParser(String url) {
@@ -54,15 +57,31 @@ public class ParserServiceImpl implements ParserService {
         String message = parser.loadFromUrl();
         ParserResponse parserResponse = new ParserResponse();
         parserResponse.setStatus(message);
-        if (message=="Успешно") {
+        if ("Успешно".equals(message)) {
             List<AddUserDto> professors = parser.professors;
-            List<AddGroupDto> groups = parser.groups;
-            List<AddSubjectDto> subjects = parser.subjects;
-            List<AddClassroomDto> classrooms = parser.classrooms;
-            userRepository.saveAll(professors.stream().map(AddUserDto::on).collect(Collectors.toList()));
-            groupRepository.saveAll(groups.stream().map(AddGroupDto::on).collect(Collectors.toList()));
-            subjectRepository.saveAll(subjects.stream().map(AddSubjectDto::on).collect(Collectors.toList()));
-            classroomRepository.saveAll(classrooms.stream().map(AddClassroomDto::on).collect(Collectors.toList()));
+            List<IdNameDto> groups = parser.groups;
+            List<SubjectDto> subjects = parser.subjects;
+            List<IdNameDto> classrooms = parser.classrooms;
+//            userRepository.saveAll(professors.stream().map(AddUserDto::on).collect(Collectors.toList()));
+            groupRepository.saveAll(groups.stream()
+                    .map(it -> {
+                        GroupEntity entity = new GroupEntity();
+                        entity.setNumber(it.getName());
+                        return entity;
+                    }).collect(Collectors.toList()));
+            subjectRepository.saveAll(subjects.stream()
+                    .map(it -> {
+                        SubjectEntity entity = new SubjectEntity();
+                        entity.setName(it.getName());
+                        entity.setArc(it.getArc());
+                        return entity;
+                    }).collect(Collectors.toList()));
+            classroomRepository.saveAll(classrooms.stream()
+                    .map(it -> {
+                        ClassroomEntity classroom = new ClassroomEntity();
+                        classroom.setNumber(it.getName());
+                        return classroom;
+                    }).collect(Collectors.toList()));
             parserResponse.setGroupnum(groups.size());
             parserResponse.setProfnum(professors.size());
             parserResponse.setRoomnum(classrooms.size());

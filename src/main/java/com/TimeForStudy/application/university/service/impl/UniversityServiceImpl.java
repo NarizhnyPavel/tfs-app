@@ -1,24 +1,25 @@
 package com.TimeForStudy.application.university.service.impl;
 
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridRepository;
-import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.university.domain.UniversityEntity;
 import com.TimeForStudy.application.university.domain.UniversityRepository;
-import com.TimeForStudy.application.university.model.*;
+import com.TimeForStudy.application.university.model.AddUniversityAndLessonGridDto;
+import com.TimeForStudy.application.university.model.LessonGridPosition;
+import com.TimeForStudy.application.university.model.Week;
 import com.TimeForStudy.application.university.service.UniversityService;
-import com.TimeForStudy.application.user.domain.UserEntity;
-import com.TimeForStudy.application.user.model.ProfessorDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
- * Реализация сервиса CRUD запросов к сущности учебное заведение
+ * Реализация сервиса запросов к учебным заведениям.
  *
  * @author Velikanov Artyom
  */
@@ -36,41 +37,40 @@ public class UniversityServiceImpl implements UniversityService {
     private final LessonGridRepository lessonGridRepository;
 
     /**
-     * Возвращение учебного заведения по идентификатору.
+     * Получение информации об учебном заведении.
      *
-     * @return учебное заведение.
+     * @return UniversityDto информация об учебном заведении.
      */
     @Override
-    public AddUniversityAndLessonGridDto getUniversityById() {
-        UniversityEntity universityEntity = universityRepository.findById((long) 1)
+    public AddUniversityAndLessonGridDto getUniversity() {
+        UniversityEntity universityEntity = universityRepository.findById(1L)
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
         List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByUniversity(universityEntity);
         AddUniversityAndLessonGridDto addUniversityAndLessonGridDto = new AddUniversityAndLessonGridDto();
         LessonGridPosition lessonGridPosition = new LessonGridPosition();
-        for (LessonGridEntity lessonGrid : lessonGridEntities) {
-            if (lessonGrid.getLessonNumber()==1) {
+        lessonGridEntities.forEach(lessonGrid -> {
+            if (lessonGrid.getLessonNumber().equals(1)) {
                 lessonGridPosition.setPosition1(lessonGrid.getTime());
             }
-            if (lessonGrid.getLessonNumber()==2) {
+            if (lessonGrid.getLessonNumber().equals(2)) {
                 lessonGridPosition.setPosition2(lessonGrid.getTime());
             }
-            if (lessonGrid.getLessonNumber()==3) {
+            if (lessonGrid.getLessonNumber().equals(3)) {
                 lessonGridPosition.setPosition3(lessonGrid.getTime());
             }
-            if (lessonGrid.getLessonNumber()==4) {
+            if (lessonGrid.getLessonNumber().equals(4)) {
                 lessonGridPosition.setPosition4(lessonGrid.getTime());
             }
-            if (lessonGrid.getLessonNumber()==5) {
+            if (lessonGrid.getLessonNumber().equals(5)) {
                 lessonGridPosition.setPosition5(lessonGrid.getTime());
             }
-            if (lessonGrid.getLessonNumber()==6) {
+            if (lessonGrid.getLessonNumber().equals(6)) {
                 lessonGridPosition.setPosition6(lessonGrid.getTime());
             }
-            if (lessonGrid.getLessonNumber()==7) {
+            if (lessonGrid.getLessonNumber().equals(7)) {
                 lessonGridPosition.setPosition7(lessonGrid.getTime());
             }
-        }
-
+        });
         addUniversityAndLessonGridDto.setLessonGridPosition(lessonGridPosition);
         addUniversityAndLessonGridDto.setColor1(universityEntity.getColor1());
         addUniversityAndLessonGridDto.setColor2(universityEntity.getColor2());
@@ -106,139 +106,100 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     /**
-     * Сохранение учебного заведения.
+     * Редактирование данных об учебном заведении.
      *
-     * @param addUniversityAndLessonGridDto учебное заведение.
-     */
-    @Override
-    public void saveUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
-        AddUniversityDto addUniversityDto = new AddUniversityDto(addUniversityAndLessonGridDto);
-        UniversityEntity universityEntity = new UniversityEntity(addUniversityDto);
-        universityRepository.save(universityEntity);
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1() != null) {
-            LessonGridEntity lessonGridEntity1 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1(), 1, universityEntity);
-            lessonGridRepository.save(lessonGridEntity1);
-        }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2() != null) {
-            LessonGridEntity lessonGridEntity2 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2(), 2, universityEntity);
-            lessonGridRepository.save(lessonGridEntity2);
-        }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3() != null) {
-            LessonGridEntity lessonGridEntity3 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3(), 3, universityEntity);
-            lessonGridRepository.save(lessonGridEntity3);
-        }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4() != null) {
-            LessonGridEntity lessonGridEntity4 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4(), 4, universityEntity);
-            lessonGridRepository.save(lessonGridEntity4);
-        }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5() != null) {
-            LessonGridEntity lessonGridEntity5 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5(), 5, universityEntity);
-            lessonGridRepository.save(lessonGridEntity5);
-        }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6() != null) {
-            LessonGridEntity lessonGridEntity6 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6(), 6, universityEntity);
-            lessonGridRepository.save(lessonGridEntity6);
-        }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7() != null) {
-            LessonGridEntity lessonGridEntity7 = new LessonGridEntity(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7(), 7, universityEntity);
-            lessonGridRepository.save(lessonGridEntity7);
-        }
-    }
-
-    /**
-     * Изменение значений учебного заведения.
-     *
-     * @param addUniversityAndLessonGridDto учебное заведение.
+     * @param addUniversityAndLessonGridDto информация об университете.
+     * @return статус редактирования.
      */
     @Override
     public void updateUniversity(AddUniversityAndLessonGridDto addUniversityAndLessonGridDto) {
-        UniversityEntity updated = universityRepository.findById((long) 1)
+        UniversityEntity updated = universityRepository.findById(1L)
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-        if (addUniversityAndLessonGridDto.getName() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getName())) {
             updated.setName(addUniversityAndLessonGridDto.getName());
         }
-        if (addUniversityAndLessonGridDto.getLessonDuration() != 0) {
+        if (addUniversityAndLessonGridDto.getLessonDuration().equals(0)) {
             updated.setLessonDuration(addUniversityAndLessonGridDto.getLessonDuration());
         }
-        if (addUniversityAndLessonGridDto.getWeeks() != 0) {
+        if (addUniversityAndLessonGridDto.getWeeks().equals(0)) {
             updated.setWeeks(addUniversityAndLessonGridDto.getWeeks());
         }
-        if (addUniversityAndLessonGridDto.getWorkDays() != null) {
+        if (Objects.nonNull(addUniversityAndLessonGridDto.getWorkDays())) {
             String workday = "";
             if (addUniversityAndLessonGridDto.getWorkDays().isMonday()) {
-                workday+='1';
+                workday += '1';
             }
             if (addUniversityAndLessonGridDto.getWorkDays().isTuesday()) {
-                workday+='2';
+                workday += '2';
             }
             if (addUniversityAndLessonGridDto.getWorkDays().isWednesday()) {
-                workday+='3';
+                workday += '3';
             }
             if (addUniversityAndLessonGridDto.getWorkDays().isThursday()) {
-                workday+='4';
+                workday += '4';
             }
             if (addUniversityAndLessonGridDto.getWorkDays().isFriday()) {
-                workday+='5';
+                workday += '5';
             }
             if (addUniversityAndLessonGridDto.getWorkDays().isSaturday()) {
-                workday+='6';
+                workday += '6';
             }
             if (addUniversityAndLessonGridDto.getWorkDays().isSunday()) {
-                workday+='7';
+                workday += '7';
             }
             updated.setWorkDays(workday);
         }
-        if (addUniversityAndLessonGridDto.getColor1() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getColor1())) {
             updated.setColor1(addUniversityAndLessonGridDto.getColor1());
         }
-        if (addUniversityAndLessonGridDto.getColor2() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getColor2())) {
             updated.setColor2(addUniversityAndLessonGridDto.getColor2());
         }
-        if (addUniversityAndLessonGridDto.getColor3() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getColor3())) {
             updated.setColor3(addUniversityAndLessonGridDto.getColor3());
         }
-        if (addUniversityAndLessonGridDto.getLogo() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLogo())) {
             updated.setLogotype(addUniversityAndLessonGridDto.getLogo());
         }
         universityRepository.save(updated);
 
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(1);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition1());
             lessonGridRepository.save(lessonGridEntity);
         }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(2);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition2());
             lessonGridRepository.save(lessonGridEntity);
         }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(3);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition3());
             lessonGridRepository.save(lessonGridEntity);
         }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(4);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition4());
             lessonGridRepository.save(lessonGridEntity);
         }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(5);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition5());
             lessonGridRepository.save(lessonGridEntity);
         }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(6);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition6());
             lessonGridRepository.save(lessonGridEntity);
         }
-        if (addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7() != null) {
+        if (StringUtils.isNotBlank(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7())) {
             List<LessonGridEntity> lessonGridEntities = lessonGridRepository.findAllByLessonNumber(7);
             LessonGridEntity lessonGridEntity = lessonGridEntities.get(0);
             lessonGridEntity.setTime(addUniversityAndLessonGridDto.getLessonGridPosition().getPosition7());
@@ -247,57 +208,47 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     /**
-     * Удаление учебного заведения.
+     * Получение списка рабочих дней недели.
      *
-     * @param id идентификатор.
+     * @return список преподавателей.
      */
     @Override
-    public void deleteUniversity(long id) {
-        universityRepository.deleteById(id);
-    }
-
-    /**
-     * Возвращение всех существующих учебных заведений.
-     *
-     * @return список учебных заведений.
-     */
-    @Override
-    public List<UniversityDto> findAll() {
-        List<UniversityEntity> universityEntities = universityRepository.findAll();
-        return universityEntities.stream().map(UniversityDto::of).collect(Collectors.toList());
-    }
-
-    /**
-     * Возвращение дни недели.
-     *
-     * @return дни недели.
-     */
-    @Override
-    public List<UniversitiesDto> findWorkDays() {
-        List<UniversitiesDto> universitiesDtos = new ArrayList<>();
-        UniversityEntity universityEntity = universityRepository.findById((long) 1)
+    public List<IdNameDto> findWorkDays() {
+        List<IdNameDto> lists = new ArrayList<>();
+        UniversityEntity universityEntity = universityRepository.findById(1L)
                 .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
         if (universityEntity.getWorkDays().indexOf('1') != -1) {
-            universitiesDtos.add(new UniversitiesDto(1, "Понедельник"));
+            lists.add(IdNameDto.of(1L, "Понедельник"));
         }
         if (universityEntity.getWorkDays().indexOf('2') != -1) {
-            universitiesDtos.add(new UniversitiesDto(2, "Вторник"));
+            lists.add(IdNameDto.of(2L, "Вторник"));
         }
         if (universityEntity.getWorkDays().indexOf('3') != -1) {
-            universitiesDtos.add(new UniversitiesDto(3, "Среда"));
+            lists.add(IdNameDto.of(3L, "Среда"));
         }
         if (universityEntity.getWorkDays().indexOf('4') != -1) {
-            universitiesDtos.add(new UniversitiesDto(4, "Четверг"));
+            lists.add(IdNameDto.of(4L, "Четверг"));
         }
         if (universityEntity.getWorkDays().indexOf('5') != -1) {
-            universitiesDtos.add(new UniversitiesDto(5, "Пятница"));
+            lists.add(IdNameDto.of(5L, "Пятница"));
         }
         if (universityEntity.getWorkDays().indexOf('6') != -1) {
-            universitiesDtos.add(new UniversitiesDto(6, "Суббота"));
+            lists.add(IdNameDto.of(6L, "Суббота"));
         }
         if (universityEntity.getWorkDays().indexOf('7') != -1) {
-            universitiesDtos.add(new UniversitiesDto(7, "Воскресенье"));
+            lists.add(IdNameDto.of(7L, "Воскресенье"));
         }
-        return universitiesDtos;
+        return lists;
+    }
+
+    /**
+     * Получение количества недель.
+     *
+     * @return количество недель.
+     */
+    @Override
+    public Integer getWeeksNumber() {
+        UniversityEntity universityEntity = universityRepository.findById(1L).orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
+        return universityEntity.getWeeks();
     }
 }

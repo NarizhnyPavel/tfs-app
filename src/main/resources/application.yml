@@ -1,12 +1,19 @@
 server:
-  port: 8100
-
+  port: 8090
+spring:
+  profiles:
+    active: prod
+jwt:
+  token:
+    secret: jwtTFCsecret
+    expire: 100000000
+---
 #----DEV----
 spring:
   profiles: dev
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:./h2-data/testdb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./h2-data/testdb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
     username: sa
     password:
   h2:
@@ -14,14 +21,30 @@ spring:
       enabled: true
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    url: jdbc:h2:file:./h2-data/testdb
+    user: sa
+    password:
+    locations: classpath:db/migration, classpath:db/test-data
+
+
 ---
-#----PROD---
+#----UAT----
 spring:
-  profiles: prod
+  profiles: uat
   datasource:
-    url: jdbc:postgresql://ec2-46-137-79-235.eu-west-1.compute.amazonaws.com:5432/d78fr7pa1g4bjo
-    username: ydzyakwsoahgzl
-    password: b54a79ebd1eed0a2bc8f88c793e34983be394c24b632f06128d3b5c46644031a
+    url: jdbc:postgresql://ec2-54-246-85-151.eu-west-1.compute.amazonaws.com:5432/d709fb3dvsh8de
+    username: ukmokwxdmoebne
+    password: 14c9bc1965da668f5cc0adffb85675272193631912fb4954292aebf78a928633
     driver-class-name: org.postgresql.Driver
+  flyway:
+    locations: classpath:db/migration
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  h2:
+    console:
+      enabled: off

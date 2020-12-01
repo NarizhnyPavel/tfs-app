@@ -1,95 +1,91 @@
 package com.TimeForStudy.application.university.domain;
 
-import com.TimeForStudy.application.group.model.GroupDto;
 import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
-import com.TimeForStudy.application.lessongrid.model.LessonGridDto;
 import com.TimeForStudy.application.semester.domain.SemesterEntity;
 import com.TimeForStudy.application.university.model.AddUniversityDto;
-import com.TimeForStudy.application.university.model.UniversityDto;
-import com.TimeForStudy.application.user.model.AddUserDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Сущность учебного заведения
+ * Доменная модель <strong>Учебное заведение</strong>
  *
  * @author Velikanov Artyom
  */
-@Entity @Data
+@Data
+@Entity
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
 @Table(name = "university")
 public class UniversityEntity {
 
+    /**
+     * Идентификатор учебного заведения.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_university")
-    @SequenceGenerator(name="seq_university", sequenceName="SEQ_UNIVERSITY", allocationSize=1)
-    @Column(name = "id")
-    private long id;
-
+    @SequenceGenerator(name="seq_university", sequenceName="SEQ_UNIVERSITY", allocationSize = 1)
+    private Long id;
     /**
-     * Наименование университета
+     * Наименование университета.
      */
     @Column(name = "name")
     private String name;
-
     /**
-     * Количество деления недель
+     * Количество деления недель.
      */
     @Column(name = "weeks")
-    private int weeks;
-
+    private Integer weeks;
     /**
-     * Количество учебных дней
+     * Количество учебных дней.
      */
     @Column(name = "work_days")
     private String workDays;
-
     /**
-     * Цвет №1
+     * Цвет №1.
      */
     @Column(name = "color1")
     private String color1;
-
     /**
-     * Цвет №2
+     * Цвет №2.
      */
     @Column(name = "color2")
     private String color2;
-
     /**
-     * Цвет №3
+     * Цвет №3.
      */
     @Column(name = "color3")
     private String color3;
-
     /**
-     * Логотип
+     * Логотип.
      */
     @Column(name = "logotype_url")
     private String logotype;
-
     /**
-     * Длительность одного занятия
+     * Длительность одного занятия.
      */
     @Column(name = "lesson_duration")
-    private int lessonDuration;
-
+    private Integer lessonDuration;
     /**
-     * Список семестров, данного учебного заведения
+     * Список семестров, данного учебного заведения.
      */
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<SemesterEntity> semesters;
-
     /**
-     * Список  сетки занятий
+     * Список  сетки занятий.
      */
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<LessonGridEntity> lessonGrids;

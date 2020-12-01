@@ -1,12 +1,16 @@
 package com.TimeForStudy.application.subject.web;
 
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.subject.model.SubjectDto;
-import com.TimeForStudy.application.subject.model.SubjectsDto;
 import com.TimeForStudy.application.subject.service.SubjectService;
-import com.TimeForStudy.application.user.model.ProfessorDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,7 +29,7 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     /**
-     * Возвращает список преподаваемых дисциплин.
+     * Получение списка преподаваемых дисциплин.
      *
      * @return список преподаваемых дисциплин.
      */
@@ -35,60 +39,56 @@ public class SubjectController {
     }
 
     /**
-     * Возвращает список преподаваемых дисциплин.
+     * Получение дисциплин по наименованию.
      *
+     * @param name наименовае дисциплины.
      * @return список преподаваемых дисциплин.
      */
-    @PostMapping(value = "/subjects")
-    public List<SubjectsDto> postSubjects(@RequestBody String name) {
+    @PostMapping(value = "/subject")
+    public List<IdNameDto> postSubjects(@RequestBody String name) {
         return subjectService.findAllSubjects(name);
     }
 
-
     /**
-     * Возвращает преподаваемую дисциплину по идентификатору.
+     * Получение преподаваемой дисциплины по идентификатору.
      *
      * @param id идентификатор.
      * @return преподаваемая дисциплина
      */
     @GetMapping(value = "/subject/{id}")
-    public SubjectDto getSubject(@PathVariable long id) {
+    public SubjectDto getSubject(@PathVariable Long id) {
         return subjectService.getSubjectById(id);
     }
 
-    @GetMapping(value = "/subject/all")
-    public List<SubjectDto> getSubject() {
-        return subjectService.findAll();
-    }
-
     /**
-     * Добавляет новую преподаваемую дисциплину.
+     * Добавление преподаваемой дисциплины.
      *
-     * @param addSubjectDto преподаваемая дисциплина.
+     * @param subject преподаваемая дисциплина.
      */
-    @PostMapping(value = "/subject/add")
-    public void addSubject(@RequestBody AddSubjectDto addSubjectDto) {
-        subjectService.saveSubject(addSubjectDto);
+    @PostMapping(value = "/admin/subject")
+    public void addSubject(@RequestBody SubjectDto subject) {
+        subjectService.saveSubject(subject);
     }
 
     /**
-     * Изменяет данную преподаваемую дисциплину.
+     * Редактирование преподаваемой дисциплины.
      *
      * @param id идентификатор.
-     * @param addSubjectDto преподаваемая дисциплина.
+     * @param subjectDto преподаваемая дисциплина.
      */
-    @PutMapping(value = "/subject/update/{id}")
-    public void updateSubject(@PathVariable long id, @RequestBody AddSubjectDto addSubjectDto) {
-        subjectService.updateSubject(id, addSubjectDto);
+    @PutMapping(value = "/admin/subject/{id}")
+    public void updateSubject(@PathVariable Long id, @RequestBody SubjectDto subjectDto) {
+        subjectService.updateSubject(id, subjectDto);
     }
 
     /**
-     * Удаляет преподаваемую дисциплину.
+     * Удаление преподаваемой дисциплины.
      *
      * @param id идентификатор.
      */
-    @DeleteMapping(value = "/subject/delete/{id}")
-    public void deleteSubject(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/subject/{id}")
+    public void deleteSubject(@PathVariable Long id) {
         subjectService.deleteSubject(id);
     }
+
 }

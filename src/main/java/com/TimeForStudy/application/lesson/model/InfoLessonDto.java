@@ -1,80 +1,71 @@
 package com.TimeForStudy.application.lesson.model;
 
 
-import com.TimeForStudy.application.group.domain.GroupEntity;
-import com.TimeForStudy.application.group.domain.GroupRepository;
-import com.TimeForStudy.application.lesson.domain.LessonRepository;
-import com.TimeForStudy.application.lesson.service.LessonService;
-import com.TimeForStudy.application.lesson.service.impl.LessonServiceImpl;
-import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
-import com.TimeForStudy.application.lessonposition.domain.LessonPositionEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.List;
-
+/**
+ * Модель информации о занятии.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class InfoLessonDto {
 
-    private long id;
-
+    /**
+     * Идентификатор.
+     */
+    private Long id;
     /**
      *  Время.
      */
     private String time;
-
     /**
-     *  Кабинет, в котором проходит занятие
+     *  Кабинет, в котором проходит занятие.
      */
-    private int classroom;
-
+    private String classroom;
     /**
-     * Предмет преподаваемый на занятии
+     * Предмет преподаваемый на занятии.
      */
     private String subject;
-
     /**
-     * Сокращение
+     * Сокращение.
      */
     private String arc;
-
     /**
-     * Статус
+     * Статус.
      */
     private boolean status;
-
     /**
-     * Преподаватель, который проводит занятие
+     * Преподаватель, который проводит занятие.
      */
     private String professor;
-
     /**
-     * Тип занятия
+     * Тип занятия.
      */
     private String lessonType;
-
     /**
-     * Группы
+     * Группы.
      */
     private String group;
-
     /**
-     * Преподаватель
+     * Преподаватель.
      */
     private long professorId;
 
-    /*
-        если занятие отменено то LessonPositionRepository перадаст в качестве аргумента status = false
+    /**
+     * Если занятие отменено то LessonPositionRepository перадаст в качестве аргумента status = false.
      */
-    public InfoLessonDto(long id, String time, int classroom, String subject, String arc, Long status, String professor, String lessonType, Long idLessonEntity, long professorId) {
+    public InfoLessonDto(Long id, String time, String classroom, String subject, String arc, Long status, String professor, String lessonType, Long idLessonEntity, Long professorId) {
         this.id = id;
         this.time = time;
         this.classroom = classroom;
         this.subject = subject;
         this.arc = arc;
-        this.status = status == null ;
+        this.status = status == null;
         this.professor = professor;
         this.lessonType = lessonType;
         this.group = idLessonEntity.toString();

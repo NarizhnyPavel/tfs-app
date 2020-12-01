@@ -1,29 +1,35 @@
 package com.TimeForStudy.application.date.service;
 
-
 import com.TimeForStudy.application.date.model.DateDto;
 
 import java.time.LocalDate;
 
 /**
- * Сервис для работы с временем.
+ * Интерфейс сервиса для работы с временем.
  *
  * @author Velikanov Artyom.
  */
 public interface DateService {
 
     /**
-     * Возвращение номера текущей недели.
+     * Получение номера текущей недели и дня
+     * относительно начала семестра.
      *
-     * @return номер недели.
+     * @param semesterId идентификатор семестра.
+     * @return номер недели и номер дня недели.
      */
-    DateDto getWeekNow(long semesterId);
+    DateDto getWeekNow(Long semesterId);
 
     /**
-     * Возвращает день и месяц необходимого запроса дня.
+     * Получение дня и месяца необходимого запроса дня.
      *
-     * @return номер недели.
+     * @param numberWeek номер недели.
+     * @param weekNow номер текущей недели.
+     * @param dayNow номер текущего дня.
+     * @param weekRequest запрашиваемая неделя.
+     * @param dayRequest запрашиваемый день.
+     * @return день и месяц.
      */
-    LocalDate getDayRequest(int numberWeek, int weekNow, int dayNow, int weekRequest, int dayRequest);
+    LocalDate getDayRequest(Integer numberWeek, Integer weekNow, Integer dayNow, Integer weekRequest, Integer dayRequest);
 
 }

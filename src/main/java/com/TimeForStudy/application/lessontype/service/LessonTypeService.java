@@ -1,59 +1,57 @@
 package com.TimeForStudy.application.lessontype.service;
 
-import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
-import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
-import com.TimeForStudy.application.university.model.UniversitiesDto;
+import com.TimeForStudy.application.common.IdNameDto;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности тип занятия
+ * Интерфейс сервиса запросов к типам занятия.
  *
  * @author Velikanov Artyom
  */
 public interface LessonTypeService {
 
     /**
-     * Возвращение типа занятия по идентификатору.
+     * Получение типа занятия по идентификатору.
      *
      * @param id идентификатор.
      * @return тип занятия.
      */
-    LessonTypeDto getLessonTypeById(long id);
+    IdNameDto getLessonTypeById(Long id);
 
     /**
-     * Сохранение типа занятия.
+     * Добавление типа занятия.
      *
-     * @param addLessonTypeDto тип занятия.
+     * @param lessonType тип занятия.
      */
-    void saveLessonType(AddLessonTypeDto addLessonTypeDto);
+    void saveLessonType(IdNameDto lessonType);
 
     /**
-     * Изменение значений типа занятия.
+     * Изменение типа занятия.
      *
      * @param id идентификатор.
-     * @param addLessonTypeDto тип занятия.
+     * @param lessonType тип занятия.
      */
-    void updateLessonType(long id, AddLessonTypeDto addLessonTypeDto);
+    void updateLessonType(Long id, IdNameDto lessonType);
 
     /**
      * Удаление типа занятия.
      *
      * @param id идентификатор.
      */
-    void deleteLessonType(long id);
+    void deleteLessonType(Long id);
 
     /**
-     * Возвращение всех существующих типов занятия.
+     * Получение списка типов занятий.
      *
-     * @return список типов занятия.
+     * @return список типов занятий.
      */
-    List<LessonTypeDto> findAll();
+    List<IdNameDto> findAll();
 
     /**
-     * Возвращение типы пар.
+     * Получение списка типов пар для выбора в выпадающем списке.
      *
-     * @return типы пар.
+     * @return список типов пар в модели {@link IdNameDto}.
      */
-    List<UniversitiesDto> findLessonTypes();
+    List<IdNameDto> findLessonTypes();
 }

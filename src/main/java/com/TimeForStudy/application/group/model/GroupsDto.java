@@ -1,22 +1,30 @@
 package com.TimeForStudy.application.group.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
+/**
+ * Модель списков групп.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class GroupsDto {
 
+    /**
+     * Идентификатор.
+     */
+    private Long id;
+    /**
+     * Поле со значением.
+     */
     private String label;
-
-    private long id;
-
-    private int number;
-
-    public GroupsDto(long id, String name) {
-        this.id = id;
-        this.label = name;
-        this.number = 1;
-    }
+    /**
+     * Номер группы.
+     */
+    private Integer number;
 
 }

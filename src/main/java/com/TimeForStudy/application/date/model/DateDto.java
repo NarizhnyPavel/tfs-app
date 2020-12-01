@@ -1,6 +1,8 @@
 package com.TimeForStudy.application.date.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -9,16 +11,16 @@ import lombok.RequiredArgsConstructor;
  * @author Velikanov Artyom.
  */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class DateDto {
 
-    // номер недели относительно начала семестра
-    private int numberWeek;
-    // номер дня недели
-    private  int numberDay;
-
-    public DateDto(int numberWeek, int numberDay) {
-        this.numberDay = numberDay;
-        this.numberWeek = numberWeek;
-    }
+    /**
+     * Номер недели относительно начала семестра.
+     */
+    private Integer numberWeek;
+    /**
+     * Номер дня недели.
+     */
+    private Integer numberDay;
 }

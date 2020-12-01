@@ -1,12 +1,12 @@
 package com.TimeForStudy.application.user.model;
 
-import com.TimeForStudy.application.user.domain.UserEntity;
+import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.domain.UserInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 /**
- * Модель представления сущности пользователь
+ * Модель представления сущности пользователь.
  *
  * @author Velikanov Artyom
  */
@@ -14,38 +14,42 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 public class UserDto {
 
-    private long id;
-
     /**
-     * Номер телефона
+     * Идентификатор.
+     */
+    private Long id;
+    /**
+     * Номер телефона.
      */
     private String phone;
-
     /**
-     * Фамилия Имя Отчество
+     * Имя пользователя.
      */
-    private String name;
-
+    private String firstName;
     /**
-     * Роль (1 - Диспетчер, 2 - Преподаватель, 3 - Староста, 4 - Студент)
+     * Фамилия пользователя.
      */
-    private byte role;
+    private String lastName;
+    /**
+     * Отчество пользователя.
+     */
+    private String patronymic;
+    /**
+     * Роль пользователя.
+     */
+    private RoleDto userRole;
 
-    public static UserDto of(UserEntity user) {
+    public static UserDto of(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setPhone(user.getPhone());
-        dto.setName(user.getName());
-        dto.setRole(user.getRole());
+        UserInfo info = user.getUserInfo();
+        dto.setFirstName(info.getFirstName());
+        dto.setLastName(info.getLastName());
+        dto.setPatronymic(info.getPatronymic());
+        dto.setUserRole(RoleDto.of(user.getRole().getId(), user.getRole().getName(),
+                user.getRole().getRank()));
         return dto;
     }
 
-    public static  UserEntity on(UserDto userDto) {
-        UserEntity entity = new UserEntity();
-        entity.setId(userDto.getId());
-        entity.setPhone(userDto.getPhone());
-        entity.setName(userDto.getName());
-        entity.setRole(userDto.getRole());
-        return  entity;
-    }
 }

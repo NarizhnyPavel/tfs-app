@@ -1,11 +1,12 @@
 package com.TimeForStudy.application.user.service;
 
 
-import com.TimeForStudy.application.otherDataClasses.VerificationPair;
-import com.TimeForStudy.application.user.model.UserDto;
+import com.TimeForStudy.application.user.model.AuthPair;
+import com.TimeForStudy.application.user.model.AuthResponce;
+import org.springframework.http.ResponseEntity;
 
 /**
- * Сервис авторизации пользователя.
+ * Интерфейс сервиса авторизации пользователя.
  *
  * @author Velikanov Artyom
  * @author Narizhny Pavel
@@ -13,42 +14,11 @@ import com.TimeForStudy.application.user.model.UserDto;
 public interface LoginUserService {
 
     /**
-     * Проверка телефона
+     * Авторизация и получение токена доступа
      *
-     * @param phone телефон
-     * @return статус
+     * @param authPair пара телефон - пароль.
+     * @return токен доступа.
      */
-    String sendCode(String phone);
+    ResponseEntity<AuthResponce> authenticate(AuthPair authPair);
 
-    /**
-     * Проверка телефона
-     *
-     * @param phone телефон
-     * @return статус
-     */
-    String checkPhone(String phone);
-
-    /**
-     * Проверка кода
-     *
-     * @param verificationPair пара код - телефон
-     * @return пользователь
-     */
-    UserDto checkCode(VerificationPair verificationPair);
-
-    /**
-     * Проверка телефона в настройках
-     *
-     * @param phone телефон
-     * @return статус
-     */
-    String settingsSendCode(String phone);
-
-    /**
-     * Проверка кода в настройках
-     *
-     * @param verificationPair пара код - телефон
-     * @return пользователь
-     */
-    String settingsCheckCode(VerificationPair verificationPair);
 }

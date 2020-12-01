@@ -1,10 +1,8 @@
 package com.TimeForStudy.application.parser.service;
 
-import com.TimeForStudy.application.classroom.model.AddClassroomDto;
-import com.TimeForStudy.application.group.model.AddGroupDto;
-import com.TimeForStudy.application.subject.model.AddSubjectDto;
+import com.TimeForStudy.application.common.IdNameDto;
+import com.TimeForStudy.application.subject.model.SubjectDto;
 import com.TimeForStudy.application.user.model.AddUserDto;
-import com.TimeForStudy.application.user.model.UserDto;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -45,14 +43,15 @@ public class ExcelReader {
             XSSFRow row = (XSSFRow) rowIter.next();
             if (row.getCell(0) != null && !row.getCell(0).getStringCellValue().isEmpty())
                 if (!String.valueOf(row.getCell(1).getStringCellValue()).isEmpty())
-                    professors.add(new AddUserDto(String.valueOf(row.getCell(1).getStringCellValue()), row.getCell(0).getStringCellValue(), (byte) 2));
+                    professors.add(new AddUserDto(String.valueOf(row.getCell(1).getStringCellValue()),
+                            String.valueOf(row.getCell(1).getStringCellValue()), row.getCell(0).getStringCellValue(), "", "", null));
         }
         return professors;
     }
 
-    public ArrayList<AddSubjectDto> getSubjects(XSSFWorkbook wb){
+    public ArrayList<SubjectDto> getSubjects(XSSFWorkbook wb){
         XSSFSheet sheet = wb.getSheet("Дисциплины");
-        ArrayList<AddSubjectDto> subjects = new ArrayList<>();
+        ArrayList<SubjectDto> subjects = new ArrayList<>();
         Iterator rowIter = sheet.rowIterator();
         rowIter.next();
         rowIter.next();
@@ -60,7 +59,7 @@ public class ExcelReader {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
                 if (row.getCell(0) != null && !row.getCell(0).getStringCellValue().isEmpty())
-                    subjects.add(new AddSubjectDto(row.getCell(0).getStringCellValue(),row.getCell(1).getStringCellValue()));
+                    subjects.add(SubjectDto.of(null, row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue()));
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -68,16 +67,16 @@ public class ExcelReader {
         return subjects;
     }
 
-    public ArrayList<AddClassroomDto> getRooms(XSSFWorkbook wb){
+    public ArrayList<IdNameDto> getRooms(XSSFWorkbook wb){
         XSSFSheet sheet = wb.getSheet("Аудитории");
-        ArrayList<AddClassroomDto> rooms = new ArrayList<>();
+        ArrayList<IdNameDto> rooms = new ArrayList<>();
         Iterator rowIter = sheet.rowIterator();
         rowIter.next();
         try {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
                 if (row.getCell(0) != null && (row.getCell(0).getNumericCellValue() != 0))
-                    rooms.add(new AddClassroomDto((int) row.getCell(0).getNumericCellValue()));
+                    rooms.add(IdNameDto.of(null, String.valueOf(row.getCell(0).getNumericCellValue())));
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -85,16 +84,16 @@ public class ExcelReader {
         return rooms;
     }
 
-    public ArrayList<AddGroupDto> getGroups(XSSFWorkbook wb){
+    public ArrayList<IdNameDto> getGroups(XSSFWorkbook wb){
         XSSFSheet sheet = wb.getSheet("Группы");
-        ArrayList<AddGroupDto> groups = new ArrayList<>();
+        ArrayList<IdNameDto> groups = new ArrayList<>();
         Iterator rowIter = sheet.rowIterator();
         rowIter.next();
         try {
             while (rowIter.hasNext()) {
                 XSSFRow row = (XSSFRow) rowIter.next();
                 if (row.getCell(0) != null && !(row.getCell(0).getStringCellValue().isEmpty()))
-                    groups.add(new AddGroupDto(row.getCell(0).getStringCellValue()));
+                    groups.add(IdNameDto.of(null, row.getCell(0).getStringCellValue()));
             }
         } catch (Exception e){
             e.printStackTrace();

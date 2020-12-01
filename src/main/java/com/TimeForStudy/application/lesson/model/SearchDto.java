@@ -1,22 +1,30 @@
 package com.TimeForStudy.application.lesson.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
+/**
+ * Модель валидации занятия.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class SearchDto {
 
+    /**
+     * Идентификатор.
+     */
     private Long id;
-
+    /**
+     * Поле с значением.
+     */
     private String label;
+    /**
+     * Тип валидации.
+     */
+    private Integer type;
 
-    private int  type;
-
-    public SearchDto(long id, String label, int type) {
-        this.id = id;
-        this.label = label;
-        this.type = type;
-
-    }
 }

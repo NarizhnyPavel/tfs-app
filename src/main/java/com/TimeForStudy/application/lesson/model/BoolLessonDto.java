@@ -1,27 +1,32 @@
 package com.TimeForStudy.application.lesson.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import java.util.List;
 
+/**
+ * Модель краткой информации о занятии.
+ *
+ * @author Velikanov Artyom
+ */
 @Data
+@AllArgsConstructor(staticName = "of")
 public class BoolLessonDto {
 
     /**
      *  Позиция пары
      */
     private String position;
-
     /**
      *  Кабинет, в котором проходит занятие
      */
-    private int classroom;
-
+    private Integer classroom;
     /**
      * Преподаватель, который проводит занятие
      */
-    private int professor;
-
+    private Integer professor;
     /**
      * Список Групп.
      */

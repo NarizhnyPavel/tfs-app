@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
  *
  * @author Velikanov Artyom.
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
@@ -27,4 +26,5 @@ public class ApplicationError {
      * Стектрейс.
      */
     private String cause;
+
 }

@@ -1,73 +1,95 @@
 package com.TimeForStudy.application.user.service;
 
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.lesson.model.AddLessonGroup;
-import com.TimeForStudy.application.otherDataClasses.VerificationPair;
-import com.TimeForStudy.application.user.model.AddUserDto;
-import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.user.domain.User;
+import com.TimeForStudy.application.user.model.RoleDto;
 import com.TimeForStudy.application.user.model.UpdateUserDto;
 import com.TimeForStudy.application.user.model.UserDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности пользователь
+ * Интерфейс сервиса запросов к пользователям.
  *
- * @author Velikanov Artyom
+ * @author Velikanov Artyom.
  */
 public interface UserService {
 
     /**
-     * Возвращение пользователя по идентификатору.
-     *
-     * @param id идентификатор.
-     * @return пользователь.
-     */
-    UserDto getUserById(long id);
-
-    /**
-     * Возвращает групп пользователя по идентификатору.
-     *
-     * @param id идентификатор.
-     * @return пользователь.
-     */
-    List<AddLessonGroup> getUserGroupsById(long id);
-
-    /**
-     * Сохранение пользователя.
-     *
-     * @param addUserDto пользователь.
-     */
-    void saveUser(AddUserDto addUserDto);
-
-    /**
-     * Изменение значений пользователя.
-     *
-     * @param updateUserDto идентификатор.
-     */
-    String updateUser(UpdateUserDto updateUserDto);
-
-    /**
-     * Удаление пользователя.
-     *
-     * @param id идентификатор.
-     */
-    void deleteUser(long id);
-
-    /**
-     * Возвращение всех существующих пользователей.
+     * Получение списка пользователей.
      *
      * @return список пользователей.
      */
     List<UserDto> findAll();
 
     /**
-     * Возвращение преподавателей.
+     * Получение пользователя по идентификатору.
      *
-     * @return список преподавателей.
+     * @param id идентификатор.
+     * @return пользователь.
      */
-    List<ProfessorDto> findAllProfessors(String name);
+    UserDto findById(Long id);
+
+    /**
+     * Поиск преподавателей с поиском по подстроке в имени.
+     *
+     * @param name подстрока.
+     * @return список преподвателей.
+     */
+    List<IdNameDto> getProfessors(String name);
+
+    /**
+     * Получение пользователя по телефону
+     *
+     * @param phone номер телефона.
+     * @return пользователь.
+     */
+    User findByPhone(String phone);
+
+    /**
+     * Получение списка групп пользователя по идентификатору.
+     *
+     * @param id идентификатор.
+     * @return список групп.
+     */
+    List<AddLessonGroup> getUserGroups(Long id);
+
+    /**
+     * Получение списка ролей пользователя.
+     *
+     * @return список ролей.
+     */
+    List<RoleDto> getUserRoles();
+
+    /**
+     * Поиск по ФИО пользователей.
+     *
+     * @param userName подстрока, по которой осуществляется поиск.
+     * @return список пользователей.
+     */
+    List<UserDto> findByUserName(String userName);
+
+    /**
+     * Редактирование информацию о текущем пользователе.
+     *
+     * @param updateUserDto пользователь.
+     */
+    void updateCurrentUser(UpdateUserDto updateUserDto);
+
+    /**
+     * Смена роли пользователя.
+     *
+     * @param userId идентификатор пользователя.
+     * @param newRole модель выбранной роли.
+     */
+    void changeUserRole(Long userId, RoleDto newRole);
+
+    /**
+     * Удаление пользователя.
+     *
+     * @param id идентификатор.
+     */
+    void deleteUser(Long id);
 
 }
-

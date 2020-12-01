@@ -1,59 +1,58 @@
 package com.TimeForStudy.application.classroom.service;
 
-import com.TimeForStudy.application.classroom.model.AddClassroomDto;
-import com.TimeForStudy.application.classroom.model.ClassroomDto;
-import com.TimeForStudy.application.classroom.model.ClassroomsDto;
+import com.TimeForStudy.application.common.IdNameDto;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности кабинет
+ * Интерфейс сервиса учебных помещений.
  *
  * @author Velikanov Artyom
  */
 public interface ClassroomService {
 
     /**
-     * Возвращение кабинета по идентификатору.
+     * Получение учебного помещения по идентификатору.
+     *
+     * @param id идентификатор учебного помещения.
+     * @return учебное помещение.
+     */
+    IdNameDto getClassroomById(Long id);
+
+    /**
+     * Создание нового учебного помещения.
+     *
+     * @param classroom модель учебного помещения.
+     */
+    void saveClassroom(IdNameDto classroom);
+
+    /**
+     * Редактирование учебного помещения.
+     *
+     * @param id идентификатор учебного помещения.
+     * @param classroom модель учебного помещения.
+     */
+    void updateClassroom(Long id, IdNameDto classroom);
+
+    /**
+     * Удаление учебного помещения.
      *
      * @param id идентификатор.
-     * @return кабинет.
      */
-    ClassroomDto getClassroomById(long id);
+    void deleteClassroom(Long id);
 
     /**
-     * Сохранение кабинета.
+     * Получение списка всех учебных помещений.
      *
-     * @param addClassroomDto кабинет.
+     * @return список учебных помещений.
      */
-    void saveClassroom(AddClassroomDto addClassroomDto);
+    List<IdNameDto> findAll();
 
     /**
-     * Изменение значений кабинета.
+     * Получение списка учебных помещений по наименованию.
      *
-     * @param id идентификатор.
-     * @param addClassroomDto кабинет.
+     * @param name наименование учебного помещения.
+     * @return список учебных помещений.
      */
-    void updateClassroom(long id, AddClassroomDto addClassroomDto);
-
-    /**
-     * Удаление кабинета.
-     *
-     * @param id идентификатор.
-     */
-    void deleteClassroom(long id);
-
-    /**
-     * Возвращение всех существующих кабинетов.
-     *
-     * @return список кабинетов.
-     */
-    List<ClassroomDto> findAll();
-
-    /**
-     * Возвращение всех существующих кабинетов.
-     *
-     * @return список кабинетов.
-     */
-    List<ClassroomsDto> findAllClassrooms(String name);
+    List<IdNameDto> findAllClassrooms(String name);
 }

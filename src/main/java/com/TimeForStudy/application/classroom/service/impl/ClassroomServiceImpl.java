@@ -2,22 +2,21 @@ package com.TimeForStudy.application.classroom.service.impl;
 
 import com.TimeForStudy.application.classroom.domain.ClassroomEntity;
 import com.TimeForStudy.application.classroom.domain.ClassroomRepository;
-import com.TimeForStudy.application.classroom.model.AddClassroomDto;
-import com.TimeForStudy.application.classroom.model.ClassroomDto;
-import com.TimeForStudy.application.classroom.model.ClassroomsDto;
 import com.TimeForStudy.application.classroom.service.ClassroomService;
-import com.TimeForStudy.application.user.domain.UserEntity;
-import com.TimeForStudy.application.user.model.ProfessorDto;
+import com.TimeForStudy.application.common.IdNameDto;
+import com.TimeForStudy.error.ApplicationException;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Реализация сервиса CRUD запросов к сущности кабинет
+ * Реализация сервиса учебных помешений.
  *
  * @author Velikanov Artyom
  */
@@ -31,81 +30,89 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final ClassroomRepository classroomRepository;
 
     /**
-     * Возвращение кабинета по идентификатору.
+     * Получение учебного помещения по идентификатору.
      *
-     * @param id идентификатор.
-     * @return кабинет.
+     * @param id идентификатор учебного помещения.
+     * @return учебное помещение.
      */
     @Override
-    public ClassroomDto getClassroomById(long id) {
-        ClassroomEntity classroomEntity = classroomRepository.findById(id)
+    public IdNameDto getClassroomById(Long id) {
+        ClassroomEntity classroom = classroomRepository.findById(id)
                 .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
-        return ClassroomDto.of(classroomEntity);
+        return IdNameDto.of(classroom.getId(), classroom.getNumber());
     }
 
     /**
-     * Сохранение кабинета.
+     * Создание нового учебного помещения.
      *
-     * @param addClassroomDto кабинет.
+     * @param classroomDto модель учебного помещения.
      */
     @Override
-    public void saveClassroom(AddClassroomDto addClassroomDto) {
-        ClassroomEntity classroomEntity = new ClassroomEntity(addClassroomDto);
-        classroomRepository.save(classroomEntity);
+    public void saveClassroom(IdNameDto classroomDto) {
+        ClassroomEntity classroom = new ClassroomEntity();
+        classroom.setNumber(classroomDto.getName());
+        classroomRepository.save(classroom);
     }
 
     /**
-     * Изменение значений кабинета.
+     * Редактирование учебного помещения.
      *
-     * @param id идентификатор.
-     * @param addClassroomDto кабинет.
+     * @param id идентификатор учебного помещения.
+     * @param classroom модель учебного помещения.
      */
     @Override
-    public void updateClassroom(long id, AddClassroomDto addClassroomDto) {
+    public void updateClassroom(Long id, IdNameDto classroom) {
         ClassroomEntity updated = classroomRepository.findById(id)
                 .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
-        if (addClassroomDto.getNumber()!=0) {
-            updated.setNumber(addClassroomDto.getNumber());
+        if (StringUtils.isNotBlank(classroom.getName())) {
+            updated.setNumber(classroom.getName());
         }
         classroomRepository.save(updated);
     }
 
     /**
-     * Удаление кабинета.
+     * Удаление учебного помещения.
      *
      * @param id идентификатор.
      */
     @Override
-    public void deleteClassroom(long id) {
+    public void deleteClassroom(Long id) {
+        ClassroomEntity classroomEntity = classroomRepository.findById(id)
+                .orElseThrow(ErrorDescription.CLASSROOM_NOT_FOUNT::exception);
+        if (!CollectionUtils.isEmpty(classroomEntity.getLessons()))
+            throw new ApplicationException(ErrorDescription.CLASSROOM_HAS_LESSONS);
         classroomRepository.deleteById(id);
     }
 
     /**
-     * Возвращение всех существующих кабинетов.
+     * Получение списка всех учебных помещений.
      *
-     * @return список кабинетов.
+     * @return список учебных помещений.
      */
     @Override
-    public List<ClassroomDto> findAll() {
+    public List<IdNameDto> findAll() {
         List<ClassroomEntity> classroomEntities = classroomRepository.findAll();
-        return classroomEntities.stream().map(ClassroomDto::of).collect(Collectors.toList());
+        return classroomEntities.stream()
+                .map(it -> IdNameDto.of(it.getId(), it.getNumber()))
+                .collect(Collectors.toList());
     }
 
     /**
-     * Возвращение всех существующих кабинетов.
+     * Получение списка учебных помещений по наименованию.
      *
-     * @return список кабинетов.
+     * @param name наименование учебного помещения.
+     * @return список учебных помещений.
      */
     @Override
-    public List<ClassroomsDto> findAllClassrooms(String name) {
-        List<ClassroomEntity>  classroomEntities= classroomRepository.findAll();
-        List<ClassroomsDto> classroomsDtos = new ArrayList<>();
+    public List<IdNameDto> findAllClassrooms(String name) {
+        List<ClassroomEntity> classroomEntities = classroomRepository.findAll();
+        List<IdNameDto> lists = new ArrayList<>();
         for (ClassroomEntity classroom : classroomEntities) {
             String cl = String.valueOf(classroom.getNumber());
             if (cl.contains(name)) {
-                classroomsDtos.add(new ClassroomsDto(classroom.getId(), cl));
+                lists.add(IdNameDto.of(classroom.getId(), cl));
             }
         }
-        return classroomsDtos;
+        return lists;
     }
 }

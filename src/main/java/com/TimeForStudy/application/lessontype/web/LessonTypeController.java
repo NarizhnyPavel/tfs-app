@@ -1,11 +1,15 @@
 package com.TimeForStudy.application.lessontype.web;
 
-import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
-import com.TimeForStudy.application.lessontype.model.LessonTypeDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.lessontype.service.LessonTypeService;
-import com.TimeForStudy.application.university.model.UniversitiesDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,64 +28,65 @@ public class LessonTypeController {
     private final LessonTypeService lessonTypeService;
 
     /**
-     * Возвращает список типов занятий.
+     * Получение списка типов занятий.
      *
      * @return список типов занятий.
      */
-    @GetMapping(value = "/lessonType")
-    public List<LessonTypeDto> getLessonTypes() {
+    //TODO разобраться почему имеется 2 одинаковых эндпоинта
+    @GetMapping(value = "/lesson_type")
+    public List<IdNameDto> getLessonTypes() {
         return lessonTypeService.findAll();
     }
 
     /**
-     * Возвращает список типы пар.
+     * Получение списка типов пар для выбора в выпадающем списке.
      *
-     * @return список типов пар.
+     * @return список типов пар в модели {@link IdNameDto}.
      */
-    @GetMapping(value = "/lessontypes")
-    public List<UniversitiesDto> getLessonTypesLesson() {
+    @GetMapping(value = "/lesson_types")
+    public List<IdNameDto> getLessonTypesLesson() {
         return lessonTypeService.findLessonTypes();
     }
 
     /**
-     * Возвращает тип занятия по идентификатору.
+     * Получение типа занятия по идентификатору.
      *
      * @param id идентификатор.
-     * @return тип занятия
+     * @return тип занятия.
      */
-    @GetMapping(value = "/lessonType/{id}")
-    public LessonTypeDto getLessonType(@PathVariable long id) {
+    @GetMapping(value = "/lesson_type/{id}")
+    public IdNameDto getLessonType(@PathVariable Long id) {
         return lessonTypeService.getLessonTypeById(id);
     }
 
     /**
-     * Добавляет новый тип занятия.
+     * Добавление типа занятия.
      *
-     * @param addLessonTypeDto тип занятия.
+     * @param lessonType тип занятия.
      */
-    @PostMapping(value = "/lessonType/add")
-    public void addLessonType(@RequestBody AddLessonTypeDto addLessonTypeDto) {
-        lessonTypeService.saveLessonType(addLessonTypeDto);
+    @PostMapping(value = "/admin/lesson_type")
+    public void addLessonType(@RequestBody IdNameDto lessonType) {
+        lessonTypeService.saveLessonType(lessonType);
     }
 
     /**
-     * Изменяет данный тип занятия.
+     * Изменение типа занятия.
      *
      * @param id идентификатор.
-     * @param addLessonTypeDto тип занятия.
+     * @param lessonType тип занятия.
      */
-    @PutMapping(value = "/lessonType/update/{id}")
-    public void updateLessonType(@PathVariable long id, @RequestBody AddLessonTypeDto addLessonTypeDto) {
-        lessonTypeService.updateLessonType(id, addLessonTypeDto);
+    @PutMapping(value = "/admin/lesson_type/{id}")
+    public void updateLessonType(@PathVariable Long id, @RequestBody IdNameDto lessonType) {
+        lessonTypeService.updateLessonType(id, lessonType);
     }
 
     /**
-     * Удаляет тип занятия.
+     * Удаление типа занятия.
      *
      * @param id идентификатор.
      */
-    @DeleteMapping(value = "/lessonType/delete/{id}")
-    public void deleteLessonType(@PathVariable long id) {
+    @DeleteMapping(value = "/admin/lesson_type/{id}")
+    public void deleteLessonType(@PathVariable Long id) {
         lessonTypeService.deleteLessonType(id);
     }
 }

@@ -1,39 +1,42 @@
 package com.TimeForStudy.application.lessontype.domain;
 
-import com.TimeForStudy.application.lessontype.model.AddLessonTypeDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
- * Сущность типа занятия
+ * Доменная модель <strong>Тип занятия</strong>
  *
  * @author Velikanov Artyom
  */
-@Entity @Data
+@Data
+@Entity
 @NoArgsConstructor
 @ToString(of = "id")
 @EqualsAndHashCode(of = "id")
 @Table(name = "lesson_type")
 public class LessonTypeEntity {
 
+    /**
+     * Идентификатор типа занятия.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_lesson_type")
-    @SequenceGenerator(name="seq_lesson_type", sequenceName="SEQ_LESSON_TYPE", allocationSize=1)
-    @Column(name = "id")
-    private long id;
-
+    @SequenceGenerator(name="seq_lesson_type", sequenceName="SEQ_LESSON_TYPE", allocationSize = 1)
+    private Long id;
     /**
-     * Наименование типа занятия
+     * Наименование типа занятия.
      */
     @Column(name = "name")
     private String name;
 
-    public LessonTypeEntity (AddLessonTypeDto addLessonTypeDto) {
-        this.name = addLessonTypeDto.getName();
-    }
 }

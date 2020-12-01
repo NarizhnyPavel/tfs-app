@@ -1,49 +1,48 @@
 package com.TimeForStudy.application.semester.service;
 
-import com.TimeForStudy.application.semester.model.AddSemesterDto;
 import com.TimeForStudy.application.semester.model.SemesterDto;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности семестр
+ * Интерфейс сервиса запросов к семестрам.
  *
  * @author Velikanov Artyom
  */
 public interface SemesterService {
 
     /**
-     * Возвращение семестра по идентификатору.
+     * Получение семестра по идентификатору.
      *
      * @param id идентификатор.
      * @return семестр.
      */
-    SemesterDto getSemesterById(long id);
+    SemesterDto getSemesterById(Long id);
 
     /**
-     * Сохранение семестра.
+     * Добавление семестра.
      *
-     * @param addSemesterDto семестр.
+     * @param semester семестр.
      */
-    void saveSemester(AddSemesterDto addSemesterDto);
+    void saveSemester(SemesterDto semester);
 
     /**
-     * Изменение значений семестра.
+     * Редактирование семестра.
      *
      * @param id идентификатор.
-     * @param addSemesterDto семестр.
+     * @param semester семестр.
      */
-    void updateSemester(long id, AddSemesterDto addSemesterDto);
+    void updateSemester(Long id, SemesterDto semester);
 
     /**
      * Удаление семестра.
      *
      * @param id идентификатор.
      */
-    void deleteSemester(long id);
+    void deleteSemester(Long id);
 
     /**
-     * Возвращение всех существующих семестров.
+     * Получение списка семестров.
      *
      * @return список семестров.
      */

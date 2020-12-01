@@ -1,22 +1,34 @@
 package com.TimeForStudy.application.group.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+/**
+ * Модель студентов группы.
+ *
+ * @author Velikanov Artyom.
+ */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class UsersByGroup {
 
-    private int number;
-
-    private int role;
-
+    /**
+     * Номер группы.
+     */
+    private Integer number;
+    /**
+     * Роль.
+     */
+    private Integer role;
+    /**
+     * Наименование.
+     */
     private String name;
-
+    /**
+     * Номер телефона.
+     */
     private String phone;
 
-    public UsersByGroup (int number, String name, int role, String phone) {
-        this.name = name;
-        this.number = number;
-        this.role = role;
-        this.phone = phone;
-    }
 }

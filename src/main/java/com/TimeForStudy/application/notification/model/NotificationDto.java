@@ -1,52 +1,76 @@
 package com.TimeForStudy.application.notification.model;
 
+import com.TimeForStudy.application.lessongrid.domain.LessonGridEntity;
 import com.TimeForStudy.application.notification.domain.NotificationEntity;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
-
+import java.util.List;
 
 /**
- * Модель представления сущности уведомление
+ * Модель краткой информации об уведомлении.
  *
  * @author Velikanov Artyom
  */
 @Data
+@RequiredArgsConstructor
 public class NotificationDto {
 
-    private long id;
-
     /**
-     * Позиция занятия
+     * Текст.
      */
-    private String lessonPosition;
-
+    private String title;
     /**
-     * Текст уведомления
+     * Сообщение.
      */
-    private LocalDate date;
+    private String message;
 
-    /**
-     * Тип уведомления (false - уведомление; true - запрос)
-     */
-    private boolean type;
+    public NotificationDto(NotificationEntity notificationEntity, List<LessonGridEntity> lessonGridEntities) {
 
-    public static NotificationDto of(NotificationEntity notificationEntity) {
-        NotificationDto dto = new NotificationDto();
-        dto.setId(notificationEntity.getId());
-        dto.setLessonPosition(notificationEntity.getLessonPosition());
-        dto.setDate(notificationEntity.getDate());
-        dto.setType(notificationEntity.isType());
-        return dto;
-    }
+        this.title = notificationEntity.getLessons().getLesson().getProfessor().getUserInfo().getFullName();
+        String time = "";
+        for (LessonGridEntity lessGrid : lessonGridEntities) {
+            if (lessGrid.getLessonNumber() == Integer.parseInt(notificationEntity.getLessonPosition().substring(2,3))) {
+                time = lessGrid.getTime();
+                break;
+            }
+        }
+        if (!notificationEntity.isType()) {
+            this.title = "Занятие отменено:";
+            String month = "";
+            String day = "";
+            LocalDate localDate = notificationEntity.getDate().minusDays(1);
+            if (localDate.getMonth().getValue()<10) {
+                month = "0";
+            }
+            if (localDate.getDayOfMonth()<10) {
+                day = "0";
+            }
+            this.message = notificationEntity.getSender().getUserInfo().getFullName() + " отменил(а) занятие " +
+                    notificationEntity.getLessons().getLesson().getSubject().getName() +
+                    " " + day + localDate.getDayOfMonth() + "." + month + localDate.getMonth().getValue() +
+                    "." + localDate.getYear() + "г. в " + time + ".";
+        } else {
 
-    public static NotificationEntity on(NotificationDto notificationDto) {
-        NotificationEntity entity = new NotificationEntity();
-        entity.setId(notificationDto.getId());
-        entity.setLessonPosition(notificationDto.getLessonPosition());
-        entity.setDate(notificationDto.getDate());
-        entity.setType(notificationDto.isType());
-        return entity;
+            this.title = "Занятие перенесено:";
+            String week = "";
+            String pos = notificationEntity.getLessonPosition().substring(0,1) + " неделя";
+            if (Integer.parseInt(notificationEntity.getLessonPosition().substring(0,1))==0) {
+                pos = "Все недели";
+            }
+            switch (Integer.parseInt(notificationEntity.getLessonPosition().substring(1,2))) {
+                case 1:  week = "Понедельник"; break;
+                case 2:  week = "Вторник"; break;
+                case 3:  week = "Среда"; break;
+                case 4:  week = "Четверг"; break;
+                case 5:  week = "Пятница"; break;
+                case 6:  week = "Суббота"; break;
+                default: week = "Воскресенье"; break;
+            }
+            this.message = notificationEntity.getLessons().getLesson().getProfessor().getUserInfo().getFullName() +
+                    " перенёс(перенесла) занятие " + notificationEntity.getLessons().getLesson().getSubject().getName() +
+                    " на <" + pos + ", " + week + ", " + time + ">.";
+        }
     }
 }

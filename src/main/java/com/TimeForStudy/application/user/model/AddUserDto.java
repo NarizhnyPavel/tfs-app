@@ -1,52 +1,45 @@
 package com.TimeForStudy.application.user.model;
 
-import com.TimeForStudy.application.group.model.GroupDto;
-import com.TimeForStudy.application.user.domain.UserEntity;
+import com.TimeForStudy.application.group.model.GroupsDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 /**
- * Модель для добавления сущности пользователь
+ * Модель для добавления сущности пользователь.
  *
  * @author Velikanov Artyom
  */
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class AddUserDto {
 
     /**
-     * Номер телефона
+     * Номер телефона.
      */
     private String phone;
-
     /**
-     * Фамилия Имя Отчество
+     * Пароль.
      */
-    private String name;
-
+    private String password;
     /**
-     * Роль (1 - Диспетчер, 2 - Преподаватель, 3 - Староста, 4 - Студент)
+     * Имя.
      */
-    private byte role;
-
+    private String firstName;
     /**
-     * Группы
+     * Фамилия.
      */
-    private List<GroupDto> groups;
+    private String lastName;
+    /**
+     * Отчество.
+     */
+    private String patronymic;
+    /**
+     * Группы.
+     */
+    private List<GroupsDto> groups;
 
-    public AddUserDto(String phone, String name, byte role) {
-        this.phone = phone;
-        this.name = name;
-        this.role = role;
-    }
-
-    public static UserEntity on(AddUserDto addUserDto) {
-        UserEntity entity = new UserEntity();
-        entity.setPhone(addUserDto.getPhone());
-        entity.setName(addUserDto.getName());
-        entity.setRole(addUserDto.getRole());
-        return  entity;
-    }
 }

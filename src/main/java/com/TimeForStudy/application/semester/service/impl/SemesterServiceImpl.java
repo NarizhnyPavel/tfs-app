@@ -2,20 +2,20 @@ package com.TimeForStudy.application.semester.service.impl;
 
 import com.TimeForStudy.application.semester.domain.SemesterEntity;
 import com.TimeForStudy.application.semester.domain.SemesterRepository;
-import com.TimeForStudy.application.semester.model.AddSemesterDto;
 import com.TimeForStudy.application.semester.model.SemesterDto;
 import com.TimeForStudy.application.semester.service.SemesterService;
+import com.TimeForStudy.application.university.domain.UniversityEntity;
 import com.TimeForStudy.application.university.domain.UniversityRepository;
-import com.TimeForStudy.application.university.model.UniversityDto;
 import com.TimeForStudy.error.ErrorDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Реализация сервиса CRUD запросов к сущности семестр
+ * Реализация сервиса запросов к семестрам.
  *
  * @author Velikanov Artyom
  */
@@ -27,58 +27,51 @@ public class SemesterServiceImpl implements SemesterService {
      * {@link SemesterRepository}
      */
     private final SemesterRepository semesterRepository;
-
     /**
      * {@link UniversityRepository}
      */
-    private UniversityRepository universityRepository;
+    private final UniversityRepository universityRepository;
 
     /**
-     * Возвращение семестра по идентификатору.
+     * Получение семестра по идентификатору.
      *
      * @param id идентификатор.
      * @return семестр.
      */
     @Override
-    public SemesterDto getSemesterById(long id) {
-        SemesterEntity semesterEntity = semesterRepository.findById(id)
+    public SemesterDto getSemesterById(Long id) {
+        SemesterEntity entity = semesterRepository.findById(id)
                 .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
-        return SemesterDto.of(semesterEntity);
+        return SemesterDto.of(entity.getId(), entity.getStart(), entity.getEnd());
     }
 
     /**
-     * Сохранение семестра.
+     * Добавление семестра.
      *
-     * @param addSemesterDto семестр.
+     * @param semester семестр.
      */
     @Override
-    public void saveSemester(AddSemesterDto addSemesterDto) {
-        universityRepository.findById(addSemesterDto.getUniversity().getId())
-                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-        SemesterEntity semesterEntity = new SemesterEntity(addSemesterDto);
-        semesterRepository.save(semesterEntity);
+    public void saveSemester(SemesterDto semester) {
+        SemesterEntity entity = SemesterEntity.of(null, semester.getStartDate(),
+                semester.getEndDate(), getCurrentUniversity(), null);
+        semesterRepository.save(entity);
     }
 
     /**
-     * Изменение значений семестра.
+     * Редактирование семестра.
      *
-     * @param id идентификатор.
-     * @param addSemesterDto семестр.
+     * @param id          идентификатор.
+     * @param semesterDto семестр.
      */
     @Override
-    public void updateSemester(long id, AddSemesterDto addSemesterDto) {
+    public void updateSemester(Long id, SemesterDto semesterDto) {
         SemesterEntity updated = semesterRepository.findById(id)
                 .orElseThrow(ErrorDescription.SEMESTER_NOT_FOUNT::exception);
-        if (addSemesterDto.getUniversity()!=null) {
-            universityRepository.findById(addSemesterDto.getUniversity().getId())
-                    .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
-            updated.setUniversity(UniversityDto.on(addSemesterDto.getUniversity()));
+        if (Objects.nonNull(semesterDto.getEndDate())) {
+            updated.setEnd(semesterDto.getEndDate());
         }
-        if (addSemesterDto.getEnd()!=null) {
-            updated.setEnd(addSemesterDto.getEnd());
-        }
-        if (addSemesterDto.getEnd()!=null) {
-            updated.setStart(addSemesterDto.getStart());
+        if (Objects.nonNull(semesterDto.getStartDate())) {
+            updated.setStart(semesterDto.getStartDate());
         }
         semesterRepository.save(updated);
     }
@@ -89,18 +82,24 @@ public class SemesterServiceImpl implements SemesterService {
      * @param id идентификатор.
      */
     @Override
-    public void deleteSemester(long id) {
+    public void deleteSemester(Long id) {
         semesterRepository.deleteById(id);
     }
 
     /**
-     * Возвращение всех существующих семестров.
+     * Получение списка семестров.
      *
      * @return список семестров.
      */
     @Override
     public List<SemesterDto> findAll() {
-        List<SemesterEntity> semesterEntities = semesterRepository.findAll();
-        return semesterEntities.stream().map(SemesterDto::of).collect(Collectors.toList());
+        return semesterRepository.findAll().stream()
+                .map(it -> SemesterDto.of(it.getId(), it.getStart(), it.getEnd()))
+                .collect(Collectors.toList());
+    }
+
+    private UniversityEntity getCurrentUniversity() {
+        return universityRepository.findById(1L)
+                .orElseThrow(ErrorDescription.UNIVERSITY_NOT_FOUNT::exception);
     }
 }

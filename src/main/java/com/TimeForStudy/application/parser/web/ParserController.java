@@ -1,6 +1,6 @@
 package com.TimeForStudy.application.parser.web;
 
-import com.TimeForStudy.application.parser.domain.ParserResponse;
+import com.TimeForStudy.application.parser.model.ParserResponse;
 import com.TimeForStudy.application.parser.service.ParserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +25,13 @@ public class ParserController {
 
     /**
      * Парсинг таблицы по url.
+     * Таблица должна располагаться на яндекс диске.
      *
+     * @param url публичная ссылка для доступа к таблице.
      * @return строка состояния.
      */
-    @PostMapping(value = "/parser/url")
-    public ParserResponse getProfessors(@RequestBody String url) {
+    @PostMapping(value = "/admin/parser")
+    public ParserResponse parsNewData(@RequestBody String url) {
         try {
             return parserService.inUrlParser(url);
         } catch (IOException e) {

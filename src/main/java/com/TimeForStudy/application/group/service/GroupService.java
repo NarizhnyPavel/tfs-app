@@ -1,73 +1,68 @@
 package com.TimeForStudy.application.group.service;
 
-import com.TimeForStudy.application.group.model.AddGroupDto;
-import com.TimeForStudy.application.group.model.GroupDto;
+import com.TimeForStudy.application.common.IdNameDto;
 import com.TimeForStudy.application.group.model.GroupsDto;
 import com.TimeForStudy.application.group.model.UsersByGroup;
-import com.TimeForStudy.application.user.model.ProfessorDto;
-import com.TimeForStudy.application.user.model.UserDto;
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 /**
- * Сервис CRUD запросов к сущности группа
+ * Интерфейс сервиса сервиса запросов к группам
  *
  * @author Velikanov Artyom
  */
 public interface GroupService {
 
     /**
-     * Возвращение группы по идентификатору.
+     * Получение группы по идентификатору.
      *
-     * @param id идентификатор.
+     * @param id идентификатор группы.
      * @return группа.
      */
-    GroupDto getGroupById(long id);
+    IdNameDto getGroupById(Long id);
 
     /**
-     * Возвращает список студентов группы.
+     * Получение списка студентов группы.
      *
-     * @return список групп.
+     * @param id идентификатор группы.
+     * @return список студентов.
      */
-    List<UsersByGroup> findStudentsByGroupId(long id);
-
-
-    /**
-     * Сохранение группы.
-     *
-     * @param addGroupDto группа.
-     */
-    void saveGroup(AddGroupDto addGroupDto);
+    List<UsersByGroup> findStudentsByGroupId(Long id);
 
     /**
-     * Изменение значений группы.
+     * Добавление группы.
      *
-     * @param id идентификатор.
-     * @param addGroupDto группа.
+     * @param group группа.
      */
-    void updateGroup(long id, AddGroupDto addGroupDto);
+    void saveGroup(IdNameDto group);
+
+    /**
+     * Редактирование группы.
+     *
+     * @param id идентификатор группы.
+     * @param group группа.
+     */
+    void updateGroup(Long id, IdNameDto group);
 
     /**
      * Удаление группы.
      *
-     * @param id идентификатор.
+     * @param id идентификатор группы.
      */
-    void deleteGroup(long id);
+    void deleteGroup(Long id);
 
     /**
-     * Возвращение всех существующих групп.
+     * Получение списка групп.
      *
      * @return список групп.
      */
-    List<GroupDto> findAll();
+    List<IdNameDto> findAll();
 
     /**
-     * Возвращение группы.
+     * Получение списка групп по наименованию.
      *
-     * @return список группы.
+     * @param name наименование группы.
+     * @return список групп.
      */
     List<GroupsDto> findAllGroups(String name);
 }
